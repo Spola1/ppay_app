@@ -1,0 +1,32 @@
+%h1 Курсы валют
+
+- if @rate_snapshots.size > 0
+  %table
+    %thead
+      %tr
+        %th ID
+        %th добавлен
+        %th направление
+        %th нац. валюта
+        %th криптовалюта
+        %th платежная система
+        %th позиция в стакане
+        %th exchange_portal_id
+        %th значение
+        %th
+
+    %tbody
+      - @rate_snapshots.each do |rs|
+        %tr
+          %td= rs.id
+          %td= rs.created_at.in_time_zone("Moscow")
+          %td= rs.direction
+          %td= rs.national_currency
+          %td= rs.cryptocurrency
+          %td= rs.payment_system
+          %td= rs.position_number
+          %td= rs.exchange_portal_id
+          %td= rs.value
+          %td= link_to 'Перейти', rs
+- else
+  %p Не найдено в базе

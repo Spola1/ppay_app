@@ -1,0 +1,10 @@
+%h1 Редактировать объявление
+%p
+  = "(ID: #{@advertisement.id})"
+.container.md
+  = render 'form'
+
+%br
+= link_to "+ Создать новое объявление", new_advertisement_path
+%br
+= link_to "<- К списку объявлений", advertisements_path

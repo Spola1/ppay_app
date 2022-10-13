@@ -1,0 +1,57 @@
+%h1 Объявление
+%p
+  = "(ID: #{@advertisement.id})"
+
+%br
+= link_to 'Редактировать', edit_advertisement_path(@advertisement)
+%br
+
+%table
+  %thead
+    %tr
+      %th ID
+      %th направление
+      %th нац. валюта
+      %th криптовалюта
+      %th платежная система
+      %th тип плат. сист.
+      %th мин. сумма
+      %th макс. сумма
+      %th номер карты
+      %th автопринятие
+      %th комментарий
+      %th контакт оператора
+      %th тип курса
+      %th источник курса
+      %th процент
+      %th мин. фикс. цена
+      %th статус
+      %th id аккаунта
+
+  %tbody
+    %tr
+      %td= @advertisement.id
+      %td= @advertisement.direction
+      %td= @advertisement.national_currency
+      %td= @advertisement.cryptocurrency
+      %td= @advertisement.payment_system
+      %td= @advertisement.payment_system_type
+      %td= @advertisement.min_summ
+      %td= @advertisement.max_summ
+      %td= @advertisement.card_number
+      %td= @advertisement.autoacceptance
+      %td= @advertisement.comment
+      %td= @advertisement.operator_contact
+      %td= @advertisement.exchange_rate_type
+      %td= @advertisement.exchange_rate_source
+      %td= @advertisement.percent
+      %td= @advertisement.min_fix_price
+      %td= @advertisement.status
+      %td= @advertisement.account_id
+
+
+
+%br
+= link_to "+ Создать новое объявление", new_advertisement_path
+%br
+= link_to "<- К списку объявлений", advertisements_path

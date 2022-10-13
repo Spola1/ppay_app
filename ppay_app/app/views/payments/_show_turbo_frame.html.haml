@@ -1,0 +1,3 @@
+= turbo_frame_tag "#{payment.uuid}_show" do
+  %div{ data: { controller: 'payments' } }
+    = render "payments/#{ payment.type.underscore.pluralize }/#{ payment.payment_status }", payment:, signature:

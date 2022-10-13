@@ -1,0 +1,22 @@
+%h1 Биржи и порталы для обмена
+
+- if @exchange_portals.size > 0
+  %table
+    %thead
+      %tr
+        %th ID
+        %th добавлено
+        %th название
+
+        %th
+
+    %tbody
+      - @exchange_portals.each do |ep|
+        %tr
+          %td= ep.id
+          %td= ep.created_at.in_time_zone("Moscow")
+          %td= ep.name
+
+          %td= link_to 'Перейти', ep
+- else
+  %p Записей не найдено в базе

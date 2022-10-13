@@ -1,0 +1,48 @@
+%p.text-4xl
+  Мерчант:
+  = payment.merchant.name
+%br
+%p.text-2xl
+  Заказ №:
+  = payment.external_order_id
+
+%p.text-2xl
+  Сумма:
+  = payment.national_currency_amount
+  = payment.national_currency
+
+%br
+
+= render 'payments/errors', payment: payment
+
+= simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+  =# f.label :national_currency, 'Выберите валюту'
+  =# f.select :national_currency, options_for_select([["-выбрать-", ""], "RUB", "USD", "EUR", "UZS"], payment.national_currency), :id => 'national_currency_field', :class => 'form_field'
+  %br
+
+  = f.label :payment_system, 'Выберите платежную систему'
+  %br
+  = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
+             id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+  %br
+
+  = hidden_field_tag :event, 'search' 
+  %br
+  = #f.button 'Подтвердить', confirm: 'Вы уверены?', :class => "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+  = f.submit "Подтвердить", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
+  %br
+  %p Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете производить оплату!
+
+= render 'payments/cancel_form', payment:, signature:
+
+.alerts_block.border.rounded.border-rose-500.px-6.py-4.text-md.text-red-400.text-left
+  %p ! При отправке денежных средств писать сообщения в приложении категорически запрещено.
+  %br
+  %p ! Платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
+  %br
+  %p ! Средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. 
+  %br
+  В противном случае зачисление оплаты не гарантируется.
+
+
+%br

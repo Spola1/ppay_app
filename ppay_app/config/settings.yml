@@ -1,0 +1,27 @@
+basic_auth:
+  username: ppay
+  password: password
+rsa:
+  public_key: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7N//jalulNj/Yup3Y4o7\nsLGS\
+               uOMJJ7U2/5fyIxYbLpuHRZk8nGZva44A7jrNVJP9BCLRgMvlQCFI3jTQ/3NU\nRwryd2TE5gAvkmWtqSPd9ZQElNxeoj6ooeP7\
+               hZdp1nIHdXhFBA2NMtQat1zvjiq5\nf4pDlV+mna9YFRlzpfVkc2fWjaJmqFW62v6B+ygVjuiuC2ZT0mxGSHCjrYuRN5gx\nWG\
+               7No4kUWBvC169syeIzt1M1pR9Lthgqly/quy4JeSsC4iV4qxZ/38tTPao7woCh\nYa9oxa530NUG7ftNpwv+TeH/oUVCC1DFtq\
+               zRp4u5rh6GDh17B2cPbZrp593fLakT\n/QIDAQAB\n-----END PUBLIC KEY-----\n"
+  private_key: "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA7N//jalulNj/Yup3Y4o7sLGSuOMJJ7U2/5fyIxYbLpuHRZk8\
+                \nnGZva44A7jrNVJP9BCLRgMvlQCFI3jTQ/3NURwryd2TE5gAvkmWtqSPd9ZQElNxe\noj6ooeP7hZdp1nIHdXhFBA2NMtQat\
+                1zvjiq5f4pDlV+mna9YFRlzpfVkc2fWjaJm\nqFW62v6B+ygVjuiuC2ZT0mxGSHCjrYuRN5gxWG7No4kUWBvC169syeIzt1M1\
+                pR9L\nthgqly/quy4JeSsC4iV4qxZ/38tTPao7woChYa9oxa530NUG7ftNpwv+TeH/oUVC\nC1DFtqzRp4u5rh6GDh17B2cPb\
+                Zrp593fLakT/QIDAQABAoIBADnZFmr9NtFJEU2R\n3yhDCQLEywU2BPVajxzqearR6j9+ohGAM8oqRgmpO1byq1R9c6v/6NQg\
+                d1MrDcWe\ndm/8NVfIN6Cqzl8xKm0BQeDtrnYb+OZ1zvKmhL5MlA9zA9joLiQlBA3SVWpVXFTt\ncF9y1axtEsY2/tTBjqxQc\
+                +rSu/5mpCQNMvvaSsrItPfrDouHzXtAuW7/NuXC7J9g\nYE9Rk2g91MZ3+PiMVTa97Lm4RpCgP2dT+/i87LijuVZAlCxfygVJ\
+                0ew4DnXWrSfu\n+y2ysmF258Z6xNMWLfrIem6FKE+diJuqX8Y55HxTqGE7V7KbnZSrg1R5kDiQRodJ\nPBCkvI0CgYEA//L5T\
+                DUFYv4R8FZIgJy9EP+oeYkvgNKzhG+1Hgd6fUbAAQcqR5HP\nZDIZFUeHcyITACCFPwgXVqi9f/ivdAyrtdMBa/By8toEhJeE\
+                OFDcxMtRO6ow7DN+\nYAgrDdv2Oz+lbjwARMxh0rVeMfEjjlRCKxVmsBSb5eifquL7gWXcA8cCgYEA7OwN\nvklSknvDMZ21C\
+                zAIkXbv03oHHBrwH7uK3NLmJCIKuOZye5NdiUGdxaP1wVozRMSb\niELzSerjkOh//AQ5+OyYGyfqxAfzISQ4CbwtxPG18/N6\
+                a+YZhJritDiPteU2PxDt\nmfy8RAQq/eB6a7c39Km2lbedIijj6HH1PBzp4hsCgYEAxxYXBkkDvKGGEJz83lWM\n1wkV4htsg\
+                Nbj3jMJ/aaxh3qd5O7O20a2u+ggDKZL3Kl3gBTLsGC5zqWIaV9mEm28\nrrzHkU9CCla9RumYZjm3z7eaoz9ZuJDBTy9rVedv\
+                21xBcMJpLxqPSNfcwhognxg5\nM8v8yR/ut+G/OKxAF8HEZocCgYB1FPZ5ufxvXXAJ3fjxLWyejltYc+59iiZuWBz4\nodSPu\
+                K75zxB2V04bHW0dlbhGNBAwBMUj4ooeVlDddLiCz4fipvFIQkK3W4JgN2jm\nDrPDpvuXMhSmq9CignRUQbtrVXmoUvJIbeiP\
+                6EtiqQN2pdWmOBR+Cn5BullerqpV\naah/TwKBgBCaHQHfpexSsRd2MzY80AHkmcC6Fxw6nGZnjmxAo0e+xpqVgPOzmqNv\n0\
+                bFtzNE1/J64d/fOeuoXqLMB3bHl3ps61SbmYh5SQiMH8YImUT8Z8z2IGp/mhyI2\n+oCrqaksT0pEfn9xHmxC6q370fvPjdam\
+                8rO/XRGIgDIi/F5RNA31\n-----END RSA PRIVATE KEY-----\n"

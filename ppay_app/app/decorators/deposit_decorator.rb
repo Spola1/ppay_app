@@ -1,0 +1,9 @@
+class DepositDecorator < PaymentDecorator
+  include Rails.application.routes.url_helpers
+
+  delegate_all
+
+  def url
+    payments_deposit_url(uuid:, signature:)
+  end
+end

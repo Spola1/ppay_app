@@ -1,0 +1,5 @@
+= simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+  = hidden_field_tag :event, 'cancel' 
+  = f.submit 'Отменить', confirm: 'Вы уверены, что хотите отменить платёж?', class: "text-gray-400 underline"
+  %br
+  %br

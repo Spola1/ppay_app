@@ -1,0 +1,110 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API V1",
+    "description": "Для выполнения запроса, требующего авторизацию (запрос с замочком), необходимо нажать кнопку \"Authorize\" и вставить туда ваш API-ключ",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/payments/deposits": {
+      "post": {
+        "summary": "Создание депозита",
+        "tags": [
+          "Платежи"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "успешное создание"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payments_create_parameter_body_schema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/withdrawals": {
+      "post": {
+        "summary": "Создание вывода средств",
+        "tags": [
+          "Платежи"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "успешное создание"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payments_create_parameter_body_schema"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "payments_create_parameter_body_schema": {
+        "type": "object",
+        "properties": {
+          "national_currency": {
+            "type": "string",
+            "example": "RUB"
+          },
+          "national_currency_amount": {
+            "type": "number",
+            "example": 3000.0
+          },
+          "external_order_id": {
+            "type": "string",
+            "example": "1234"
+          }
+        }
+      }
+    }
+  },
+  "security": {
+    "bearerAuth": [
+
+    ]
+  }
+}

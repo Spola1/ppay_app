@@ -1,0 +1,22 @@
+%h1 Обменный портал
+%p
+  = "(ID: #{@exchange_portal.id})"
+
+%br
+
+%table
+  %thead
+    %tr
+      %th ID
+      %th created_at
+      %th название
+
+
+  %tbody
+    %tr
+      %td= @exchange_portal.id
+      %td= @exchange_portal.created_at
+      %td= @exchange_portal.name
+
+%br
+= link_to "<- К списку объявлений", advertisements_path

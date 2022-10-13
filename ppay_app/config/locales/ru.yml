@@ -1,0 +1,12 @@
+ru:
+  activerecord:
+    models:
+      payment: Платёж
+    attributes:
+      payment:
+        payment_system: Платёжная система
+        image: Скриншот
+  errors:
+    payments:
+      required_payment_system: не выбрана
+      required_image: не загружен
