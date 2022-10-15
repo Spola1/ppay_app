@@ -15,7 +15,7 @@
     <div class="top_container flex bg-slate-50">
       <%= render partial: "layouts/flash_alerts"%>
       <%- if user_signed_in? %>
-        <%= render partial: "layouts/menu_block"%>
+        <%= render partial: "#{role_namespace}/shared/menu_block"%>
         <%= render partial: "layouts/login_block"%>
       <%- end %>
     </div>

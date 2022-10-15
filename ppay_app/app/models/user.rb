@@ -10,6 +10,12 @@ class User < ApplicationRecord
   before_create :generate_rsa_key_pair
   after_create :create_balance, :create_api_key
 
+  %i[admin agent merchant processer support].each do |role|
+    define_method("#{role}?") do
+      type == role.to_s.camelize
+    end
+  end
+
   private
 
   def create_api_key

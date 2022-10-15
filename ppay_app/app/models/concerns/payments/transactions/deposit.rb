@@ -44,7 +44,8 @@ module Payments
       def create_advertisement_transaction
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: advertisement.processer.balance,
-                            amount: cryptocurrency_amount * advertisement_commission / 100)
+                            amount: cryptocurrency_amount * advertisement_commission / 100,
+                            transaction_type: :advertisement_commission)
       end
 
       def create_working_group_transaction
@@ -52,7 +53,8 @@ module Payments
 
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: advertisement.processer.working_group.balance,
-                            amount: cryptocurrency_amount * advertisement_commission / 100)
+                            amount: cryptocurrency_amount * advertisement_commission / 100,
+                            transaction_type: :working_group_commission)
       end
 
       def create_agent_transaction
@@ -60,13 +62,15 @@ module Payments
 
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: merchant.agent.balance,
-                            amount: cryptocurrency_amount * agent_commission / 100)
+                            amount: cryptocurrency_amount * agent_commission / 100,
+                            transaction_type: :agent_commission)
       end
 
       def create_ppay_transaction
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: Ppay.last.balance,
-                            amount: cryptocurrency_amount * ppay_commission / 100)
+                            amount: cryptocurrency_amount * ppay_commission / 100,
+                            transaction_type: :ppay_commission)
       end
 
       def complete_transactions

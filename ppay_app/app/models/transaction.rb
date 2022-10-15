@@ -7,6 +7,14 @@ class Transaction < ApplicationRecord
   belongs_to :to_balance, class_name: 'Balance'
   belongs_to :payment
 
+  enum transaction_type: {
+    main: 0,
+    ppay_commission: 1,
+    advertisement_commission: 2,
+    agent_commission: 3,
+    working_group_commission: 4,
+  }
+
   aasm whiny_transitions: false, column: :status do
     state :frozen, initial: true, before_enter: :freeze_funds
     state :completed, :cancelled

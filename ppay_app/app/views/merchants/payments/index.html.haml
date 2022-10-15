@@ -5,7 +5,7 @@
     %table.min-w-full.text-center
       %thead.border-b.bg-gray-50
         %tr
-          %th.text-xs.font-medium.text-gray-900.px-6.py-4 ID
+          %th.text-xs.font-medium.text-gray-900.px-6.py-4 Номер заказа
           %th.text-xs.font-medium.text-gray-900.px-6.py-4 создан
           %th.text-xs.font-medium.text-gray-900.px-6.py-4 направление
           %th.text-xs.font-medium.text-gray-900.px-6.py-4 нац. валюта
@@ -22,13 +22,16 @@
       %tbody
         - @payments.each do |payment|
           %tr{ class: ('bg-green-100' if payment.confirming?) }
-            %td.px-6.py-4.whitespace-nowrap.text-xs.font-medium.text-gray-900= payment.id
+            %td.px-6.py-4.whitespace-nowrap.text-xs.font-medium.text-gray-900= payment.external_order_id
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.formatted_created_at
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.type
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.national_currency
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.national_currency_amount       
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.cryptocurrency
-            %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.cryptocurrency_amount
+            %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
+              = payment.cryptocurrency_amount
+              - if payment.transactions.main.present?
+                = "(#{payment.transactions.main.first.amount})"
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant_id
