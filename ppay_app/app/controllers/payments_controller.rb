@@ -21,7 +21,7 @@ class PaymentsController < ApplicationController
   private
 
   def find_payment
-    @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
+    @payment = model_class.constantize.find_by!(uuid: params[:uuid]).decorate
   end
 
   def allowed_events

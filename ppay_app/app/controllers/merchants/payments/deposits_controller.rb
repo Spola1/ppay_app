@@ -2,7 +2,7 @@
 
 module Merchants
   module Payments
-    class WithdrawalsController < PaymentsController
+    class DepositsController < PaymentsController
       def index
         @payments = current_user.deposits.decorate
       end

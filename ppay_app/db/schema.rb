@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_14_172542) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_15_165050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -123,6 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_14_172542) do
     t.string "external_order_id"
     t.string "type", default: "Deposit", null: false
     t.datetime "status_changed_at"
+    t.string "card_number"
   end
 
   create_table "rate_snapshots", force: :cascade do |t|

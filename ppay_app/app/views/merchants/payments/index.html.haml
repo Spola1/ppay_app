@@ -36,8 +36,9 @@
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant_id
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
-              = link_to payment.image, target: '_blank' do
-                = image_tag payment.image
+              - if payment.image.present?
+                = link_to payment.image, target: '_blank' do
+                  = image_tag payment.image
 
             %td.text-lg.font-bold.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
               - if payment.confirming?

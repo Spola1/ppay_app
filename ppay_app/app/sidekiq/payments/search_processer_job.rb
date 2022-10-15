@@ -8,9 +8,10 @@ module Payments
     def perform(payment_id)
       payment = Payment.find(payment_id)
 
-      while payment.advertisement.blank? && payment.reload.waiting_for_processer? do
+      while payment.advertisement.blank? && payment.reload.processer_search? do
         puts 'не найден'
-        payment.advertisement = Advertisement.active.by_payment_system(payment.payment_system)
+        payment.advertisement = Advertisement.active
+                                             .by_payment_system(payment.payment_system)
                                              .by_amount(payment.national_currency_amount)
                                              .by_processer_balance(payment.cryptocurrency_amount)
                                              .sample

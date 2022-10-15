@@ -4,6 +4,6 @@ class WithdrawalDecorator < PaymentDecorator
   delegate_all
 
   def url
-    payments_deposit_url(uuid:, signature:)
+    payments_withdrawal_url(uuid:, signature:)
   end
 end
