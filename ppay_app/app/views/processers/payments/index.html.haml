@@ -33,12 +33,15 @@
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant_id
             %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
-              = link_to payment.image, target: '_blank' do
-                = image_tag payment.image
+              - if payment.image.present?
+                = link_to payment.image, target: '_blank' do
+                  = image_tag payment.image
 
             %td.text-lg.font-bold.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
+              - if payment.is_a?(Withdrawal) && payment.transferring?
+                = link_to 'Оплатить', payments_withdrawal_path(uuid: payment.uuid), data: { turbo: false }
               - if payment.confirming?
-                = form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update,
+                = form_for payment, url: payments_deposit_path(uuid: payment.uuid), action: :update,
                   data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
                   = hidden_field_tag :event, 'confirm' 
-                  = f.submit 'Отменить', confirm: 'Вы уверены, что хотите отменить платёж?', class: "text-gray-400 underline"
+                  = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?'

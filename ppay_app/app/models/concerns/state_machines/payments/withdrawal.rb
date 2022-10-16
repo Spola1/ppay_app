@@ -24,7 +24,7 @@ module StateMachines
             after  :search_processer
 
             transitions from: :draft, to: :processer_search,
-                        guard: proc { |params| available_waiting_for_processer?(params) },
+                        guard: proc { |params| available_processer_search?(params) },
                         after: :set_cryptocurrency_amount
           end
 
@@ -50,9 +50,33 @@ module StateMachines
           end
 
           event :cancel do
-            transitions from: [:choosing_payment_system, :waiting_for_operator, :waiting_for_payment], to: :cancelled
+            after :cancel_transactions
+
+            transitions from: :draft, to: :cancelled
           end
         end
+      end
+
+      private
+
+      def available_processer_search?(params)
+        return unless valid_payment_system?(params)
+        return unless valid_card_number?(params)
+        return unless rate_snapshot.present?
+
+        true
+      end
+
+      def valid_card_number?(params)
+        assign_params(params, %i[card_number])
+        validate_card_number
+      end
+
+      def validate_card_number
+        return true if card_number.present?
+
+        errors.add(:card_number, I18n.t('errors.payments.required_card_number'))
+        false
       end
     end
   end

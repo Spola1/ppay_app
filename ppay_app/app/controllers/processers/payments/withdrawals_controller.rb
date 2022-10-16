@@ -6,6 +6,9 @@ module Processers
       def index
         @payments = Withdrawal.all.decorate
       end
+
+      def show
+      end
     end
   end
 end

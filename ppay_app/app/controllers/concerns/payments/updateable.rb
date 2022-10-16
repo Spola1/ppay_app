@@ -4,9 +4,9 @@ module Payments
 
     def update
       if @payment.public_send("#{ allowed_event }!", payment_params)
-        render after_update_action
+        after_update_success
       else
-        render after_update_action, status: :unprocessable_entity
+        after_update_error
       end
     end
 

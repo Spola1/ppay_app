@@ -34,10 +34,10 @@ Rails.application.routes.draw do
     resources :advertisements
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
-    resources :payments, only: %i[index update]
+    resources :payments, only: %i[index update show]
     namespace :payments do
-      resources :deposits, only: :index
-      resources :withdrawals, only: :index
+      resources :deposits, param: :uuid, only: %i[index update]
+      resources :withdrawals, param: :uuid, only: %i[index show]
     end
     root 'payments#index', as: :processers_root
   end

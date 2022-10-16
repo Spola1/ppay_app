@@ -33,7 +33,7 @@
   %br
   %p Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете производить оплату!
 
-= render 'payments/cancel_form', payment:, signature:
+= render 'payments/cancel_form', payment:, signature:, url: payments_deposit_path(uuid: payment.uuid, signature:)
 
 .alerts_block.border.rounded.border-rose-500.px-6.py-4.text-md.text-red-400.text-left
   %p ! При отправке денежных средств писать сообщения в приложении категорически запрещено.

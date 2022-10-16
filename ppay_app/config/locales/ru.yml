@@ -5,8 +5,11 @@ ru:
     attributes:
       payment:
         payment_system: Платёжная система
+        card_number: Номер карты
         image: Скриншот
   errors:
+    technical_error: Произошла техническая ошибка. Попробуйте повторить операцию
     payments:
       required_payment_system: не выбрана
+      required_card_number: не указан
       required_image: не загружен

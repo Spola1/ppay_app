@@ -10,14 +10,6 @@ class PaymentsController < ApplicationController
     @payment.show! if @payment.may_show?
   end
 
-  def update
-    if @payment.public_send("#{ allowed_event }!", payment_params)
-      render :show
-    else
-      render :show, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def find_payment
@@ -36,5 +28,13 @@ class PaymentsController < ApplicationController
 
   def valid_signature?
     params[:signature] == @payment.signature
+  end
+
+  def after_update_success
+    render :show
+  end
+
+  def after_update_error
+    render :show, status: :unprocessable_entity
   end
 end
