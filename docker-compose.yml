@@ -1,27 +1,6 @@
 version: '3.8'
 services:
 
-  nginx:
-    container_name: nginx
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    depends_on:
-        - ppay_app
-    volumes:
-        - ./nginx/sites-enabled:/etc/nginx/sites-enabled
-        - ./var_www:/var/www
-        - type: bind
-          source: ./nginx/nginx_basic.conf
-          target: /etc/nginx/nginx.conf
-    networks:
-      docker-network:
-        aliases:
-          - nginx
-    ports:
-        - 80:80
-        - 443:443
 
   ppay_app:
     container_name: ppay_app
@@ -47,6 +26,29 @@ services:
       docker-network:
         aliases:
           - ppay_app
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+        - ppay_app
+    volumes:
+        - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+        - ./var_www:/var/www
+        - type: bind
+          source: ./nginx/nginx_basic.conf
+          target: /etc/nginx/nginx.conf
+    networks:
+      docker-network:
+        aliases:
+          - nginx
+    ports:
+        - 80:80
+        - 443:443
+
 
   # контейнер с sidekiq аналогичен контейнеру с rails
   # отличается только тем, что внутри него запущен sidekiq

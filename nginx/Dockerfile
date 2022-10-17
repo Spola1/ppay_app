@@ -13,8 +13,10 @@ WORKDIR $RAILS_ROOT
 # create log directory
 RUN mkdir log
 
+RUN mkdir public
+
 # copy over static assets from Rails
-COPY --from=cloud.canister.io:5000/ffyy289/ppay_app:latest ppay_app/public public/
+COPY --from=cloud.canister.io:5000/ffyy289/ppay_app:latest code/public public/
 
 # Copy Nginx config template
 COPY sites-enabled/ppay_app.conf /tmp/docker.nginx

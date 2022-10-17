@@ -19,7 +19,8 @@ WORKDIR /code
 # Copy all the application's files into the /code
 # directory.
 # COPY $OUTSIDE_APP_REPO_DIR /code
-COPY . /code
+# COPY ./ppay_app .
+COPY --from=cloud.canister.io:5000/ffyy289/ppay_app:latest code .
 
 # Подготовим скрипт - скопируем его в папку
 # COPY $ENTRYPOINT_FILE /usr/bin/
