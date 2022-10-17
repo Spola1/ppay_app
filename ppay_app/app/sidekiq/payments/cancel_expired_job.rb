@@ -6,7 +6,7 @@ module Payments
     sidekiq_options queue: 'high', tags: ['cancel_expired']
 
     def perform
-      Payment.waiting_for_payment.expired.find_each do |payment|
+      Payment.transferring.expired.find_each do |payment|
         payment.cancel!
         puts "Платёж #{payment.uuid} отменён"
       end

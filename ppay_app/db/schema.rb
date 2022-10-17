@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_11_174739) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_15_165050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -123,6 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_11_174739) do
     t.string "external_order_id"
     t.string "type", default: "Deposit", null: false
     t.datetime "status_changed_at"
+    t.string "card_number"
   end
 
   create_table "rate_snapshots", force: :cascade do |t|
@@ -146,6 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_11_174739) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+    t.integer "transaction_type", default: 0, null: false
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
     t.index ["payment_id"], name: "index_transactions_on_payment_id"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
@@ -174,6 +176,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_11_174739) do
     t.integer "working_group_id"
     t.text "rsa_public_key", null: false
     t.text "rsa_private_key", null: false
+    t.bigint "agent_id"
+    t.decimal "deposit_commission", precision: 15, scale: 10
+    t.decimal "withdrawal_commission", precision: 15, scale: 10
+    t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -181,8 +187,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_11_174739) do
   create_table "working_groups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "sell_commission"
-    t.decimal "buy_commission"
+    t.decimal "withdrawal_commission", precision: 15, scale: 10
+    t.decimal "deposit_commission", precision: 15, scale: 10
     t.string "name"
   end
 

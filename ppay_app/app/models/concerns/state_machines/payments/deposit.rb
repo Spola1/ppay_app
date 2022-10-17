@@ -1,0 +1,79 @@
+module StateMachines
+  module Payments
+    module Deposit
+      extend ActiveSupport::Concern
+      include Base
+
+      included do
+        include AASM
+
+        aasm whiny_transitions: false, column: :payment_status do
+          state :created, initial: true
+          state :draft, :processer_search, :transferring, :confirming, :completed, :cancelled
+
+          after_all_transitions :update_status_changed_at
+
+          # show_selection_page
+          event :show do
+            transitions from: :created, to: :draft
+          end
+          
+          # search_operator
+          event :search do
+            before :bind_rate_snapshot
+            after  :search_processer
+
+            transitions from: :draft, to: :processer_search,
+                        guard: proc { |params| available_processer_search?(params) },
+                        after: :set_cryptocurrency_amount
+          end
+
+          # bind_operator
+          event :bind do
+            after :create_transactions
+            ensure :search_processer
+
+            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+          end
+
+          # make_deposit
+          event :check do
+            transitions from: :transferring, to: :confirming,
+                        guard: proc { |params| valid_image?(params) }
+          end
+
+          # show_confirmation
+          event :confirm do
+            after :complete_transactions
+
+            transitions from: :confirming, to: :completed
+          end
+
+          event :cancel do
+            after :cancel_transactions
+
+            transitions from: [:draft, :processer_search, :transferring], to: :cancelled
+          end
+        end
+      end
+
+      private
+
+      def available_processer_search?(params)
+        valid_payment_system?(params) && rate_snapshot.present?
+      end
+
+      def valid_image?(params)
+        assign_params(params, %i[image])
+        validate_image
+      end
+
+      def validate_image
+        return true if image.present?
+
+        errors.add(:image, I18n.t('errors.payments.required_image'))
+        false
+      end
+    end
+  end
+end

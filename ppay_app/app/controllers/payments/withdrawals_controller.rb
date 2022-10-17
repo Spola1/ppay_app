@@ -9,7 +9,7 @@ module Payments
     private
 
     def payment_params
-      params.require(:withdrawal).permit(:payment_system)
+      params.fetch(:withdrawal, {}).permit(:payment_system, :card_number)
     end
   end
 end

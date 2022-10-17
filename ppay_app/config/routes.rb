@@ -17,20 +17,34 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  root 'advertisements#index'
+  scope module: :processers do
+    root 'payments#index'
+  end
 
-  resources :advertisements
-  resources :exchange_portals, :except => [:new, :create, :edit, :update, :destroy]
-  resources :rate_snapshots, :except => [:new, :create, :edit, :update, :destroy]
-  resources :payments, only: :index
+  scope module: :merchants, constraints: lambda { |request| request.env['warden'].user&.merchant? } do
+    resources :payments, only: :index
+    namespace :payments do
+      resources :deposits, only: :index
+      resources :withdrawals, only: :index
+    end
+    root 'payments#index', as: :merchants_root
+  end
+
+  scope module: :processers, constraints: lambda { |request| request.env['warden'].user&.processer? } do
+    resources :advertisements
+    resources :exchange_portals, only: %i[index show]
+    resources :rate_snapshots, only: %i[index show]
+    resources :payments, only: %i[index update show]
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index update]
+      resources :withdrawals, param: :uuid, only: %i[index show]
+    end
+    root 'payments#index', as: :processers_root
+  end
 
   namespace :payments do
-    resources :deposits, param: :uuid do
-      member do
-        post :confirm
-      end
-    end
-    resources :withdrawals, param: :uuid
+    resources :deposits, param: :uuid, only: %i[update show]
+    resources :withdrawals, param: :uuid, only: %i[update show]
   end
 
   namespace :api do

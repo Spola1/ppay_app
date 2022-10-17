@@ -1,0 +1,2 @@
+class Ppay < User
+end
