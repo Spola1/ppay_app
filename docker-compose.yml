@@ -1,7 +1,6 @@
 version: '3.8'
 services:
 
-
   ppay_app:
     container_name: ppay_app
     build:
@@ -18,8 +17,8 @@ services:
       - ppay_app_gem_cache:/usr/local/bundle/gems
       - ppay_app_node_modules:/app/node_modules
     env_file: ./ppay_app/.env
-    #environment:
-    #  RAILS_ENV: production
+    environment:
+      RAILS_ENV: production
     #entrypoint: ./esokolov_app_rails/rails-entrypoint.sh
     image: cloud.canister.io:5000/ffyy289/ppay_app:latest
     networks:
@@ -49,7 +48,6 @@ services:
         - 80:80
         - 443:443
 
-
   # контейнер с sidekiq аналогичен контейнеру с rails
   # отличается только тем, что внутри него запущен sidekiq
   # для работы sidekiq естественно нужен весь код, который есть и в rails
@@ -68,8 +66,8 @@ services:
       - ppay_app_gem_cache:/usr/local/bundle/gems
       - ppay_app_node_modules:/app/node_modules
     env_file: ./ppay_app/.env
-    #environment:
-    #  RAILS_ENV: production
+    environment:
+      RAILS_ENV: production
     #entrypoint: ./esokolov_app_sidekiq/sidekiq-entrypoint.sh
     image: cloud.canister.io:5000/ffyy289/ppay_app_sidekiq:latest
     networks:

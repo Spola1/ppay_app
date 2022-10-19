@@ -28,7 +28,8 @@ COPY --from=cloud.canister.io:5000/ffyy289/ppay_app:latest code .
 COPY $ENTRYPOINT_FILE sidekiq-entrypoint.sh
 
 # Run bundle install to install the Ruby dependencies.
-RUN bundle install
+# RUN bundle install
+RUN bundle check || bundle install
 
 # Install Yarn.
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
