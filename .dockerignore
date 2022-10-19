@@ -11,7 +11,7 @@
 /config/credentials.local.yml
 /.bundle
 ../.DS_Store
-../.bin
+
 ../.git
 ../.gitignore
 ../.bundleignore
