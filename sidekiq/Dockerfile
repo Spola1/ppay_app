@@ -38,5 +38,8 @@ RUN apt-get update && apt-get install -y yarn
 # Run yarn install to install JavaScript dependencies.
 RUN yarn install --check-files
 
+
+RUN chmod +x sidekiq-entrypoint.sh
+
 # Стартуем при каждом запуске контейнера
 ENTRYPOINT ["./sidekiq-entrypoint.sh"]

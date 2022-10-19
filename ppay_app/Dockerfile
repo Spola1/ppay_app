@@ -42,6 +42,8 @@ RUN yarn install --check-files
 # run when this container starts.
 # CMD ["rails", "server", "-b", "0.0.0.0"]
 
+RUN chmod +x rails-entrypoint.sh
+
 # Стартуем файл при каждом запуске контейнера
 ENTRYPOINT ["./rails-entrypoint.sh"]
 # EXPOSE 3000
