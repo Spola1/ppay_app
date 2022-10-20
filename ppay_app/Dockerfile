@@ -64,9 +64,9 @@ USER $APP_USER
 # Layer 8. Добавляем файлы Gemfile и Gemfile.lock из директории, где лежит Dockerfile (root директория приложения на HostOS) в root директорию WORKDIR
 COPY Gemfile Gemfile.lock ./
 
-USER root
-RUN gem install rjb -v '1.6.1' --source 'https://rubygems.org/'
-USER $APP_USER
+#USER root
+#RUN gem install rjb -v '1.6.1' --source 'https://rubygems.org/'
+#USER $APP_USER
 
 USER root
 
