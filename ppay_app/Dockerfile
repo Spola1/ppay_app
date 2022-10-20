@@ -18,7 +18,7 @@ RUN apt-get update -qq && apt-get install -y \
  libyaml-dev \
  libreadline6-dev \
  zlib1g-dev \
- libssl1.1-dev \
+ libssl3 \
  nodejs \
  imagemagick \
  apt-transport-https \
