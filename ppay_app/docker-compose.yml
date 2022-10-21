@@ -1,8 +1,7 @@
-# справка здесь:
-# https://github.com/nickjj/docker-rails-example
+#
 x-app: &default-app
   build:
-    context: "./ppay_app"
+    context: "."
     target: "app"
     args:
       - "UID=${UID:-1000}"
@@ -13,7 +12,7 @@ x-app: &default-app
     - "postgres"
     - "redis"
   env_file:
-    - "./ppay_app/.env"
+    - ".env"
   restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
   stop_grace_period: "3s"
   tty: true
@@ -22,7 +21,7 @@ x-app: &default-app
 
 x-assets: &default-assets
   build:
-    context: "./ppay_app"
+    context: "."
     target: "assets"
     args:
       - "UID=${UID:-1000}"
@@ -30,7 +29,7 @@ x-assets: &default-assets
       - "RAILS_ENV=${RAILS_ENV:-production}"
       - "NODE_ENV=${NODE_ENV:-production}"
   env_file:
-    - "./ppay_app/.env"
+    - ".env"
   profiles: ["assets"]
   restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
   stop_grace_period: "3s"
@@ -50,8 +49,6 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       # POSTGRES_DB: "${POSTGRES_DB}"
     image: "postgres:14.5-bullseye"
-    #env_file:
-    #  - "./ppay_app/.env"
     profiles: ["postgres"]
     restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
     stop_grace_period: "3s"
@@ -87,8 +84,7 @@ services:
     ports:
       - "${DOCKER_WEB_PORT_FORWARD:-127.0.0.1:8000}:${PORT:-8000}"
     profiles: ["web"]
-  
-  # sidekiq
+
   worker:
     <<: *default-app
     command: "bundle exec sidekiq -C config/sidekiq.yml"
@@ -100,7 +96,6 @@ services:
           memory: "${DOCKER_WORKER_MEMORY:-0}"
     profiles: ["worker"]
 
-  # ActionCable
   cable:
     <<: *default-app
     command: "puma -p 28080 cable/config.ru"

@@ -24,7 +24,7 @@ USER ruby
 COPY --chown=ruby:ruby Gemfile* ./
 RUN bundle install --jobs "$(nproc)"
 
-COPY --chown=ruby:ruby package.json *yarn* ./
+###### COPY --chown=ruby:ruby package.json *yarn* ./
 RUN yarn install
 
 ARG RAILS_ENV="production"
@@ -72,8 +72,8 @@ COPY --chown=ruby:ruby --from=assets /usr/local/bundle /usr/local/bundle
 COPY --chown=ruby:ruby --from=assets /app/public /public
 COPY --chown=ruby:ruby . .
 
-ENTRYPOINT ["rails-entrypoint.sh"]
+ENTRYPOINT ["/app/bin/docker-entrypoint-web"]
 
 EXPOSE 8000
 
-CMD ["rails", "s"]
+CMD ["rails", "s", "-p", "8000"]
