@@ -1,105 +1,79 @@
-FROM ubuntu:22.04
-RUN echo "Ubuntu release:"
-RUN cat /etc/os-release
+# rails Dockerfile
 
-USER root
+FROM ruby:3.1.2-slim-bullseye AS assets
 
-RUN apt-get update -qq && apt-get install -y \
- curl
+WORKDIR /app
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+ARG UID=1000
+ARG GID=1000
 
-RUN apt-get update -qq && apt-get install -y \
- software-properties-common \
- build-essential \
- libpq-dev \
- libxml2-dev \
- libxslt1-dev \
- libyaml-dev \
- libreadline6-dev \
- zlib1g-dev \
- libssl3 \
- nodejs \
- imagemagick \
- apt-transport-https \
- nano \
- sudo \
- libsqlite3-dev \
- git
+RUN bash -c "set -o pipefail && apt-get update \
+  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev \
+  && curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
+  && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
+  && apt-get update && apt-get install -y --no-install-recommends nodejs yarn \
+  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
+  && apt-get clean \
+  && groupadd -g \"${GID}\" ruby \
+  && useradd --create-home --no-log-init -u \"${UID}\" -g \"${GID}\" ruby \
+  && mkdir /node_modules && chown ruby:ruby -R /node_modules /app"
 
-RUN npm install --global yarn
-RUN yarn --version
+USER ruby
 
-RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y tzdata
+COPY --chown=ruby:ruby Gemfile* ./
+RUN bundle install --jobs "$(nproc)"
 
-RUN \
-  apt-get update && apt-get install -y --no-install-recommends --no-install-suggests curl bzip2 build-essential libssl-dev libreadline-dev zlib1g-dev && \
-  rm -rf /var/lib/apt/lists/* && \
-  curl -L https://github.com/rbenv/ruby-build/archive/v20221004.tar.gz | tar -zxvf - -C /tmp/ && \
-  cd /tmp/ruby-build-* && ./install.sh && cd / && \
-  ruby-build -v 3.1.2 /usr/local && rm -rfv /tmp/ruby-build-* && \
-  gem install bundler -v 2.3.24
+COPY --chown=ruby:ruby package.json *yarn* ./
+RUN yarn install
 
-# переменная для docker composer - APP_NAME
+ARG RAILS_ENV="production"
+ARG NODE_ENV="production"
+ENV RAILS_ENV="${RAILS_ENV}" \
+    NODE_ENV="${NODE_ENV}" \
+    PATH="${PATH}:/home/ruby/.local/bin:/node_modules/.bin" \
+    USER="ruby"
 
-# Layer 3. Создаем переменные окружения которые буду дальше использовать в Dockerfile
-ENV APP_USER deploy
-ENV APP_USER_HOME /home/$APP_USER
-ENV APP_HOME /var/www/ppay_app
+COPY --chown=ruby:ruby . .
 
-# Layer 4. Поскольку по умолчанию Docker запускаем контейнер от имени root пользователя, то настоятельно рекомендуется создать отдельного пользователя c определенными UID и GID и запустить процесс от имени этого пользователя.
-RUN useradd -m -d $APP_USER_HOME $APP_USER
+RUN if [ "${RAILS_ENV}" != "development" ]; then \
+  SECRET_KEY_BASE=dummyvalue rails assets:precompile; fi
 
-# Layer 5. Даем root пользователем пользователю deploy права owner'а на необходимые директории
-RUN mkdir /var/www && \
- chown -R $APP_USER:$APP_USER /var/www && \
- chown -R $APP_USER $APP_USER_HOME
+CMD ["bash"]
 
-# Layer 6. Создаем и указываем директорию в которую будет помещено приложение. Так же теперь команды RUN, ENTRYPOINT, CMD будут запускаться с этой директории.
-WORKDIR $APP_HOME
+###############################################################################
 
-# Layer 7. Указываем все команды, которые будут выполняться от имени app пользователя
-USER $APP_USER
+FROM ruby:3.1.2-slim-bullseye AS app
 
-# Layer 8. Добавляем файлы Gemfile и Gemfile.lock из директории, где лежит Dockerfile (root директория приложения на HostOS) в root директорию WORKDIR
-COPY Gemfile Gemfile.lock ./
+WORKDIR /app
 
-#USER root
-#RUN gem install rjb -v '1.6.1' --source 'https://rubygems.org/'
-#USER $APP_USER
+ARG UID=1000
+ARG GID=1000
 
-USER root
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends build-essential curl libpq-dev \
+  && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
+  && apt-get clean \
+  && groupadd -g "${GID}" ruby \
+  && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" ruby \
+  && chown ruby:ruby -R /app
 
-# Layer 9. Вызываем команду по установке gem-зависимостей. Рекомендуется запускать эту команду от имени пользователя от которого будет запускаться само приложение
-RUN bundle check || bundle install
+USER ruby
 
-# Layer 10. Копируем все содержимое директории приложения в root-директорию WORKDIR
-COPY . .
+COPY --chown=ruby:ruby bin/ ./bin
+RUN chmod 0755 bin/*
 
-# Layer 11. Указываем все команды, которые будут выполняться от имени root пользователя
-USER root
+ARG RAILS_ENV="production"
+ENV RAILS_ENV="${RAILS_ENV}" \
+    PATH="${PATH}:/home/ruby/.local/bin" \
+    USER="ruby"
 
-# Layer 12. Даем root пользователем пользователю deploy права owner'а на WORKDIR
-RUN chown -R $APP_USER:$APP_USER "$APP_HOME/."
+COPY --chown=ruby:ruby --from=assets /usr/local/bundle /usr/local/bundle
+COPY --chown=ruby:ruby --from=assets /app/public /public
+COPY --chown=ruby:ruby . .
 
-# Layer 13. Указываем все команды, которые будут выполняться от имени deploy пользователя
-USER $APP_USER
+ENTRYPOINT ["rails-entrypoint.sh"]
 
-RUN yarn --update-checksums
-RUN yarn install --check-files
+EXPOSE 8000
 
-# Layer 14. Запускаем команду для компиляции статических (JS и CSS) файлов
-# RUN bin/rails assets:precompile
-
-
-# Layer 15. Указываем команду по умолчанию для запуска будущего контейнера. По скольку в `Layer 13` мы переопределили пользователя, то puma сервер будет запущен от имени www-data пользователя.
-# CMD bundle exec puma -C config/puma.rb
-
-USER root
-
-RUN ruby ./env.rb >> $APP_USER_HOME/.profile
-
-
-ENTRYPOINT ["./rails-entrypoint.sh"]
-
-
+CMD ["rails", "s"]

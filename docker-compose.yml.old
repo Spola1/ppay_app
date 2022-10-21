@@ -1,0 +1,105 @@
+version: '3.8'
+services:
+
+  ppay_app:
+    container_name: ppay_app
+    build:
+      context: ./ppay_app
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:     
+      - postgres
+      - redis
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./var_www:/var/www
+      - ppay_app_gem_cache:/usr/local/bundle/gems
+      - ppay_app_node_modules:/app/node_modules
+    env_file: ./ppay_app/.env
+    environment:
+      RAILS_ENV: production
+    #entrypoint: ./esokolov_app_rails/rails-entrypoint.sh
+    image: cloud.canister.io:5000/ffyy289/ppay_app:latest
+    networks:
+      docker-network:
+        aliases:
+          - ppay_app
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+        - ppay_app
+    volumes:
+        - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+        - ./var_www:/var/www
+        - type: bind
+          source: ./nginx/nginx_basic.conf
+          target: /etc/nginx/nginx.conf
+    networks:
+      docker-network:
+        aliases:
+          - nginx
+    ports:
+        - 80:80
+        - 443:443
+
+  # контейнер с sidekiq аналогичен контейнеру с rails
+  # отличается только тем, что внутри него запущен sidekiq
+  # для работы sidekiq естественно нужен весь код, который есть и в rails
+  sidekiq:
+    container_name: sidekiq
+    build:
+      context: ./sidekiq
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - ppay_app  
+      - postgres
+      - redis
+    volumes:
+      - ./var_www:/var/www
+      - ppay_app_gem_cache:/usr/local/bundle/gems
+      - ppay_app_node_modules:/app/node_modules
+    env_file: ./ppay_app/.env
+    environment:
+      RAILS_ENV: production
+    #entrypoint: ./esokolov_app_sidekiq/sidekiq-entrypoint.sh
+    image: cloud.canister.io:5000/ffyy289/ppay_app_sidekiq:latest
+    networks:
+      docker-network:
+        aliases:
+          - sidekiq
+
+  postgres:
+    container_name: postgres
+    image: postgres:14.5
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      docker-network:
+        aliases:
+          - postgres
+
+  redis:
+    container_name: redis
+    image: redis:7.0.5
+    restart: always
+    networks:
+      docker-network:
+        aliases:
+          - redis
+
+networks:
+  docker-network:
+
+volumes:
+  ppay_app_gem_cache:
+  ppay_app_node_modules:
+  postgres_data:
