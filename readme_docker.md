@@ -2,3 +2,7 @@
 
 не забываем (потом поправим в докере) сделать файлы исполняемыми, в каждой из папок:
 chmod +x docker-entrypoint.sh
+
+----
+
+docker-compose up --build -f docker-compose-dev.yml

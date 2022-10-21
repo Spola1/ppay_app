@@ -5,6 +5,7 @@ set -e
 # ------ #
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f tmp/pids/server.pid
+
 bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
 # ------ #
 
@@ -26,5 +27,7 @@ if compgen -G "${manifest_files}" > /dev/null 2>&1; then
     -type f ! -name "$(basename /public/assets/.sprockets-manifest-*.json)" \
     -delete
 fi
+
+bundle exec rails server Puma -b 0.0.0.0 -p 3000
 
 exec "$@"
