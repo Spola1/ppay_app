@@ -46,21 +46,21 @@ services:
       - 3000:3000
     env_file: ./ppay_app/.env.dev
     entrypoint: ./entrypoint-rails.sh
-    #image: cloud.canister.io:5000/ffyy289/ppay_app:latest
+    image: cloud.canister.io:5000/ffyy289/ppay_app:latest
     volumes:
       - ./ppay_app:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
 
-  #nginx:    
-  #  build:      
-  #    context: .. 
-  #    dockerfile: ./nginx/Dockerfile_nginx
-  #  depends_on:      
-  #    - app
-  #  ports:      
-  #    - 80:80
-  #  #image: cloud.canister.io:5000/ffyy289/ppay_app_nginx:latest
+  nginx:    
+    build:
+      context: ./nginx 
+      dockerfile: Dockerfile_nginx
+    depends_on:
+      - app
+    ports:      
+      - 80:80
+    #image: cloud.canister.io:5000/ffyy289/ppay_app_nginx:latest
 
 volumes:
   gem_cache:
