@@ -7,7 +7,7 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @payments = Payment.all.decorate
+      @payments = Payment.all.order(created_at: :desc).decorate
     end
 
     private

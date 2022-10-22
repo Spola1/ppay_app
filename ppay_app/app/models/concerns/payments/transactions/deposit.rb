@@ -15,7 +15,7 @@ module Payments
 
       def create_main_transaction
         transactions.create(from_balance: advertisement.processer.balance,
-                            to_balance: advertisement.processer.balance,
+                            to_balance: merchant.balance,
                             amount: main_transaction_amount)
       end
 

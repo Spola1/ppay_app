@@ -7,11 +7,12 @@ set -e
 rm -f tmp/pids/server.pid
 
 bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
+bundle exec rake assets:precompile --silent
 # ------ #
 
 # Always keep this here as it ensures your latest built assets make their way
 # into your volume persisted public directory.
-cp -r /public /app
+# cp -r ./public /app
 
 # Sprockets will use the first sprockets file it finds not the latest one. We
 # need to delete all of the old sprockets files except for the one that was
@@ -28,6 +29,6 @@ if compgen -G "${manifest_files}" > /dev/null 2>&1; then
     -delete
 fi
 
-bundle exec rails server Puma -b 0.0.0.0 -p 3000
+bundle exec rails server -u puma -b 0.0.0.0 -p 3000
 
 exec "$@"

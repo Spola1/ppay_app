@@ -9,7 +9,7 @@ ARG GID=1000
 
 
 RUN bash -c "set -o pipefail && apt-get update \
-  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev \
+  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev cron \
   && curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
   && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
@@ -19,6 +19,10 @@ RUN bash -c "set -o pipefail && apt-get update \
   && groupadd -g \"${GID}\" deploy \
   && useradd --create-home --no-log-init -u \"${UID}\" -g \"${GID}\" deploy \
   && mkdir /node_modules && chown deploy:deploy -R /node_modules /app"
+
+# run cron as non root user
+RUN chmod gu+rw /var/run
+RUN chmod gu+s /usr/sbin/cron
 
 USER deploy
 
