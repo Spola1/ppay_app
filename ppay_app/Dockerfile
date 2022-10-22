@@ -44,8 +44,8 @@ ENV RAILS_ENV="${RAILS_ENV}" \
 
 COPY --chown=deploy:deploy . .
 
-RUN chmod +x entrypoint-rails.sh
-ENTRYPOINT ["./entrypoint-rails.sh"]
+#RUN chmod +x entrypoint-rails.sh
+#ENTRYPOINT ["./entrypoint-rails.sh"]
 
 EXPOSE 3000
 
