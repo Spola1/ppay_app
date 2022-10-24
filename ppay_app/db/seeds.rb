@@ -8,4 +8,6 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 ExchangePortal.create(name: 'Binance P2P')
-User.create(email: 'test@test.com', password: '1234567890', nickname: 'SuperAdmin', role: 'superadmin', type: 'Admin')
+u1=User.create(email: 'test@test.com', password: '1234567890', nickname: 'SuperAdmin', role: 'superadmin')
+u1.becomes(Admin)
+u1.save
