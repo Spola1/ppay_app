@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:14.5-bullseye
     restart: unless-stopped
-    env_file: ./ppay_app/.env.dev
+    env_file: ./ppay_app/.env
     volumes:
       - db_data:/var/lib/postgresql/data
       #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -12,7 +12,7 @@ services:
   redis:
     image: redis:7.0.5-bullseye
     restart: unless-stopped
-    env_file: ./ppay_app/.env.dev
+    env_file: ./ppay_app/.env
     volumes:
       - redis_data:/data
 
@@ -24,7 +24,7 @@ services:
       - app 
       - postgres
       - redis
-    env_file: ./ppay_app/.env.dev
+    env_file: ./ppay_app/.env
     #environment:
     #  RAILS_ENV: production
     entrypoint: ./entrypoint-sidekiq.sh
@@ -44,7 +44,7 @@ services:
       - redis
     ports:
       - 3000:3000
-    env_file: ./ppay_app/.env.dev
+    env_file: ./ppay_app/.env
     entrypoint: ./entrypoint-rails.sh
     image: cloud.canister.io:5000/ffyy289/ppay_app:latest
     volumes:
@@ -59,6 +59,8 @@ services:
       dockerfile: Dockerfile_nginx
     depends_on:
       - app
+      - postgres
+      - redis
     ports:      
       - 80:80
     #image: cloud.canister.io:5000/ffyy289/ppay_app_nginx:latest
