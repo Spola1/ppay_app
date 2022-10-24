@@ -71,3 +71,4 @@ volumes:
   db_data:
   node_modules:
   redis_data:
+  app_public_files:
