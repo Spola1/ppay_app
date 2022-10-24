@@ -26,6 +26,8 @@ RUN chmod gu+s /usr/sbin/cron
 
 USER deploy
 
+ENV APP_USER_HOME /home/deploy
+
 COPY --chown=deploy:deploy Gemfile* ./
 RUN bundle install --jobs "$(nproc)"
 
@@ -46,6 +48,9 @@ COPY --chown=deploy:deploy . .
 
 #RUN chmod +x entrypoint-rails.sh
 #ENTRYPOINT ["./entrypoint-rails.sh"]
+
+
+RUN ruby ./env.rb >> $APP_USER_HOME/.profile
 
 EXPOSE 3000
 
