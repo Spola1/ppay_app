@@ -49,8 +49,9 @@ COPY --chown=deploy:deploy . .
 #RUN chmod +x entrypoint-rails.sh
 #ENTRYPOINT ["./entrypoint-rails.sh"]
 
+USER root
+RUN ruby env.rb >> $APP_USER_HOME/.profile
 
-RUN ruby ./env.rb >> $APP_USER_HOME/.profile
 
 EXPOSE 3000
 
