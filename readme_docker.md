@@ -15,5 +15,16 @@ docker-compose -f docker-compose.yml up -d --build
 ----
 cloud.canister.io:5000/ffyy289/ppay_app:latest
 
+----
+docker system prune --volumes
 
+
+скрываем консоль (-d):
+docker-compose -f docker-compose.yml up -d --build
+
+не скрываем консоль:
+docker-compose -f docker-compose.yml up --build
+
+заходим в работающий контейнер:
+root@299119:~/repos/ppay_repo# docker-compose exec app sh
 

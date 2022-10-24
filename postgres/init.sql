@@ -1,2 +1,0 @@
-CREATE USER ppay_app;
-ALTER USER ppay_app WITH SUPERUSER;
