@@ -11,3 +11,9 @@ docker-compose -f docker-compose-dev.yml up -d --build
 
 для запуска на боевом сервере:
 docker-compose -f docker-compose.yml up -d --build
+
+----
+cloud.canister.io:5000/ffyy289/ppay_app:latest
+
+
+

@@ -7,7 +7,7 @@ services:
     env_file: ./ppay_app/.env.dev
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: redis:7.0.5-bullseye
@@ -51,6 +51,7 @@ services:
       - ./ppay_app:/app
       - gem_cache:/usr/local/bundle/gems
       - node_modules:/app/node_modules
+      - app_public_files:/app/public
 
   nginx:    
     build:
@@ -61,6 +62,9 @@ services:
     ports:      
       - 80:80
     #image: cloud.canister.io:5000/ffyy289/ppay_app_nginx:latest
+    volumes:
+      # We need to map this so Nginx can read the public files
+      - app_public_files:/app/public:ro
 
 volumes:
   gem_cache:
