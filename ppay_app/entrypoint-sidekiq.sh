@@ -5,7 +5,7 @@ set -e
 #
 bundle exec whenever --update-crontab
 crontab -l
-cron -f
+cron
 #
 
 bundle exec sidekiq
