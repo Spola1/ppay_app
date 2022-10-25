@@ -41,3 +41,5 @@ end
 
 # ExchangePortal ID для бинанса = 1, 
 # так как мы его загнали через seed.rb
+
+# RateSnapshots::GetBinanceP2pRatesJob.new.perform('USDT', 'RUB', 'sell', 10000, 'sberbank', false, 1)
