@@ -122,4 +122,18 @@
 
 .comments_column{:class => "mx-10 my-10 float-left  w-3/4"}
   %h2 Комментарии:
+  - if @comments.size > 0 
+    - @comments.each do |comment|
+      .comment_item
+        .comment_item_header
+          = comment.created_at
+          %br
+          = "#{comment.author_nickname} #{comment.author_type}"
+          %br 
+        .comment_item_text
+          = comment.text
+          %br
+  - else
+    %p пока нет комментариев
+
   

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_26_140314) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_26_141812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -102,6 +102,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_26_140314) do
     t.datetime "updated_at", null: false
     t.integer "commentable_id"
     t.string "commentable_type"
+    t.string "author_nickname"
+    t.string "author_type"
+    t.text "text"
+    t.integer "user_id"
+    t.string "user_ip"
+    t.string "user_agent"
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
