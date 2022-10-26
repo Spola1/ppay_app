@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_15_165050) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_26_140314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -95,6 +95,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_15_165050) do
     t.string "first_name"
     t.string "last_name"
     t.string "cvv"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
   create_table "exchange_portals", force: :cascade do |t|

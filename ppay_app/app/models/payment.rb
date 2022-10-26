@@ -15,6 +15,8 @@ class Payment < ApplicationRecord
 
   has_one_attached :image
 
+  has_many :comments, as: :commentable
+
   after_update_commit -> do
     broadcast_replace_to(
       "#{ self.uuid }_show",
