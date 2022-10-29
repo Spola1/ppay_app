@@ -121,7 +121,10 @@
 
 
 .comments_column{:class => "mx-10 my-10 float-left  w-3/4"}
-  %h2 Комментарии:
+  %h2 Добавить комментарий:
+  .create_comment_block
+    = render "processers/payments/new_comment_form", comment: @comment, payment: @payment, signature: nil
+  %h3 Комментарии:
   - if @comments.size > 0 
     - @comments.each do |comment|
       .comment_item

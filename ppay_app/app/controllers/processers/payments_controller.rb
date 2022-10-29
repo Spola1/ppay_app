@@ -16,6 +16,7 @@ module Processers
         @exchange_portal = ExchangePortal.find(@rate_snapshot.exchange_portal_id)
       end
       @comments = @payment.comments
+      @comment = Comment.new
     end
 
     private
