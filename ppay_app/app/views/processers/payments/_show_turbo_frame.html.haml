@@ -1,3 +1,3 @@
-= turbo_frame_tag "processers_#{@payment.uuid}_show" do
+= turbo_frame_tag "processers_payment_#{@payment.uuid}" do
   %div{ data: { controller: 'payments' } }
-    = render "processers/payments/withdrawals/#{@payment.payment_status}", payment: @payment, signature: nil
+    = render payment_status_partial(payment, 'processers') || 'common_show', payment:, signature:

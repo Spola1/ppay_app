@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Payment < ApplicationRecord
+  default_scope { order(created_at: :desc) }
+
   has_many :transactions
 
   # в каждый платеж прикрепляем курс на данный момент
@@ -19,10 +21,10 @@ class Payment < ApplicationRecord
 
   after_update_commit -> do
     broadcast_replace_to(
-      "#{ self.uuid }_show",
+      "payment_#{ self.uuid }",
       partial: "payments/show_turbo_frame",
       locals: { payment: self.decorate, signature: self.signature },
-      target: "#{ self.uuid }_show"
+      target: "payment_#{ self.uuid }"
     )
   end
 

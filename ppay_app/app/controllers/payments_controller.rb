@@ -16,10 +16,6 @@ class PaymentsController < ApplicationController
     @payment = model_class.constantize.find_by!(uuid: params[:uuid]).decorate
   end
 
-  def allowed_events
-    %i[search check cancel]
-  end
-
   def authenticate_signature
     return if valid_signature?
 

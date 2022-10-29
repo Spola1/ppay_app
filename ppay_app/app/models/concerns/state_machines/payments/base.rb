@@ -44,6 +44,18 @@ module StateMachines
       def has_advertisement?
         advertisement.present?
       end
+
+      def valid_image?(params)
+        assign_params(params, %i[image])
+        validate_image
+      end
+
+      def validate_image
+        return true if image.present?
+
+        errors.add(:image, I18n.t('errors.payments.required_image'))
+        false
+      end
     end
   end
 end

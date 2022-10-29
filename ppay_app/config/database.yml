@@ -6,11 +6,11 @@ default: &default
 
 development:
   <<: *default
-  database: "ppay_app_test"
+  database: ppay_app_development
 
 test:
   <<: *default
-  database: "ppay_app_test"
+  database: ppay_app_test
 
 production:
   <<: *default
