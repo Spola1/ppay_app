@@ -7,7 +7,9 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @payments = Payment.all.order(created_at: :desc).decorate
+      @deposits_confirming = Deposit.confirming.decorate
+      @withdrawals_transferring = Withdrawal.transferring.decorate
+      @payments = Payment.excluding(@deposits_confirming, @withdrawals_transferring).decorate
     end
 
     def show
@@ -22,13 +24,7 @@ module Processers
     private
 
     def find_payment
-      if params[:uuid] !~ /\D/
-        # если строка содержит только цифры - значит это ID
-        @payment = Payment.find(params[:id]).becomes(model_class.constantize).decorate
-      else
-        # если строка иная - скорее всего это UUID
-        @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
-      end
+      @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
     end
 
     def payment_params

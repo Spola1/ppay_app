@@ -3,11 +3,9 @@ module Payments
     extend ActiveSupport::Concern
 
     def update
-      if @payment.public_send("#{ allowed_event }!", payment_params)
-        after_update_success
-      else
-        after_update_error
-      end
+      @payment.public_send("#{ allowed_event }!", payment_params)
+
+      render :show
     end
 
     private

@@ -1,3 +1,3 @@
-= turbo_stream_from "#{@payment.uuid}_show"
+= turbo_stream_from "payment_#{@payment.uuid}"
 
 = render 'payments/show_turbo_frame', payment: @payment, signature: params[:signature]

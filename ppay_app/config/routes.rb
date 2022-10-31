@@ -21,6 +21,11 @@ Rails.application.routes.draw do
     root 'payments#index'
   end
 
+  namespace :payments, constraints: lambda { |request| request.params[:signature].present? } do
+    resources :deposits, param: :uuid, only: %i[update show]
+    resources :withdrawals, param: :uuid, only: %i[update show]
+  end
+
   scope module: :merchants, constraints: lambda { |request| request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
     namespace :payments do
@@ -36,15 +41,10 @@ Rails.application.routes.draw do
     resources :rate_snapshots, only: %i[index show]
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index update]
-      resources :withdrawals, param: :uuid, only: %i[index show]
+      resources :deposits, param: :uuid, only: %i[index update show]
+      resources :withdrawals, param: :uuid, only: %i[index update show]
     end
     root 'payments#index', as: :processers_root
-  end
-
-  namespace :payments do
-    resources :deposits, param: :uuid, only: %i[update show]
-    resources :withdrawals, param: :uuid, only: %i[update show]
   end
 
   namespace :api do

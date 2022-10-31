@@ -62,18 +62,6 @@ module StateMachines
       def available_processer_search?(params)
         valid_payment_system?(params) && rate_snapshot.present?
       end
-
-      def valid_image?(params)
-        assign_params(params, %i[image])
-        validate_image
-      end
-
-      def validate_image
-        return true if image.present?
-
-        errors.add(:image, I18n.t('errors.payments.required_image'))
-        false
-      end
     end
   end
 end
