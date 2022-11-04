@@ -31,6 +31,10 @@ class Payment < ApplicationRecord
   scope :waiting_for_payment, -> { where(payment_status: 'waiting_for_payment') }
   scope :expired,             -> { where('status_changed_at < ?', 20.minutes.ago) }
 
+  %i[created draft processer_search transferring confirming completed cancelled].each do |status|
+    scope status, -> { where(payment_status: status) }
+  end
+
   def signature
     data = { national_currency:, national_currency_amount:, external_order_id: }.to_json
 

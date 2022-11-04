@@ -19,6 +19,13 @@
 
 # Learn more: http://github.com/javan/whenever
 
+ENV.each_key do |key|
+  env key.to_sym, ENV[key]
+end
+
+set :environment, ENV["RAILS_ENV"]
+set :output, '/var/log/cron.log'
+
 every 1.minute do
   runner 'RateSnapshots::GetAllRatesJob.perform_async'
   runner 'Payments::CancelExpiredJob.perform_async'
