@@ -12,3 +12,4 @@ u1=Admin.create(email: 'admin@test.com', password: '1234567890', nickname: 'Supe
 u2=Merchant.create(email: 'merchant@test.com', password: '1234567890', nickname: 'AvangardBet', name: 'Петр Петрович')
 u3=Processer.create(email: 'processer1@test.com', password: '1234567890', nickname: 'VasiaBTC', name: 'Вася')
 u4=Processer.create(email: 'processer2@test.com', password: '1234567890', nickname: 'IvanCrypto', name: 'Ваня')
+pp=Ppay.create(email: 'ppay@test.com', password: '1234567890', nickname: 'PPay_acc', name: 'Ppay')
