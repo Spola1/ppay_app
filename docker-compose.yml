@@ -37,7 +37,25 @@ services:
     volumes:
       - ./ppay_app:/app
       - gem_cache:/usr/local/bundle/gems
-      - node_modules:/app/node_modules
+
+  cron:
+    build:
+      context: ./ppay_app
+      dockerfile: Dockerfile.cron
+    depends_on:
+      - app
+      - postgres
+      - redis
+      - worker
+    env_file: ./ppay_app/.env
+    #environment:
+    #  RAILS_ENV: production
+    entrypoint: ./entrypoint-cron.sh
+    #image: cloud.canister.io:5000/ffyy289/ppay_app_sidekiq:latest
+    restart: unless-stopped
+    volumes:
+      - ./ppay_app:/app
+      - gem_cache:/usr/local/bundle/gems
 
   app:
     build:
