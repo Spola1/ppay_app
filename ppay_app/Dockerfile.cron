@@ -9,7 +9,7 @@ ARG GID=1000
 
 
 RUN bash -c "set -o pipefail && apt-get update \
-  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev \
+  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev cron \
   && curl -sSL https://deb.nodesource.com/setup_18.x | bash - \
   && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
@@ -22,6 +22,10 @@ RUN bash -c "set -o pipefail && apt-get update \
 
 # run cron as non root user
 RUN chmod gu+rw /var/run
+RUN chmod gu+s /usr/sbin/cron
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
 
 USER deploy
 
@@ -50,9 +54,3 @@ COPY --chown=deploy:deploy . .
 
 USER root
 RUN ruby env.rb >> $APP_USER_HOME/.profile
-
-
-# EXPOSE 3000
-
-# CMD ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]
-
