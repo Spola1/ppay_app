@@ -8,6 +8,8 @@ chmod +x docker-entrypoint.sh
 
 для запуска на локальном компе:
 docker-compose -f docker-compose-dev.yml up -d --build
+(с отображением консоли)
+docker-compose -f docker-compose-dev.yml up --build
 
 для запуска на боевом сервере:
 docker-compose -f docker-compose.yml up -d --build
