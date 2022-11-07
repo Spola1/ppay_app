@@ -31,6 +31,12 @@ docker-compose -f docker-compose.yml up --build
 root@299119:~/repos/ppay_repo# docker-compose exec app sh
 
 
+
+-----
+просмотр логов контейнера с sidekiq:
+
+root@299119:~/repos/ppay_repo# docker-compose logs worker
+
 -----
 
 комментарии по контейнеру cron:
@@ -44,4 +50,5 @@ root@299119:~/repos/ppay_repo# docker-compose exec app sh
 сайдкик и крон вообще не обязаны вместе работать
 в сайдкик воркеры попадают и с сервера, не только из крона
 
+------
 
