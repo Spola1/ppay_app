@@ -52,3 +52,5 @@ root@299119:~/repos/ppay_repo# docker-compose logs worker
 
 ------
 
+test deploy
+
