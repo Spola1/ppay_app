@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :advertisements
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
+    resources :transactions, only: %i[index show]
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show]

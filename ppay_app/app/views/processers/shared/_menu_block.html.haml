@@ -1,13 +1,15 @@
-.menu_block
-  .menu_block_item
+.menu_block.text-xs.text-gray-900.font-light.underline.py-2.px-4
+  .menu_block_item.text-xs.text-gray-900.font-light
     = link_to "Все платежи", payments_path
   /.menu_block_item
   /  = link_to "Снятия", payments_withdrawals_path
   /.menu_block_item
   /  = link_to "Внесения", payments_deposits_path
-  .menu_block_item
+  .menu_block_item.text-xs.text-gray-900.font-light.p-2
     = link_to "Объявления", advertisements_path
-  .menu_block_item
+  .menu_block_item.text-xs.text-gray-900.font-light.p-2
     = link_to "Курсы бирж", rate_snapshots_path
-  .menu_block_item
+  .menu_block_item.text-xs.text-gray-900.font-light.p-2
     = link_to "Биржи", exchange_portals_path
+  .menu_block_item.text-xs.text-gray-900.font-light.p-2
+    = link_to "Транзакции", transactions_path
