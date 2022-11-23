@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <div class="top_container flex bg-slate-50">
+    <div class="top_container flex bg-slate-50 mb-4">
       <%= render partial: "layouts/flash_alerts"%>
       <%- if user_signed_in? %>
         <%= render partial: "#{role_namespace}/shared/menu_block"%>
