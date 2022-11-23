@@ -3,8 +3,8 @@ module Payments
     module Base
       private
 
-      def advertisement_commission
-        advertisement.percent
+      def processer_commission
+        advertisement.processer.deposit_commission || 1
       end
 
       def working_group_commission
