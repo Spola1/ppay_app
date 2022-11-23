@@ -3,9 +3,9 @@
 class Transaction < ApplicationRecord
   include AASM
 
-  belongs_to :from_balance, class_name: 'Balance'
-  belongs_to :to_balance, class_name: 'Balance'
-  belongs_to :payment
+  belongs_to :from_balance, class_name: 'Balance', optional: true
+  belongs_to :to_balance, class_name: 'Balance', optional: true
+  belongs_to :payment, optional: true
 
   enum transaction_type: {
     main: 0,
