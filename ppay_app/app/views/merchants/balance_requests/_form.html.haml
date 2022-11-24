@@ -1,0 +1,27 @@
+= form_for @balance_request, :class => 'w-full max-w-sm' do |f|
+
+  = f.label :requests_type, 'Тип'
+  %br
+  %br
+  = f.select :requests_type, [["-выбрать-", ""], ["Внесение", :deposit], ["Снятие", :withdraw]], :id => 'requests_type_field', :class => 'form_field'
+  %br
+
+
+  %br
+  = f.label :amount, 'Сумма:'
+  %br
+  %br
+  = f.text_field :amount, :id => 'amount_field', :class => 'form_field'
+  %br
+
+  %br
+  = f.label :crypto_address, 'Криптоадрес USDT TRC20 (с которого будете выводить или куда  принимать):'
+  %br
+  %br
+  = f.text_field :crypto_address, :id => 'crypto_address_field', :class => 'form_field'
+  %br
+
+  = f.hidden_field :status, :value => :waiting
+
+  %br
+  = f.submit 'Сохранить',  :class => 'underline'

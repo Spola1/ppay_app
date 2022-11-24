@@ -1,0 +1,23 @@
+%table.max-w-full.text-center
+
+  %thead.border-b.bg-gray-50
+    %tr
+      %th параметр
+      %th значение
+  %tbody
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap создана в
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.created_at
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap тип
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.requests_type
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap сумма в USDT
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.amount
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.status
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap комментарий
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.short_comment

@@ -1,0 +1,17 @@
+= form_for @balance_request, :class => 'w-full max-w-sm' do |f|
+
+  = f.label :status, 'Подтвердить статус платежа'
+  %br
+  %br
+  = f.select :status, [["-выбрать-", ""], ["Ожидание", :waiting], ["Подтверждено", :completed], ["Отменён", :cancelled] ], :id => 'status_field', :class => 'form_field'
+  %br
+
+  %br
+  = f.label :short_comment, 'Комментарий (опционально):'
+  %br
+  %br
+  = f.text_field :short_comment, :id => 'short_comment_field', :class => 'form_field'
+  %br
+
+  %br
+  = f.submit 'Сохранить',  :class => 'underline'
