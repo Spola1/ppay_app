@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_24_075033) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_24_103414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -165,9 +165,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_075033) do
 
   create_table "transactions", force: :cascade do |t|
     t.decimal "amount"
-    t.bigint "from_balance_id", null: false
-    t.bigint "to_balance_id", null: false
-    t.bigint "payment_id", null: false
+    t.bigint "from_balance_id", default: 0
+    t.bigint "to_balance_id", default: 0
+    t.bigint "payment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
