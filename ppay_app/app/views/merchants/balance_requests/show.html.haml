@@ -25,7 +25,13 @@
       %tr.bg-white.border-b
         %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус
         %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.status
-      
+      - if @balance_request.short_comment
+        %tr.bg-white.border-b
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap комментарий
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.short_comment
+      %tr.bg-white.border-b
+        %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap криптоадрес
+        %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @balance_request.crypto_address
 
   %br
   = link_to "<- К списку запросов на изменение баланса", balance_requests_path, :class => "underline"

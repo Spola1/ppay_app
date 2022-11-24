@@ -1,102 +1,27 @@
-= form_for @advertisement, :class => 'w-full max-w-sm' do |f|
+= form_for @balance_request, :class => 'w-full max-w-sm' do |f|
 
-
-
-  .flex_block{:class => "flex flex-wrap -mx-3 mb-2"} 
-    .label_block{:class => "w-full md:w-1/3 px-3 mb-6 md:mb-0"} 
-      = f.label :direction, 'Направление', :class => 'block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-      
-      = f.select :direction, [["-выбрать-", ""], ["продажа (sell) / ввод", "продажа"], ["покупка (buy) / вывод", "покупка"]], :id => 'direction_field', :class => 'form_field block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
-
-    .label_block{:class => "w-full md:w-1/2 px-3 mb-6 md:mb-0"} 
-      = f.label :national_currency, 'Нац. валюта', :class => 'block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-      
-      = f.select :national_currency, [["-выбрать-", ""], "RUB", "USD", "EUR", "UZS"], :id => 'national_currency_field', :class => 'form_field block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
-      
-
-
-
-  = f.label :cryptocurrency, 'Крипто-валюта'
-  %br
-  = f.select :cryptocurrency, [["-выбрать-", ""], "USDT", "USDC", "BTC", "ETH"], :id => 'cryptocurrency_field', :class => 'form_field'
-  %br
-
-  = f.label :payment_system, 'Платежная система:'
-  %br
-  = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], :id => 'payment_system_field', :class => 'form_field'
-  %br
-
-  = f.label :payment_system_type, 'Тип платежной системы:'
-  %br
-  = f.select :payment_system_type, [["-выбрать-", ""], "номер карты"], :id => 'payment_system_type_field', :class => 'form_field'
-  %br
-
-  = f.label :card_number, 'Номер карты:'
-  %br
-  = f.text_field :card_number, :id => 'card_number_field', :class => 'form_field'
-  %br
-
-  = f.label :min_summ, 'Мин. сумма:'
-  %br
-  = f.text_field :min_summ, :id => 'min_summ_field', :class => 'form_field'
-  %br
-
-  = f.label :max_summ, 'Макс. сумма:'
-  %br
-  = f.text_field :max_summ, :id => 'max_summ_field', :class => 'form_field'
-  %br
-
-  %br
-  = f.label :autoacceptance, 'Автопринятие:'
-  %br
-  = f.check_box :autoacceptance, :id => 'autoacceptance_field', :class => 'form_field'
-  %br
-
-
-  = f.label :comment, 'Комментарий:'
-  %br
-  = f.text_field :comment, :id => 'comment_field', :class => 'form_field'
-  %br
-
-
-  = f.label :operator_contact, 'Контакт оператора:'
-  %br
-  = f.text_field :operator_contact, :id => 'operator_contact_field', :class => 'form_field'
-  %br
-
+  = f.label :requests_type, 'Тип'
   %br
   %br
-  %br
- 
-
-  = f.label :exchange_rate_type, 'Тип курса:'
-  %br
-  = f.select :exchange_rate_type, [["-выбрать-", ""], "В процентах", "Фиксированный"], :id => 'exchange_rate_type_field', :class => 'form_field'
-  %br
-
-
-  = f.label :exchange_rate_source, 'Источник курса:'
-  %br
-  = f.select :exchange_rate_source, [["-выбрать-", ""],  "p2p_binance_sell","p2p_binance_buy"], :id => 'exchange_rate_source_field', :class => 'form_field'
-  %br
-
-
-  = f.label :min_fix_price, 'Минимальная фиксир. цена в RUB:'
-  %br
-  = f.text_field :min_fix_price, :id => 'min_fix_price_field', :class => 'form_field', :value => '0.00'
-  %br
-
-
-  = f.label :percent, 'Процент:'
-  %br
-  = f.text_field :percent, :id => 'percent_field', :class => 'form_field', :value => '5.00'
+  = f.select :requests_type, [["-выбрать-", ""], ["Внесение", :deposit], ["Снятие", :withdraw]], :id => 'requests_type_field', :class => 'form_field'
   %br
 
 
   %br
-  = f.label :status, 'Активное:'
-  %br
-  = f.check_box :status
+  = f.label :amount, 'Сумма:'
   %br
   %br
-  = f.submit 'Сохранить'
+  = f.text_field :amount, :id => 'amount_field', :class => 'form_field'
+  %br
+
+  %br
+  = f.label :crypto_address, 'Криптоадрес USDT TRC20 (с которого будете выводить или куда  принимать):'
+  %br
+  %br
+  = f.text_field :crypto_address, :id => 'crypto_address_field', :class => 'form_field'
+  %br
+
+  = f.hidden_field :status, :value => :waiting
+
+  %br
+  = f.submit 'Сохранить',  :class => 'underline'
