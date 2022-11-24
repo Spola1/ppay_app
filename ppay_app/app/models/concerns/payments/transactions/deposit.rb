@@ -60,7 +60,7 @@ module Payments
       end
 
       def main_transaction_percent
-        100 - advertisement_commission - working_group_commission - agent_commission - ppay_commission
+        100 - processer_commission - working_group_commission - agent_commission - ppay_commission
       end
     end
   end

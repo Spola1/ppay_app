@@ -10,7 +10,7 @@ class Transaction < ApplicationRecord
   enum transaction_type: {
     main: 0,
     ppay_commission: 1,
-    advertisement_commission: 2,
+    processer_commission: 2,
     agent_commission: 3,
     working_group_commission: 4,
   }
