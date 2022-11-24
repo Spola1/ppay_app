@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   scope module: :merchants, constraints: lambda { |request| request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
     resources :transactions, only: %i[index show]
+    resources :balance_requests
     namespace :payments do
       resources :deposits, only: :index
       resources :withdrawals, only: :index
@@ -41,6 +42,7 @@ Rails.application.routes.draw do
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
     resources :transactions, only: %i[index show]
+    resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_26_141812) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_24_075033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -76,6 +76,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_26_141812) do
     t.datetime "updated_at", null: false
     t.index ["bearer_id", "bearer_type"], name: "index_api_keys_on_bearer_id_and_bearer_type"
     t.index ["token"], name: "index_api_keys_on_token", unique: true
+  end
+
+  create_table "balance_requests", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "requests_type", default: 0, null: false
+    t.decimal "amount", precision: 12, scale: 2
+    t.integer "status", default: 0, null: false
+    t.string "crypto_address"
   end
 
   create_table "balances", force: :cascade do |t|
@@ -193,6 +203,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_26_141812) do
     t.bigint "agent_id"
     t.decimal "deposit_commission", precision: 15, scale: 10
     t.decimal "withdrawal_commission", precision: 15, scale: 10
+    t.string "usdt_trc20_address"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

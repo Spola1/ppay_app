@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_one :balance, as: :balanceable, dependent: :destroy
 
   has_many :comments
+  has_many :balance_requests
+
 
   before_create :generate_rsa_key_pair
   after_create :create_balance, :create_api_key

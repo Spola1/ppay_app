@@ -1,0 +1,30 @@
+.w-full.top_block.text-xs.text-gray-900.font-light.py-2.px-4
+  %h1.text-xl Запросы баланса
+  %br
+  = link_to "+ Создать запрос", new_balance_request_path, :class => "underline"
+  %br
+  %br
+
+  %table.max-w-full.text-center
+    %thead.border-b.bg-gray-50
+      %tr
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 создано
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 тип
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 сумма USDT
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 статус
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 криптоадрес
+
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2
+
+    %tbody
+      - @balance_requests.each do |br|
+        %tr.bg-white.border-b
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.created_at
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.requests_type
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{br.amount} USDT"
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.status
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.crypto_address
+ 
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= link_to 'Перейти', br, :class => "underline"
+
+          

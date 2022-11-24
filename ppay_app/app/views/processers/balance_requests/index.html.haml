@@ -1,0 +1,59 @@
+%section.w-full
+  .top_block.text-xs.text-gray-900.font-light.underline.py-2.px-4
+    %h1.text-l Объявления
+
+    = link_to "+ Создать объявление", new_advertisement_path
+
+  %table.max-w-full.text-center
+    %thead.border-b.bg-gray-50
+      %tr
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 ID
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 создано
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 направление
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 нац. валюта
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 криптовалюта
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 платежная система
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 тип плат. сист.
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 мин. сумма
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 макс. сумма
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 номер карты
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 автопринятие
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 комментарий
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 контакт оператора
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 тип курса
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 источник курса
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 процент
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 мин. фикс. цена
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 статус
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 id аккаунта
+
+
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2
+
+    %tbody
+      - @advertisements.each do |ad|
+        %tr.bg-white.border-b
+          %td.px-2.py-2.whitespace-nowrap.text-xs.font-medium.text-gray-900= ad.id
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.formatted_created_at
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.direction
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.national_currency
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.cryptocurrency
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.payment_system
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.payment_system_type
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.min_summ
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.max_summ
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.card_number
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.autoacceptance
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.comment
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.operator_contact
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.exchange_rate_type
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.exchange_rate_source
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.percent
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.min_fix_price
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.status
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= ad.processer_id
+
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= link_to 'Перейти', ad
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= link_to 'Редактировать', edit_advertisement_path(ad)
+          
