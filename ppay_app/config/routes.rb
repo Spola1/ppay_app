@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   scope module: :merchants, constraints: lambda { |request| request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
+    resources :transactions, only: %i[index show]
     namespace :payments do
       resources :deposits, only: :index
       resources :withdrawals, only: :index
