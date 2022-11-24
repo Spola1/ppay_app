@@ -13,6 +13,8 @@ class Transaction < ApplicationRecord
     advertisement_commission: 2,
     agent_commission: 3,
     working_group_commission: 4,
+    deposit: 5,
+    withdraw: 6,
   }
 
   aasm whiny_transitions: false, column: :status do
