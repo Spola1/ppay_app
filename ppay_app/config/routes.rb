@@ -51,6 +51,15 @@ Rails.application.routes.draw do
     root 'payments#index', as: :processers_root
   end
 
+
+  scope module: :admins, constraints: lambda { |request| request.env['warden'].user&.admin? } do
+    resources :transactions, only: %i[index show]
+    resources :balance_requests
+    resources :payments, param: :uuid, only: %i[index update show]
+    root 'transactions#index', as: :admins_root
+  end
+
+
   namespace :api do
     namespace :v1 do
       namespace :payments do

@@ -1,0 +1,38 @@
+%section.w-full.py-2.px-4
+  %h1.text-xl Транзакции
+
+
+
+  %table.max-w-full.text-center
+    %thead.border-b.bg-gray-50
+      %tr
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 ID
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 создано
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 размер
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 баланс исходящий
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 баланс входящий
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 id платежа
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 статус
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 тип транзакции
+
+
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2
+
+    %tbody
+      - @transactions.each do |trans|
+        %tr.bg-white.border-b
+          %td.px-2.py-2.whitespace-nowrap.text-xs.font-medium.text-gray-900= trans.id
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.created_at
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.amount
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.from_balance_id
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.to_balance_id
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.payment_id
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.status
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.transaction_type
+
+
+
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= link_to 'Перейти', trans
+
+          

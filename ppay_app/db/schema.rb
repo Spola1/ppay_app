@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_24_103414) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_24_124725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -86,6 +86,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_103414) do
     t.decimal "amount", precision: 12, scale: 2
     t.integer "status", default: 0, null: false
     t.string "crypto_address"
+    t.text "short_comment"
   end
 
   create_table "balances", force: :cascade do |t|

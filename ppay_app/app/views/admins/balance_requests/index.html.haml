@@ -1,8 +1,7 @@
 .w-full.top_block.text-xs.text-gray-900.font-light.py-2.px-4
   %h1.text-xl Запросы баланса
   %br
-  = link_to "+ Создать запрос", new_balance_request_path, :class => "underline"
-  %br
+
   %br
 
   %table.max-w-full.text-center
@@ -13,6 +12,7 @@
         %th.text-xs.font-medium.text-gray-900.px-2.py-2 сумма USDT
         %th.text-xs.font-medium.text-gray-900.px-2.py-2 статус
         %th.text-xs.font-medium.text-gray-900.px-2.py-2 криптоадрес
+        %th.text-xs.font-medium.text-gray-900.px-2.py-2 короткий комментарий
 
         %th.text-xs.font-medium.text-gray-900.px-2.py-2
 
@@ -24,7 +24,8 @@
           %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{br.amount} USDT"
           %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.status
           %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.crypto_address
- 
+          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= br.short_comment
+
           %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= link_to 'Перейти', br, :class => "underline"
 
           

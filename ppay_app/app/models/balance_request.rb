@@ -12,6 +12,7 @@ class BalanceRequest < ApplicationRecord
     main: 0,
     waiting: 1,
     completed: 2,
+    cancelled: 3,
   }
 
 
