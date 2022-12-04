@@ -1,121 +1,133 @@
-%h2 Данные платежа:
-%br
-%p 
-  %b uuid:
-  %br
-  = "#{payment.uuid}"
-%p 
-  %b создан (MSK):
-  %br
-  = "#{payment.formatted_created_at}"
-%p 
-  %b type:
-  = "#{payment.type}"
-  %br
-  - if payment.type == 'Deposit'
-    = "(продажа / sell / внесение средств)"
-  - else
-    = "(покупка / buy / снятие средств)"
-%p 
-  %b payment_status:
-  %br
-  = "#{payment.payment_status}"
-%br
-%p 
-  %b cryptocurrency:
-  = "#{payment.cryptocurrency}"
-%p 
-  %b кол-во криптовалюты:
-  %br
-  - if payment.cryptocurrency_amount
-    = "#{payment.cryptocurrency_amount}"
-  - else
-    = "? (ещё не рассчитано)"
-
-
-%p 
-  %b national_currency:
-  = "#{payment.national_currency}"
-%p 
-  %b national_currency_amount:
-  %br
-  = "#{payment.national_currency_amount}"
-
-%p 
-
-  %b платежная система:
-  %br
-  - if payment.payment_system
-    = "#{payment.payment_system}"
-  - else
-    = "? (не выбрана)"
-
-
-
-
-- if payment.cancelled_on_status
-  %p 
-    %b cancelled_on_status:
-    %br
-    = "#{payment.cancelled_on_status}"
-- if payment.advertisement_id
-  %p 
-    %b id объявления:
-    %br
-    = "#{payment.advertisement_id}"
-    %br
-    %b подробнее по объявлению:
-    тест тест тест тест
-
-%p 
-  %b мерчант:
-  %br
-  - if payment.merchant_id
-    = Merchant.find(payment.merchant_id).nickname
-    %br
-    подробнее:
-    = "id: #{payment.merchant_id}"
-  - else
-    = "? (не указан)"
-
-%p 
-  %b снимок курса:
-  %br
-  - if @rate_snapshot
-    = "#{@rate_snapshot.value}"
-    подробнее:
-    %br
-    = "направление: #{@rate_snapshot.direction}"
-    %br
-    = "криптовалюта: #{@rate_snapshot.cryptocurrency}"
-    %br
-    = "платежная система: #{@rate_snapshot.payment_system}"
-    %br
-    = "биржа: #{@exchange_portal.name}"
-  - else
-    = "? (курс не привязан)"
-
-%p 
-  %b номер карты:
-  %br
-  - if payment.type == 'Deposit'
-    = "номер карты не нужен"
-  - else
-    = "#{payment.card_number}"
+.max-w-full.text-xl.text-gray-900.font-light
+  %h1 Данные платежа:
 
 %br
-%p 
-  %b first_ip:
-  %br
-  = "#{payment.first_ip}"
+%table.max-w-full.text-center
 
-%p 
-  %b first_user_agent:
-  %br
-  = "#{payment.first_user_agent}"
+  %thead.border-b.bg-gray-50
+    %tr
+      %th параметр
+      %th значение
+  %tbody
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap uuid
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.uuid}"
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap создан (MSK):
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.formatted_created_at}"
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap тип
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap
+        = "#{payment.type}"
+        %br
+        - if payment.type == 'Deposit'
+          = "(продажа / sell / внесение средств)"
+        - else
+          = "(покупка / buy / снятие средств)"
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.payment_status}"
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap криптовалюта
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.cryptocurrency}"
+
+
+
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap кол-во криптовалюты:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap
+        - if payment.cryptocurrency_amount
+          = "#{payment.cryptocurrency_amount}"
+        - else
+          = "? (ещё не рассчитано)"
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap национальная валюта
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.national_currency}"
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap кол-во нац. валюты
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.national_currency_amount}"
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap платежная система:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap
+        - if payment.payment_system
+          = "#{payment.payment_system}"
+        - else
+          = "? (не выбрана)"
+
+    - if payment.cancelled_on_status
+      %tr.bg-white.border-b
+        %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap cancelled_on_status:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.cancelled_on_status}"
+
+    - if payment.advertisement_id
+      %tr.bg-white.border-b
+        %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap id объявления:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.advertisement_id}"
+
+    - if payment.merchant_id
+      %tr.bg-white.border-b
+        %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap мерчант:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{Merchant.find(payment.merchant_id).nickname} \| id: #{payment.merchant_id}"
+
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap снимок курса:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap
+        - if @rate_snapshot
+          = "#{@rate_snapshot.value}"
+          подробнее:
+          %br
+          = "направление: #{@rate_snapshot.direction}"
+          %br
+          = "криптовалюта: #{@rate_snapshot.cryptocurrency}"
+          %br
+          = "платежная система: #{@rate_snapshot.payment_system}"
+          %br
+          = "биржа: #{@exchange_portal.name}"
+        - else
+          = "? (курс не привязан)"
+
+
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap номер карты:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap
+        - if payment.type == 'Deposit'
+          = "номер карты не нужен"
+        - else
+          = "#{payment.card_number}"
+
+
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap first_ip:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.first_ip}"
+    %tr.bg-white.border-b
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap first_user_agent:
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= "#{payment.first_user_agent}"
+
+
+
 
 .comments_column{:class => "mx-10 my-10 float-left  w-3/4"}
+  
+
   %h2 Комментарии:
+  %h3 Оставить комментарий:
+
+
+  = form_for comment, url: comments_path, html: { method: :post, :class => 'w-full max-w-sm' }, remote: true do |f|
+    %br
+    = f.label :text, 'Текст:'
+    %br
+    = f.text_field :text, :id => 'text_field', :class => 'form_field'
+    %br
+    = f.submit 'Добавить',  :class => 'underline'
+
+
+
   - if payment.comments.size > 0 
     - payment.comments.each do |comment|
       .comment_item
@@ -129,3 +141,10 @@
           %br
   - else
     %p пока нет комментариев
+
+
+
+
+
+
+

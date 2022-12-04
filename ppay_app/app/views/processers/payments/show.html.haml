@@ -1,3 +1,3 @@
 .show_content{:class => "mx-auto my-20 w-1/4"}
   = turbo_frame_tag 'content' do
-    = render 'processers/payments/show_turbo_frame', payment: @payment, signature: nil
+    = render 'processers/payments/show_turbo_frame', payment: @payment, comment: @comment, signature: nil
