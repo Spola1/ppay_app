@@ -118,7 +118,7 @@
   %h3 Оставить комментарий:
 
 
-  = form_for comment, url: comments_path, html: { method: :post, :class => 'w-full max-w-sm' }, remote: true do |f|
+  = form_for Comment.new, url: comments_path, html: { method: :post, :class => 'w-full max-w-sm' }, remote: true do |f|
     %br
     = f.label :text, 'Текст:'
     %br
