@@ -18,7 +18,7 @@ RUN bash -c "set -o pipefail && apt-get update \
   && apt-get clean \
   && groupadd -g \"${GID}\" deploy \
   && useradd --create-home --no-log-init -u \"${UID}\" -g \"${GID}\" deploy \
-  && mkdir /node_modules && chown deploy:deploy -R /node_modules /app"
+  && mkdir /node_modules /bundle && chown deploy:deploy -R /node_modules /app /bundle"
 
 # run cron as non root user
 RUN chmod gu+rw /var/run
