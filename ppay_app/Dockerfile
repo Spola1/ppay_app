@@ -28,7 +28,9 @@ USER deploy
 ENV APP_USER_HOME /home/deploy
 
 COPY --chown=deploy:deploy Gemfile* ./
-RUN bundle install --jobs "$(nproc)" --without development test --deployment
+RUN bundle config set --local deployment 'true'
+RUN bundle config set --local without 'development test'
+RUN bundle install --jobs "$(nproc)"
 
 COPY --chown=deploy:deploy bin/ ./bin
 RUN chmod 0755 bin/*
