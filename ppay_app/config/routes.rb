@@ -17,13 +17,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  scope module: :processers do
-    root 'payments#index'
-  end
-
   namespace :payments, constraints: lambda { |request| request.params[:signature].present? } do
     resources :deposits, param: :uuid, only: %i[update show]
     resources :withdrawals, param: :uuid, only: %i[update show]
+  end
+
+  scope module: :admins, constraints: lambda { |request| request.env['warden'].user&.admin? } do
+    resources :transactions, only: %i[index show]
+    resources :balance_requests
+    resources :payments, param: :uuid, only: %i[index update show]
+    root 'transactions#index', as: :admins_root
   end
 
   scope module: :merchants, constraints: lambda { |request| request.env['warden'].user&.merchant? } do
@@ -51,14 +54,16 @@ Rails.application.routes.draw do
     root 'payments#index', as: :processers_root
   end
 
-
-  scope module: :admins, constraints: lambda { |request| request.env['warden'].user&.admin? } do
+  scope module: :supports, constraints: lambda { |request| request.env['warden'].user&.support? } do
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
-    root 'transactions#index', as: :admins_root
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index update show]
+      resources :withdrawals, param: :uuid, only: %i[index update show]
+    end
+    root 'payments#index', as: :supports_root
   end
-
 
   namespace :api do
     namespace :v1 do
@@ -69,9 +74,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :payments, param: :uuid, only: [] do
+    resources :comments, only: :create, controller: 'payments/comments'
+  end
 
-  resources :comments, only: %i[create update]
-
+  scope module: :processers do
+    root 'payments#index'
+  end
 
   # временно для тестов добавляю таблицу
   # по адресу /sidekiq

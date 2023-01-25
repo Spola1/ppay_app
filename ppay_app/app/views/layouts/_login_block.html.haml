@@ -1,18 +1,21 @@
-%div.login_block.text-xs.text-gray-900.font-light.py-2.px-4
+%div.login_block.text-xs.font-light.py-2.px-4.flex.items-center
   - if user_signed_in?
-    %p 
-      Вы залогинены как:
-      %strong
-        = current_user.nickname
-      %br
-      = "(#{current_user.email})"
-      %br
-      %br
-      %p
+    .p-2.text-base
+      %span.whitespace-nowrap.text-right
         Баланс:
-        = current_user.balance.amount
+        %span.font-medium
+          = current_user.balance.amount
         USDT
+    .p-2.pl-4.text-right
+      %div.whitespace-nowrap
+        %span.font-medium
+          = current_user.nickname
+        = "(#{current_user.decorate.human_type})"
+
+      = "(#{current_user.email})"
     //= link_to 'Редактировать профиль', edit_user_registration_path, :class => 'navbar-link'
-    = button_to 'Выйти', destroy_session_path(current_user), method: :delete, data: { turbo: false }, :class => 'navbar-link underline'
+    .p-2.text-xl
+      = button_to destroy_session_path(current_user), method: :delete, data: { turbo: false } do
+        = fa_icon('sign-out')
   - else
     = link_to 'Войти', new_user_session_path, :class => 'navbar-link underline'

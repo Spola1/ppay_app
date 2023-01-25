@@ -7,22 +7,18 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @deposits_confirming = Deposit.confirming.decorate
-      @withdrawals_transferring = Withdrawal.transferring.decorate
-      @payments = Payment.excluding(@deposits_confirming, @withdrawals_transferring).decorate
+      @deposits_confirming = current_user.deposits.confirming.decorate
+      @withdrawals_transferring = current_user.withdrawals.transferring.decorate
+      @payments = current_user.payments.excluding(@deposits_confirming, @withdrawals_transferring).decorate
     end
 
     def show
-      if @payment.rate_snapshot_id 
-        @rate_snapshot = RateSnapshot.find(@payment.rate_snapshot_id)
-        @exchange_portal = ExchangePortal.find(@rate_snapshot.exchange_portal_id)
-      end
     end
 
     private
 
     def find_payment
-      @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
+      @payment = current_user.payments.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
     end
 
     def payment_params

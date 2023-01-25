@@ -2,6 +2,8 @@
 
 class Advertisement < ApplicationRecord
   has_many :payments
+  has_many :deposits
+  has_many :withdrawals
   # STI модель - processer < user
   belongs_to :processer
 

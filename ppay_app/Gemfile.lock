@@ -180,6 +180,8 @@ GEM
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
     ffaker (2.21.0)
+    font-awesome-rails (4.7.0.8)
+      railties (>= 3.2, < 8.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     haml (5.2.2)
@@ -412,6 +414,7 @@ DEPENDENCIES
   draper
   factory_bot_rails
   ffaker
+  font-awesome-rails
   haml
   importmap-rails
   jbuilder

@@ -11,7 +11,6 @@
       %th.text-xs.font-medium.text-gray-900.px-6.py-4 платежная система
       %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус
       %th.text-xs.font-medium.text-gray-900.px-6.py-4 id мерчанта
-      %th.text-xs.font-medium.text-gray-900.px-6.py-4 скриншот
 
       %th.text-xs.font-medium.text-gray-900.px-6.py-4
   
@@ -29,10 +28,6 @@
         %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
         %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
         %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant_id
-        / %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
-        /   - if payment.image.present?
-        /     = link_to payment.image, target: '_blank' do
-        /       = image_tag payment.image
 
         %td.text-gray-900.font-light.px-6.py-4.whitespace-nowrap.underline
           = link_to 'Перейти', payment_path(payment), data: { turbo_action: :advance }

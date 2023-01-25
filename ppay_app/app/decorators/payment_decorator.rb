@@ -3,10 +3,6 @@ class PaymentDecorator < ApplicationDecorator
 
   delegate_all
 
-  def formatted_created_at
-    formatted_date(created_at)
-  end
-
   def countdown
     return '00:00:00' if countdown_difference < 0
 

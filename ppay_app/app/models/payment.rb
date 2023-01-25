@@ -26,6 +26,13 @@ class Payment < ApplicationRecord
       locals: { payment: self.decorate, signature: self.signature },
       target: "payment_#{ self.uuid }"
     )
+
+    broadcast_replace_to(
+      "processers_payment_#{ self.uuid }",
+      partial: "processers/payments/show_turbo_frame",
+      locals: { payment: self.decorate, signature: nil },
+      target: "processers_payment_#{ self.uuid }"
+    )
   end
 
   scope :waiting_for_payment, -> { where(payment_status: 'waiting_for_payment') }

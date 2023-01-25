@@ -11,14 +11,14 @@
   </head>
 
   <body>
-    <div class="top_container flex bg-slate-50">
-      <%= render partial: "layouts/flash_alerts"%>
+    <div class="default-nav">
       <%- if user_signed_in? %>
-        <%= render partial: "#{role_namespace}/shared/menu_block"%>
+        <%= render partial: "layouts/menu_block"%>
         <%= render partial: "layouts/login_block"%>
       <%- end %>
     </div>
-    <div class="main_container">
+    <%= render partial: "layouts/flash_alerts"%>
+    <div class="main_container p-8">
       <%= yield %>
     </div>
   </body>

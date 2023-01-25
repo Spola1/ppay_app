@@ -1,0 +1,5 @@
+.px-8{ class: 'w-3/4' }
+  %ul.navbar-nav.flex.pl-0.list-style-none.mr-auto.text-sm.flex.flex-wrap
+    - navbar_collection.each do |link|
+      %li.nav-item.p-2
+        = link_to link[:name], public_send(link[:path]), class: 'hover:text-black'

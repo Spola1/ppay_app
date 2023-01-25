@@ -1,18 +1,19 @@
-%p Вы получили деньги?
+%div{:class => "mx-auto my-20 w-1/4"}
+  %p Вы получили деньги?
 
-= form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update,
-  data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
-  = hidden_field_tag :event, 'confirm'
-  = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите подтвердить платёж?',
-    class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded'
+  = form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update,
+    data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
+    = hidden_field_tag :event, 'confirm'
+    = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите подтвердить платёж?',
+      class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded'
 
-Скриншот:
-- if payment.image.present?
-  = link_to payment.image, target: '_blank' do
-    = image_tag payment.image
-- else
-  не приложен
+  Скриншот:
+  - if payment.image.present?
+    = link_to payment.image, target: '_blank' do
+      = image_tag payment.image
+  - else
+    не приложен
 
-%br
+  %br
 
-= render 'common_show', payment:
+= render 'processers/payments/common_show', payment:

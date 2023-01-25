@@ -2,3 +2,38 @@ basic_auth:
   username: ppay
   password: password
 ppay_commission: 1
+navbar:
+  admin:
+    - name: Все платежи
+      path: payments_path
+    - name: Транзакции
+      path: transactions_path
+    - name: Запросы баланса
+      path: balance_requests_path
+  merchant:
+    - name: Все платежи
+      path: payments_path
+    - name: Транзакции
+      path: transactions_path
+  processer:
+    - name: Все платежи
+      path: payments_path
+    - name: Объявления
+      path: advertisements_path
+    - name: Курсы бирж
+      path: rate_snapshots_path
+    - name: Транзакции
+      path: transactions_path
+    - name: Запросы баланса
+      path: balance_requests_path
+  support:
+    - name: Все платежи
+      path: payments_path
+    - name: Объявления
+      path: advertisements_path
+    - name: Курсы бирж
+      path: rate_snapshots_path
+    - name: Транзакции
+      path: transactions_path
+    - name: Запросы баланса
+      path: balance_requests_path
