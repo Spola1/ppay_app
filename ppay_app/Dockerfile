@@ -33,15 +33,6 @@ RUN chmod gu+rw /var/run
 
 USER deploy
 
-ENV RAILS_ENV="production" \
-    NODE_ENV="production" \
-    PATH="${PATH}:/home/deploy/.local/bin:/node_modules/.bin" \
-    USER="deploy" \
-    BUNDLE_PATH=/bundle \
-    BUNDLE_BIN=/bundle/bin \
-    GEM_HOME=/bundle \
-    GEM_PATH=/bundle
-
 ENV APP_USER_HOME /home/deploy
 
 COPY --chown=deploy:deploy Gemfile* ./
