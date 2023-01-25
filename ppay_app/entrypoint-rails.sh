@@ -7,6 +7,8 @@ set -e
 rm -f tmp/pids/server.pid
 
 bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
+
+bundle exec rake tmp:clear
 bundle exec rake assets:precompile --silent
 # ------ #
 
