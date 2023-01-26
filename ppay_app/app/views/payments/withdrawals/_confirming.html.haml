@@ -1,6 +1,6 @@
 %p Вы получили деньги?
 
-= form_for payment, url: payments_withdrawal_path(uuid: payment.uuid, signature:), action: :update,
+= form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update,
   data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
   = hidden_field_tag :event, 'confirm'
   = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',

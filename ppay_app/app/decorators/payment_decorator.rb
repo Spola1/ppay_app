@@ -19,6 +19,10 @@ class PaymentDecorator < ApplicationDecorator
     status_changed_at + 20.minutes
   end
 
+  def human_payment_status
+    Payment.human_attribute_name("payment_status.#{payment_status}")
+  end
+
   private
 
   def countdown_difference

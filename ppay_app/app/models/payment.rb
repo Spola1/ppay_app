@@ -9,6 +9,7 @@ class Payment < ApplicationRecord
   # это обязательно
   belongs_to :rate_snapshot, optional: true
   belongs_to :advertisement, optional: true
+  belongs_to :support, optional: true
 
   #обязательная связь (с моделью STI - merchant < user)
   belongs_to :merchant, optional: true
@@ -18,6 +19,8 @@ class Payment < ApplicationRecord
   has_one_attached :image
 
   has_many :comments, as: :commentable
+
+  before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
   after_update_commit -> do
     broadcast_replace_to(
@@ -30,8 +33,15 @@ class Payment < ApplicationRecord
     broadcast_replace_to(
       "processers_payment_#{ self.uuid }",
       partial: "processers/payments/show_turbo_frame",
-      locals: { payment: self.decorate, signature: nil },
+      locals: { payment: self.decorate, signature: nil, role_namespace: 'processers' },
       target: "processers_payment_#{ self.uuid }"
+    )
+
+    broadcast_replace_to(
+      "supports_payment_#{ self.uuid }",
+      partial: "supports/payments/show_turbo_frame",
+      locals: { payment: self.decorate, signature: nil, role_namespace: 'supports' },
+      target: "supports_payment_#{ self.uuid }"
     )
   end
 
@@ -46,5 +56,11 @@ class Payment < ApplicationRecord
     data = { national_currency:, national_currency_amount:, external_order_id: }.to_json
 
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), merchant.api_keys.last.token, data)
+  end
+
+  private
+
+  def set_support
+    self.support = Support.all.sample
   end
 end

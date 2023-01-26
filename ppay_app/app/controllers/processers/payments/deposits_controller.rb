@@ -13,8 +13,8 @@ module Processers
 
       private
 
-      def allowed_events
-        %i[confirm]
+      def required_params
+        params.require(:deposit)
       end
     end
   end

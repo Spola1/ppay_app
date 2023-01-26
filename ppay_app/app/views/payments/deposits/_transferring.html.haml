@@ -27,7 +27,7 @@
 
 = render 'payments/errors', payment: payment
 
-= simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+= simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
 
   - if payment.image.present?
@@ -41,7 +41,7 @@
   = f.submit "Оплата завершена", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
 
 
-= render 'payments/cancel_form', payment:, signature:, url: payments_deposit_path(uuid: payment.uuid, signature:)
+= render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
 
 %p Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.

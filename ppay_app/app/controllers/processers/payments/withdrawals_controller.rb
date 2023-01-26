@@ -13,12 +13,8 @@ module Processers
 
       private
 
-      def allowed_events
-        %i[check]
-      end
-
-      def payment_params
-        params.fetch(:withdrawal, {}).permit(:image)
+      def required_params
+        params.require(:withdrawal)
       end
     end
   end

@@ -1,9 +1,0 @@
-= simple_form_for comment, url: comments_path, action: :create do |f|
-  %br
-  = f.label :text, 'Текст комментария:'
-  %br
-  = f.text_field :text, :id => 'text_field', :class => 'form_field'
-
-  = f.hidden_field :payment_id, :value => payment.id
-
-  = f.submit "Сохранить комментарий", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"

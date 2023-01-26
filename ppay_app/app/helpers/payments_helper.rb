@@ -15,10 +15,20 @@ module PaymentsHelper
     payment_prefixes(payment, prefix).push(payment.payment_status).join('/')
   end
 
-  private
-
   def payment_status_partial_exists?(payment, prefix)
     lookup_context.template_exists?(payment.payment_status, payment_prefixes(payment, prefix).join('/'), true)
+  end
+
+  def payment_statuses_collection
+    Deposit.aasm.states.map do |state|
+      [state_translation(state.name), state.name]
+    end
+  end
+
+  private
+
+  def state_translation(state)
+    Payment.human_attribute_name("payment_status.#{ state }")
   end
 
   def payment_prefixes(payment, prefix)

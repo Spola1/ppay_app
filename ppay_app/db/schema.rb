@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_24_124725) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_25_231532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -149,6 +149,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_24_124725) do
     t.string "type", default: "Deposit", null: false
     t.datetime "status_changed_at"
     t.string "card_number"
+    t.boolean "arbitration", default: false
+    t.bigint "support_id"
+    t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
   create_table "rate_snapshots", force: :cascade do |t|

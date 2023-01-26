@@ -13,6 +13,12 @@ module Supports
     def show
     end
 
+    def update
+      @payment.update(payment_params)
+
+      render :show
+    end
+
     private
 
     def find_payment
@@ -20,7 +26,7 @@ module Supports
     end
 
     def payment_params
-      {}
+      required_params.permit(:payment_status, :arbitration)
     end
   end
 end

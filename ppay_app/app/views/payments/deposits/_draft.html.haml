@@ -15,7 +15,7 @@
 
 = render 'payments/errors', payment: payment
 
-= simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+= simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   =# f.label :national_currency, 'Выберите валюту'
   =# f.select :national_currency, options_for_select([["-выбрать-", ""], "RUB", "USD", "EUR", "UZS"], payment.national_currency), :id => 'national_currency_field', :class => 'form_field'
   %br
@@ -33,7 +33,7 @@
   %br
   %p Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете производить оплату!
 
-= render 'payments/cancel_form', payment:, signature:, url: payments_deposit_path(uuid: payment.uuid, signature:)
+= render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
 .alerts_block.border.rounded.border-rose-500.px-6.py-4.text-md.text-red-400.text-left
   %p ! При отправке денежных средств писать сообщения в приложении категорически запрещено.

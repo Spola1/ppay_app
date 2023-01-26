@@ -1,0 +1,4 @@
+= form_for payment, url: payment_path(payment), action: :update,
+           data: { turbo_confirm: 'Вы уверены, что хотите отправить платёж на арбитраж?' } do |f|
+  = f.hidden_field :arbitration, value: true
+  = f.submit 'На арбитраж', class: 'red-button'

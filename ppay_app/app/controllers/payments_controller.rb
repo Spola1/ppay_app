@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class PaymentsController < ApplicationController
-  include Payments::Updateable
-
   before_action :find_payment
   before_action :authenticate_signature
 
@@ -24,13 +22,5 @@ class PaymentsController < ApplicationController
 
   def valid_signature?
     params[:signature] == @payment.signature
-  end
-
-  def after_update_success
-    render :show
-  end
-
-  def after_update_error
-    render :show, status: :unprocessable_entity
   end
 end

@@ -7,6 +7,14 @@ ru:
         payment_system: Платёжная система
         card_number: Номер карты
         image: Скриншот
+      payment/payment_status:
+        created: Создан
+        draft: Ввод данных карты
+        processer_search: Поиск оператора
+        transferring: Перевод денег
+        confirming: Подтверждение перевода
+        completed: Успешно завершён
+        cancelled: Отменён
       user/type:
         admin: Администратор
         agent: Агент

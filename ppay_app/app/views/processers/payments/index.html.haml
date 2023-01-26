@@ -1,8 +1,8 @@
 = turbo_frame_tag 'content' do
-  %section.basis-full.py-2.px-4
-    %h1.text-xl.mb-10 Ждут оплаты
+  %section.basis-full
+    %h1.mb-4 Ждут оплаты
     = render 'table', payments: @withdrawals_transferring
-    %h1.text-xl.my-10 Ждут подтверждения
+    %h1.mt-8.mb-4 Ждут подтверждения
     = render 'table', payments: @deposits_confirming
-    %h1.text-xl.my-10 Остальные платежи
+    %h1.mt-8.mb-4 Остальные платежи
     = render 'table', payments: @payments

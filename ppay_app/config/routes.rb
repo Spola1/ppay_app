@@ -18,8 +18,13 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   namespace :payments, constraints: lambda { |request| request.params[:signature].present? } do
-    resources :deposits, param: :uuid, only: %i[update show]
-    resources :withdrawals, param: :uuid, only: %i[update show]
+    resources :deposits, param: :uuid, only: :show
+    resources :withdrawals, param: :uuid, only: :show
+
+    namespace :statuses do
+      resources :deposits, param: :uuid, only: :update
+      resources :withdrawals, param: :uuid, only: :update
+    end
   end
 
   scope module: :admins, constraints: lambda { |request| request.env['warden'].user&.admin? } do
@@ -48,8 +53,13 @@ Rails.application.routes.draw do
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index update show]
-      resources :withdrawals, param: :uuid, only: %i[index update show]
+      resources :deposits, param: :uuid, only: %i[index show update]
+      resources :withdrawals, param: :uuid, only: %i[index show update]
+
+      namespace :statuses do
+        resources :deposits, param: :uuid, only: :update
+        resources :withdrawals, param: :uuid, only: :update
+      end
     end
     root 'payments#index', as: :processers_root
   end
@@ -59,8 +69,8 @@ Rails.application.routes.draw do
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index update show]
-      resources :withdrawals, param: :uuid, only: %i[index update show]
+      resources :deposits, param: :uuid, only: %i[index update show edit]
+      resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
     root 'payments#index', as: :supports_root
   end

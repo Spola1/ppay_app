@@ -13,8 +13,8 @@ module Supports
 
       private
 
-      def allowed_events
-        []
+      def required_params
+        params.require(:deposit)
       end
     end
   end

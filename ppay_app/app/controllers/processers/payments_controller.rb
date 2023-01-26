@@ -2,8 +2,6 @@
 
 module Processers
   class PaymentsController < BaseController
-    include ::Payments::Updateable
-
     before_action :find_payment, only: %i[update show]
 
     def index
@@ -15,6 +13,12 @@ module Processers
     def show
     end
 
+    def update
+      @payment.update(payment_params)
+
+      render :show
+    end
+
     private
 
     def find_payment
@@ -22,7 +26,7 @@ module Processers
     end
 
     def payment_params
-      {}
+      required_params.permit(:arbitration)
     end
   end
 end

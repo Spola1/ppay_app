@@ -1,1 +1,5 @@
-= render 'shared/processing_show'
+= turbo_frame_tag 'content' do
+  = turbo_stream_from "processers_payment_#{@payment.uuid}"
+
+  .show_content
+    = render 'processers/payments/show_turbo_frame', payment: @payment, signature: nil, role_namespace:
