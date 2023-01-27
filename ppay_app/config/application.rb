@@ -23,6 +23,6 @@ module PpayApp
     # config.eager_load_paths << Rails.root.join("extras")
     config.generators.test_framework = :rspec
 
-    config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('lib', 'json_api')
   end
 end
