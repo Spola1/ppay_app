@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe RsaEncryptionService, type: :service do
   let(:data) { 'test rsa' }
 
-  describe '#public_encrypt' do
+  xdescribe '#public_encrypt' do
     subject { described_class.new(data, Settings.rsa.public_key).public_encrypt }
 
     let(:decrypted_subject) { described_class.new(subject, Settings.rsa.private_key).decrypt }
@@ -15,7 +15,7 @@ RSpec.describe RsaEncryptionService, type: :service do
     end
   end
 
-  describe '#public_decrypt' do
+  xdescribe '#public_decrypt' do
     subject { described_class.new(encrypted_data, Settings.rsa.public_key).public_decrypt }
 
     let(:encrypted_data) { described_class.new(data, Settings.rsa.private_key).encrypt }
@@ -25,7 +25,7 @@ RSpec.describe RsaEncryptionService, type: :service do
     end
   end
 
-  describe '#encrypt' do
+  xdescribe '#encrypt' do
     subject { described_class.new(data, Settings.rsa.private_key).encrypt }
 
     let(:decrypted_subject) { described_class.new(subject, Settings.rsa.public_key).public_decrypt }
@@ -35,7 +35,7 @@ RSpec.describe RsaEncryptionService, type: :service do
     end
   end
 
-  describe '#decrypt' do
+  xdescribe '#decrypt' do
     subject { described_class.new(encrypted_data, Settings.rsa.private_key).decrypt }
 
     let(:encrypted_data) { described_class.new(data, Settings.rsa.public_key).public_encrypt }

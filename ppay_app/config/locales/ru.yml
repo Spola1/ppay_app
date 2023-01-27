@@ -27,6 +27,8 @@ ru:
       required_payment_system: не выбрана
       required_card_number: не указан
       required_image: не загружен
+    messages:
+      inclusion: Доступные значения %{valid_values}
   time:
     formats:
       short: '%F %H:%M'

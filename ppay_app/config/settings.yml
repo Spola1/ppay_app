@@ -2,6 +2,11 @@ basic_auth:
   username: ppay
   password: password
 ppay_commission: 1
+national_currencies:
+  - RUB
+  - UZS
+  - TJS
+  - IDR
 navbar:
   admin:
     - name: Все платежи

@@ -22,5 +22,7 @@ module PpayApp
     config.time_zone = 'Moscow'
     # config.eager_load_paths << Rails.root.join("extras")
     config.generators.test_framework = :rspec
+
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

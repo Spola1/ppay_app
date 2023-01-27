@@ -22,6 +22,9 @@ class Payment < ApplicationRecord
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
+  validates :national_currency, inclusion: { in: Settings.national_currencies,
+                                             valid_values: Settings.national_currencies.join(', ') }
+
   after_update_commit -> do
     broadcast_replace_to(
       "payment_#{ self.uuid }",

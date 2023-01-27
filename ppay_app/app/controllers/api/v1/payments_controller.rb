@@ -14,7 +14,7 @@ module Api
         if @object.save
           render json: serialized_object, status: :created
         else
-          head :unprocessable_entity
+          render_object_errors(@object)
         end
       end
 

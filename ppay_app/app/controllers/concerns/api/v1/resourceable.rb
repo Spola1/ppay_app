@@ -20,6 +20,17 @@ module Api
       def serialized_object
         serializer.new(@object.reload.decorate)
       end
+
+      def render_object_errors(object)
+        errors = object.errors.map do |error_object|
+          ::JsonApi::Error.new(
+            code: 422, title: error_object.attribute,
+            detail: Array(error_object.message).join(', ')
+          ).to_hash
+        end
+
+        render json: { errors: }, status: :unprocessable_entity
+      end
     end
   end
 end
