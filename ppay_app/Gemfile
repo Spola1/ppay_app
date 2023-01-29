@@ -73,6 +73,7 @@ gem 'draper'
 
 gem 'simple_form'
 gem 'font-awesome-rails'
+gem 'credit_card_validations'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -1,0 +1,22 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Создана в
+        %td.item-card-td= @balance_request.created_at
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Тип
+        %td.item-card-td= @balance_request.requests_type
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Сумма в USDT
+        %td.item-card-td= @balance_request.amount
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Статус
+        %td.item-card-td= @balance_request.status
+      - if role_namespace == 'admins'
+        %tr.items-list-tr
+          %td.item-card-td.item-card-td-label Комментарий
+          %td.item-card-td= @balance_request.short_comment
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Криптоадрес
+        %td.item-card-td= @balance_request.crypto_address

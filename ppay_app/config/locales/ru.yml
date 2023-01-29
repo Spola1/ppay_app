@@ -3,6 +3,13 @@ ru:
     models:
       payment: Платёж
     attributes:
+      advertisement:
+        direction: Направление
+        national_currency: Нац. валюта
+        payment_system: Платёжная система
+        card_number: Номер карты
+        comment: Комментарий
+        status: Активно
       payment:
         payment_system: Платёжная система
         card_number: Номер карты
@@ -21,14 +28,6 @@ ru:
         merchant: Мерчант
         processer: Оператор
         support: Поддержка
-  errors:
-    technical_error: Произошла техническая ошибка. Попробуйте повторить операцию
-    payments:
-      required_payment_system: не выбрана
-      required_card_number: не указан
-      required_image: не загружен
-    messages:
-      inclusion: Доступные значения %{valid_values}
   time:
     formats:
       short: '%F %H:%M'

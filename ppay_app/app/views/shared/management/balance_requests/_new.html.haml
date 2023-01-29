@@ -1,0 +1,9 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl Создать новый запрос
+      .mt-8.my-4
+        = render "#{role_namespace}/balance_requests/form"
+      .back-link
+        = link_to '<- К списку запросов баланса', balance_requests_path

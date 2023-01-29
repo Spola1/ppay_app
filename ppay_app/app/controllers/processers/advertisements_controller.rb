@@ -24,14 +24,19 @@ module Processers
       if @advertisement.save
         redirect_to @advertisement
       else
-        # error
+        render :new, status: :unprocessable_entity
       end
     end
 
     def update
       @advertisement = current_user.advertisements.find(params[:id])
-      @advertisement.update(advertisement_params)
-      redirect_to advertisements_path if @advertisement.errors.empty?
+      @advertisement.assign_attributes(advertisement_params)
+
+      if @advertisement.save
+        redirect_to advertisements_path
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
 
     def destroy; end

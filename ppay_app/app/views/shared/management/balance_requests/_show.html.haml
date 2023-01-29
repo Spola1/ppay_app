@@ -1,0 +1,18 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Запрос баланса (ID: #{@balance_request.id})"
+        .flex.text-right
+          - if role_namespace == 'admins'
+            = link_to 'Подтвердить или отказать ->', edit_balance_request_path(@balance_request), class: 'form-submit'
+          - else
+            = link_to edit_balance_request_path(@balance_request), class: 'icon-button' do
+              .flex
+                .mr-2
+                  = fa_icon 'pencil'
+                Редактировать
+      .mt-8.my-4
+        = render 'shared/management/balance_requests/balance_request'
+      .back-link
+        = link_to '<- К списку запросов баланса', balance_requests_path

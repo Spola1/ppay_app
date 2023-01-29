@@ -1,10 +1,1 @@
-%h1 Редактировать 
-%p
-  = "(ID: #{@balance_request.id})"
-.container.md
-  = render 'form'
-
-%br
-= link_to "+ Создать новое объявление", new_balance_request_path
-%br
-= link_to "<- К списку объявлений", balance_requests_path
+= render partial: 'shared/management/balance_requests/edit'

@@ -1,5 +1,5 @@
-%table.min-w-full.text-center
-  %thead.border-b.bg-gray-50
+%table.items-list-table
+  %thead.items-list-thead
     %tr
       %th.text-xs.font-medium.text-gray-900.px-6.py-4 ID
       %th.text-xs.font-medium.text-gray-900.px-6.py-4 создан
@@ -17,17 +17,17 @@
   %tbody
     - payments.each do |payment|
       %tr
-        %td.px-6.py-4.whitespace-nowrap.text-xs.font-medium.text-gray-900.underline
+        %td.items-list-td
           = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.formatted_created_at
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.type
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.national_currency
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.national_currency_amount       
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.cryptocurrency
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.cryptocurrency_amount
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
-        %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant_id
+        %td.items-list-td= payment.formatted_created_at
+        %td.items-list-td= payment.type
+        %td.items-list-td= payment.national_currency
+        %td.items-list-td= payment.national_currency_amount       
+        %td.items-list-td= payment.cryptocurrency
+        %td.items-list-td= payment.cryptocurrency_amount
+        %td.items-list-td= payment.payment_system
+        %td.items-list-td= payment.payment_status
+        %td.items-list-td= payment.merchant_id
 
-        %td.text-gray-900.font-light.px-6.py-4.whitespace-nowrap.underline
+        %td.items-list-td.underline
           = link_to 'Перейти', payment_path(payment), data: { turbo_action: :advance }

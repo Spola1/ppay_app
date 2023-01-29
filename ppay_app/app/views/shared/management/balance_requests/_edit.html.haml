@@ -1,0 +1,12 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl Редактировать 
+      .my-4
+        %p.mb-4= "Запрос баланса (ID: #{@balance_request.id})"
+        = render 'shared/management/balance_requests/balance_request' if role_namespace == 'admins'
+      .mt-8.my-4
+        = render "#{role_namespace}/balance_requests/form"
+      .back-link
+        = link_to '<- К списку запросов баланса', balance_requests_path
