@@ -1,7 +1,7 @@
-.show_content{:class => "mx-auto my-20 w-1/4"} 
+.show_content{:class => "show_payment_block"} 
   = render 'show'
 
-  %p.text-gray-300
+  .uuid_payment_block
     uuid: 
     = @payment.uuid
     - if user_signed_in?

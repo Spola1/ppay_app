@@ -1,45 +1,55 @@
-%p.text-4xl
-  Мерчант:
-  = payment.merchant.name
-%br
-%p.text-2xl
-  Заказ №:
-  = payment.external_order_id
+.proc_head
+  .proc_logo
+  .proc_text
+    UID Check
 
-%p.text-2xl
-  Сумма:
-  = payment.national_currency_amount
-  = payment.national_currency
+.proc_amount_block
+  .proc_amount_content
+    = "#{payment.national_currency_amount} #{payment.national_currency}"
 
-%br
+.proc_shop_block
+  .proc_shop_title
+    Магазин
+  .proc_shop_content
+    = payment.merchant.name
+
+
+.proc_order_block
+  .proc_order_title
+    Заказ
+  .proc_order_content
+    = payment.external_order_id
+
+ 
+
 
 = render 'payments/errors', payment: payment
 
-= simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
-  %br
+.simple_form_for_payment_deposit
+  = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+    
+    %b
+      = f.label :payment_system, 'Выберите платежную систему'
+    
+    = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
+               id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+    
 
-  = f.label :payment_system, 'Выберите платежную систему'
-  %br
-  = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-             id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
-  %br
+    = hidden_field_tag :event, 'search' 
+    
+    = f.submit "Подтвердить", class: "confirm-payment-system-choose"
+    
+    .please_pay_from_bank 
+      Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
 
-  = hidden_field_tag :event, 'search' 
-  %br
-  = f.submit "Подтвердить", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
-  %br
-  %p Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете производить оплату!
+  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
-= render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
-
-.alerts_block.border.rounded.border-rose-500.px-6.py-4.text-md.text-red-400.text-left
-  %p ! При отправке денежных средств писать сообщения в приложении категорически запрещено.
-  %br
-  %p ! Платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
-  %br
-  %p ! Средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. 
-  %br
-  В противном случае зачисление оплаты не гарантируется.
+.alerts_block
+  %p Внимание:
+  %p 
+    i) при отправке денежных средств писать сообщения в приложении категорически запрещено;
+    ii) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
+    iii) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.
 
 
 %br
