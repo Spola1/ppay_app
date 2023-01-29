@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_25_231532) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_28_153143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -48,9 +48,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_25_231532) do
     t.datetime "updated_at", null: false
     t.string "direction"
     t.string "national_currency"
-    t.string "cryptocurrency"
+    t.string "cryptocurrency", default: "USDT"
     t.string "payment_system"
-    t.string "payment_system_type"
+    t.integer "payment_system_type", default: 0
     t.decimal "min_summ", precision: 12, scale: 2
     t.decimal "max_summ", precision: 12, scale: 2
     t.string "card_number"

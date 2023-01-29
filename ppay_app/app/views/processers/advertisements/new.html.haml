@@ -1,11 +1,10 @@
-%h1 Создание нового объявления
-
-
-= link_to "<- Список объявлений", advertisements_path
-%br
-%br
-%br
-
-.container.sm
-  = render 'form'
-
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Создать новое объявление
+      .mt-8.my-4
+        = render 'form'
+      .back-link
+        = link_to '<- К списку объявлений', advertisements_path

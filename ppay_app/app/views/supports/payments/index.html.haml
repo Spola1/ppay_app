@@ -1,8 +1,9 @@
 = turbo_frame_tag 'content' do
-  %section.basis-full.px-2
-    %h1.mb-4 Ждут оплаты
-    = render 'table', payments: @withdrawals_transferring
-    %h1.mt-8.mb-4 Ждут подтверждения
+  %section.wrap
+    .card-wrap
+      %h1.mb-4 Ждут оплаты
+      = render 'table', payments: @withdrawals_transferring
+    %h1.mb-4 Ждут подтверждения
     = render 'table', payments: @deposits_confirming
-    %h1.mt-8.mb-4 Остальные платежи
+    %h1.mb-4 Остальные платежи
     = render 'table', payments: @payments

@@ -5,17 +5,21 @@
 @layer components {
   .form-input {
     @apply block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border
-      border-solid border-gray-300 rounded transition ease-in-out m-0;
+      border-solid border-gray-300 rounded transition ease-in-out m-0 w-auto;
   }
 
   .form-submit {
-    @apply px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md
+    @apply px-6 py-2.5 bg-blue-600 text-white font-medium text-sm leading-tight uppercase rounded shadow-md
       hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
   .default-nav {
     @apply relative flex items-center bg-slate-50 text-gray-900 shadow-lg shadow-slate-200;
+  }
+
+  .back-link {
+    @apply mt-8 text-gray-700 text-sm;
   }
 
   .red-button {
@@ -29,10 +33,109 @@
       bg-red-600 text-white rounded;
   }
 
-  .select {
-    @apply form-select appearance-none block w-full px-3 py-1.5 font-normal text-gray-700 bg-white
+  .form-input-select {
+    @apply form-select appearance-none block px-3 py-1.5 pr-10 font-normal text-gray-700 bg-white
       bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none;
+  }
+
+  .items-list-table {
+    @apply min-w-full text-center;
+  }
+
+  .items-list-thead {
+    @apply border-b bg-gray-50;
+  }
+
+  .items-list-th {
+    @apply text-xs font-medium text-gray-900 p-2;
+  }
+
+  .items-list-tr {
+    @apply bg-white border-b;
+  }
+
+  .items-list-td {
+    @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
+  }
+
+  .items-list-td-link {
+    @apply items-list-td text-gray-900 underline font-medium;
+  }
+
+  .item-card-td {
+    @apply text-sm text-gray-900 font-normal px-2 py-2 whitespace-nowrap;
+  }
+
+  .item-card-td-label {
+    @apply w-0 text-gray-500 font-light;
+  }
+
+  .item-card-table {
+    @apply text-left w-full;
+  }
+
+  .item-card-thead {
+    @apply border-b bg-gray-50;
+  }
+
+  .item-card-tr {
+    @apply bg-white border-b;
+  }
+
+  .item-card {
+    @apply p-6 block rounded-lg shadow-xl bg-white border;
+  }
+
+  .card-wrap {
+    @apply p-2 flex-1;
+  }
+
+  .wrap {
+    @apply flex flex-wrap;
+  }
+
+  .icon-button {
+    @apply border border-transparent text-center bg-blue-600 text-white font-medium text-xs leading-tight uppercase
+      rounded shadow-md w-min px-3 py-2
+      hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .icon-button-gray {
+    @apply border text-center p-2 bg-slate-50 text-gray-900 font-medium text-xs leading-tight uppercase rounded shadow-md
+      w-min px-3 py-2
+      hover:bg-slate-100 hover:shadow-lg focus:bg-slate-100 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-slate-200 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .simple_form .input {
+    @apply my-4;
+  }
+
+  .simple_form .input label, .simple_form .input input, .simple_form .input select {
+    @apply block my-2;
+  }
+
+  .simple_form .input input.string, .simple_form .input input.text {
+    @apply form-input;
+  }
+
+  .simple_form .input select {
+    @apply form-input-select;
+  }
+
+  .simple_form .input input[type=checkbox] {
+    @apply inline-block mr-2;
+  }
+
+  .simple_form .input label abbr[title] {
+    @apply text-gray-500;
+    text-decoration: none;
+  }
+
+  .simple_form .input .error {
+    @apply text-red-500 text-xs;
   }
 }
 

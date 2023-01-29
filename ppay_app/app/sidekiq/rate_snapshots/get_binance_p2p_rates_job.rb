@@ -4,7 +4,6 @@ module RateSnapshots
   class GetBinanceP2pRatesJob
     include Sidekiq::Job
     sidekiq_options queue: 'critical', tags: ['binance_p2p_rates']
-    require "#{Rails.root}/lib/binance/p2p"
 
     def perform(crypto_asset, fiat, action, fiat_amount, payment_method, merchant_check, exchange_portal_id_for_binance)
       puts "perform GetBinanceP2pRatesJob - started"

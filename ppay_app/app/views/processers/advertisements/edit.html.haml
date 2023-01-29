@@ -1,10 +1,11 @@
-%h1 Редактировать объявление
-%p
-  = "(ID: #{@advertisement.id})"
-.container.md
-  = render 'form'
-
-%br
-= link_to "+ Создать новое объявление", new_advertisement_path
-%br
-= link_to "<- К списку объявлений", advertisements_path
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Редактировать объявление
+          = "(ID: #{@advertisement.id})"
+      .mt-8.my-4
+        = render 'form'
+      .back-link
+        = link_to '<- К списку объявлений', advertisements_path

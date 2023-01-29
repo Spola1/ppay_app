@@ -14,8 +14,6 @@ class Payment < ApplicationRecord
   #обязательная связь (с моделью STI - merchant < user)
   belongs_to :merchant, optional: true
 
-  has_one :card
-
   has_one_attached :image
 
   has_many :comments, as: :commentable
@@ -24,6 +22,7 @@ class Payment < ApplicationRecord
 
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
+  validates :card_number, credit_card_number: true
 
   after_update_commit -> do
     broadcast_replace_to(

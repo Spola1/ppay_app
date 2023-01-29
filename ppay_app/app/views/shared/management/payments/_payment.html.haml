@@ -1,6 +1,6 @@
-.flex.flex-wrap
-  .p-2.flex-1
-    .p-6.block.rounded-lg.shadow-xl.bg-white.border
+%section.wrap
+  .card-wrap
+    .item-card
       .flex.mb-4.items-center
         .text-xl
           Данные платежа
@@ -12,73 +12,70 @@
           = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
 
       = form_for payment, url: payment_path(payment), action: :update, html: { id: :payment_form } do |f|
-        %table.text-left.w-full
+        %table.item-card-table
           %tbody
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap{ class: 'w-1/4' } uuid
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.uuid}"
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap создан (MSK)
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.formatted_created_at}"
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap тип
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label{ class: 'w-1/4' } UUID
+              %td.item-card-td= "#{payment.uuid}"
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Создан (MSK)
+              %td.item-card-td= "#{payment.formatted_created_at}"
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Тип
+              %td.item-card-td
                 = "#{payment.type}"
                 %br
                 - if payment.type == 'Deposit'
                   = "(продажа / sell / внесение средств)"
                 - else
                   = "(покупка / buy / снятие средств)"
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Статус
+              %td.item-card-td
                 = render "#{role_namespace}/payments/payment_status_field", f:, payment:
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap криптовалюта
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.cryptocurrency}"
 
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap кол-во криптовалюты
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Кол-во криптовалюты
+              %td.item-card-td
                 - if payment.cryptocurrency_amount
                   = "#{payment.cryptocurrency_amount}"
                 - else
                   = "? (ещё не рассчитано)"
 
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap национальная валюта
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.national_currency}"
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Национальная валюта
+              %td.item-card-td= "#{payment.national_currency}"
 
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap кол-во нац. валюты
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.national_currency_amount}"
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap платежная система
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Кол-во нац. валюты
+              %td.item-card-td= "#{payment.national_currency_amount}"
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Платежная система
+              %td.item-card-td
                 - if payment.payment_system
                   = "#{payment.payment_system}"
                 - else
                   = "? (не выбрана)"
 
             - if payment.cancelled_on_status
-              %tr.bg-white.border-b
-                %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap отменён на статусе
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.cancelled_on_status}"
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Отменён на статусе
+              %td.item-card-td= "#{payment.cancelled_on_status}"
 
             - if payment.advertisement_id
-              %tr.bg-white.border-b
-                %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap id объявления
-                %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.advertisement_id}"
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label ID объявления
+                %td.item-card-td= "#{payment.advertisement_id}"
 
             - if payment.merchant_id
-              %tr.bg-white.border-b
-                %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap мерчант
-                %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{Merchant.find(payment.merchant_id).nickname} \| id: #{payment.merchant_id}"
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Мерчант
+                %td.item-card-td= "#{Merchant.find(payment.merchant_id).nickname} \| id: #{payment.merchant_id}"
 
 
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap снимок курса
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Снимок курса
+              %td.item-card-td
                 - if payment.rate_snapshot
                   = "#{payment.rate_snapshot.value}"
                   %br
@@ -96,24 +93,24 @@
 
 
 
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap номер карты:
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Номер карты
+              %td.item-card-td
                 - if payment.type == 'Deposit'
                   = "номер карты не нужен"
                 - else
                   = "#{payment.card_number}"
 
 
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap first_ip:
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.first_ip}"
-            %tr.bg-white.border-b
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap first_user_agent:
-              %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap.font-normal= "#{payment.first_user_agent}"
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label first_ip
+              %td.item-card-td= "#{payment.first_ip}"
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label first_user_agent
+              %td.item-card-td= "#{payment.first_user_agent}"
 
-  .p-2.flex-1
-    .p-6.block.rounded-lg.shadow-xl.bg-white.border
+  .card-wrap
+    .item-card
       %p.text-xl.mb-2 Комментарии
 
       - if payment.comments.present?
