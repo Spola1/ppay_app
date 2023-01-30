@@ -8,17 +8,22 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= audio_tag 'notification.mp3', id: 'notification_sound' %>
   </head>
 
-  <body>
+  <body data-controller='countdown'>
     <div class="default-nav">
       <%- if user_signed_in? %>
-        <%= render partial: "layouts/menu_block"%>
-        <%= render partial: "layouts/login_block"%>
+        <%= render partial: "layouts/menu_block" %>
+        <%= render partial: "layouts/login_block" %>
       <%- end %>
     </div>
-    <%= render partial: "layouts/flash_alerts"%>
-    <div class="main_container p-8">
+    <%= render partial: "layouts/flash_alerts" %>
+    <%- if role_namespace == 'processers' %>
+      <%= render 'processers/payments/hotlist', user: current_user %>
+      <%= render 'processers/notifications/index', user: current_user %>
+    <%- end %>
+    <div class="main_container p-4">
       <%= yield %>
     </div>
   </body>

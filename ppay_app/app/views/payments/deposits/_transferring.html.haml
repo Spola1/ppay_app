@@ -1,6 +1,6 @@
 %p
   Вы можете оплатить в течение:
-  %span.countdown{ data: { end_time: payment.countdown_end_time } }
+  %span.countdown{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
     = payment.countdown
 %br
 

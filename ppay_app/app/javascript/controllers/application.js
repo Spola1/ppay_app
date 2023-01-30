@@ -1,8 +1,6 @@
 import { Application } from "@hotwired/stimulus"
-import jQuery from "jquery"
-
-window.jQuery = jQuery
-window.$ = jQuery
+import "jquery"
+import "jquery-ui"
 
 const application = Application.start()
 

@@ -5,9 +5,7 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @deposits_confirming = current_user.deposits.confirming.decorate
-      @withdrawals_transferring = current_user.withdrawals.transferring.decorate
-      @payments = current_user.payments.excluding(@deposits_confirming, @withdrawals_transferring).decorate
+      @payments = current_user.payments.decorate
     end
 
     def show

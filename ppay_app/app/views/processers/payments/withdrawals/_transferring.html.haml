@@ -1,7 +1,9 @@
-%div{:class => "mx-auto my-20 w-1/4"}
+%div{:class => "mx-auto my-4 w-1/4"}
   %p
     Вы можете оплатить в течение:
-    %span.countdown{ data: { end_time: payment.countdown_end_time } }
+    %span.countdown{
+      data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' }
+    }
       = payment.countdown
   %br
 

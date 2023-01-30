@@ -1,0 +1,13 @@
+= turbo_stream_from "processer_#{user.id}_hotlist"
+
+= turbo_frame_tag "processer_#{user.id}_hotlist" do
+  - if hotlist_payments(user).present?
+    .px-8.pt-4
+      %section.wrap
+        %h1.p-2.w-full
+          = fa_icon 'clock-o'
+          Ждут ваших действий
+        - hotlist_payments(user).each do |payment|
+          .p-2.text-xs{ class: 'w-1/4', 'data-controller': 'countdown' }
+            = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
+              = render 'processers/payments/hotlist_payment', payment:

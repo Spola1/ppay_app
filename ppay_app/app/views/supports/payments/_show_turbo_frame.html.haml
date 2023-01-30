@@ -1,3 +1,2 @@
 = turbo_frame_tag "supports_payment_#{payment.uuid}" do
-  %div{ data: { controller: 'payments' } }
-    = render 'shared/management/payments/payment', payment:, signature:, role_namespace:
+  = render 'shared/management/payments/payment', payment:, signature:, role_namespace:

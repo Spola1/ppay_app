@@ -1,0 +1,4 @@
+.notification.mb-2.hidden{ 'data-controller': 'countdown notifications' }
+  = link_to payment_path(payment), data: { turbo: false } do
+    = render 'processers/payments/hotlist_payment', payment:
+

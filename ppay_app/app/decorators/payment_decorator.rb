@@ -23,7 +23,23 @@ class PaymentDecorator < ApplicationDecorator
     Payment.human_attribute_name("payment_status.#{payment_status}")
   end
 
+  def fiat_amount_with_currency
+    "#{ fiat_amount } #{ national_currency }"
+  end
+
+  def human_type
+    type == 'Deposit' ? 'Депозит' : 'Вывод'
+  end
+
+  def type_icon
+    type == 'Deposit' ? 'arrow-up' : 'arrow-down'
+  end
+
   private
+
+  def fiat_amount
+    '%.2f' % national_currency_amount
+  end
 
   def countdown_difference
     countdown_end_time - Time.now

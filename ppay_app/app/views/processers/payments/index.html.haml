@@ -2,13 +2,5 @@
   %section.wrap
     .card-wrap
       .item-card
-        %h1.mb-4 Ждут оплаты
-        = render 'table', payments: @withdrawals_transferring
-    .card-wrap
-      .item-card
-        %h1.mb-4 Ждут подтверждения
-        = render 'table', payments: @deposits_confirming
-    .card-wrap
-      .item-card
-        %h1.mb-4 Остальные платежи
+        %h1.mb-4 Все платежи
         = render 'table', payments: @payments

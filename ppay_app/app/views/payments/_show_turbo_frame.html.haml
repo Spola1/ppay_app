@@ -1,3 +1,2 @@
 = turbo_frame_tag "payment_#{payment.uuid}" do
-  %div{ data: { controller: 'payments' } }
-    = render payment_status_partial(payment), payment:, signature:
+  = render payment_status_partial(payment), payment:, signature:

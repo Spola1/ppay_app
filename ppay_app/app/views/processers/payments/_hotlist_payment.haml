@@ -1,0 +1,28 @@
+.toast.bg-blue-600
+  .toast-header
+    .toast-header-text
+      .mr-2.text-xs
+        = fa_icon payment.type_icon
+      = payment.human_type
+    .toast-header-time
+      .toast-header-time-text.countdown{
+        data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' }
+      }
+        = payment.countdown
+  .toast-text.text-xs
+    %table
+      %tr
+        %td.toast-text-name
+          Сумма
+        %td.toast-text-value
+          = payment.fiat_amount_with_currency
+      %tr
+        %td.toast-text-name
+          Банк
+        %td.toast-text-value
+          = payment.payment_system
+      %tr
+        %td.toast-text-name
+          Статус
+        %td.toast-text-value
+          = payment.human_payment_status

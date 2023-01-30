@@ -1,3 +1,2 @@
 = turbo_frame_tag "processers_payment_#{payment.uuid}" do
-  %div{ data: { controller: 'payments' } }
-    = render 'processers/payments/common_show', payment:, signature:, role_namespace:
+  = render 'processers/payments/common_show', payment:, signature:, role_namespace:
