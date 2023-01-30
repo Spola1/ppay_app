@@ -1,3 +1,8 @@
+
+= render 'payments/errors', payment: payment
+
+
+
 .proc_head
   .proc_logo
   .proc_text
@@ -9,23 +14,19 @@
     = payment.countdown
 
 
-
-
-
 .proc_amount_block
   .proc_amount_content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
 
  
-
-
 .proc_card_sceomorph
   .proc_card_sceomorph_bank
     = payment.payment_system.upcase
   .proc_card_sceomorph_number
-    - cards_string = ""
-    - payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
-    = cards_string
+    - #cards_string = ""
+    - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
+    = #cards_string
+    = payment.advertisement.card_number
   .proc_card_sceomorph_footer
 
 
@@ -48,8 +49,6 @@
 
 
 
-
-= render 'payments/errors', payment: payment
 
 .payment_image_tag_block
   = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|

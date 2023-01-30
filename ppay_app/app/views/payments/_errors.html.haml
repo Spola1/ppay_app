@@ -1,3 +1,4 @@
 - if payment.errors.full_messages.any?
   - payment.errors.full_messages.each do |error_message|
-    %p.text-red-500= error_message
+    .error_messages_in_payments_forms
+      %p.text-red-500= error_message
