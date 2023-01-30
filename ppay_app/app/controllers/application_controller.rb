@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
 
   def role_namespace
-    current_user.type.underscore.pluralize
+    current_user.type.underscore.pluralize if current_user
   end
 
   def model_class
