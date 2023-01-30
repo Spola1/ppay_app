@@ -24,7 +24,7 @@ class Payment < ApplicationRecord
 
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
-  validates :card_number, credit_card_number: true
+  # validates :card_number, credit_card_number: true
 
   after_update_commit -> do
     broadcast_replace_payment_to_client
@@ -33,7 +33,7 @@ class Payment < ApplicationRecord
   end
 
   after_update_commit -> do
-    if payment_status_previously_changed?
+    if payment_status_previously_changed? && processer
       broadcast_replace_hotlist_to_processer
       broadcast_append_notification_to_processer if in_hotlist?
     end
