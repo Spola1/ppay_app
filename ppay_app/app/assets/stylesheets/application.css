@@ -37,6 +37,7 @@ button, input[type=submit] {
 }
 
 .proc_head{
+  float: left;
   width: 300px;
   height: 60px;
 }
@@ -260,6 +261,9 @@ label[for=deposit_payment_system]{
 
 
 .countdown_payment_block_text{
+  float: left;
+  height: 14px;
+  width: 300px;
   font-size: 14px;
   line-height: 14px;
 }
@@ -291,6 +295,8 @@ label[for=deposit_payment_system]{
   color: #888888;
   padding-top: 10px;
   padding-bottom: 10px;
+  height: 90px;
+  width: 300px;
 }
 
 
@@ -308,4 +314,22 @@ label[for=deposit_payment_system]{
 .edit_deposit{
   float: left;
 }
+
+.payment_image_tag_block{
+  float: left;
+  height: 115px;
+  width: 300px;
+}
+
+.block_sending_cancel_on_img_form{
+  float: left;
+  height: 20px;
+  width: 300px;
+}
+
+
+.clear{
+  clear: both;
+}
+
 
