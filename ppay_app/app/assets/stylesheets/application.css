@@ -184,6 +184,7 @@ label[for=deposit_payment_system]{
   text-decoration: underline;
 }
 .proc_payment_waiting_block{
+  float: left;
   width: 300px;
   height: 412px;
 }
@@ -282,9 +283,7 @@ label[for=deposit_payment_system]{
   margin-bottom: 6px;
 }
 .payment-finished-button:hover{
-
   background-color: #ffa248;
-
   color: white;
 }
 
@@ -310,10 +309,6 @@ label[for=deposit_payment_system]{
 
 #deposit_image{
   font-size: 14px;
-
-}
-.edit_deposit{
-  float: left;
 }
 
 .payment_image_tag_block{
@@ -331,6 +326,120 @@ label[for=deposit_payment_system]{
 
 .clear{
   clear: both;
+}
+
+.error_messages_in_payments_forms{
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  float: left;
+  font-size: 14px;
+  min-height: 20px;
+  width: 296px;
+  color: red;
+}
+
+.proc_payment_done_img{
+  margin-top: 40px;
+  background: url("../green-spinner-loading.png") no-repeat top left;
+  width: 300px;
+  height: 280px;
+  background-size: contain;
+  float: left;
+}
+
+.proc_payment_done_block p{
+  float: left;
+  width: 300px;
+  height: 24px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  text-align: center;
+  font-style: bold;
+  font-size: 18px;
+}
+
+.proc_payment_done_block{
+  float: left;
+  width: 300px;
+  height: 412px;
+}
+
+.proc_payment_done_links_block{
+  float: left;
+  width: 300px;
+  height: 100px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+
+.proc_payment_done_links_block a{
+  text-decoration: underline;
+  color: #7d7d7d;
+  width: 300px;
+  text-align: center;
+}
+
+.proc_payment_done_links_block a:hover{
+  color: black;
+  font-style: bold;
+}
+
+
+
+
+
+
+
+.proc_payment_cancelled_img{
+  margin-top: 40px;
+  background: url("../red-spinner-loading.png") no-repeat top left;
+  width: 300px;
+  height: 280px;
+  background-size: contain;
+  float: left;
+}
+
+.proc_payment_cancelled_block p{
+  float: left;
+  width: 300px;
+  height: 24px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  text-align: center;
+  font-style: bold;
+  font-size: 18px;
+}
+
+.proc_payment_cancelled_block{
+  float: left;
+  width: 300px;
+  height: 412px;
+}
+
+.proc_payment_cancelled_links_block{
+  float: left;
+  width: 300px;
+  height: 100px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+
+.proc_payment_cancelled_links_block a{
+  text-decoration: underline;
+  color: #7d7d7d;
+  width: 300px;
+  text-align: center;
+}
+
+.proc_payment_cancelled_links_block a:hover{
+  color: black;
+  font-style: bold;
 }
 
 

@@ -24,7 +24,7 @@ class Payment < ApplicationRecord
 
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
-  validates :card_number, credit_card_number: true
+  #validates :card_number, credit_card_number: true
 
   after_update_commit -> do
     broadcast_replace_payment_to_client
