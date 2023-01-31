@@ -40,7 +40,7 @@ class Payment < ApplicationRecord
   end
 
   scope :in_hotlist, -> do
-    Payment.deposits.confirming.or(Payment.withdrawals.transferring).order(status_changed_at: :desc)
+    deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
   end
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }
