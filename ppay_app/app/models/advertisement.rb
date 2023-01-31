@@ -15,5 +15,5 @@ class Advertisement < ApplicationRecord
   scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system, :card_number
-  validates :card_number, credit_card_number: true
+  # validates :card_number, credit_card_number: true
 end
