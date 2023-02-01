@@ -4,7 +4,8 @@ module Admins
   class PaymentsController < BaseController
 
     def index
-      @payments = Payment.all.order(created_at: :desc).decorate
+      @pagy, @payments = pagy(Payment.all.order(created_at: :desc))
+      @payments = @payments.decorate
     end
   end
 end

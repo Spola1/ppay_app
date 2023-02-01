@@ -20,6 +20,8 @@ navbar:
       path: payments_path
     - name: Транзакции
       path: transactions_path
+    - name: Запросы баланса
+      path: balance_requests_path
   processer:
     - name: Все платежи
       path: payments_path

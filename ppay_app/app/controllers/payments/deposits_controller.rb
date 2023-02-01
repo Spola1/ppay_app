@@ -3,7 +3,7 @@
 module Payments
   class DepositsController < PaymentsController
     def index
-      @payments = Deposit.all
+      @pagy, @payments = pagy(Deposit.all)
     end
   end
 end

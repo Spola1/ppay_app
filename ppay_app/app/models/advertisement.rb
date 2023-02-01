@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Advertisement < ApplicationRecord
+  include CardNumberSettable
+
   has_many :payments
   has_many :deposits
   has_many :withdrawals
@@ -15,5 +17,5 @@ class Advertisement < ApplicationRecord
   scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system, :card_number
-  # validates :card_number, credit_card_number: true
+  validates :card_number, length: { is: 16 }
 end

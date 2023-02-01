@@ -3,7 +3,7 @@
 module Admins
   class TransactionsController < BaseController
     def index
-      @transactions = Transaction.all
+      @pagy, @transactions = pagy(Transaction.all)
     end
 
     def show

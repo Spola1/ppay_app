@@ -3,7 +3,8 @@
 module Processers
   class AdvertisementsController < BaseController
     def index
-      @advertisements = current_user.advertisements.decorate
+      @pagy, @advertisements = pagy(current_user.advertisements)
+      @advertisements = @advertisements.decorate
     end
 
     def show

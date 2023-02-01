@@ -5,7 +5,8 @@ module Processers
     class DepositsController < PaymentsController
 
       def index
-        @payments = Deposit.all.decorate
+        @pagy, @payments = pagy(Deposit.all)
+        @payments = @payments.decorate
       end
 
       def show

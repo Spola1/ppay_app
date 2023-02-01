@@ -1,3 +1,7 @@
-.py-2.px-4
-  = turbo_frame_tag 'payments' do
-    = render 'table', payments: @payments
+= turbo_frame_tag 'content' do
+  %section.wrap
+    = render 'stats'
+    .card-wrap
+      .item-card
+        %h1.mb-4 Последние платежи
+        = render 'table', payments: @payments

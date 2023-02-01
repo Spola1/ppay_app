@@ -2,6 +2,7 @@
 
 class Transaction < ApplicationRecord
   include AASM
+  include DateFilterable
 
   belongs_to :from_balance, class_name: 'Balance', optional: true
   belongs_to :to_balance, class_name: 'Balance', optional: true

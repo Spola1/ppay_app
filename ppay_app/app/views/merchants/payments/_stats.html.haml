@@ -1,0 +1,36 @@
+.card-wrap{ class: 'basis-1/2' }
+  .item-card
+    .flex.mb-4.items-center
+      .text-xl.flex-1 За сегодня
+    %table.item-card-table
+      %tbody
+        = render 'stats_tr', title: 'Депозитов',
+                             value: @today_deposits.count,
+                             icon: 'arrow-up'
+        = render 'stats_tr', title: 'Выводов', 
+                             value: @today_withdrawals.count,
+                             icon: 'arrow-down'
+        = render 'stats_tr', title: 'Всего платежей',
+                             value: @today_payments.count,
+                             icon: 'exchange'
+        = render 'stats_tr', title: 'Изменение баланса',
+                             value: @today_balance_change,
+                             icon: 'line-chart',
+                             value_color: number_color(@today_balance_change),
+                             currency: 'USDT'
+
+.card-wrap{ class: 'basis-1/2' }
+  .item-card.h-full
+    .flex.mb-4.items-center
+      .text-xl.flex-1 За всё время
+    %table.item-card-table
+      %tbody
+        = render 'stats_tr', title: 'Депозитов',
+                             value: @deposits.count,
+                             icon: 'arrow-up'
+        = render 'stats_tr', title: 'Выводов', 
+                             value: @withdrawals.count,
+                             icon: 'arrow-down'
+        = render 'stats_tr', title: 'Всего платежей',
+                             value: @payments.count,
+                             icon: 'exchange'

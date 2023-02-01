@@ -24,5 +24,11 @@ module PpayApp
     config.generators.test_framework = :rspec
 
     config.autoload_paths << Rails.root.join('lib')
+
+    unless Rails.env.production?
+      RSpec.configure do |config|
+        config.swagger_dry_run = false
+      end
+    end
   end
 end

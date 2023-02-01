@@ -5,7 +5,8 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @payments = current_user.payments.decorate
+      @pagy, @payments = pagy(current_user.payments)
+      @payments = @payments.decorate
     end
 
     def show

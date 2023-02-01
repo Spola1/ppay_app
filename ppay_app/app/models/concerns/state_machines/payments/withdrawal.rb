@@ -73,9 +73,9 @@ module StateMachines
       end
 
       def validate_card_number
-        return true if card_number.present?
+        return true if card_number && card_number.size == 16
 
-        errors.add(:card_number, I18n.t('errors.payments.required_card_number'))
+        errors.add(:card_number, :wrong_length, count: 16)
         false
       end
     end

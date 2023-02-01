@@ -4,7 +4,7 @@ module Admins
 
   class BalanceRequestsController < BaseController
     def index
-      @balance_requests = BalanceRequest.all
+      @pagy, @balance_requests = pagy(BalanceRequest.all)
     end
 
     def show

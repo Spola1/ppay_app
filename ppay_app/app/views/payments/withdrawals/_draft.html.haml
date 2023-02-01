@@ -32,7 +32,7 @@
   %br
   = f.label :card_number, 'Номер карты'
   %br
-  = f.text_field :card_number
+  = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }
   %br
 
   = hidden_field_tag :event, 'search' 

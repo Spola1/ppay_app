@@ -114,3 +114,4 @@ gem "aws-sdk-s3", require: false
 
 
 gem "pundit", "~> 2.2"
+gem 'pagy'

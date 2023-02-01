@@ -3,7 +3,7 @@
 module Payments
   class WithdrawalsController < PaymentsController
     def index
-      @payments = Withdrawal.all
+      @pagy, @payments = pagy(Withdrawal.all)
     end
   end
 end

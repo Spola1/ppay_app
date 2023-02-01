@@ -3,12 +3,12 @@
 module Merchants
   class TransactionsController < BaseController
     def index
-      balance_id = current_user.balance.id 
-      @transactions = Transaction.where('from_balance_id=? OR to_balance_id=?', balance_id, balance_id)
+      @pagy, @transactions = pagy(current_user.balance.transactions)
+      @transactions = @transactions.decorate
     end
 
     def show
-      @transaction = Transaction.find(params[:id])
+      @transaction = current_user.transactions.find(params[:id]).decorate
     end
   end
 end

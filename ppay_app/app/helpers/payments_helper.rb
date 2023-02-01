@@ -25,6 +25,12 @@ module PaymentsHelper
     end
   end
 
+  def number_color(number)
+    return if number.blank? || number.zero?
+
+    number.positive? ? 'text-green-500' : 'text-red-500'
+  end
+
   private
 
   def state_translation(state)

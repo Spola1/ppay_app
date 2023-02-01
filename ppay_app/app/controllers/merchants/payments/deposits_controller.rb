@@ -4,7 +4,8 @@ module Merchants
   module Payments
     class DepositsController < PaymentsController
       def index
-        @payments = current_user.deposits.decorate
+        @pagy, @payments = pagy(current_user.deposits)
+        @payments = @payments.decorate
       end
     end
   end

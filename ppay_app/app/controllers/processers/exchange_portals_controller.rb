@@ -3,7 +3,7 @@
 module Processers
   class ExchangePortalsController < BaseController
     def index
-      @exchange_portals = ExchangePortal.all
+      @pagy, @exchange_portals = pagy(ExchangePortal.all)
     end
 
     def show

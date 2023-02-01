@@ -21,4 +21,12 @@ class Balance < ApplicationRecord
       save!
     end
   end
+
+  def today_change
+    to_transactions.today.sum(:amount) - from_transactions.today.sum(:amount)
+  end
+
+  def transactions
+    from_transactions.or(to_transactions.except(to_transactions.frozen))
+  end
 end

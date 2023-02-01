@@ -5,9 +5,8 @@ module Supports
     before_action :find_payment, only: %i[update show]
 
     def index
-      @deposits_confirming = Deposit.confirming.decorate
-      @withdrawals_transferring = Withdrawal.transferring.decorate
-      @payments = Payment.excluding(@deposits_confirming, @withdrawals_transferring).decorate
+      @pagy, @payments = pagy(Payment.all)
+      @payments = @payments.decorate
     end
 
     def show

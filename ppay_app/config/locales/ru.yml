@@ -22,6 +22,18 @@ ru:
         confirming: Подтверждение перевода
         completed: Успешно завершён
         cancelled: Отменён
+      transaction/status:
+        frozen: Заморожена
+        completed: Успешно завершена
+        cancelled: Отменена
+      transaction/transaction_type:
+        main: Платёж
+        ppay_commission: Комиссия сервиса
+        processer_commission: Комиссия оператора
+        agent_commission: Комиссия агента
+        working_group_commission: Комиссия рабочей группы
+        deposit: Пополнение счёта
+        withdraw: Вывод денег
       user/type:
         admin: Администратор
         agent: Агент

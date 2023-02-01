@@ -4,7 +4,7 @@ module Processers
 
   class BalanceRequestsController < BaseController
     def index
-      @balance_requests = current_user.balance_requests
+      @pagy, @balance_requests = pagy(current_user.balance_requests)
     end
 
     def show

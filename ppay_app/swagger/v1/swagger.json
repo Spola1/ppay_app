@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "API V1",
-    "description": "Для выполнения запроса, требующего авторизацию (запрос с замочком), необходимо нажать кнопку \"Authorize\" и вставить туда ваш API-ключ",
+    "description": "# Для выполнения запроса, требующего авторизацию (запрос с замочком), необходимо нажать кнопку \"Authorize\" и вставить туда ваш API-ключ",
     "version": "v1"
   },
   "paths": {
@@ -24,6 +24,9 @@
         "responses": {
           "201": {
             "description": "успешное создание"
+          },
+          "422": {
+            "description": "invalid"
           },
           "401": {
             "description": "unauthorized"
@@ -58,6 +61,9 @@
         "responses": {
           "201": {
             "description": "успешное создание"
+          },
+          "422": {
+            "description": "invalid"
           },
           "401": {
             "description": "unauthorized"

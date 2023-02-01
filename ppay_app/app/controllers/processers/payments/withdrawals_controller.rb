@@ -5,7 +5,8 @@ module Processers
     class WithdrawalsController < PaymentsController
 
       def index
-        @payments = Withdrawal.all.decorate
+        @pagy, @payments = pagy(Withdrawal.all)
+        @payments = @payments.decorate
       end
 
       def show

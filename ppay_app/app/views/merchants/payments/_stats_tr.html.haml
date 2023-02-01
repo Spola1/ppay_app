@@ -1,0 +1,9 @@
+%tr.item-card-tr
+  %td.item-card-td.item-card-td-label
+    - if local_assigns[:icon]
+      %span.mr-1= fa_icon icon
+    = title
+  %td.item-card-td.text-base
+    %span{ class: local_assigns[:value_color] }
+      = value
+    = local_assigns[:currency]

@@ -3,7 +3,7 @@
 module Processers
   class RateSnapshotsController < BaseController
     def index
-      @rate_snapshots = RateSnapshot.all
+      @pagy, @rate_snapshots = pagy(RateSnapshot.all)
     end
 
     def show
