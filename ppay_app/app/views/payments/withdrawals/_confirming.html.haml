@@ -1,3 +1,10 @@
+
+
+.proc_head
+  .proc_logo
+  .proc_text
+    UID Check
+
 %p Вы получили деньги?
 
 = form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update,
