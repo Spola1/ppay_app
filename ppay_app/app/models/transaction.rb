@@ -6,7 +6,7 @@ class Transaction < ApplicationRecord
 
   belongs_to :from_balance, class_name: 'Balance', optional: true
   belongs_to :to_balance, class_name: 'Balance', optional: true
-  belongs_to :payment, optional: true
+  belongs_to :transactionable, polymorphic: true, optional: true
 
   enum transaction_type: {
     main: 0,

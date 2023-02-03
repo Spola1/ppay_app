@@ -39,19 +39,19 @@
 
     %tr.bg-white.border-b
       %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap id платежка
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment_id
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable_id
     %tr.bg-white.border-b
       %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap направление платежа
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment.direction
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable.try(:direction)
     %tr.bg-white.border-b
       %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap платежная система платежа
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment.payment_system
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable.try(:payment_system)
     %tr.bg-white.border-b
       %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус платежа
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment.payment_status
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment.try(:payment_status)
     %tr.bg-white.border-b
       %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap хозяин объявления (ник)
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment.advertisement.processer.nickname
+      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment.try(:advertisement)&.processer&.nickname
 
 
     %tr.bg-white.border-b

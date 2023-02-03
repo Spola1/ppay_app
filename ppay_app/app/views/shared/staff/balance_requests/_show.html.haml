@@ -6,13 +6,13 @@
         .flex.text-right
           - if role_namespace == 'admins'
             = link_to 'Подтвердить или отказать ->', edit_balance_request_path(@balance_request), class: 'form-submit'
-          - else
-            = link_to edit_balance_request_path(@balance_request), class: 'icon-button' do
-              .flex
-                .mr-2
-                  = fa_icon 'pencil'
-                Редактировать
       .mt-8.my-4
-        = render 'shared/management/balance_requests/balance_request'
+        - if role_namespace != 'admins' && @balance_request.deposit? && @balance_request.status == 'processing'
+          .text-lg.badge.bg-blue-600
+            Переведите
+            = @balance_request.amount
+            USDT на кошелёк
+            = @balance_request.crypto_address
+        = render 'shared/staff/balance_requests/balance_request'
       .back-link
         = link_to '<- К списку запросов баланса', balance_requests_path

@@ -10,6 +10,12 @@ ru:
         card_number: Номер карты
         comment: Комментарий
         status: Активно
+      balance_request:
+        requests_type: Тип
+        amount: Сумма
+        crypto_address: Криптоадрес USDT TRC20
+        status: Статус
+        short_comment: Комментарий
       payment:
         payment_system: Платёжная система
         card_number: Номер карты

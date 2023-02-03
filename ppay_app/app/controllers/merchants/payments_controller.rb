@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Merchants
-  class PaymentsController < BaseController
+  class PaymentsController < Staff::BaseController
 
     def index
       set_today_payments

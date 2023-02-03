@@ -1,36 +1,46 @@
 class BalanceRequest < ApplicationRecord
+  include StateMachines::BalanceRequest
+
+  has_one :balance_transaction, as: :transactionable, class_name: 'Transaction'
+
   belongs_to :user
 
-  after_update :create_transaction
-
   enum requests_type: {
-    deposit: 1,
-    withdraw: 2,
+    deposit: 0,
+    withdraw: 1,
   }
 
   enum status: {
-    main: 0,
-    waiting: 1,
-    completed: 2,
-    cancelled: 3,
+    processing: 0,
+    completed: 1,
+    cancelled: 2
   }
 
+  before_validation :set_crypto_address, on: :create, if: -> { deposit? }
+  after_create :create_transaction
+
+  validates_presence_of :crypto_address
+  validates_numericality_of :amount, greater_than: 0
 
   private
 
   def create_transaction
-    if self.status == "completed"
-      if self.requests_type == "deposit"
-        tr = Transaction.create(to_balance: self.user.balance,
-                            amount: self.amount,
-                            transaction_type: :deposit)
-        tr.complete!
-      else self.requests_type == "withdraw"
-        tr = Transaction.create(from_balance: self.user.balance,
-                            amount: self.amount,
-                            transaction_type: :withdraw)
-        tr.complete!
-      end
-    end
+    send("create_#{requests_type}_transaction")
+  end
+
+  def create_deposit_transaction
+    create_balance_transaction(to_balance: user.balance,
+                       amount:,
+                       transaction_type: :deposit)
+  end
+
+  def create_withdraw_transaction
+    create_balance_transaction(from_balance: user.balance,
+                       amount:,
+                       transaction_type: :withdraw)
+  end
+
+  def set_crypto_address
+    self.crypto_address = user.crypto_wallet&.address
   end
 end

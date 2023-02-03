@@ -4,15 +4,17 @@ class User < ApplicationRecord
   devise :database_authenticatable,
          :rememberable, :trackable, :validatable, :lockable
 
-  has_many :api_keys, as: :bearer
   has_one :balance, as: :balanceable, dependent: :destroy
+  has_one :crypto_wallet, dependent: :destroy
 
+  has_many :api_keys, as: :bearer
   has_many :comments
   has_many :balance_requests
 
-
-  before_create :generate_rsa_key_pair
+  before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key
+
+  # validates_presence_of :crypto_wallet
 
   %i[admin agent merchant processer support].each do |role|
     define_method("#{role}?") do
@@ -26,9 +28,7 @@ class User < ApplicationRecord
     api_keys.create
   end
 
-  def generate_rsa_key_pair
-    key = OpenSSL::PKey::RSA.generate(2048)
-    self.rsa_public_key = key.public_key.to_s
-    self.rsa_private_key = key.to_s
+  def set_crypto_wallet
+    self.crypto_wallet = CryptoWallet.free.first
   end
 end

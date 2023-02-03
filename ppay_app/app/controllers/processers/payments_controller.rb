@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Processers
-  class PaymentsController < BaseController
+  class PaymentsController < Staff::BaseController
     before_action :find_payment, only: %i[update show]
 
     def index

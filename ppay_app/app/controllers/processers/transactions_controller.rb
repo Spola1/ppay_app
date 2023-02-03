@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Processers
-  class TransactionsController < BaseController
+  class TransactionsController < Staff::BaseController
     def index
-      @pagy, @transactions = pagy(Transaction.all)
+      @pagy, @transactions = pagy(current_user.transactions.order(created_at: :desc))
     end
 
     def show
-      @transaction = Transaction.find(params[:id])
+      @transaction = current_user.transactions.find(params[:id])
     end
   end
 end

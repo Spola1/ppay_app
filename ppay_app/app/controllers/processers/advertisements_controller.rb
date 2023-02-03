@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Processers
-  class AdvertisementsController < BaseController
+  class AdvertisementsController < Staff::BaseController
     def index
       @pagy, @advertisements = pagy(current_user.advertisements)
       @advertisements = @advertisements.decorate

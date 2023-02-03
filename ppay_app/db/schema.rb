@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_28_153143) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_064949) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -122,6 +122,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_28_153143) do
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
+  create_table "crypto_wallets", force: :cascade do |t|
+    t.string "address"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_crypto_wallets_on_user_id"
+  end
+
   create_table "exchange_portals", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -171,14 +179,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_28_153143) do
     t.decimal "amount"
     t.bigint "from_balance_id", default: 0
     t.bigint "to_balance_id", default: 0
-    t.bigint "payment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
     t.integer "transaction_type", default: 0, null: false
+    t.string "transactionable_type"
+    t.bigint "transactionable_id"
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
-    t.index ["payment_id"], name: "index_transactions_on_payment_id"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
+    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
   end
 
   create_table "users", force: :cascade do |t|
@@ -223,5 +232,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_28_153143) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "transactions", "payments"
+  add_foreign_key "crypto_wallets", "users"
 end

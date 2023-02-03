@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Admins
+module Staff
   class Staff::BaseController < ApplicationController
     before_action :authenticate_user!
   end

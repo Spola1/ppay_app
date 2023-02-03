@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Processers
-  class ExchangePortalsController < BaseController
+  class ExchangePortalsController < Staff::BaseController
     def index
       @pagy, @exchange_portals = pagy(ExchangePortal.all)
     end

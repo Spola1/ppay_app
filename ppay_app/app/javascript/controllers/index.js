@@ -4,6 +4,9 @@
 
 import { application } from "controllers/application"
 
+import BalanceRequestsController from "controllers/balance_requests_controller"
+application.register("balance_requests", BalanceRequestsController)
+
 import CountdownController from "controllers/countdown_controller"
 application.register("countdown", CountdownController)
 

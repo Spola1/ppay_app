@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admins
-  class TransactionsController < BaseController
+  class TransactionsController < Staff::BaseController
     def index
       @pagy, @transactions = pagy(Transaction.all)
     end

@@ -117,8 +117,13 @@
     @apply block my-2;
   }
 
-  .simple_form .input input.string, .simple_form .input input.text {
+  .simple_form .input input.string, .simple_form .input input.text, .simple_form .input input.numeric,
+  .simple_form .input textarea.text {
     @apply form-input;
+  }
+
+  .simple_form .hint {
+    @apply my-1 text-xs text-gray-500;
   }
 
   .simple_form .input select {
@@ -135,7 +140,7 @@
   }
 
   .simple_form .input .error {
-    @apply text-red-500 text-xs;
+    @apply text-red-500 text-xs block;
   }
 
   .toast {

@@ -1,47 +1,44 @@
 # frozen_string_literal: true
 
 module Admins
+  class BalanceRequestsController < Staff::BaseController
+    include Staff::BalanceRequests::EventFireable
 
-  class BalanceRequestsController < BaseController
+    STATUS_EVENTS_MAPPING = {
+      'completed' => :complete,
+      'cancelled' => :cancel,
+    }
+
+    before_action :find_balance_request, except: %i[new index]
+
     def index
-      @pagy, @balance_requests = pagy(BalanceRequest.all)
+      @pagy, @balance_requests = pagy(BalanceRequest.all.order(created_at: :desc))
     end
 
     def show
-      @balance_request = BalanceRequest.find(params[:id])
     end
 
     def new
-      @balance_request = current_user.balance_requests.new
+      @balance_request = BalanceRequest.new
     end
 
     def edit
-      @balance_request = BalanceRequest.find(params[:id])
-    end
-
-    def create
-      @balance_request = current_user.balance_requests.new(balance_request_params)
-      @balance_request.user = current_user
-      if @balance_request.save
-        redirect_to @balance_request
-      else
-        # error
-      end
     end
 
     def update
-      @balance_request = BalanceRequest.find(params[:id])
       @balance_request.update(balance_request_params)
+      fire_event
       redirect_to balance_requests_path if @balance_request.errors.empty?
     end
 
-    def destroy; end
-
     private
 
+    def find_balance_request
+      @balance_request = BalanceRequest.find(params[:id])
+    end
+
     def balance_request_params
-      params.require(:balance_request).permit(:short_comment, :id, :user_id, :requests_type, :amount, :status,
-                                            :crypto_address)
+      params.require(:balance_request).permit(:id, :user_id, :requests_type, :amount, :crypto_address, :short_comment)
     end
   end
 end
