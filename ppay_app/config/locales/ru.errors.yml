@@ -1,22 +1,20 @@
 ru:
+  activerecord:
+    errors:
+      models:
+        payment:
+          attributes:
+            payment_system:
+              blank: не выбрана
+            card_number:
+              blank: не указан
+            image:
+              blank: не загружен
+          inclusion: Доступные значения %{valid_values}
+
   errors:
     format: "%{attribute} %{message}"
     technical_error: Произошла техническая ошибка. Попробуйте повторить операцию
-    payments:
-      required_payment_system: не выбрана
-      required_card_number: не указан
-      required_image: не загружен
-      inclusion: доступные значения %{valid_values}
-    deposits:
-      required_payment_system: не выбрана
-      required_card_number: не указан
-      required_image: не загружен
-      inclusion: доступные значения %{valid_values}
-    withdrawals:
-      required_payment_system: не выбрана
-      required_card_number: не указан
-      required_image: не загружен
-      inclusion: доступные значения %{valid_values}
 
     messages:
       inclusion: "имеет непредусмотренное значение"

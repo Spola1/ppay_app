@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "API V1",
-    "description": "# Для выполнения запроса, требующего авторизацию (запрос с замочком), необходимо нажать кнопку \"Authorize\" и вставить туда ваш API-ключ",
+    "description": "# ❗Авторизация\nДля выполнения на этой странице тестового запроса, требующего авторизацию (запрос с замочком), необходимо нажать кнопку `Authorize` и вставить туда ваш API-ключ.\n\n\n**Если вы разрабатываете интеграцию с нашим API, API-ключ нужно подставлять в header `Authorization`в формате `Bearer {Ваш API-ключ}`**",
     "version": "v1"
   },
   "paths": {
@@ -18,15 +18,37 @@
             }
           }
         ],
+        "description": "### Для отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n\n| Параметр                     | Название            | Тип       | Обязательно/Опционально |Описание    |\n|------------------------------|---------------------|-----------|------------------------------|--------------------------------|\n| `national_currency`         | Национальная валюта | String    | Обязательно   | Укажите валюту, в которой клиент будет вносить деньги |\n| `national_currency_amount` | Сумма               | Number    | Обязательно   | Укажите сумму платежа |\n| `external_order_id`        | Внешний ID заявки   | String    | Опционально   | Укажите ID платежа или заявки в вашей системе, чтобы можно было по нему отследить платёж у нас |\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
 
         ],
         "responses": {
           "201": {
-            "description": "успешное создание"
+            "description": "успешное создание",
+            "content": {
+              "application/json": {
+                "example": {
+                  "uuid": "fc2ba03e-bbee-4bbf-a8f5-b7950347708a",
+                  "url": "http://example.org/payments/deposits/fc2ba03e-bbee-4bbf-a8f5-b7950347708a?signature=159f6c8291ff90bfc391a345a92ed8eeabbbd08e3b7daeebb95bbfa38d770882"
+                }
+              }
+            }
           },
           "422": {
-            "description": "invalid"
+            "description": "invalid",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": [
+                    {
+                      "title": "national_currency",
+                      "detail": "Доступные значения RUB, UZS, TJS, IDR",
+                      "code": 422
+                    }
+                  ]
+                }
+              }
+            }
           },
           "401": {
             "description": "unauthorized"
@@ -55,15 +77,37 @@
             }
           }
         ],
+        "description": "### Для отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n\n| Параметр                     | Название            | Тип       | Обязательно/Опционально |Описание    |\n|------------------------------|---------------------|-----------|------------------------------|--------------------------------|\n| `national_currency`         | Национальная валюта | String    | Обязательно   | Укажите валюту, в которой клиент хочет получить деньги |\n| `national_currency_amount` | Сумма               | Number    | Обязательно   | Укажите сумму платежа |\n| `external_order_id`        | Внешний ID заявки   | String    | Опционально   | Укажите ID платежа или заявки в вашей системе, чтобы можно было по нему отследить платёж у нас |\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
 
         ],
         "responses": {
           "201": {
-            "description": "успешное создание"
+            "description": "успешное создание",
+            "content": {
+              "application/json": {
+                "example": {
+                  "uuid": "46f7f693-00a0-41cd-9f04-50a24383543d",
+                  "url": "http://example.org/payments/withdrawals/46f7f693-00a0-41cd-9f04-50a24383543d?signature=5b3d7241603fff8d87817c1a789438efa7fbdedf76366bfb23e9c95cf9556fd2"
+                }
+              }
+            }
           },
           "422": {
-            "description": "invalid"
+            "description": "invalid",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": [
+                    {
+                      "title": "national_currency",
+                      "detail": "Доступные значения RUB, UZS, TJS, IDR",
+                      "code": 422
+                    }
+                  ]
+                }
+              }
+            }
           },
           "401": {
             "description": "unauthorized"

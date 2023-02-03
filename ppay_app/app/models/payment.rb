@@ -25,6 +25,7 @@ class Payment < ApplicationRecord
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
+  validates_presence_of :national_currency, :national_currency_amount
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 

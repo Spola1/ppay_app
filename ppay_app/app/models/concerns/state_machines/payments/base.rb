@@ -26,7 +26,7 @@ module StateMachines
       def validate_payment_system
         return true if payment_system.present?
 
-        errors.add(:payment_system, I18n.t('errors.payments.required_payment_system'))
+        errors.add(:payment_system, :blank)
         false
       end
 
@@ -53,7 +53,7 @@ module StateMachines
       def validate_image
         return true if image.present?
 
-        errors.add(:image, I18n.t('errors.payments.required_image'))
+        errors.add(:image, :blank)
         false
       end
     end

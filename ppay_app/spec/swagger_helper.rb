@@ -19,8 +19,11 @@ RSpec.configure do |config|
       openapi: '3.0.1',
       info: {
         title: 'API V1',
-        description: '# Для выполнения запроса, требующего авторизацию (запрос с замочком), '\
-          'необходимо нажать кнопку "Authorize" и вставить туда ваш API-ключ',
+        description: "# ❗Авторизация\n"\
+          'Для выполнения на этой странице тестового запроса, требующего авторизацию (запрос с замочком), '\
+          "необходимо нажать кнопку `Authorize` и вставить туда ваш API-ключ.\n\n\n" \
+          '**Если вы разрабатываете интеграцию с нашим API, API-ключ нужно подставлять в header `Authorization`' \
+          'в формате `Bearer {Ваш API-ключ}`**',
         version: 'v1'
       },
       paths: {},
@@ -44,4 +47,14 @@ RSpec.configure do |config|
   # the key, this may want to be changed to avoid putting yaml in json files.
   # Defaults to json. Accepts ':json' and ':yaml'.
   config.swagger_format = :json
+
+  RSpec.shared_context 'generate_examples' do
+    after do |example|
+      example.metadata[:response][:content] = {
+        'application/json' => {
+          example: JSON.parse(response.body, symbolize_names: true)
+        }
+      }
+    end
+  end
 end

@@ -1,4 +1,5 @@
 shared_examples 'create_payment' do
+
   parameter name: :params,
             in: :body,
             schema: { '$ref' => '#/components/schemas/payments_create_parameter_body_schema' }
@@ -14,6 +15,9 @@ shared_examples 'create_payment' do
   let(:currency) { 'RUB' }
 
   response '201', 'успешное создание' do
+
+    include_context 'generate_examples'
+
     it 'создаст платеж мерчанту' do |example|
       expect { submit_request(example.metadata) }.to change {
         user.reload.public_send(payment_type.to_s.underscore.pluralize).count
@@ -24,6 +28,9 @@ shared_examples 'create_payment' do
   end
 
   response '422', 'invalid' do
+
+    include_context 'generate_examples'
+
     context 'валюты нет в списке доступных' do
       let(:currency) { 'USD' }
 
