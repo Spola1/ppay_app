@@ -185,6 +185,7 @@ GEM
     ffaker (2.21.0)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
+    foreman (0.87.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
     haml (5.2.2)
@@ -420,6 +421,7 @@ DEPENDENCIES
   factory_bot_rails
   ffaker
   font-awesome-rails
+  foreman
   haml
   importmap-rails
   jbuilder

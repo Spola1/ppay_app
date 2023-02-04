@@ -29,6 +29,10 @@ if compgen -G "${manifest_files}" > /dev/null 2>&1; then
     -delete
 fi
 
-bundle exec rails server -u puma -b 0.0.0.0 -p 3000
+if [ "$RAILS_ENV" == "development" ]; then
+  bin/dev
+else
+  bundle exec rails server -u puma -b 0.0.0.0 -p 3000
+fi
 
 exec "$@"

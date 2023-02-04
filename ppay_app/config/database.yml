@@ -14,10 +14,5 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB") { "ppay" } %>_production
-  username: "<%= ENV.fetch("POSTGRES_USER") { "postgres" } %>"
-  password: "<%= ENV.fetch("POSTGRES_PASSWORD") { "hello_password" } %>"
-  host: "<%= ENV.fetch("POSTGRES_HOST") { "postgres" } %>"
-  port: "<%= ENV.fetch("POSTGRES_PORT") { 5432 } %>"
-  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  database: ppay_app_production
 

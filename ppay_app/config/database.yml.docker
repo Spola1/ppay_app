@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: "unicode"
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  username: "<%= ENV.fetch("POSTGRES_USER") { "postgres" } %>"
+  password: "<%= ENV.fetch("POSTGRES_PASSWORD") { "hello_password" } %>"
+  host: "<%= ENV.fetch("POSTGRES_HOST") { "postgres" } %>"
+  port: "<%= ENV.fetch("POSTGRES_PORT") { 5432 } %>"
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB") { "ppay_app" } %>_development
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB") { "ppay_app" } %>_test
+
+production:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB") { "ppay_app" } %>_production
+

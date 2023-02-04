@@ -1,7 +1,7 @@
-при развертывании на сервере не забываем про .env файл - его нужно создавать там вручную
-
-не забываем (потом поправим в докере) сделать файлы исполняемыми, в каждой из папок:
-chmod +x docker-entrypoint.sh
+```
+touch ppay_app/.env
+cp ppay_app/.env.dev.example ppay_app/.env.dev
+```
 
 ----
 
@@ -51,6 +51,3 @@ root@299119:~/repos/ppay_repo# docker-compose logs worker
 в сайдкик воркеры попадают и с сервера, не только из крона
 
 ------
-
-test3
-

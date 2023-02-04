@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_03_064949) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_183410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -211,8 +211,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_03_064949) do
     t.datetime "updated_at", null: false
     t.string "type"
     t.integer "working_group_id"
-    t.text "rsa_public_key", null: false
-    t.text "rsa_private_key", null: false
     t.bigint "agent_id"
     t.decimal "deposit_commission", precision: 15, scale: 10
     t.decimal "withdrawal_commission", precision: 15, scale: 10
