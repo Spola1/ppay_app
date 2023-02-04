@@ -80,7 +80,7 @@ services:
       - postgres
       - redis
     ports:
-      - 3001:80
+      - 80:80
     volumes:
       - app_public_files:/app/public:ro
 
