@@ -15,7 +15,7 @@
   
   %tbody
     - payments.each do |payment|
-      %tr.items-list-tr
+      %tr.items-list-tr{ class: paymet_tr_class(payment) }
         %td.items-list-td-link
           = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
         %td.items-list-td= payment.formatted_created_at

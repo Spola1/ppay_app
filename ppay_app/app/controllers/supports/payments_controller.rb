@@ -7,6 +7,9 @@ module Supports
     def index
       @pagy, @payments = pagy(Payment.all)
       @payments = @payments.decorate
+
+      @pagy, @arbitration_payments = pagy(Payment.arbitration)
+      @arbitration_payments = @arbitration_payments.decorate
     end
 
     def show
