@@ -1,7 +1,7 @@
 ## Запуск локально
 
 
-```
+```bash
 bundle
 bin/setup
 bin/dev
@@ -13,14 +13,14 @@ bin/dev
 
 Создать `.env` и `.env.dev`
 
-```
+```bash
 touch ppay_app/.env
 cp ppay_app/.env.dev.example ppay_app/.env.dev
 ```
 
 #### Заупск контейнеров
 
-```
+```bash
 docker-compose -f docker-compose-dev.yml up --build
 ```
 
@@ -30,19 +30,19 @@ docker-compose -f docker-compose-dev.yml up --build
 
 #### Работающий контейнер
 
-```
+```bash
 docker-compose exec app bash
 ```
 
 #### Консоль
 
-```
+```bash
 docker-compose exec app bin/rails c
 ```
 
 #### Логи `sidekiq`
 
-```
+```bash
 docker-compose logs worker
 ```
 
