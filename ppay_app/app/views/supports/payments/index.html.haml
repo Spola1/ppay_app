@@ -1,9 +1,10 @@
 = turbo_frame_tag 'content' do
   %section.wrap
     .card-wrap
-      %h1.mb-4 Ждут оплаты
-      = render 'table', payments: @withdrawals_transferring
-    %h1.mb-4 Ждут подтверждения
-    = render 'table', payments: @deposits_confirming
-    %h1.mb-4 Остальные платежи
-    = render 'table', payments: @payments
+      .item-card
+        %h1.mb-4 На арбитраже
+        = render 'table', payments: @arbitration_payments
+    .card-wrap
+      .item-card
+        %h1.mb-4 Все платежи
+        = render 'table', payments: @payments
