@@ -95,5 +95,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.default_url_options = { host: 'pay.arbby.ru', protocol: 'https' }
+  config.action_controller.default_url_options = config.action_mailer.default_url_options
+  config.active_storage.url_options = config.action_mailer.default_url_options
   routes.default_url_options = config.action_mailer.default_url_options
 end

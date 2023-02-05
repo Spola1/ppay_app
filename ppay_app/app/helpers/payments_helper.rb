@@ -31,10 +31,6 @@ module PaymentsHelper
     number.positive? ? 'text-green-500' : 'text-red-500'
   end
 
-  def paymet_tr_class(payment)
-    'arbitration' if payment.arbitration
-  end
-
   private
 
   def state_translation(state)

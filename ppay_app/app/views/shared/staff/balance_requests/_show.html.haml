@@ -4,10 +4,10 @@
       .flex.mb-4.items-center
         .text-xl.flex-1= "Запрос баланса (ID: #{@balance_request.id})"
         .flex.text-right
-          - if role_namespace == 'admins'
+          - if management_namespace?
             = link_to 'Подтвердить или отказать ->', edit_balance_request_path(@balance_request), class: 'form-submit'
       .mt-8.my-4
-        - if role_namespace != 'admins' && @balance_request.deposit? && @balance_request.status == 'processing'
+        - if !management_namespace? && @balance_request.deposit? && @balance_request.status == 'processing'
           .text-lg.badge.bg-blue-600
             Переведите
             = @balance_request.amount

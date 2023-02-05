@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Admins
+module Supports
   class BalanceRequestsController < Staff::Management::BalanceRequestsController
   end
 end

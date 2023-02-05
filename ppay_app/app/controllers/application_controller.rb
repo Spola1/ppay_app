@@ -4,12 +4,18 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include Pagy::Backend
 
-  helper_method :role_namespace
+  MANAGEMENT_NAMESPACES = %w[admins supports]
+
+  helper_method :role_namespace, :management_namespace?
 
   private
 
   def role_namespace
     current_user.type.underscore.pluralize if current_user
+  end
+
+  def management_namespace?
+    role_namespace.in?(MANAGEMENT_NAMESPACES) if role_namespace
   end
 
   def model_class

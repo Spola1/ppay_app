@@ -15,17 +15,17 @@
   
   %tbody
     - payments.each do |payment|
-      %tr.items-list-tr{ class: paymet_tr_class(payment) }
+      %tr.items-list-tr
         %td.items-list-td-link
           = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
         %td.items-list-td= payment.formatted_created_at
-        %td.items-list-td= payment.type
+        %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
         %td.items-list-td= payment.national_currency_amount       
         %td.items-list-td= payment.cryptocurrency
         %td.items-list-td= payment.cryptocurrency_amount
         %td.items-list-td= payment.payment_system
-        %td.items-list-td= payment.payment_status
+        %td.items-list-td= payment.human_payment_status
         %td.items-list-td= payment.merchant_id
 
         %td.items-list-td-link
