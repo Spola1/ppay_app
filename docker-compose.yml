@@ -70,8 +70,8 @@ services:
 
   nginx:
     build:
-      context: ./nginx
-      dockerfile: Dockerfile_nginx
+      context: .
+      dockerfile: Dockerfile.nginx
     depends_on:
       - app
       - postgres
