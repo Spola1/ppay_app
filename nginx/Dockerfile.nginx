@@ -19,7 +19,7 @@ RUN mkdir public
 COPY ppay_app/public public/
 
 # Copy Nginx config template
-COPY ppay_app/sites-enabled/ppay_app.conf /tmp/docker.nginx
+COPY nginx/sites-enabled/ppay_app.conf /tmp/docker.nginx
 
 # substitute variable references in the Nginx config template for real values from the environment 
 # put the final config in its place
