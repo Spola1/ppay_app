@@ -3,14 +3,12 @@
 module Processers
   module Payments
     class WithdrawalsController < PaymentsController
-
       def index
         @pagy, @payments = pagy(Withdrawal.all)
         @payments = @payments.decorate
       end
 
-      def show
-      end
+      def show; end
 
       private
 

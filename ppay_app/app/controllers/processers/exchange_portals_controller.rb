@@ -9,6 +9,5 @@ module Processers
     def show
       @exchange_portal = ExchangePortal.find(params[:id])
     end
-
   end
 end

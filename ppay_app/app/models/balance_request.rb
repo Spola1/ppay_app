@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BalanceRequest < ApplicationRecord
   include StateMachines::BalanceRequest
 
@@ -7,7 +9,7 @@ class BalanceRequest < ApplicationRecord
 
   enum requests_type: {
     deposit: 0,
-    withdraw: 1,
+    withdraw: 1
   }
 
   enum status: {
@@ -30,14 +32,14 @@ class BalanceRequest < ApplicationRecord
 
   def create_deposit_transaction
     create_balance_transaction(to_balance: user.balance,
-                       amount:,
-                       transaction_type: :deposit)
+                               amount:,
+                               transaction_type: :deposit)
   end
 
   def create_withdraw_transaction
     create_balance_transaction(from_balance: user.balance,
-                       amount:,
-                       transaction_type: :withdraw)
+                               amount:,
+                               transaction_type: :withdraw)
   end
 
   def set_crypto_address

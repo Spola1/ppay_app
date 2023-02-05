@@ -6,8 +6,8 @@ module Admins
 
     STATUS_EVENTS_MAPPING = {
       'completed' => :complete,
-      'cancelled' => :cancel,
-    }
+      'cancelled' => :cancel
+    }.freeze
 
     before_action :find_balance_request, except: %i[new index]
 
@@ -15,15 +15,13 @@ module Admins
       @pagy, @balance_requests = pagy(BalanceRequest.all.order(created_at: :desc))
     end
 
-    def show
-    end
+    def show; end
 
     def new
       @balance_request = BalanceRequest.new
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       @balance_request.update(balance_request_params)
@@ -42,5 +40,3 @@ module Admins
     end
   end
 end
-
-

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RsaEncryptionService
   attr_reader :data, :key
 

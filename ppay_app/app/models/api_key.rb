@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiKey < ApplicationRecord
   belongs_to :bearer, polymorphic: true
 
@@ -6,6 +8,6 @@ class ApiKey < ApplicationRecord
   private
 
   def set_token
-  	self.token = SecureRandom.hex(24)
+    self.token = SecureRandom.hex(24)
   end
 end

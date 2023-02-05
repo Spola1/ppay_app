@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 module Binance
@@ -28,25 +30,25 @@ module Binance
       form_data_hash = {
         asset: advs_params[:asset],
         fiat: advs_params[:fiat],
-        #merchantCheck: advs_params[:merchant_check],
+        # merchantCheck: advs_params[:merchant_check],
         page: 1,
-        #payTypes: p_method,
+        # payTypes: p_method,
         publisherType: nil,
         rows: 20,
-        tradeType: advs_params[:trade_type],
-        #transAmount: advs_params[:trans_amount].to_s
+        tradeType: advs_params[:trade_type]
+        # transAmount: advs_params[:trans_amount].to_s
       }
-      unless advs_params[:merchant_check] == false
-        form_data_hash[:merchantCheck] = advs_params[:merchant_check]
-      else
+      if advs_params[:merchant_check] == false
         # если мы не хотим требовать проверку на мерчанта
         # false
-      end
-      unless advs_params[:trans_amount] == false
-        form_data_hash[:transAmount] = advs_params[:trans_amount].to_s
       else
+        form_data_hash[:merchantCheck] = advs_params[:merchant_check]
+      end
+      if advs_params[:trans_amount] == false
         # если мы не хотим указывать сумму, то просто передаем
         # false
+      else
+        form_data_hash[:transAmount] = advs_params[:trans_amount].to_s
       end
       # ниже учитываем, что названия наши и техн. названия
       # платежного метода на бирже Бинанс отличаются
@@ -69,7 +71,6 @@ module Binance
         p_method = ''
         puts "любой или неизвестный платежный метод (#{advs_params[:pay_types]})"
       end
-
 
       # puts "== form_data_hash.to_json: =="
       # puts form_data_hash.to_json

@@ -7,7 +7,7 @@ class RateSnapshot < ApplicationRecord
 
   enum direction: {
     buy: 'buy',
-    sell: 'sell',
+    sell: 'sell'
   }
 
   scope :by_national_currency, ->(currency) { where(national_currency: currency) }

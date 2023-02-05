@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddTypeToPayments < ActiveRecord::Migration[7.0]
   def change
     add_column :payments, :type, :string, null: false, default: 'Deposit'

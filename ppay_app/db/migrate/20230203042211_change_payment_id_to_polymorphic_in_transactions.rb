@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangePaymentIdToPolymorphicInTransactions < ActiveRecord::Migration[7.0]
   def change
     add_reference :transactions, :transactionable, polymorphic: true

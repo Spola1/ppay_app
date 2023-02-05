@@ -9,7 +9,7 @@ module Api
       prepend_before_action :authenticate_with_api_key!
 
       def create
-        @object = current_bearer.becomes(Merchant).public_send("#{ model_class_plural }").new(permitted_params)
+        @object = current_bearer.becomes(Merchant).public_send(model_class_plural.to_s).new(permitted_params)
 
         if @object.save
           render json: serialized_object, status: :created
@@ -25,7 +25,7 @@ module Api
       end
 
       def serializer
-        "Api::V1::Payments::#{ model_class }Serializer".classify.constantize
+        "Api::V1::Payments::#{model_class}Serializer".classify.constantize
       end
     end
   end

@@ -9,14 +9,14 @@ class Balance < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   def withdraw(amount)
-    self.with_lock do
+    with_lock do
       self.amount -= amount
       save!
     end
   end
 
   def deposit(amount)
-    self.with_lock do
+    with_lock do
       self.amount += amount
       save!
     end

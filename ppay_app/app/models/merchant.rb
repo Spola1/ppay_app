@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Merchant < User
   has_many :payments,    foreign_key: :merchant_id
   has_many :deposits,    foreign_key: :merchant_id

@@ -19,11 +19,11 @@ RSpec.configure do |config|
       openapi: '3.0.1',
       info: {
         title: 'API V1',
-        description: "# ❗Авторизация\n"\
-          'Для выполнения на этой странице тестового запроса, требующего авторизацию (запрос с замочком), '\
-          "необходимо нажать кнопку `Authorize` и вставить туда ваш API-ключ.\n\n\n" \
-          '**Если вы разрабатываете интеграцию с нашим API, API-ключ нужно подставлять в header `Authorization`' \
-          'в формате `Bearer {Ваш API-ключ}`**',
+        description: "# ❗Авторизация\n" \
+                     'Для выполнения на этой странице тестового запроса, требующего авторизацию (запрос с замочком), ' \
+                     "необходимо нажать кнопку `Authorize` и вставить туда ваш API-ключ.\n\n\n" \
+                     '**Если вы разрабатываете интеграцию с нашим API, API-ключ нужно подставлять в header `Authorization`' \
+                     'в формате `Bearer {Ваш API-ключ}`**',
         version: 'v1'
       },
       paths: {},
@@ -31,14 +31,14 @@ RSpec.configure do |config|
         securitySchemes: {
           bearerAuth: {
             type: :http,
-            scheme: :bearer,
+            scheme: :bearer
           }
         },
         schemas: Swagger::Settings.instance.v1_schemas
       },
       security: {
-        bearerAuth: [] 
-      },
+        bearerAuth: []
+      }
     }
   }
 

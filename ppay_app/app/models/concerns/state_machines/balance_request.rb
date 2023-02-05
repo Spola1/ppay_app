@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StateMachines
   module BalanceRequest
     extend ActiveSupport::Concern

@@ -5,8 +5,8 @@ module Staff
     include Staff::BalanceRequests::EventFireable
 
     STATUS_EVENTS_MAPPING = {
-      'Отменён' => :cancel,
-    }
+      'Отменён' => :cancel
+    }.freeze
 
     before_action :find_balance_request, except: %i[new create index]
 
@@ -49,5 +49,3 @@ module Staff
     end
   end
 end
-
-

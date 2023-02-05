@@ -2,7 +2,6 @@
 
 module Admins
   class PaymentsController < Staff::BaseController
-
     def index
       @pagy, @payments = pagy(Payment.all.order(created_at: :desc))
       @payments = @payments.decorate

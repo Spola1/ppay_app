@@ -1,5 +1,6 @@
-shared_examples 'create_payment' do
+# frozen_string_literal: true
 
+shared_examples 'create_payment' do
   parameter name: :params,
             in: :body,
             schema: { '$ref' => '#/components/schemas/payments_create_parameter_body_schema' }
@@ -8,14 +9,13 @@ shared_examples 'create_payment' do
     {
       national_currency: currency,
       national_currency_amount: 3000.0,
-      external_order_id: '1234',
+      external_order_id: '1234'
     }
   end
 
   let(:currency) { 'RUB' }
 
   response '201', 'успешное создание' do
-
     include_context 'generate_examples'
 
     it 'создаст платеж мерчанту' do |example|
@@ -28,7 +28,6 @@ shared_examples 'create_payment' do
   end
 
   response '422', 'invalid' do
-
     include_context 'generate_examples'
 
     context 'валюты нет в списке доступных' do
@@ -42,7 +41,7 @@ shared_examples 'create_payment' do
 
       let(:national_currency_error) { "Доступные значения #{Settings.national_currencies.join(', ')}" }
 
-      run_test! do |response|
+      run_test! do |_response|
         expect(response_body['errors']).to eq(expected_errors)
       end
     end

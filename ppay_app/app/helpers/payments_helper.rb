@@ -38,7 +38,7 @@ module PaymentsHelper
   private
 
   def state_translation(state)
-    Payment.human_attribute_name("payment_status.#{ state }")
+    Payment.human_attribute_name("payment_status.#{state}")
   end
 
   def payment_prefixes(payment, prefix)

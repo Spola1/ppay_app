@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JsonApi
   class Error < StandardError
     attr_accessor :title, :detail, :id, :href, :code, :source, :links, :status, :meta

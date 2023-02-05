@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Processer < User
   has_many :advertisements, foreign_key: :processer_id
   has_many :payments, through: :advertisements
@@ -6,4 +8,3 @@ class Processer < User
 
   belongs_to :working_group, optional: true
 end
-

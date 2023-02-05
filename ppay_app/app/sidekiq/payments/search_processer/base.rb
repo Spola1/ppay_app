@@ -9,7 +9,7 @@ module Payments
       def perform(payment_id)
         payment = Payment.find(payment_id)
 
-        while payment.advertisement.blank? && payment.reload.processer_search? do
+        while payment.advertisement.blank? && payment.reload.processer_search?
           puts 'не найден'
           payment.advertisement = selected_advertisement(payment)
           payment.bind!

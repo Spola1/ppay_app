@@ -12,8 +12,7 @@ module Supports
       @arbitration_payments = @arbitration_payments.decorate
     end
 
-    def show
-    end
+    def show; end
 
     def update
       @payment.update(payment_params)

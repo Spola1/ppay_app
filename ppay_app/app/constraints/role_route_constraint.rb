@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class RoleRouteConstraint
   def initialize(&block)
-    @block = block || lambda { |user| true }
+    @block = block || ->(_user) { true }
   end
 
   def matches?(request)

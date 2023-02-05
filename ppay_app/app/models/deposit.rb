@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # внесение средств на баланс = операция по продаже (sell)
 class Deposit < Payment
   include StateMachines::Payments::Deposit

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'swagger_helper'
 
 describe 'Платежи' do
@@ -6,7 +8,6 @@ describe 'Платежи' do
   let!(:rate_snapshot) { create(:rate_snapshot) }
 
   path '/api/v1/payments/withdrawals' do
-
     post 'Создание вывода средств' do
       tags 'Платежи'
       consumes 'application/json'

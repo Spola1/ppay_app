@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Payments
   class CommentsController < ApplicationController
     before_action :authenticate_user!, :find_payment

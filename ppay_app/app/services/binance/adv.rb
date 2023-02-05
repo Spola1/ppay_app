@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Binance
   class Adv
     attr_accessor :adv_no, :price, :surplus_amount, :crypto_asset, :min_amount, :max_amount, :fiat_unit, :user_no,

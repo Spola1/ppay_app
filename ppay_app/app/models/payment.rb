@@ -14,10 +14,10 @@ class Payment < ApplicationRecord
   belongs_to :advertisement, optional: true
   belongs_to :support, optional: true
 
-  #обязательная связь (с моделью STI - merchant < user)
+  # обязательная связь (с моделью STI - merchant < user)
   belongs_to :merchant, optional: true
 
-  delegate :processer, to: :advertisement, :allow_nil => true
+  delegate :processer, to: :advertisement, allow_nil: true
 
   has_one_attached :image
 
@@ -29,22 +29,22 @@ class Payment < ApplicationRecord
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 
-  after_update_commit -> do
+  after_update_commit lambda {
     broadcast_replace_payment_to_client
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
-  end
+  }
 
-  after_update_commit -> do
+  after_update_commit lambda {
     if payment_status_previously_changed? && processer
       broadcast_replace_hotlist_to_processer
       broadcast_append_notification_to_processer if in_hotlist?
     end
-  end
+  }
 
-  scope :in_hotlist, -> do
+  scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
-  end
+  }
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
@@ -67,31 +67,31 @@ class Payment < ApplicationRecord
   end
 
   def in_hotlist?
-    type == 'Deposit' && confirming? || type == 'Withdrawal' && transferring?
+    (type == 'Deposit' && confirming?) || (type == 'Withdrawal' && transferring?)
   end
 
   def broadcast_replace_payment_to_client
     broadcast_replace_to(
-      "payment_#{ self.uuid }",
-      partial: "payments/show_turbo_frame",
-      locals: { payment: self.decorate, signature: self.signature },
-      target: "payment_#{ self.uuid }"
+      "payment_#{uuid}",
+      partial: 'payments/show_turbo_frame',
+      locals: { payment: decorate, signature: },
+      target: "payment_#{uuid}"
     )
   end
 
   def broadcast_replace_payment_to_processer
     broadcast_replace_to(
-      "processers_payment_#{ self.uuid }",
-      partial: "processers/payments/show_turbo_frame",
-      locals: { payment: self.decorate, signature: nil, role_namespace: 'processers' },
-      target: "processers_payment_#{ self.uuid }"
+      "processers_payment_#{uuid}",
+      partial: 'processers/payments/show_turbo_frame',
+      locals: { payment: decorate, signature: nil, role_namespace: 'processers' },
+      target: "processers_payment_#{uuid}"
     )
   end
 
   def broadcast_replace_hotlist_to_processer
     broadcast_replace_to(
       "processer_#{processer.id}_hotlist",
-      partial: "processers/payments/hotlist",
+      partial: 'processers/payments/hotlist',
       locals: { role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_hotlist"
     )
@@ -100,18 +100,18 @@ class Payment < ApplicationRecord
   def broadcast_append_notification_to_processer
     broadcast_append_to(
       "processer_#{processer.id}_notifications",
-      partial: "processers/notifications/notification",
-      locals: { payment: self.decorate, role_namespace: 'processers', user: processer },
+      partial: 'processers/notifications/notification',
+      locals: { payment: decorate, role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_notifications"
     )
   end
 
   def broadcast_replace_payment_to_support
     broadcast_replace_to(
-      "supports_payment_#{ self.uuid }",
-      partial: "supports/payments/show_turbo_frame",
-      locals: { payment: self.decorate, signature: nil, role_namespace: 'supports' },
-      target: "supports_payment_#{ self.uuid }"
+      "supports_payment_#{uuid}",
+      partial: 'supports/payments/show_turbo_frame',
+      locals: { payment: decorate, signature: nil, role_namespace: 'supports' },
+      target: "supports_payment_#{uuid}"
     )
   end
 end

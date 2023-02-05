@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     module Resourceable
@@ -14,7 +16,7 @@ module Api
       end
 
       def serializer
-        "#{ model_class }Serializer".classify.constantize
+        "#{model_class}Serializer".classify.constantize
       end
 
       def serialized_object

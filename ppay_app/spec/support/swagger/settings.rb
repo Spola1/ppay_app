@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 V1_SCHEMAS = %w[payments/create].freeze
 
 V1_SCHEMAS.each do |path|
-  require_relative "schemas/v1/#{ path }"
+  require_relative "schemas/v1/#{path}"
 end
 
 module Swagger
@@ -17,7 +19,7 @@ module Swagger
     private
 
     def build_schema(path)
-      "swagger/schemas/v1/#{ path }".camelize.constantize.public_send('schemas')
+      "swagger/schemas/v1/#{path}".camelize.constantize.public_send('schemas')
     end
   end
 end

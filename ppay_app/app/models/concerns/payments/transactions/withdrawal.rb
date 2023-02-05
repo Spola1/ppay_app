@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Payments
   module Transactions
     module Withdrawal
@@ -20,7 +22,7 @@ module Payments
       end
 
       def create_processer_transaction
-        return if processer_commission == 0
+        return if processer_commission.zero?
 
         transactions.create(from_balance: merchant.balance,
                             to_balance: advertisement.processer.balance,
@@ -29,7 +31,7 @@ module Payments
       end
 
       def create_working_group_transaction
-        return if working_group_commission == 0
+        return if working_group_commission.zero?
 
         transactions.create(from_balance: merchant.balance,
                             to_balance: advertisement.processer.working_group.balance,
@@ -38,7 +40,7 @@ module Payments
       end
 
       def create_agent_transaction
-        return if agent_commission == 0
+        return if agent_commission.zero?
 
         transactions.create(from_balance: merchant.balance,
                             to_balance: merchant.agent.balance,
@@ -47,7 +49,7 @@ module Payments
       end
 
       def create_ppay_transaction
-        return if ppay_commission == 0
+        return if ppay_commission.zero?
 
         transactions.create(from_balance: merchant.balance,
                             to_balance: Ppay.last.balance,

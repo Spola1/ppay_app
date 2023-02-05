@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultValuesToAdvertisements < ActiveRecord::Migration[7.0]
   def change
     change_column :advertisements, :cryptocurrency, :string, default: 'USDT'

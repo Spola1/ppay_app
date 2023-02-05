@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'models/concerns/balanceable'
 require 'models/concerns/after_create_balance'

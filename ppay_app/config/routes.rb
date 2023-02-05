@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
@@ -17,7 +18,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  namespace :payments, constraints: lambda { |request| request.params[:signature].present? } do
+  namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
     resources :deposits, param: :uuid, only: :show
     resources :withdrawals, param: :uuid, only: :show
 
@@ -27,14 +28,14 @@ Rails.application.routes.draw do
     end
   end
 
-  scope module: :admins, constraints: lambda { |request| request.env['warden'].user&.admin? } do
+  scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     root 'transactions#index', as: :admins_root
   end
 
-  scope module: :merchants, constraints: lambda { |request| request.env['warden'].user&.merchant? } do
+  scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
     resources :transactions, only: %i[index show]
     resources :balance_requests
@@ -45,7 +46,7 @@ Rails.application.routes.draw do
     root 'payments#index', as: :merchants_root
   end
 
-  scope module: :processers, constraints: lambda { |request| request.env['warden'].user&.processer? } do
+  scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
     resources :advertisements
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
@@ -64,7 +65,7 @@ Rails.application.routes.draw do
     root 'payments#index', as: :processers_root
   end
 
-  scope module: :supports, constraints: lambda { |request| request.env['warden'].user&.support? } do
+  scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
@@ -94,9 +95,9 @@ Rails.application.routes.draw do
 
   # временно для тестов добавляю таблицу
   # по адресу /sidekiq
-  #require 'sidekiq/web'
-  #Rails.application.routes.draw do
-  #devise_for :users
+  # require 'sidekiq/web'
+  # Rails.application.routes.draw do
+  # devise_for :users
   #  mount Sidekiq::Web => '/sidekiq'
-  #end
+  # end
 end

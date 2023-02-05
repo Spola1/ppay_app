@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Payments
   module Statuses
     module Updateable
       extend ActiveSupport::Concern
 
       def update
-        @payment.public_send("#{ allowed_event }!", payment_params)
+        @payment.public_send("#{allowed_event}!", payment_params)
 
         render [role_namespace, 'payments', payment_type_namespace, 'show'].compact.join('/')
       end
@@ -12,9 +14,11 @@ module Payments
       private
 
       def allowed_event
-        params[:event].to_sym.in?(allowed_events) ?
-          params[:event] :
+        if params[:event].to_sym.in?(allowed_events)
+          params[:event]
+        else
           raise(ActionController::BadRequest)
+        end
       end
 
       def payment_type_namespace

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRsaKeysToUsers < ActiveRecord::Migration[7.0]
   def change
     add_column :users, :rsa_public_key, :text

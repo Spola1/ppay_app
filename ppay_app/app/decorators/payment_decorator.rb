@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 class PaymentDecorator < ApplicationDecorator
   include Rails.application.routes.url_helpers
 
   delegate_all
 
   def countdown
-    return '00:00:00' if countdown_difference < 0
+    return '00:00:00' if countdown_difference.negative?
 
     duration = ActiveSupport::Duration.build(countdown_difference).parts
 
-    hours = sprintf('%02d', duration[:hours] || 0)
-    minutes = sprintf('%02d', duration[:minutes] || 0)
-    seconds = sprintf('%02d', duration[:seconds] || 0)
+    hours = format('%02d', duration[:hours] || 0)
+    minutes = format('%02d', duration[:minutes] || 0)
+    seconds = format('%02d', duration[:seconds] || 0)
 
-    "#{ hours }:#{ minutes }:#{ seconds }"
+    "#{hours}:#{minutes}:#{seconds}"
   end
 
   def countdown_end_time
@@ -24,7 +26,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def fiat_amount_with_currency
-    "#{ fiat_amount } #{ national_currency }"
+    "#{fiat_amount} #{national_currency}"
   end
 
   def human_type

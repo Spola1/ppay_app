@@ -9,8 +9,7 @@ module Processers
       @payments = @payments.decorate
     end
 
-    def show
-    end
+    def show; end
 
     def update
       @payment.update(payment_params)
