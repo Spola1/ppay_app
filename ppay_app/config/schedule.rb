@@ -31,7 +31,6 @@ set :output, '/var/log/cron.log'
 every 1.minute do
   runner 'RateSnapshots::GetAllRatesJob.perform_async'
   runner 'Payments::CancelExpiredJob.perform_async'
-  runner 'Payments::SearchProcesser::StartForLostPaymentsJob.perform_async'
 end
 
 # не забываем:
