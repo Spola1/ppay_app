@@ -31,7 +31,6 @@ services:
     volumes:
       - ./ppay_app:/app
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
-      - gem_cache:/bundle
 
   cron:
     build:
@@ -51,7 +50,6 @@ services:
     volumes:
       - ./ppay_app:/app
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
-      - gem_cache:/bundle
 
   app:
     build:
@@ -70,9 +68,7 @@ services:
     volumes:
       - ./ppay_app:/app
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
-      - gem_cache:/bundle
 
 volumes:
   db_data:
   redis_data:
-  gem_cache:

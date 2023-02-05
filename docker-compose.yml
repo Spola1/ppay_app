@@ -30,7 +30,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
-      - gem_cache:/bundle
 
   cron:
     build:
@@ -49,7 +48,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
-      - gem_cache:/bundle
 
   app:
     build:
@@ -68,8 +66,7 @@ services:
     image: cloud.canister.io:5000/ffyy289/ppay_app:latest
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
-      - app_public_files:/app/public
-      - gem_cache:/bundle
+      - assets:/app/public/assets
 
   nginx:
     build:
@@ -82,10 +79,9 @@ services:
     ports:
       - 80:80
     volumes:
-      - app_public_files:/app/public:ro
+      - assets:/app/public/assets:ro
 
 volumes:
   db_data:
   redis_data:
-  app_public_files:
-  gem_cache:
+  assets:
