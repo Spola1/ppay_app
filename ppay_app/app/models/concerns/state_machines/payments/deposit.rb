@@ -33,9 +33,9 @@ module StateMachines
           # bind_operator
           event :bind do
             after :create_transactions
-          ensure :search_processer
+            ensure :search_processer
 
-                 transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
 
           # make_deposit

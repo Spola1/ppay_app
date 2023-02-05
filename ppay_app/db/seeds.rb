@@ -8,12 +8,12 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 ExchangePortal.create(name: 'Binance P2P')
-u1 = Admin.create(email: 'admin@test.com', password: '1234567890', nickname: 'SuperAdmin', role: 'superadmin',
+u1 = Admin.create(email: 'admin@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'SuperAdmin', role: 'superadmin',
                   name: 'Анатолий')
-u2 = Merchant.create(email: 'merchant@test.com', password: '1234567890', nickname: 'AvangardBet', name: 'Петр Петрович')
-u3 = Processer.create(email: 'processer1@test.com', password: '1234567890', nickname: 'VasiaBTC', name: 'Вася')
-u4 = Processer.create(email: 'processer2@test.com', password: '1234567890', nickname: 'IvanCrypto', name: 'Ваня')
-pp = Ppay.create(email: 'ppay@test.com', password: '1234567890', nickname: 'PPay_acc', name: 'Ppay')
+u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet', name: 'Петр Петрович')
+u3 = Processer.create(email: 'processer1@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'VasiaBTC', name: 'Вася')
+u4 = Processer.create(email: 'processer2@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'IvanCrypto', name: 'Ваня')
+pp = Ppay.create(email: 'ppay@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'PPay_acc', name: 'Ppay')
 
 u1 = User.find_by(email: 'admin@test.com')
 u1.usdt_trc20_address = 'SaK2GZoEtevoAJq3NwhDbLyJDfjW73SSUt'
