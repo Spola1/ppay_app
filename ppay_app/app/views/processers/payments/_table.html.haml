@@ -10,7 +10,7 @@
       %th.items-list-th кол-во криптовалюты
       %th.items-list-th платежная система
       %th.items-list-th статус
-      %th.items-list-th id мерчанта
+      %th.items-list-th мерчант
       %th.items-list-th
   
   %tbody
@@ -26,7 +26,13 @@
         %td.items-list-td= payment.cryptocurrency_amount
         %td.items-list-td= payment.payment_system
         %td.items-list-td= payment.human_payment_status
-        %td.items-list-td= payment.merchant_id
+        - merchant = Merchant.find(payment.merchant_id)
+        - if merchant.nickname.present?
+          %td.items-list-td= merchant.nickname
+        - elsif merchant.nickname == nil && (merchant.name.present? || merchant.surname.present?)
+          %td.items-list-td= "#{merchant.name} #{merchant.surname}" 
+        - else 
+          %td.items-list-td= merchant.id
 
         %td.items-list-td-link
           = link_to 'Перейти', payment_path(payment), data: { turbo_action: :advance }

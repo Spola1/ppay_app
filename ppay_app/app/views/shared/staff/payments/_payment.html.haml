@@ -73,7 +73,14 @@
             - if payment.merchant_id
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.item-card-td= "#{Merchant.find(payment.merchant_id).nickname} \| id: #{payment.merchant_id}"
+                - merchant = Merchant.find(payment.merchant_id)
+                - if merchant.nickname.present?
+                  %td.items-list-td= merchant.nickname
+                - elsif merchant.nickname == nil && (merchant.name.present? || merchant.surname.present?)
+                  %td.items-list-td= "#{merchant.name} #{merchant.surname}" 
+                - else 
+                  %td.items-list-td ID #{merchant.id}
+        
 
 
             %tr.item-card-tr
