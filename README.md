@@ -54,7 +54,7 @@ docker-compose logs worker
 
 1. Мерчант (магазин) по API создаёт новый платёж у нас в системе
 
-	<a name='swagger_create_payment'></a>
+	<div name='swagger_create_payment'></a>
 	Создание платежа можно имитировать через `Swagger`, для этого нужно:
 	* 	Зайти на `/api-docs`
 	*  Нажать кнопку **Authorize** и ввести API-ключ мерчанта
