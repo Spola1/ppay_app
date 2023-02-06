@@ -2,6 +2,6 @@
   = form_for payment, url: payment_path(payment), action: :update,
              data: { turbo_confirm: 'Вы уверены, что хотите вернуть платёж в работу?' } do |f|
     = f.hidden_field :arbitration, value: false
-    = f.submit 'Вернуть в работу', class: 'form-submit'
+    = f.submit 'Снять с арбитража', class: 'form-submit'
 - else
   = render 'shared/staff/payments/to_arbitration_button', payment:, role_namespace:

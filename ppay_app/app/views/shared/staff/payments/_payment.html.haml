@@ -5,6 +5,9 @@
         .text-xl
           Данные платежа
         .flex-1.px-4
+          - if payment.cancelled?
+            .badge
+              Отменён
           - if payment.arbitration
             .badge
               На арбитраже
