@@ -18,6 +18,12 @@ touch ppay_app/.env
 cp ppay_app/.env.dev.example ppay_app/.env.dev
 ```
 
+Сбилдить базовый образ (билдится один раз, потом можно изредка обновлять, если добавится много гемов)
+
+```bash
+docker build --build-arg BUNDLE_PATH=/bundle -f ppay_app/Dockerfile.base -t ppay_app_base ppay_app
+```
+
 #### Заупск контейнеров
 
 ```bash
