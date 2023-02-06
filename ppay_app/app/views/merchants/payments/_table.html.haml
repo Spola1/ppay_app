@@ -11,6 +11,7 @@
         %th.items-list-th кол-во криптовалюты
         %th.items-list-th платежная система
         %th.items-list-th статус
+        %th.items-list-th статус изменен
 
         %th.items-list-th
     
@@ -29,6 +30,7 @@
               = "(#{payment.transactions.main.first.amount})"
           %td.items-list-td= payment.payment_system
           %td.items-list-td= payment.human_payment_status
+          %td.items-list-td= payment.status_changed_at
 - else
   .empty-list-text
     Платежей пока нет

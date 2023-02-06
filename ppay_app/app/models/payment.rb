@@ -25,6 +25,8 @@ class Payment < ApplicationRecord
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
+  #after_update :set_status_changed_at, if: :payment_status_changed?
+
   validates_presence_of :national_currency, :national_currency_amount
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
@@ -61,6 +63,10 @@ class Payment < ApplicationRecord
   end
 
   private
+
+  #def set_status_changed_at
+    #self.status_changed_at = Time.now
+  #end
 
   def set_support
     self.support = Support.all.sample

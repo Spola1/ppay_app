@@ -11,6 +11,7 @@
       %th.items-list-th кол-во криптовалюты
       %th.items-list-th платежная система
       %th.items-list-th статус
+      %th.items-list-th статус изменен
       %th.items-list-th id мерчанта
 
       %th.items-list-th
@@ -31,6 +32,7 @@
         %td.items-list-td= payment.cryptocurrency_amount
         %td.items-list-td= payment.payment_system
         %td.items-list-td= payment.human_payment_status
+        %td.items-list-td= payment.status_changed_at
         %td.items-list-td= payment.merchant_id
 
         %td.items-list-td.underline
