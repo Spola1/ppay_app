@@ -31,13 +31,7 @@
         %td.items-list-td= payment.cryptocurrency_amount
         %td.items-list-td= payment.payment_system
         %td.items-list-td= payment.human_payment_status
-        - merchant = Merchant.find(payment.merchant_id)
-        - if merchant.nickname.present?
-          %td.items-list-td= merchant.nickname
-        - elsif merchant.nickname == nil && (merchant.name.present? || merchant.surname.present?)
-          %td.items-list-td= "#{merchant.name} #{merchant.surname}" 
-        - else 
-          %td.items-list-td ID #{merchant.id}
+        %td.items-list-td= payment.merchant.decorate.display_name
         
         %td.items-list-td.underline
           = link_to 'Перейти', payment_path(payment), data: { turbo_action: :advance }

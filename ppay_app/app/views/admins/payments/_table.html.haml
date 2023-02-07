@@ -33,13 +33,7 @@
               = "(#{payment.transactions.main.first.amount})"
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
-          - merchant = Merchant.find(payment.merchant_id)
-          - if merchant.nickname.present?
-            %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= merchant.nickname
-          - elsif merchant.nickname == nil && (merchant.name.present? || merchant.surname.present?)
-            %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= "#{merchant.name} #{merchant.surname}" 
-          - else 
-            %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap ID #{merchant.id}
+          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant.decorate.display_name
 
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
             - if payment.image.present?
