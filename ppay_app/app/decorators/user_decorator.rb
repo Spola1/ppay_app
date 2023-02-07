@@ -12,11 +12,11 @@ class UserDecorator < PaymentDecorator
   def display_name
     nickname.presence || full_name || display_id
   end
-  
+
   def full_name
     [name, surname].reject(&:blank?).join(' ').presence
   end
-  
+
   def display_id
     "ID: #{id}"
   end
