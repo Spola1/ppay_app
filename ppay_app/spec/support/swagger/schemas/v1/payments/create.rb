@@ -21,8 +21,8 @@ module Swagger
                   national_currency: { type: :string, example: 'RUB' },
                   national_currency_amount: { type: :number, example: 3000.0 },
                   external_order_id: { type: :string, example: '1234' },
-                  redirect_url: { type: :string },
-                  callback_url: { type: :string }
+                  redirect_url: { type: :string, example: 'https://example.com/redirect_url' },
+                  callback_url: { type: :string, example: 'https://example.com/callback_url' }
                 }
               }
             }
