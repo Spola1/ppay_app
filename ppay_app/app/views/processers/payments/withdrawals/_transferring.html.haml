@@ -1,46 +1,45 @@
-%div{:class => "mx-auto my-4 w-1/4"}
-  %p
-    Вы можете оплатить в течение:
-    %span.countdown{
-      data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' }
-    }
-      = payment.countdown
-  %br
+%p
+  Вы можете оплатить в течение:
+  %span.countdown{
+    data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' }
+  }
+    = payment.countdown
+%br
 
-  %p.text-2xl
-    Заказ №:
-    = payment.external_order_id
+%p.text-2xl
+  Заказ №:
+  = payment.external_order_id
 
-  %p.text-2xl
-    Сумма:
-    = payment.national_currency_amount
-    = payment.national_currency
+%p.text-2xl
+  Сумма:
+  = payment.national_currency_amount
+  = payment.national_currency
 
-  %p.text-2xl
-    Банк:
-    = payment.payment_system
+%p.text-2xl
+  Банк:
+  = payment.payment_system
 
-  %p.text-2xl
-    Номер карты:
-    = payment.advertisement.card_number
+%p.text-2xl
+  Номер карты:
+  = payment.advertisement.card_number
 
-  %br
-  %p Отправьте указанную сумму на этот номер карты. Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
-  %br
+%br
+%p Отправьте указанную сумму на этот номер карты. Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
+%br
 
-  = render 'payments/errors', payment: payment
+= render 'payments/errors', payment: payment
 
-  = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid), action: :update do |f|
-    = hidden_field_tag :event, 'check'
+= simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid), action: :update do |f|
+  = hidden_field_tag :event, 'check'
 
-    - if payment.image.present?
-      = image_tag payment.image
-      %br
-    = f.label :image, 'Выберите файл:'
+  - if payment.image.present?
+    = image_tag payment.image
     %br
-    = f.file_field :image
-    %br
-    %br
-    = f.submit "Оплата завершена", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
+  = f.label :image, 'Выберите файл:'
+  %br
+  = f.file_field :image
+  %br
+  %br
+  = f.submit "Оплата завершена", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
 
-  %p Если Вы совершили оплату - обязательно нажмите кнопку "Оплата завершена". При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
+%p Если Вы совершили оплату - обязательно нажмите кнопку "Оплата завершена". При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
