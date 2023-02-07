@@ -13,7 +13,8 @@ ExchangePortal.create(name: 'Binance P2P')
 
 u1 = Admin.create(email: 'admin@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'SuperAdmin', role: 'superadmin',
                   name: 'Анатолий')
-u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet', name: 'Петр Петрович')
+u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet',
+                     name: 'Петр Петрович')
 u3 = Processer.create(email: 'processer1@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'VasiaBTC', name: 'Вася')
 u4 = Processer.create(email: 'processer2@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'IvanCrypto', name: 'Ваня')
 u5 = Support.create(email: 'support@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'Svetlana911', name: 'Светлана')
