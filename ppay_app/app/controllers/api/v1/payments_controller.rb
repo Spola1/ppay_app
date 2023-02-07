@@ -21,7 +21,10 @@ module Api
       private
 
       def permitted_params
-        params.permit(:national_currency_amount, :national_currency, :external_order_id)
+        params.permit(
+          :national_currency_amount, :national_currency, :external_order_id,
+          :redirect_url, :callback_url
+        )
       end
 
       def serializer
