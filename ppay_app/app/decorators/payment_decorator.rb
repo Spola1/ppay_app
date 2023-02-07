@@ -37,6 +37,10 @@ class PaymentDecorator < ApplicationDecorator
     type == 'Deposit' ? 'arrow-up' : 'arrow-down'
   end
 
+  def formatted_status_changed_at
+    formatted_date(status_changed_at)
+  end
+
   private
 
   def fiat_amount

@@ -30,7 +30,7 @@
               = "(#{payment.transactions.main.first.amount})"
           %td.items-list-td= payment.payment_system
           %td.items-list-td= payment.human_payment_status
-          %td.items-list-td= payment.status_changed_at
+          %td.items-list-td= payment.formatted_status_changed_at
 - else
   .empty-list-text
     Платежей пока нет
