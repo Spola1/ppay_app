@@ -8,6 +8,9 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 ExchangePortal.create(name: 'Binance P2P')
+
+100.times { CryptoWallet.create(address: SecureRandom.hex) }
+
 u1 = Admin.create(email: 'admin@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'SuperAdmin', role: 'superadmin',
                   name: 'Анатолий')
 u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet', name: 'Петр Петрович')
