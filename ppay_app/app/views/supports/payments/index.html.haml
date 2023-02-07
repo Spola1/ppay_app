@@ -5,7 +5,7 @@
         %h1.mb-4 На арбитраже
         = render 'table', payments: @arbitration_payments
 
-        = render 'shared/pagination', pagy: @pagy
+        = render 'shared/pagination', pagy: @arbitration_payments_pagy
     .card-wrap
       .item-card
         %h1.mb-4 Все платежи
