@@ -1,42 +1,58 @@
-%p Вывод средств
+.proc_head
+  .proc_logo
+  .proc_text
+    UID Check
 
-%p.text-4xl
-  Мерчант:
-  = payment.merchant.name
-%br
-%p.text-2xl
-  Заказ №:
-  = payment.external_order_id
+.proc_amount_block
+  .proc_amount_content
+    = "#{payment.national_currency_amount} #{payment.national_currency}"
 
-%p.text-2xl
-  Сумма:
-  = payment.national_currency_amount
-  = payment.national_currency
+.proc_shop_block
+  .proc_shop_title
+    Магазин
+  .proc_shop_content
+    = payment.merchant.name
 
-%br
+.proc_order_block
+  .proc_order_title
+    Заказ
+  .proc_order_content
+    = payment.external_order_id
 
-%p
-  Пожалуйста, укажите карту, куда Вы хотите вывести средства
-  = "(#{ payment.national_currency_amount } #{ payment.national_currency })"
-%br
-= render 'payments/errors', payment: payment
+.simple_form_for_payment_withraft
+  = render 'payments/errors', payment: payment
 
 = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
   %br
 
-  = f.label :payment_system, 'Банк'
+  %b
+    = f.label :payment_system, 'Банк'
   %br
-  = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-             id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+  = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"]
   %br
+  
   %br
-  = f.label :card_number, 'Номер карты'
-  %br
-  = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }
-  %br
-
+  %b
+    = f.label :card_number, 'Номер карты'
+  = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' },
+     class: 'text-center border text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:border-gray-500'
+  
   = hidden_field_tag :event, 'search' 
-  %br
-  = f.submit "Подтвердить", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
 
-= render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)
+  = f.submit "Подтвердить", class: "confirm-payment-system-choose"
+
+  .please_pay_from_bank 
+    Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и на которую Вы планируете вывести средства!
+
+
+  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)
+
+.alerts_block
+  %p Внимание:
+  %p 
+    i) при отправке денежных средств писать сообщения в приложении категорически запрещено;
+    ii) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
+    iii) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.
+
+
+%br

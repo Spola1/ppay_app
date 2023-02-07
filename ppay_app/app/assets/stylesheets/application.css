@@ -130,6 +130,33 @@ label[for=deposit_payment_system]{
   margin: 6px 0px 0px 0px;
 }
 
+#withdrawal_payment_system{
+  float: left;
+  width: 300px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.simple_form_for_payment_withdrawal{
+  float: left;
+  width: 300px;
+  height: 250px;
+}
+
+label[for=withdrawal_payment_system]{
+  font-style: bold;
+  font-size: 14px;
+
+  margin: 6px 0px 0px 0px;
+}
+
+label[for=withdrawal_card_number]{
+  font-style: bold;
+  font-size: 14px;
+
+  margin: 6px 0px 0px 0px;
+}
+
 .alerts_block{
   float: left;
   font-size: 10px;
