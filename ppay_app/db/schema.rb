@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_203_183_410) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_183410) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -128,6 +128,9 @@ ActiveRecord::Schema[7.0].define(version: 20_230_203_183_410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_crypto_wallets_on_user_id"
+  end
+
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "exchange_portals", force: :cascade do |t|

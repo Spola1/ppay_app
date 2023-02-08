@@ -6,7 +6,7 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f tmp/pids/server.pid
 
-bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
+bundle exec rake db:migrate:with_data 2>/dev/null || bundle exec rake db:setup
 bundle exec rake assets:precompile --silent
 # ------ #
 
