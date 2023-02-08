@@ -23,7 +23,7 @@ module StateMachines
           # search_operator
           event :search do
             before :bind_rate_snapshot
-            after  :search_processer
+            after_commit :search_processer
 
             transitions from: :draft, to: :processer_search,
                         guard: proc { |params| available_processer_search?(params) },
@@ -54,7 +54,7 @@ module StateMachines
           event :cancel do
             after :cancel_transactions
 
-            transitions from: %i[draft transferring], to: :cancelled
+            transitions from: %i[draft], to: :cancelled
           end
         end
       end

@@ -13,7 +13,7 @@ module RateSnapshots
         GetBinanceP2pRatesJob.perform_async('USDT', currency, 'sell', false, false, false, 1)
         GetBinanceP2pRatesJob.perform_async('USDT', currency, 'buy', false, false, false, 1)
       end
-        # sleep 10
+      # sleep 10
       # end
     end
   end

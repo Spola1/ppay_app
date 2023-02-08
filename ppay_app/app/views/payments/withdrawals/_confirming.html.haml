@@ -12,3 +12,6 @@
   = hidden_field_tag :event, 'confirm'
   = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',
     class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded'
+
+  - unless @payment.arbitration
+    = render "/shared/tg_link"
