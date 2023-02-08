@@ -1,6 +1,6 @@
 = simple_form_for @advertisement, html: { data: { controller: 'inputmask--card-number' } } do |f|
 
-  = f.input :direction, collection: [["продажа (sell) / ввод", "продажа"], ["покупка (buy) / вывод", "покупка"]],
+  = f.input :direction, collection: [["продажа (sell) / ввод (deposit)"], ["покупка (buy) / вывод (withdrawal)"]],
                         include_blank: '-выбрать-'
 
   = f.input :national_currency, collection: Settings.national_currencies, include_blank: '-выбрать-'
