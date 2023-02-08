@@ -8,7 +8,7 @@ module Supports
       @pagy, @payments = pagy(Payment.all)
       @payments = @payments.decorate
 
-      @pagy, @arbitration_payments = pagy(Payment.arbitration)
+      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration, page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end
 
