@@ -40,40 +40,27 @@
   %br
   Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
 
+= simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+  = hidden_field_tag :event, 'check'
 
-
-
-
-
-.payment_image_tag_block
-  = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
-    = hidden_field_tag :event, 'check'
-
-    - if payment.image.present?
-      = image_tag payment.image
-      %br
-    .add_img_confirm
-      %b
-        2. Добавьте изображение:
+  - if payment.image.present?
+    = image_tag payment.image
     %br
-    = render 'payments/errors', payment: payment
-    = f.file_field :image
-    %br
+  .add_img_confirm
+    %b
+      2. Добавьте изображение:
+  %br
+  = render 'payments/errors', payment: payment
+  = f.file_field :image
+  %br
 
-    = f.submit "Оплата завершена", class: "payment-finished-button"
+  = f.submit "Оплата завершена", class: "payment-finished-button"
 
 
-  .alerts_block_sending
-    %p Внимание:
-    %p 
-      Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
+.alerts_block_sending
+  %p Внимание:
+  %p 
+    Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
 
-  .block_sending_cancel_on_img_form
-    = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
-  
-  .uuid_payment_block
-    uuid: 
-    = payment.uuid
-    - if user_signed_in?
-      = "(payment_status: \"#{@payment.reload.payment_status}\")"
-  .clear
+.block_sending_cancel_on_img_form
+  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)

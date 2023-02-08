@@ -23,17 +23,6 @@ button, input[type=submit] {
   cursor: pointer;
 }
 
-.show_deposit_block{
-  border: 1px solid #dedede;
-  border-radius: 12px;
-  width: 340px;
-  padding: 20px 20px 20px 20px;
-  /*color:red;*/
-  margin: 0 auto  ;
-  height: 650px;
-  background-color: white;
-}
-
 .show_deposit_draft_block{
   border: 1px solid #dedede;
   border-radius: 12px;
@@ -57,6 +46,18 @@ button, input[type=submit] {
 }
 
 .show_withdrawal_block{
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  width: 340px;
+  padding: 20px 20px 20px 20px;
+  /*color:red;*/
+  margin: 0 auto  ;
+  
+  min-height: 550px;
+  background-color: white;
+}
+
+.show_deposit_block{
   border: 1px solid #dedede;
   border-radius: 12px;
   width: 340px;

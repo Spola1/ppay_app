@@ -20,6 +20,8 @@
   .proc_order_content
     = payment.external_order_id
 
+= render 'payments/errors', payment: payment
+
 .simple_form_for_payment_deposit
   = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
     
@@ -27,29 +29,23 @@
       = f.label :payment_system, 'Выберите платежную систему'
     
     = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-              id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+               id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
     
 
     = hidden_field_tag :event, 'search' 
-
+    
     = f.submit "Подтвердить", class: "confirm-payment-system-choose"
-
-  .simple_form_for_payment_deposit
+    
     .please_pay_from_bank 
       Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
 
-    = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
-    .alerts_block
-      %p Внимание:
-      %p 
-        i) при отправке денежных средств писать сообщения в приложении категорически запрещено;
-        ii) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
-        iii) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.
-    %br
-    .uuid_payment_block
-      uuid: 
-      = payment.uuid
-      - if user_signed_in?
-        = "(payment_status: \"#{@payment.reload.payment_status}\")"
-    .clear
+.alerts_block
+  %p Внимание:
+  %p 
+    i) при отправке денежных средств писать сообщения в приложении категорически запрещено;
+    ii) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
+    iii) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.
+
+%br
