@@ -1,8 +1,3 @@
-
-= render 'payments/errors', payment: payment
-
-
-
 .proc_head
   .proc_logo
   .proc_text
@@ -18,7 +13,7 @@
   .proc_amount_content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
 
- 
+
 .proc_card_sceomorph
   .proc_card_sceomorph_bank
     = payment.payment_system.upcase
@@ -61,16 +56,24 @@
       %b
         2. Добавьте изображение:
     %br
+    = render 'payments/errors', payment: payment
     = f.file_field :image
     %br
 
     = f.submit "Оплата завершена", class: "payment-finished-button"
 
 
-.alerts_block_sending
-  %p Внимание:
-  %p 
-    Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
+  .alerts_block_sending
+    %p Внимание:
+    %p 
+      Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
 
-.block_sending_cancel_on_img_form
-  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+  .block_sending_cancel_on_img_form
+    = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+  
+  .uuid_payment_block
+    uuid: 
+    = payment.uuid
+    - if user_signed_in?
+      = "(payment_status: \"#{@payment.reload.payment_status}\")"
+  .clear
