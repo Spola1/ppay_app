@@ -1,8 +1,12 @@
-.show_content{:class => "mx-auto my-20 w-1/4"} 
+.show_content{:class => "mx-auto my-20 w-1/4"}
+
   = render 'show'
 
+  - if @payment.arbitration
+    =render "/shared/tg_link"
+
   %p.text-gray-300
-    uuid: 
+    uuid:
     = @payment.uuid
     - if user_signed_in?
       = "(payment_status: \"#{@payment.reload.payment_status}\")"
