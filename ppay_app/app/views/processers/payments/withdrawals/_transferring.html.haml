@@ -28,13 +28,12 @@
   %p Отправьте указанную сумму на этот номер карты. Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
   %br
 
-  = render 'payments/errors', payment: payment
-
   = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid), action: :update do |f|
     = hidden_field_tag :event, 'check'
 
     = f.label :image, 'Выберите файл:'
     %br
+    = render 'payments/errors', payment: payment
     = f.file_field :image
     %br
     %br

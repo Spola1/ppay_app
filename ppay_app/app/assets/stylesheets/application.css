@@ -23,7 +23,29 @@ button, input[type=submit] {
   cursor: pointer;
 }
 
-.show_payment_block{
+.show_deposit_draft_block{
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  width: 340px;
+  padding: 20px 20px 20px 20px;
+  /*color:red;*/
+  margin: 0 auto  ;
+  height: 650px;
+  background-color: white;
+}
+
+.show_deposit_transfering_block{
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  width: 340px;
+  padding: 20px 20px 20px 20px;
+  /*color:red;*/
+  margin: 0 auto  ;
+  height: 800px;
+  background-color: white;
+}
+
+.show_withdrawal_block{
   border: 1px solid #dedede;
   border-radius: 12px;
   width: 340px;
@@ -31,7 +53,19 @@ button, input[type=submit] {
   /*color:red;*/
   margin: 0 auto  ;
   
-  min-height: 630px;
+  min-height: 550px;
+  background-color: white;
+}
+
+.show_deposit_block{
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  width: 340px;
+  padding: 20px 20px 20px 20px;
+  /*color:red;*/
+  margin: 0 auto  ;
+  
+  min-height: 550px;
   background-color: white;
 
 }
@@ -124,6 +158,33 @@ button, input[type=submit] {
   height: 250px;
 }
 label[for=deposit_payment_system]{
+  font-style: bold;
+  font-size: 14px;
+
+  margin: 6px 0px 0px 0px;
+}
+
+#withdrawal_payment_system{
+  float: left;
+  width: 300px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.simple_form_for_payment_withdrawal{
+  float: left;
+  width: 300px;
+  height: 250px;
+}
+
+label[for=withdrawal_payment_system]{
+  font-style: bold;
+  font-size: 14px;
+
+  margin: 6px 0px 0px 0px;
+}
+
+label[for=withdrawal_card_number]{
   font-style: bold;
   font-size: 14px;
 
@@ -281,6 +342,8 @@ label[for=deposit_payment_system]{
   border: 1px solid #ffa248;
   color: #ffa248;
   margin-bottom: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .payment-finished-button:hover{
   background-color: #ffa248;
@@ -441,4 +504,6 @@ label[for=deposit_payment_system]{
   font-style: bold;
 }
 
-
+.mt-70 {
+  margin-top: 70px;
+}
