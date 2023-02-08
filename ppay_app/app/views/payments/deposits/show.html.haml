@@ -1,8 +1,12 @@
 .show_content{:class => "show_deposit_block"}
   = render 'show'
 
+  - if @payment.arbitration
+    %p{style: "padding-top: 600px"}
+    = render "/shared/tg_link"
+
   .uuid_payment_block
-    uuid: 
+    uuid:
     = @payment.uuid
     - if user_signed_in?
       = "(payment_status: \"#{@payment.reload.payment_status}\")"

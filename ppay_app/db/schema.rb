@@ -130,6 +130,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_03_183410) do
     t.index ["user_id"], name: "index_crypto_wallets_on_user_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "exchange_portals", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

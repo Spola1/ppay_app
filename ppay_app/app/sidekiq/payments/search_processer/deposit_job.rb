@@ -9,6 +9,7 @@ module Payments
         Advertisement.active
                      .by_payment_system(payment.payment_system)
                      .by_processer_balance(payment.cryptocurrency_amount)
+                     .by_direction('Deposit')
                      .sample
       end
     end
