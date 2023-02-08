@@ -504,4 +504,6 @@ label[for=withdrawal_card_number]{
   font-style: bold;
 }
 
-
+.mt-70 {
+  margin-top: 70px;
+}
