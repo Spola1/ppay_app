@@ -1,10 +1,9 @@
 .item-card.mb-4
-  %div{:class => "mx-auto my-4 w-1/4"}
-    %p Вы получили деньги?
+  %p Вы получили деньги?
 
-    = form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update,
-      data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
-      = hidden_field_tag :event, 'confirm'
-      = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите подтвердить платёж?',
-        class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded'
+  = form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update,
+    data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
+    = hidden_field_tag :event, 'confirm'
+    = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите подтвердить платёж?',
+      class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded'
 
