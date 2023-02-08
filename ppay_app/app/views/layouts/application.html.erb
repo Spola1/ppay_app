@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PpayApp</title>
+    <title>Ppay</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,7 +11,7 @@
     <%= audio_tag 'notification.mp3', id: 'notification_sound' %>
   </head>
 
-  <body>
+  <body data-controller="countdown">
     <div class="default-nav">
       <%- if user_signed_in? %>
         <%= render partial: "layouts/menu_block" %>

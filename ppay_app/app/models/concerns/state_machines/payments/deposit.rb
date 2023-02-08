@@ -23,7 +23,7 @@ module StateMachines
           # search_operator
           event :search do
             before :bind_rate_snapshot
-            after_commit  :search_processer
+            after_commit :search_processer
 
             transitions from: :draft, to: :processer_search,
                         guard: proc { |params| available_processer_search?(params) },
@@ -33,9 +33,9 @@ module StateMachines
           # bind_operator
           event :bind do
             after :create_transactions
-            ensure :search_processer
+          ensure :search_processer
 
-            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+                 transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
 
           # make_deposit

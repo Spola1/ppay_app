@@ -1,4 +1,4 @@
-%div{:class => "mx-auto my-4 w-1/4"}
+.item-card.mb-4
   %p
     Вы можете оплатить в течение:
     %span.countdown{
@@ -31,9 +31,6 @@
   = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid), action: :update do |f|
     = hidden_field_tag :event, 'check'
 
-    - if payment.image.present?
-      = image_tag payment.image
-      %br
     = f.label :image, 'Выберите файл:'
     %br
     = render 'payments/errors', payment: payment
