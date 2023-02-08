@@ -43,6 +43,11 @@ class Payment < ApplicationRecord
     end
   }
 
+  after_update_commit lambda {
+    Payments::UpdateCallbackJob
+      .perform_async(callback_url, uuid, external_order_id, payment_status)
+  }
+
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
   }
