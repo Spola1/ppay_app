@@ -5,8 +5,10 @@ module Payments
     include Sidekiq::Job
     sidekiq_options queue: 'critical', tags: ['update_callback']
 
-    def perform(*args)
-      Payments::UpdateCallback.call(*args)
+    def perform(payment_id)
+      payment = Payment.find(payment_id)
+
+      Payments::UpdateCallback.call(payment)
     end
   end
 end

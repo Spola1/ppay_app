@@ -6,8 +6,11 @@ module Payments
   class UpdateCallback < ApplicationService
     attr_reader :callback_url, :uuid, :external_order_id, :payment_status
 
-    def initialize(*args)
-      @callback_url, @uuid, @external_order_id, @payment_status = args
+    def initialize(payment)
+      @callback_url = payment.callback_url
+      @uuid = payment.uuid
+      @external_order_id = payment.external_order_id
+      @payment_status = payment.payment_status
     end
 
     def call
