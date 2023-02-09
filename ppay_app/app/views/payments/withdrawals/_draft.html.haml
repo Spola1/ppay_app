@@ -1,42 +1,47 @@
-%p Вывод средств
+.proc_head
+  .proc_logo
+  .proc_text
+    UID Check
 
-%p.text-4xl
-  Мерчант:
-  = payment.merchant.name
-%br
-%p.text-2xl
-  Заказ №:
-  = payment.external_order_id
+.proc_shop_block
+  .proc_shop_title
+    Мерчант
+  .proc_shop_content
+    = payment.merchant.name
 
-%p.text-2xl
-  Сумма:
-  = payment.national_currency_amount
-  = payment.national_currency
+.proc_shop_block
+  .proc_order_title
+    Заказ
+  .proc_order_content
+    = payment.external_order_id
 
-%br
+.proc_order_block
+  .proc_order_title
+    Сумма
+  .proc_order_content
+    = "#{payment.national_currency_amount} #{payment.national_currency}"
 
-%p
+.please_pay_from_bank
   Пожалуйста, укажите карту, куда Вы хотите вывести средства
   = "(#{ payment.national_currency_amount } #{ payment.national_currency })"
-%br
+
 = render 'payments/errors', payment: payment
 
 = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
-  %br
-
-  = f.label :payment_system, 'Банк'
+  %b
+    = f.label :payment_system, 'Банк'
   %br
   = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-             id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+            id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
   %br
   %br
-  = f.label :card_number, 'Номер карты'
-  %br
-  = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }
-  %br
+  %b
+    = f.label :card_number, 'Номер карты'
+  = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' },
+            class: 'card-number-field text-center border text-gray-700 px-4 pr-8 rounded'
 
   = hidden_field_tag :event, 'search' 
-  %br
-  = f.submit "Подтвердить", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded"
+
+  = f.submit "Подтвердить", class: "confirm-payment-system-choose"
 
 = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)

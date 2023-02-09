@@ -11,7 +11,8 @@
       %th.items-list-th кол-во криптовалюты
       %th.items-list-th платежная система
       %th.items-list-th статус
-      %th.items-list-th id мерчанта
+      %th.items-list-th статус изменен
+      %th.items-list-th мерчант
 
       %th.items-list-th
   
@@ -31,7 +32,8 @@
         %td.items-list-td= payment.cryptocurrency_amount
         %td.items-list-td= payment.payment_system
         %td.items-list-td= payment.human_payment_status
-        %td.items-list-td= payment.merchant_id
+        %td.items-list-td= payment.formatted_status_changed_at
+        %td.items-list-td= payment.merchant.decorate.display_name
 
         %td.items-list-td.underline
           = link_to 'Перейти', payment_path(payment), data: { turbo_action: :advance }

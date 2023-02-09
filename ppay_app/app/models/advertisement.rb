@@ -15,6 +15,7 @@ class Advertisement < ApplicationRecord
   scope :by_payment_system,    ->(payment_system) { where(payment_system:) }
   scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
   scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
+  scope :by_direction,         ->(direction) { where(direction:) }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system, :card_number
   validates :card_number, length: { is: 16 }

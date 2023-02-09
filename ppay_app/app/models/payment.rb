@@ -27,12 +27,14 @@ class Payment < ApplicationRecord
 
   before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
 
-  validates_presence_of :national_currency, :national_currency_amount
+  validates_presence_of :national_currency, :national_currency_amount,
+                        :redirect_url, :callback_url
+  
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 
   after_update_commit lambda {
-    broadcast_replace_payment_to_client
+    broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
   }
@@ -43,6 +45,8 @@ class Payment < ApplicationRecord
       broadcast_append_notification_to_processer if in_hotlist?
     end
   }
+
+  after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) }
 
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
@@ -77,7 +81,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_payment_to_client
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "payment_#{uuid}",
       partial: 'payments/show_turbo_frame',
       locals: { payment: decorate, signature: },
@@ -86,7 +90,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_payment_to_processer
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "processers_payment_#{uuid}",
       partial: 'processers/payments/show_turbo_frame',
       locals: { payment: decorate, signature: nil, role_namespace: 'processers' },
@@ -95,7 +99,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_hotlist_to_processer
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "processer_#{processer.id}_hotlist",
       partial: 'processers/payments/hotlist',
       locals: { role_namespace: 'processers', user: processer },
@@ -104,7 +108,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    broadcast_append_to(
+    broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
       partial: 'processers/notifications/notification',
       locals: { payment: decorate, role_namespace: 'processers', user: processer },
@@ -113,7 +117,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_payment_to_support
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "supports_payment_#{uuid}",
       partial: 'supports/payments/show_turbo_frame',
       locals: { payment: decorate, signature: nil, role_namespace: 'supports' },

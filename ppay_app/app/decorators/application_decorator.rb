@@ -8,6 +8,6 @@ class ApplicationDecorator < Draper::Decorator
   private
 
   def formatted_date(date)
-    l(date, format: :short)
+    l(date, format: :short) if date
   end
 end

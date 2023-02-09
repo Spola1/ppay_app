@@ -28,5 +28,8 @@
           %td= rs.exchange_portal_id
           %td= rs.value
           %td= link_to 'Перейти', rs
+
+  = render 'shared/pagination', pagy: @pagy
+
 - else
   %p Не найдено в базе

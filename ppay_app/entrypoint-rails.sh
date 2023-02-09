@@ -6,8 +6,14 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f tmp/pids/server.pid
 
-bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
-bundle exec rake assets:precompile --silent
+bundle exec rake db:migrate:with_data 2>/dev/null || bundle exec rake db:setup
+
+
+if [ "$RAILS_ENV" == "development" ]; then
+  bundle exec rake assets:clean --silent
+else
+  bundle exec rake assets:precompile --silent
+fi
 # ------ #
 
 # Always keep this here as it ensures your latest built assets make their way
