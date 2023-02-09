@@ -3,15 +3,21 @@
   .proc_text
     UID Check
 
-.countdown_payment_block_text
-  Вы можете оплатить в течение:
-  %span.countdown{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
-    = payment.countdown
-
-
 .proc_amount_block
   .proc_amount_content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
+
+.countdown_payment_block_text
+  Вы можете оплатить в течение:
+  .countdown_text
+    %span.countdown{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
+      = payment.countdown
+
+.proc_order_block2
+  .proc_order_title
+    Заказ
+  .proc_order_content
+    = payment.external_order_id
 
 
 .proc_card_sceomorph
@@ -25,20 +31,26 @@
   .proc_card_sceomorph_footer
 
 
-.proc_order_block2
-  .proc_order_title2
-    Заказ
-  .proc_order_content2
-    = payment.external_order_id
-
 
 .proc_send_summ
   %b
-    1. Отправьте указанную сумму 
+    1. Откройте банковское приложение 
     %br
-    на этот номер карты.
+    и отправьте указанную сумму.
   %br
-  Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
+  .proc_send_summ
+    .text-gray-500
+      Сумма должна быть в точности та, что указана на экране.
+
+.proc_send_summ
+  %b
+    2. Пожалуйста, добавьте чек 
+    %br
+    с подтверждением платежа.
+  %br
+    .proc_send_summ
+      .text-gray-500
+        Добавление чека позволит нам обработать Ваш платеж значительно быстрее
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
@@ -48,19 +60,31 @@
     %br
   .add_img_confirm
     %b
-      2. Добавьте изображение:
+      Добавьте изображение чека:
   %br
   = render 'payments/errors', payment: payment
-  = f.file_field :image
-  %br
+
+  -# %label.custom-file-upload{for: "image"}
+  -#   .text-xs
+  -#     Выберите файл
+
+  = f.file_field :image, id: "image"
+  
 
   = f.submit "Оплата завершена", class: "payment-finished-button"
 
-
-.alerts_block_sending
-  %p Внимание:
-  %p 
-    Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
-
 .block_sending_cancel_on_img_form
   = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+
+.alerts_block
+  .text-red
+    %p Внимание:
+  .my-2
+    %p 
+      1) при отправке денежных средств писать сообщения в приложении категорически запрещено;
+  .my-2
+    %p 
+      2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
+  .my-2
+    %p 
+      3) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.

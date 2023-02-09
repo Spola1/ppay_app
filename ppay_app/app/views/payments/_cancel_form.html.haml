@@ -1,6 +1,6 @@
 = simple_form_for payment, url:, action: :update,
   data: { turbo_confirm: 'Вы уверены, что хотите отменить платёж?' } do |f|
   = hidden_field_tag :event, 'cancel' 
-  = f.submit 'Отменить', class: 'cancel-payment-deposit'
+  = f.submit 'Отменить платеж', class: 'cancel-payment-deposit'
   %br
   %br
