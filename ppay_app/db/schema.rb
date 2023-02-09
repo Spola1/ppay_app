@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -14,226 +12,228 @@
 
 ActiveRecord::Schema[7.0].define(version: 20_230_207_151_506) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'pgcrypto'
-  enable_extension 'plpgsql'
+  enable_extension "pgcrypto"
+  enable_extension "plpgsql"
 
-  create_table 'active_storage_attachments', force: :cascade do |t|
-    t.string 'name', null: false
-    t.string 'record_type', null: false
-    t.bigint 'record_id', null: false
-    t.bigint 'blob_id', null: false
-    t.datetime 'created_at', null: false
-    t.index ['blob_id'], name: 'index_active_storage_attachments_on_blob_id'
-    t.index %w[record_type record_id name blob_id], name: 'index_active_storage_attachments_uniqueness',
-                                                    unique: true
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table 'active_storage_blobs', force: :cascade do |t|
-    t.string 'key', null: false
-    t.string 'filename', null: false
-    t.string 'content_type'
-    t.text 'metadata'
-    t.string 'service_name', null: false
-    t.bigint 'byte_size', null: false
-    t.string 'checksum'
-    t.datetime 'created_at', null: false
-    t.index ['key'], name: 'index_active_storage_blobs_on_key', unique: true
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table 'active_storage_variant_records', force: :cascade do |t|
-    t.bigint 'blob_id', null: false
-    t.string 'variation_digest', null: false
-    t.index %w[blob_id variation_digest], name: 'index_active_storage_variant_records_uniqueness', unique: true
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table 'advertisements', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'direction'
-    t.string 'national_currency'
-    t.string 'cryptocurrency', default: 'USDT'
-    t.string 'payment_system'
-    t.integer 'payment_system_type', default: 0
-    t.decimal 'min_summ', precision: 12, scale: 2
-    t.decimal 'max_summ', precision: 12, scale: 2
-    t.string 'card_number'
-    t.boolean 'autoacceptance', default: false
-    t.string 'comment'
-    t.string 'operator_contact'
-    t.string 'exchange_rate_type'
-    t.string 'exchange_rate_source'
-    t.decimal 'percent', precision: 4, scale: 2
-    t.decimal 'min_fix_price', precision: 12, scale: 2
-    t.boolean 'status', default: false
-    t.boolean 'hidden', default: false
-    t.integer 'account_id'
-    t.bigint 'processer_id'
-    t.index ['processer_id'], name: 'index_advertisements_on_processer_id'
+  create_table "advertisements", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "direction"
+    t.string "national_currency"
+    t.string "cryptocurrency", default: "USDT"
+    t.string "payment_system"
+    t.integer "payment_system_type", default: 0
+    t.decimal "min_summ", precision: 12, scale: 2
+    t.decimal "max_summ", precision: 12, scale: 2
+    t.string "card_number"
+    t.boolean "autoacceptance", default: false
+    t.string "comment"
+    t.string "operator_contact"
+    t.string "exchange_rate_type"
+    t.string "exchange_rate_source"
+    t.decimal "percent", precision: 4, scale: 2
+    t.decimal "min_fix_price", precision: 12, scale: 2
+    t.boolean "status", default: false
+    t.boolean "hidden", default: false
+    t.integer "account_id"
+    t.bigint "processer_id"
+    t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
-  create_table 'api_keys', force: :cascade do |t|
-    t.integer 'bearer_id', null: false
-    t.string 'bearer_type', null: false
-    t.string 'token', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index %w[bearer_id bearer_type], name: 'index_api_keys_on_bearer_id_and_bearer_type'
-    t.index ['token'], name: 'index_api_keys_on_token', unique: true
+  create_table "api_keys", force: :cascade do |t|
+    t.integer "bearer_id", null: false
+    t.string "bearer_type", null: false
+    t.string "token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bearer_id", "bearer_type"], name: "index_api_keys_on_bearer_id_and_bearer_type"
+    t.index ["token"], name: "index_api_keys_on_token", unique: true
   end
 
-  create_table 'balance_requests', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.integer 'user_id'
-    t.integer 'requests_type', default: 0, null: false
-    t.decimal 'amount', precision: 12, scale: 2
-    t.integer 'status', default: 0, null: false
-    t.string 'crypto_address'
-    t.text 'short_comment'
+  create_table "balance_requests", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "requests_type", default: 0, null: false
+    t.decimal "amount", precision: 12, scale: 2
+    t.integer "status", default: 0, null: false
+    t.string "crypto_address"
+    t.text "short_comment"
   end
 
-  create_table 'balances', force: :cascade do |t|
-    t.decimal 'amount', default: '0.0', null: false
-    t.string 'balanceable_type', null: false
-    t.bigint 'balanceable_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index %w[balanceable_type balanceable_id], name: 'index_balances_on_balanceable'
+  create_table "balances", force: :cascade do |t|
+    t.decimal "amount", default: "0.0", null: false
+    t.string "balanceable_type", null: false
+    t.bigint "balanceable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["balanceable_type", "balanceable_id"], name: "index_balances_on_balanceable"
   end
 
-  create_table 'cards', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'number'
-    t.string 'expiration'
-    t.string 'first_name'
-    t.string 'last_name'
-    t.string 'cvv'
+  create_table "cards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "number"
+    t.string "expiration"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "cvv"
   end
 
-  create_table 'comments', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.integer 'commentable_id'
-    t.string 'commentable_type'
-    t.string 'author_nickname'
-    t.string 'author_type'
-    t.text 'text'
-    t.integer 'user_id'
-    t.string 'user_ip'
-    t.string 'user_agent'
-    t.index %w[commentable_id commentable_type], name: 'index_comments_on_commentable_id_and_commentable_type'
+  create_table "comments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.string "author_nickname"
+    t.string "author_type"
+    t.text "text"
+    t.integer "user_id"
+    t.string "user_ip"
+    t.string "user_agent"
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
-  create_table 'crypto_wallets', force: :cascade do |t|
-    t.string 'address'
-    t.bigint 'user_id'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['user_id'], name: 'index_crypto_wallets_on_user_id'
+  create_table "crypto_wallets", force: :cascade do |t|
+    t.string "address"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_crypto_wallets_on_user_id"
   end
 
-  create_table 'exchange_portals', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'name'
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
-  create_table 'payments', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'direction'
-    t.string 'cryptocurrency', default: 'USDT', null: false
-    t.decimal 'cryptocurrency_amount', precision: 12, scale: 2
-    t.string 'national_currency'
-    t.decimal 'national_currency_amount', precision: 12, scale: 2
-    t.string 'payment_system'
-    t.string 'payment_status'
-    t.string 'cancelled_on_status'
-    t.integer 'advertisement_id'
-    t.integer 'merchant_id'
-    t.integer 'rate_snapshot_id'
-    t.string 'first_ip'
-    t.string 'first_user_agent'
-    t.uuid 'uuid', default: -> { 'gen_random_uuid()' }
-    t.string 'external_order_id'
-    t.string 'type', default: 'Deposit', null: false
-    t.datetime 'status_changed_at'
-    t.string 'card_number'
-    t.boolean 'arbitration', default: false
-    t.bigint 'support_id'
-    t.string 'redirect_url'
-    t.string 'callback_url'
-    t.index ['support_id'], name: 'index_payments_on_support_id'
+  create_table "exchange_portals", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
   end
 
-  create_table 'rate_snapshots', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'direction'
-    t.string 'cryptocurrency'
-    t.string 'payment_system'
-    t.integer 'position_number'
-    t.integer 'exchange_portal_id'
-    t.decimal 'value'
-    t.string 'national_currency'
-    t.decimal 'adv_amount'
+  create_table "payments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "direction"
+    t.string "cryptocurrency", default: "USDT", null: false
+    t.decimal "cryptocurrency_amount", precision: 12, scale: 2
+    t.string "national_currency"
+    t.decimal "national_currency_amount", precision: 12, scale: 2
+    t.string "payment_system"
+    t.string "payment_status"
+    t.string "cancelled_on_status"
+    t.integer "advertisement_id"
+    t.integer "merchant_id"
+    t.integer "rate_snapshot_id"
+    t.string "first_ip"
+    t.string "first_user_agent"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.string "external_order_id"
+    t.string "type", default: "Deposit", null: false
+    t.datetime "status_changed_at"
+    t.string "card_number"
+    t.boolean "arbitration", default: false
+    t.bigint "support_id"
+    t.string "redirect_url"
+    t.string "callback_url"
+    t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
-  create_table 'transactions', force: :cascade do |t|
-    t.decimal 'amount'
-    t.bigint 'from_balance_id', default: 0
-    t.bigint 'to_balance_id', default: 0
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'status'
-    t.integer 'transaction_type', default: 0, null: false
-    t.string 'transactionable_type'
-    t.bigint 'transactionable_id'
-    t.index ['from_balance_id'], name: 'index_transactions_on_from_balance_id'
-    t.index ['to_balance_id'], name: 'index_transactions_on_to_balance_id'
-    t.index %w[transactionable_type transactionable_id], name: 'index_transactions_on_transactionable'
+  create_table "rate_snapshots", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "direction"
+    t.string "cryptocurrency"
+    t.string "payment_system"
+    t.integer "position_number"
+    t.integer "exchange_portal_id"
+    t.decimal "value"
+    t.string "national_currency"
+    t.decimal "adv_amount"
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'email', default: '', null: false
-    t.string 'encrypted_password', default: '', null: false
-    t.datetime 'remember_created_at'
-    t.integer 'sign_in_count', default: 0, null: false
-    t.datetime 'current_sign_in_at'
-    t.datetime 'last_sign_in_at'
-    t.string 'current_sign_in_ip'
-    t.string 'last_sign_in_ip'
-    t.integer 'failed_attempts', default: 0, null: false
-    t.string 'unlock_token'
-    t.datetime 'locked_at'
-    t.string 'nickname'
-    t.string 'name'
-    t.string 'surname'
-    t.string 'phone'
-    t.string 'role'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'type'
-    t.integer 'working_group_id'
-    t.bigint 'agent_id'
-    t.decimal 'deposit_commission', precision: 15, scale: 10
-    t.decimal 'withdrawal_commission', precision: 15, scale: 10
-    t.string 'usdt_trc20_address'
-    t.index ['agent_id'], name: 'index_users_on_agent_id'
-    t.index ['email'], name: 'index_users_on_email', unique: true
-    t.index ['unlock_token'], name: 'index_users_on_unlock_token', unique: true
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount"
+    t.bigint "from_balance_id", default: 0
+    t.bigint "to_balance_id", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status"
+    t.integer "transaction_type", default: 0, null: false
+    t.string "transactionable_type"
+    t.bigint "transactionable_id"
+    t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
+    t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
+    t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
   end
 
-  create_table 'working_groups', force: :cascade do |t|
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.decimal 'withdrawal_commission', precision: 15, scale: 10
-    t.decimal 'deposit_commission', precision: 15, scale: 10
-    t.string 'name'
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.string "nickname"
+    t.string "name"
+    t.string "surname"
+    t.string "phone"
+    t.string "role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+    t.integer "working_group_id"
+    t.bigint "agent_id"
+    t.decimal "deposit_commission", precision: 15, scale: 10
+    t.decimal "withdrawal_commission", precision: 15, scale: 10
+    t.string "usdt_trc20_address"
+    t.index ["agent_id"], name: "index_users_on_agent_id"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key 'active_storage_attachments', 'active_storage_blobs', column: 'blob_id'
-  add_foreign_key 'active_storage_variant_records', 'active_storage_blobs', column: 'blob_id'
-  add_foreign_key 'crypto_wallets', 'users'
+  create_table "working_groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "withdrawal_commission", precision: 15, scale: 10
+    t.decimal "deposit_commission", precision: 15, scale: 10
+    t.string "name"
+  end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "crypto_wallets", "users"
 end

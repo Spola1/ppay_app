@@ -31,7 +31,7 @@ class Payment < ApplicationRecord
                                              valid_values: Settings.national_currencies.join(', ') }
 
   after_update_commit lambda {
-    broadcast_replace_payment_to_client
+    broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
   }
@@ -74,7 +74,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_payment_to_client
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "payment_#{uuid}",
       partial: 'payments/show_turbo_frame',
       locals: { payment: decorate, signature: },
@@ -83,7 +83,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_payment_to_processer
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "processers_payment_#{uuid}",
       partial: 'processers/payments/show_turbo_frame',
       locals: { payment: decorate, signature: nil, role_namespace: 'processers' },
@@ -92,7 +92,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_hotlist_to_processer
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "processer_#{processer.id}_hotlist",
       partial: 'processers/payments/hotlist',
       locals: { role_namespace: 'processers', user: processer },
@@ -101,7 +101,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    broadcast_append_to(
+    broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
       partial: 'processers/notifications/notification',
       locals: { payment: decorate, role_namespace: 'processers', user: processer },
@@ -110,7 +110,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_replace_payment_to_support
-    broadcast_replace_to(
+    broadcast_replace_later_to(
       "supports_payment_#{uuid}",
       partial: 'supports/payments/show_turbo_frame',
       locals: { payment: decorate, signature: nil, role_namespace: 'supports' },

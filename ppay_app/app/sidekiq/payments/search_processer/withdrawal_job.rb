@@ -8,6 +8,7 @@ module Payments
       def selected_advertisement(payment)
         Advertisement.active
                      .by_payment_system(payment.payment_system)
+                     .by_direction('Withdrawal')
                      .sample
       end
     end
