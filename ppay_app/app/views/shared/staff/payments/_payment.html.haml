@@ -81,8 +81,7 @@
             - if payment.merchant_id
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.item-card-td= "#{Merchant.find(payment.merchant_id).nickname} \| id: #{payment.merchant_id}"
-
+                %td.items-list-td= payment.merchant.decorate.display_name            
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Снимок курса

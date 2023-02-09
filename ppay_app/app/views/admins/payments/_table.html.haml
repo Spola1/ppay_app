@@ -14,7 +14,7 @@
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 платежная система
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус изменен
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 id мерчанта
+        %th.text-xs.font-medium.text-gray-900.px-6.py-4 мерчант
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 скриншот
 
         %th.text-xs.font-medium.text-gray-900.px-6.py-4
@@ -35,7 +35,7 @@
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.formatted_status_changed_at
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant_id
+          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant.decorate.display_name
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
             - if payment.image.present?
               = link_to payment.image, target: '_blank' do
