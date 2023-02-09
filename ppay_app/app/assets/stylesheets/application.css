@@ -372,6 +372,7 @@ label[for=withdrawal_card_number]{
 
 #deposit_image{
   font-size: 14px;
+  max-width: 300px;
 }
 
 .payment_image_tag_block{
@@ -506,4 +507,9 @@ label[for=withdrawal_card_number]{
 
 .mt-70 {
   margin-top: 70px;
+}
+
+.card-number-field {
+  width: 300px;
+  margin-top: 4px;
 }

@@ -5,6 +5,9 @@
         .text-xl
           Данные платежа
         .flex-1.px-4
+          - if payment.completed?
+            .badge.bg-green-600
+              Завершён
           - if payment.cancelled?
             .badge.bg-gray-700
               Отменён

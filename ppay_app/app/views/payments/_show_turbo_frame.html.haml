@@ -1,5 +1,5 @@
 = turbo_frame_tag "payment_#{payment.uuid}", 'data-controller': 'countdown' do
-  = render payment_status_partial(payment), payment:, signature:
+  = render payment_status_partial(payment), payment: payment.decorate, signature:
 
   - if payment.arbitration
     = render "/shared/tg_link"
