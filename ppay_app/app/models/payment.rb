@@ -4,6 +4,8 @@ class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
 
+  audited
+
   default_scope { order(created_at: :desc) }
 
   has_many :transactions, as: :transactionable

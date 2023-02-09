@@ -1,0 +1,64 @@
+%tr.item-card-tr
+  %td.item-card-td.item-card-td-label События по платежу
+  %td.item-card-td
+
+    - payment.audits[1..-1].each do |audit|
+      %br
+      - if audit.audited_changes['uuid']
+        %br
+        = "UUID: #{audit.audited_changes['uuid'][-1]}"
+      - if audit.audited_changes['first_ip']
+        %br
+        = "first_ip: #{audit.audited_changes['first_ip'][-1]}"
+      - if audit.audited_changes['direction']
+        %br
+        = "Направление: #{audit.audited_changes['direction'][-1]}"
+      - if audit.audited_changes['support_id']
+        %br
+        = "Саппорт: #{audit.audited_changes['support_id'][-1]}"
+      - if audit.audited_changes['arbitration']
+        %br
+        = "Арбитраж: #{audit.audited_changes['arbitration'][-1]}"
+      - if audit.audited_changes['card_number']
+        %br
+        = "Номер карты: #{audit.audited_changes['card_number'][-1]}"
+      - if audit.audited_changes['merchant_id']
+        %br
+        = "Магазин: #{audit.audited_changes['merchant_id'][-1]}"
+      - if audit.audited_changes['cryptocurrency']
+        %br
+        = "Криптовалюта: #{audit.audited_changes['cryptocurrency'][-1]}"
+      - if audit.audited_changes['payment_status']
+        %br
+        = "Стататут платежа: #{audit.audited_changes['payment_status'][-1]}"
+      - if audit.audited_changes['payment_system']
+        %br
+        = "Платежная система: #{audit.audited_changes['payment_system'][-1]}"
+      - if audit.audited_changes['advertisement_id']
+        %br
+        = "ID объявления: #{audit.audited_changes['advertisement_id'][-1]}"
+      - if audit.audited_changes['first_user_agent']
+        %br
+        = "first_user_agent: #{audit.audited_changes['first_user_agent'][-1]}"
+      - if audit.audited_changes['rate_snapshot_id']
+        %br
+        = "Снимок курса: #{audit.audited_changes['rate_snapshot_id'][-1]}"
+      - if audit.audited_changes['external_order_id']
+        %br
+        = "Идентификатор внешнего заказа: #{audit.audited_changes['external_order_id'][-1]}"
+      - if audit.audited_changes['national_currency']
+        %br
+        = "Национальная валюта: #{audit.audited_changes['national_currency'][-1]}"
+      - if audit.audited_changes['status_changed_at']
+        %br
+        = "Статус изменен: #{Time.parse(audit.audited_changes['status_changed_at'][-1]).strftime("%Y-%m-%d %H:%M")}"
+      - if audit.audited_changes['cancelled_on_status']
+        %br
+        = "Статус отменен: #{audit.audited_changes['cancelled_on_status'][-1]}"
+      - if audit.audited_changes['cryptocurrency_amount']
+        %br
+        = "Количество криптовалюты: #{audit.audited_changes['cryptocurrency_amount'][-1]}"
+      - if audit.audited_changes['national_currency_amount']
+        %br
+        = "Кол-во нац. валюты: #{audit.audited_changes['national_currency_amount'][-1]}"
+        %br
