@@ -16,7 +16,7 @@ module Payments
 
     def call
       uri = URI(callback_url)
-      body = { uuid:, external_order_id:, payment_status: }
+      body = { uuid:, external_order_id:, payment_status: }.compact
       headers = {
         'Content-Type':  'application/json',
         'Authorization': "Bearer #{token}"
