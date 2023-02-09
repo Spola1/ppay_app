@@ -1,9 +1,6 @@
 .show_content{:class => "show_withdrawal_block"} 
   = render 'show'
 
-  - if @payment.arbitration
-    = render "/shared/tg_link"
-
   .uuid_payment_block
     uuid: 
     = @payment.uuid

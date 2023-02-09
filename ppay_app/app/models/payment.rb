@@ -30,7 +30,7 @@ class Payment < ApplicationRecord
                                              valid_values: Settings.national_currencies.join(', ') }
 
   after_update_commit lambda {
-    broadcast_replace_payment_to_client
+    broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
   }
