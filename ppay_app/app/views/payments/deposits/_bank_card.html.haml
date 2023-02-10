@@ -1,0 +1,11 @@
+.proc_card_sceomorph
+  .proc_card_sceomorph_bank
+    = payment.payment_system.upcase
+  .proc_card_sceomorph_number
+    - #cards_string = ""
+    - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
+    = #cards_string
+    = payment.advertisement.card_number
+  .proc_card_sceomorph_name
+    Иван Иванов
+  .proc_card_sceomorph_footer

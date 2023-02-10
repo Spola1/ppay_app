@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  *= require font-awesome
+ *= require_font
  */
 
 .menu_block{
@@ -103,7 +104,7 @@ button, input[type=submit] {
   height: 20px;
   float: left;
   font-size: 14px;
-  font-family: 'Gill Sans';
+  font-family: 'TTFirsNeue', sans-serif;
 }
 .proc_shop_content{
   width: 200px;
@@ -195,6 +196,7 @@ label[for=withdrawal_card_number]{
 }
 
 .alerts_block{
+  font-family: 'TTFirsNeue', sans-serif;
   float: left;
   font-size: 10px;
   line-height: 11px;
@@ -204,19 +206,20 @@ label[for=withdrawal_card_number]{
 .confirm-payment-system-choose{
   float: left;
   width: 300px;
-  border-radius: 8px;
-  margin-top: 4px;
+  border-radius: 5px;
+  margin-top: 8px;
   background-color: orangered;
   height: 100px;
   border: 1px solid #ffa248;
   color: black;
   margin-bottom: 6px;
+  font-size: 13px;
 }
 .confirm-payment-system-choose:hover{
   float: left;
   width: 300px;
-  border-radius: 4px;
-  margin-top: 4px;
+  border-radius: 5px;
+  margin-top: 8px;
   background-color: #ffa248;
   height: 40px;
   border: 1px solid #ffa248;
@@ -228,7 +231,9 @@ label[for=withdrawal_card_number]{
   width: 300px;
 }
 .please_pay_from_bank{
-  font-size: 14px;
+  font-family: 'TTFirsNeue', sans-serif;
+  font-size: 12px;
+  font-style: unset;
   float: left;
   height: 65px;
   width: 300px;
@@ -265,32 +270,39 @@ label[for=withdrawal_card_number]{
 .proc_card_sceomorph{
   float: left;
   width: 300px;
-  height: 162px;
+  height: 140px;
   padding: 21px 1px 10px 1px;
   background-color: #159e30;
-  border-radius: 8px;
+  border-radius: 15px;
 }
 
 
 .proc_card_sceomorph_bank{
-  margin-top: 40px;
   color: white;
   font-size: 20px;
   font-style: bold;
-  padding-left:10px;
+  padding-left:20px;
 }
 .proc_card_sceomorph_number{
+  margin-top: 15px;
   font-size: 19px;
   font-style: bold;
-  color: #7d7d7d;
-  background-color: white;
-  padding-left:10px;
+  color: white;
+  padding-left:20px;
+}
+.proc_card_sceomorph_name{
+  margin-top: 7px;
+  font-size: 17px;
+  font-style: bold;
+  color: white;
+  padding-left:20px;
 }
 .proc_card_sceomorph_footer{
   background-color: #159e30;
 }
 .proc_send_summ{
-  font-size: 14px;
+  font-family: 'TTFirsNeue', sans-serif;
+  font-size: 13px;
   line-height: 14px;
   float: left;
   height: 60px;
@@ -342,7 +354,7 @@ label[for=withdrawal_card_number]{
 .payment-finished-button{
   float: left;
   width: 300px;
-  border-radius: 8px;
+  border-radius: 5px;
   margin-top: 14px;
   background-color: orangered;
   height: 40px;
@@ -356,15 +368,13 @@ label[for=withdrawal_card_number]{
   background-color: #ffa248;
 }
 
-.custom-file-upload {
-  float: left;
-  width: 150px;
-  background-color: lightgray;
-  color: black;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  padding: 7px 28px;
-  cursor: pointer;
+.custom-select {
+  background-color: rgb(234, 234, 234);
+  border: 1px solid gray;
+  border-radius: 20px;
+  padding: 10px;
+  font-family: Verdana;
+  font-size: 12px;
 }
 
 
@@ -525,4 +535,15 @@ label[for=withdrawal_card_number]{
 
 .mt-70 {
   margin-top: 70px;
+}
+
+.text-base-card {
+  font-family: 'TTFirsNeue', sans-serif;
+}
+
+@font-face {
+  font-family: 'TTFirsNeue';
+  src: url('/app/assets/fonts/TTFirsNeue-Regular.ttf') format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }

@@ -20,37 +20,9 @@
     = payment.external_order_id
 
 
-.proc_card_sceomorph
-  .proc_card_sceomorph_bank
-    = payment.payment_system.upcase
-  .proc_card_sceomorph_number
-    - #cards_string = ""
-    - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
-    = #cards_string
-    = payment.advertisement.card_number
-  .proc_card_sceomorph_footer
+= render 'bank_card', payment: payment
 
-
-
-.proc_send_summ
-  %b
-    1. Откройте банковское приложение 
-    %br
-    и отправьте указанную сумму.
-  %br
-  .proc_send_summ
-    .text-gray-500
-      Сумма должна быть в точности та, что указана на экране.
-
-.proc_send_summ
-  %b
-    2. Пожалуйста, добавьте чек 
-    %br
-    с подтверждением платежа.
-  %br
-    .proc_send_summ
-      .text-gray-500
-        Добавление чека позволит нам обработать Ваш платеж значительно быстрее
+= render 'deposit_instruction'
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
@@ -81,10 +53,10 @@
     %p Внимание:
   .my-2
     %p 
-      1) при отправке денежных средств писать сообщения в приложении категорически запрещено;
+      1) при отправке денежных средств писать сообщения в приложении категорически запрещено.
   .my-2
     %p 
-      2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
+      2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
   .my-2
     %p 
       3) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.

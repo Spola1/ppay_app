@@ -28,8 +28,8 @@
     %b
       = f.label :payment_system, 'Выберите платежную систему'
     
-      = f.select :payment_system, [["Выбрать", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-               id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+      = f.select :payment_system, [["Выбрать", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], {}, class: "grey-drop-down"
+              
     
 
     = hidden_field_tag :event, 'search' 
@@ -46,10 +46,10 @@
     %p Внимание:
   .my-2
     %p 
-      1) при отправке денежных средств писать сообщения в приложении категорически запрещено;
+      1) при отправке денежных средств писать сообщения в приложении категорически запрещено.
   .my-2
     %p 
-      2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
+      2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
   .my-2
     %p 
       3) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.
