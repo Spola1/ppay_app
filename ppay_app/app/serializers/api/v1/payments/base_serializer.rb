@@ -3,8 +3,8 @@
 module Api
   module V1
     module Payments
-      class WithdrawalSerializer < BaseSerializer
-        type :withdrawal
+      class BaseSerializer < ActiveModel::Serializer
+        attributes :uuid
       end
     end
   end
