@@ -276,9 +276,57 @@ label[for=withdrawal_card_number]{
   border-radius: 15px;
 }
 
+.tinkoff_card{
+  float: left;
+  width: 300px;
+  height: 140px;
+  padding: 21px 1px 10px 1px;
+  background-color: #FFDD2D;
+  border-radius: 15px;
+}
+
+.raiffeisen_card{
+  float: left;
+  width: 300px;
+  height: 140px;
+  padding: 21px 1px 10px 1px;
+  background-color:  #ffed00;
+  border-radius: 15px;
+}
+
+.alfabank_card{
+  float: left;
+  width: 300px;
+  height: 140px;
+  padding: 21px 1px 10px 1px;
+  background-color: #ef3124;
+  border-radius: 15px;
+}
 
 .proc_card_sceomorph_bank{
   color: white;
+  font-size: 20px;
+  font-style: bold;
+  padding-left:20px;
+}
+
+
+.alfabank_card_bank{
+  color: white;
+  font-size: 20px;
+  font-style: bold;
+  padding-left:20px;
+}
+
+.tinkoff_card_bank{
+  color: #000000;
+  font-size: 20px;
+  font-style: bold;
+  padding-left:20px;
+}
+
+.raiffeisen_card_bank{
+  color: #000000;
   font-size: 20px;
   font-style: bold;
   padding-left:20px;
@@ -290,11 +338,60 @@ label[for=withdrawal_card_number]{
   color: white;
   padding-left:20px;
 }
+
+.alfabank_card_number{
+  margin-top: 15px;
+  font-size: 19px;
+  font-style: bold;
+  color: white;
+  padding-left:20px;
+}
+
+.tinkoff_card_number{
+  margin-top: 15px;
+  font-size: 19px;
+  font-style: bold;
+  color: #000000;
+  padding-left:20px;
+}
+
+.raiffeisen_card_number{
+  margin-top: 15px;
+  font-size: 19px;
+  font-style: bold;
+  color: #000000;
+  padding-left:20px;
+}
+
 .proc_card_sceomorph_name{
   margin-top: 7px;
   font-size: 17px;
   font-style: bold;
   color: white;
+  padding-left:20px;
+}
+
+.alfabank_card_name{
+  margin-top: 7px;
+  font-size: 17px;
+  font-style: bold;
+  color: white;
+  padding-left:20px;
+}
+
+.tinkoff_card_name{
+  margin-top: 7px;
+  font-size: 17px;
+  font-style: bold;
+  color: #000000;
+  padding-left:20px;
+}
+
+.raiffeisen_card_name{
+  margin-top: 7px;
+  font-size: 17px;
+  font-style: bold;
+  color: #000000;
   padding-left:20px;
 }
 .proc_card_sceomorph_footer{

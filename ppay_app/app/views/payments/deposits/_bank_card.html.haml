@@ -1,11 +1,43 @@
-.proc_card_sceomorph
-  .proc_card_sceomorph_bank
-    = payment.payment_system.upcase
-  .proc_card_sceomorph_number
-    - #cards_string = ""
-    - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
-    = #cards_string
-    = payment.advertisement.card_number
-  .proc_card_sceomorph_name
-    Иван Иванов
-  .proc_card_sceomorph_footer
+- case payment.payment_system
+  - when "Sberbank"
+    .proc_card_sceomorph
+      .proc_card_sceomorph_bank
+        = payment.payment_system.upcase
+      .proc_card_sceomorph_number
+        - #cards_string = ""
+        - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
+        = #cards_string
+        = payment.advertisement.card_number
+      .proc_card_sceomorph_name
+        Иван Иванов
+      .proc_card_sceomorph_footer
+
+  - when "Tinkoff"
+    .tinkoff_card
+      .tinkoff_card_bank
+        = payment.payment_system.upcase
+      .tinkoff_card_number
+        = payment.advertisement.card_number
+      .tinkoff_card_name
+        Иван Иванов
+      .proc_card_sceomorph_footer
+
+  - when "Raiffeisen"
+    .raiffeisen_card
+      .raiffeisen_card_bank
+        = payment.payment_system.upcase
+      .raiffeisen_card_number
+        = payment.advertisement.card_number
+      .raiffeisen_card_name
+        Иван Иванов
+      .proc_card_sceomorph_footer
+
+  - when "AlfaBank"
+    .alfabank_card
+      .alfabank_card_bank
+        = payment.payment_system.upcase
+      .alfabank_card_number
+        = payment.advertisement.card_number
+      .alfabank_card_name
+        Иван Иванов
+      .proc_card_sceomorph_footer
