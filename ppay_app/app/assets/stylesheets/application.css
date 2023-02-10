@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  *= require font-awesome
- *= require_font
+ *= require font
  */
 
 .menu_block{
@@ -89,7 +89,6 @@ button, input[type=submit] {
   color: #7d7d7d;
   width: 82px;
   margin: 20px 0px 30px 118px;
-  font-family: 'Gill Sans';
 }
 
 .proc_shop_block{
@@ -104,7 +103,6 @@ button, input[type=submit] {
   height: 20px;
   float: left;
   font-size: 14px;
-  font-family: 'TTFirsNeue', sans-serif;
 }
 .proc_shop_content{
   width: 200px;
@@ -112,7 +110,6 @@ button, input[type=submit] {
   text-align: right;
   float: left;
   font-size: 14px;
-  font-family: 'Gill Sans';
 }
 .proc_amount_block{
   float: left;
@@ -196,7 +193,6 @@ label[for=withdrawal_card_number]{
 }
 
 .alerts_block{
-  font-family: 'TTFirsNeue', sans-serif;
   float: left;
   font-size: 10px;
   line-height: 11px;
@@ -398,7 +394,6 @@ label[for=withdrawal_card_number]{
   background-color: #159e30;
 }
 .proc_send_summ{
-  font-family: 'TTFirsNeue', sans-serif;
   font-size: 13px;
   line-height: 14px;
   float: left;
@@ -470,7 +465,6 @@ label[for=withdrawal_card_number]{
   border: 1px solid gray;
   border-radius: 20px;
   padding: 10px;
-  font-family: Verdana;
   font-size: 12px;
 }
 
@@ -635,18 +629,11 @@ label[for=withdrawal_card_number]{
   margin-top: 70px;
 }
 
-.text-base-card {
-  font-family: 'TTFirsNeue', sans-serif;
-}
-
-@font-face {
-  font-family: 'TTFirsNeue';
-  src: url('/app/assets/fonts/TTFirsNeue-Regular.ttf') format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 .card-number-field {
   width: 300px;
   margin-top: 4px;
+}
+
+.show_deposit_block, .show_withdrawal_block {
+  font-family: 'TT Firs Neue', sans-serif;
 }
