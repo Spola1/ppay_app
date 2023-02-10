@@ -10,10 +10,16 @@ module Api
       respond_to :json
 
       def show
-        respond_with Payment.find_by uuid:
+        return head :not_found unless payment.present?
+
+        respond_with payment
       end
 
       private
+
+      def payment
+        @payment ||= Payment.find_by uuid:
+      end
 
       def uuid
         params.permit(:uuid)[:uuid]

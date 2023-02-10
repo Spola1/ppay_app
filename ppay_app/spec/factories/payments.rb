@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :payment, class: Payment do
     initialize_with do
@@ -7,8 +9,11 @@ FactoryBot.define do
 
     merchant
 
+    external_order_id { [nil, '1234'].sample }
     national_currency { 'RUB' }
     national_currency_amount { 100 }
+    cryptocurrency { 'USDT' }
+    payment_system { Settings.payment_systems.sample }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
 
