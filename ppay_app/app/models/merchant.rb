@@ -9,8 +9,8 @@ class Merchant < User
   belongs_to :agent, optional: true
 
   enum unique_amount: {
-    none: 0, #ArgumentError: You tried to define an enum named "unique_amount" on the model "Merchant", but this will generate a class method "none", which is already defined by Active Record.
+    none: 0,
     integer: 1,
     decimal: 2
-  }
+  }, _prefix: true
 end
