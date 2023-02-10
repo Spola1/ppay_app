@@ -220,7 +220,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_071505) do
     t.decimal "deposit_commission", precision: 15, scale: 10
     t.decimal "withdrawal_commission", precision: 15, scale: 10
     t.string "usdt_trc20_address"
-    t.boolean "check_required", default: false
+    t.boolean "check_required", default: true
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

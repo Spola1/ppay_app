@@ -53,9 +53,7 @@ module StateMachines
       end
 
       def validate_image
-        if image.present? || merchant.check_required == true
-          return true
-        end
+        return true if !merchant.check_required || image.present?
 
         errors.add(:image, :blank)
         false
