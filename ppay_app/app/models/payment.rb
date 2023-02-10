@@ -45,6 +45,8 @@ class Payment < ApplicationRecord
 
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) }
 
+  before_create :ensure_unique_amount
+
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
   }
@@ -116,5 +118,24 @@ class Payment < ApplicationRecord
       locals: { payment: decorate, signature: nil, role_namespace: 'supports' },
       target: "supports_payment_#{uuid}"
     )
+  end
+
+  def hundredths_needed
+    rounded_number = self.national_currency_amount.round
+    difference = rounded_number - self.national_currency_amount
+
+    if difference == 0
+      return 1
+    else
+      return difference
+    end
+  end
+
+  def ensure_unique_amount
+    Payment.all.where(payment_status: ['confirming', 'transferring']).each_with_index do |payment, index|
+      if payment.national_currency_amount == self.national_currency_amount
+        self.national_currency_amount += (hundredths_needed * (index + 1))
+      end
+    end
   end
 end
