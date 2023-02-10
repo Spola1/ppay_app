@@ -20,9 +20,9 @@
     = payment.external_order_id
 
 
-= render 'bank_card', payment: payment
+= render 'payments/deposits/bank_card', payment: payment
 
-= render 'deposit_instruction'
+= render 'payments/deposits/deposit_instruction'
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
