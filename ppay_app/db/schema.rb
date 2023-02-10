@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_02_09_081600) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
+>>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -184,6 +188,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_09_081600) do
     t.string "card_number"
     t.boolean "arbitration", default: false
     t.bigint "support_id"
+    t.string "redirect_url"
+    t.string "callback_url"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 

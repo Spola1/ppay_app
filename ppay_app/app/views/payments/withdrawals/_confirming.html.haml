@@ -12,5 +12,5 @@
       = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',
         class: 'confirm-payment-system-choose'
 
-      - unless @payment.arbitration
+      - unless payment.arbitration
         = render "/shared/tg_link"

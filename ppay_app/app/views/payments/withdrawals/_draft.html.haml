@@ -21,28 +21,24 @@
   .proc_order_content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
 
-%p
+.please_pay_from_bank
   Пожалуйста, укажите карту, куда Вы хотите вывести средства
   = "(#{ payment.national_currency_amount } #{ payment.national_currency })"
 
 = render 'payments/errors', payment: payment
 
 = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
-  %br
-
   %b
     = f.label :payment_system, 'Банк'
   %br
   = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-             id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
+            id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
   %br
   %br
   %b
     = f.label :card_number, 'Номер карты'
-  %br
   = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' },
-            class: 'text-center border text-gray-700 px-4 pr-8 rounded leading-tight focus:border-gray-500'
-  %br
+            class: 'card-number-field text-center border text-gray-700 px-4 pr-8 rounded'
 
   = hidden_field_tag :event, 'search' 
 

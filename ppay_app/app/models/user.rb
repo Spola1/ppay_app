@@ -24,6 +24,10 @@ class User < ApplicationRecord
     end
   end
 
+  def token
+    api_keys.last.token
+  end
+
   private
 
   def create_api_key
