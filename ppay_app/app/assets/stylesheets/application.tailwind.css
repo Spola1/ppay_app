@@ -149,8 +149,8 @@
 
   .toast {
     @apply shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block
-      hover:bg-blue-700 hover:shadow-xl focus:bg-blue-700 focus:shadow-xl focus:outline-none focus:ring-0
-      active:bg-blue-800 active:shadow-xl transition duration-150 ease-in-out;
+      w-full hover:bg-blue-700 hover:shadow-xl focus:bg-blue-700 focus:shadow-xl focus:outline-none
+      focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 ease-in-out;
   }
 
   .toast-header {

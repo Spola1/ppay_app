@@ -1,10 +1,6 @@
 .show_content{:class => "show_deposit_block"}
   = render 'show'
 
-  - if @payment.arbitration
-    %p{style: "padding-top: 600px"}
-    = render "/shared/tg_link"
-
   .uuid_payment_block
     uuid:
     = @payment.uuid

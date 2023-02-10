@@ -497,6 +497,7 @@ label[for=withdrawal_card_number]{
 
 #deposit_image{
   font-size: 14px;
+  max-width: 300px;
 }
 
 .payment_image_tag_block{
@@ -643,4 +644,9 @@ label[for=withdrawal_card_number]{
   src: url('/app/assets/fonts/TTFirsNeue-Regular.ttf') format("truetype");
   font-weight: normal;
   font-style: normal;
+}
+
+.card-number-field {
+  width: 300px;
+  margin-top: 4px;
 }
