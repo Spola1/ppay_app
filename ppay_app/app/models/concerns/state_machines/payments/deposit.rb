@@ -52,6 +52,7 @@ module StateMachines
           end
 
           event :cancel do
+            before :set_cancellation_reason
             after :cancel_transactions
 
             transitions from: %i[draft processer_search transferring], to: :cancelled

@@ -6,6 +6,8 @@ class Payment < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
 
+  enum :cancellation_reason, {cancelled_by_client: 0}
+
   has_many :transactions, as: :transactionable
 
   # в каждый платеж прикрепляем курс на данный момент

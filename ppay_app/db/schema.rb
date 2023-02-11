@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_10_125043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -164,6 +164,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
     t.bigint "support_id"
     t.string "redirect_url"
     t.string "callback_url"
+    t.integer "cancellation_reason"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 

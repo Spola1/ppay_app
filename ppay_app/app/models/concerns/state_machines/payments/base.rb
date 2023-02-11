@@ -43,6 +43,10 @@ module StateMachines
         self.cryptocurrency_amount = rate_snapshot.to_crypto(national_currency_amount)
       end
 
+      def set_cancellation_reason
+        self.cancellation_reason = 0
+      end
+
       def has_advertisement?
         advertisement.present?
       end

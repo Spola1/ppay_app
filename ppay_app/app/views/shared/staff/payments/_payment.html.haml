@@ -44,6 +44,11 @@
                 = render "#{role_namespace}/payments/payment_status_field", f:, payment:
 
             %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Причина отмены
+              %td.item-card-td
+                = render "#{role_namespace}/payments/payment_cancellation_reason_field", f:, payment:
+
+            %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
               %td.item-card-td
                 = payment.formatted_status_changed_at
@@ -75,6 +80,11 @@
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Отменён на статусе
               %td.item-card-td= "#{payment.cancelled_on_status}"
+
+            - if payment.cancellation_reason
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина отмены
+              %td.item-card-td= "#{payment.cancellation_reason}"
 
             - if payment.advertisement_id
               %tr.item-card-tr
