@@ -1,19 +1,10 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :user do
-    # возвращаем класс STI
-    initialize_with do
-      klass = type.constantize
-      klass.new(attributes)
-    end
-
+  factory :merchant do
+    type { 'Merchant' }
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
-
-    trait :merchant do
-      type { 'Merchant' }
-    end
 
     trait :with_all_kind_of_payments do
       after(:create) do |user, _evaluator|

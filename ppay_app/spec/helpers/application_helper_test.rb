@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
-  let(:user) { create :user, :merchant, :with_all_kind_of_payments }
+  let(:user) { create :merchant, :with_all_kind_of_payments }
 
   describe 'hotlist_payments' do
     subject { helper.hotlist_payments(user) }

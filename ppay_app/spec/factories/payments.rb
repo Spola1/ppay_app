@@ -5,10 +5,12 @@ FactoryBot.define do
       klass.new(attributes)
     end
 
-    association :merchant, class: Merchant, factory: :user
+    merchant
 
     national_currency { 'RUB' }
     national_currency_amount { 100 }
+    callback_url { FFaker::Internet.http_url }
+    redirect_url { FFaker::Internet.http_url }
 
     trait :confirming do
       payment_status { 'confirming' }
