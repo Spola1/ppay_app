@@ -25,7 +25,7 @@ module PaymentsHelper
     end
   end
 
-  def payment_cancellation_reasons_collection
+  def cancellation_reasons_collection
     Payment.cancellation_reasons.keys.map do |reason|
       [cancellation_reason_translation(reason), reason]
     end

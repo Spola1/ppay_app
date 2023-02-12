@@ -43,10 +43,11 @@
               %td.item-card-td
                 = render "#{role_namespace}/payments/payment_status_field", f:, payment:
 
-            %tr.item-card-tr
-              %td.item-card-td.item-card-td-label Причина отмены
-              %td.item-card-td
-                = render "supports/payments/payment_cancellation_reason_field", f:, payment:
+            - if role_namespace == 'supports'
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина отмены
+                %td.item-card-td
+                  = render "supports/payments/payment_cancellation_reason_field", f:, payment:
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
@@ -84,7 +85,7 @@
             - if payment.cancellation_reason
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Причина отмены
-              %td.item-card-td= "#{payment.cancellation_reason}"
+              %td.item-card-td= "#{payment.human_cancellation_reason}"
 
             - if payment.advertisement_id
               %tr.item-card-tr

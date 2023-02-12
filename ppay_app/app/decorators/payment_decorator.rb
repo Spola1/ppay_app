@@ -25,6 +25,10 @@ class PaymentDecorator < ApplicationDecorator
     Payment.human_attribute_name("payment_status.#{payment_status}")
   end
 
+  def human_cancellation_reason
+    Payment.human_attribute_name("cancellation_reason.#{cancellation_reason}")
+  end
+
   def fiat_amount_with_currency
     "#{fiat_amount} #{national_currency}"
   end

@@ -29,7 +29,7 @@ ru:
         completed: Успешно завершён
         cancelled: Отменён
       payment/cancellation_reason:
-        cancelled_by_client: Отменено клиентом
+        by_client: Отменено клиентом
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена
