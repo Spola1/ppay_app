@@ -121,7 +121,7 @@ class Payment < ApplicationRecord
   end
 
   def hundredths_needed
-    rounded_number = self.national_currency_amount.round
+    rounded_number = self.national_currency_amount.ceil
     difference = rounded_number - self.national_currency_amount
 
     if difference == 0
@@ -132,9 +132,16 @@ class Payment < ApplicationRecord
   end
 
   def ensure_unique_amount
-    Payment.all.where(payment_status: ['confirming', 'transferring']).each_with_index do |payment, index|
-      if payment.national_currency_amount == self.national_currency_amount
-        self.national_currency_amount += (hundredths_needed * (index + 1))
+    recent_payments = Payment.all.where(payment_status: ['confirming', 'transferring'], national_currency: payment.national_currency)
+    amounts = recent_payments.pluck(:national_currency_amount)
+
+    while amounts.include?(self.national_currency_amount)
+      if self.merchant.unique_amount_none?
+        self.national_currency_amount
+      elsif self.merchant.unique_amount_integer?
+        self.national_currency_amount += 1
+      elsif self.merchant.unique_amount_decimal?
+        self.national_currency_amount += hundredths_needed
       end
     end
   end
