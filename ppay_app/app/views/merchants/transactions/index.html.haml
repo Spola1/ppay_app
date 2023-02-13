@@ -6,28 +6,34 @@
       - if @transactions.present?
         %table.items-list-table
           %thead.item-list-thead
-            %th.items-list-th ID
-            %th.items-list-th создано
-            %th.items-list-th размер
-            %th.items-list-th статус
-            %th.items-list-th тип транзакции
-            %th.items-list-th
-            %th.items-list-th
+            %tr
+              %th.items-list-th ID
+              %th.items-list-th создано
+              %th.items-list-th размер
+              %th.items-list-th статус
+              %th.items-list-th тип транзакции
+              %th.items-list-th
+              %th.items-list-th
 
-          %tbody
-            - @transactions.each do |trans|
-              %tr.items-list-tr
-                %td.items-list-td-link= trans.id
-                %td.items-list-td= l(trans.created_at, format: :short)
-                %td.items-list-td{ class: transaction_color(trans, current_user.balance) }
-                  %span.mr-1
-                    = fa_icon transaction_icon(trans, current_user.balance)
-                  = trans.amount
-                %td.items-list-td= trans.human_status
-                %td.items-list-td= trans.human_transaction_type
+            %tbody
+              - @transactions.each do |trans|
+                %tr.items-list-tr
+                  %td.items-list-td-link= link_to trans.id, trans
+                  %td.items-list-td= l(trans.created_at, format: :short)
+                  %td.items-list-td{ class: transaction_color(trans, current_user.balance) }
+                    %span.mr-1
+                      = fa_icon transaction_icon(trans, current_user.balance)
+                    = trans.amount
+                  %td.items-list-td= trans.human_status
+                  %td.items-list-td= trans.human_transaction_type
+              
+                  %td.items-list-td.px-1.w-0
+                    = link_to trans do
+                      .icon-button-gray
+                        = fa_icon 'search'
       - else
         .empty-list-text
           Транзакций пока нет
-
-      = render 'shared/pagination', pagy: @pagy
-          
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy
+            

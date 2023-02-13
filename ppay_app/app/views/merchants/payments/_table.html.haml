@@ -17,6 +17,7 @@
     
     %tbody
       - payments.each do |payment|
+        %tr.items-list-tr
         %tr{ class: 'arbitration_tr' }
           %td.items-list-td-link= payment.external_order_id
           %td.items-list-td= payment.formatted_created_at

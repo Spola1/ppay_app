@@ -23,7 +23,7 @@
           - @transactions.each do |trans|
             %tr.items-list-tr
               %td.items-list-td-link= link_to trans.id, trans
-              %td.items-list-td= trans.created_at
+              %td.items-list-td= l(trans.created_at, format: :short)
               %td.items-list-td= trans.amount
               %td.items-list-td= trans.from_balance_id
               %td.items-list-td= trans.to_balance_id

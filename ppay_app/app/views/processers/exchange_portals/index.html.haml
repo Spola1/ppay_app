@@ -1,22 +1,30 @@
-%h1.ml-4 Биржи и порталы для обмена
+%section.wrap
+  .card-wrap
+    .item-card
+      %h1.mb-4.text-xl Биржи и порталы для обмена
 
-- if @exchange_portals.size > 0
-  %table
-    %thead
-      %tr
-        %th ID
-        %th добавлено
-        %th название
+      - if @exchange_portals.size > 0
+        %table.items-list-table
+          %thead.item-list-thead
+            %tr
+              %th.items-list-th ID
+              %th.items-list-th добавлено
+              %th.items-list-th название
 
-        %th
+              %th.items-list-th
 
-    %tbody
-      - @exchange_portals.each do |ep|
-        %tr
-          %td= ep.id
-          %td= ep.created_at.in_time_zone("Moscow")
-          %td= ep.name
+          %tbody
+            - @exchange_portals.each do |ep|
+              %tr.items-list-tr
+                %td.items-list-td-link= link_to ep.id, ep
+                %td.items-list-td= l(ep.created_at.in_time_zone("Moscow"), format: :short)
+                %td.items-list-td= ep.name
 
-          %td= link_to 'Перейти', ep
-- else
-  %p Записей не найдено в базе
+                %td.items-list-td.px-1.w-0
+                  = link_to ep do
+                    .icon-button-gray
+                      = fa_icon 'search'
+      - else
+        %p Записей не найдено в базе
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy

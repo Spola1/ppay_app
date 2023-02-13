@@ -22,7 +22,7 @@
             - @rate_snapshots.each do |rs|
               %tr.items-list-tr
                 %td.items-list-td-link= link_to rs.id, rs
-                %td.items-list-td= rs.created_at.in_time_zone("Moscow")
+                %td.items-list-td= l(rs.created_at, format: :short)
                 %td.items-list-td= rs.direction
                 %td.items-list-td= rs.national_currency
                 %td.items-list-td= rs.cryptocurrency
