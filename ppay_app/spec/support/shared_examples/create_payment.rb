@@ -18,6 +18,13 @@ shared_examples 'create_payment' do
   let(:currency) { 'RUB' }
 
   response '201', 'успешное создание' do
+    schema type: :object,
+           properties: {
+             uuid: { type: :string },
+             url: { type: :string }
+           },
+           required: %w[uuid url]
+
     include_context 'generate_examples'
 
     it 'создаст платеж мерчанту' do |example|

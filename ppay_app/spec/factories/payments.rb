@@ -10,11 +10,11 @@ FactoryBot.define do
     merchant
 
     uuid { SecureRandom.uuid }
-    external_order_id { [nil, '1234'].sample }
+    external_order_id { '1234' }
     national_currency { 'RUB' }
     national_currency_amount { 100 }
     cryptocurrency { 'USDT' }
-    payment_system { Settings.payment_systems.sample }
+    payment_system { Settings.payment_systems.first }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
 

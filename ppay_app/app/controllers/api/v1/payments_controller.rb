@@ -8,21 +8,10 @@ module Api
       prepend_before_action :authenticate_with_api_key!
 
       respond_to :json
+      rescue_from(ActiveRecord::RecordNotFound) { head :not_found }
 
       def show
-        return head :not_found unless payment.present?
-
-        respond_with payment
-      end
-
-      private
-
-      def payment
-        @payment ||= Payment.find_by uuid:
-      end
-
-      def uuid
-        params.permit(:uuid)[:uuid]
+        respond_with Payment.find_by! uuid: params[:uuid]
       end
     end
   end
