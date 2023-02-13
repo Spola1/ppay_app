@@ -19,7 +19,9 @@
     %tbody
       - payments.each do |payment|
         %tr{ class: 'arbitration_tr' }
-          %td.items-list-td-link= link_to payment.external_order_id, payment_path(payment)
+          %td.items-list-td-link
+            - if payment.external_order_id.present?
+              = link_to payment.external_order_id, payment_path(payment), data: { turbo_action: :advance }
           %td.items-list-td= payment.formatted_created_at
           %td.items-list-td= payment.human_type
           %td.items-list-td= payment.national_currency
@@ -30,7 +32,7 @@
             - if payment.transactions.main.present?
               = "(#{payment.transactions.main.first.amount})"
           %td.items-list-td= payment.payment_system
-          %td.items-list-td= payment.uuid.truncate(6)
+          %td.items-list-td= payment.uuid.truncate(9)
           %td.items-list-td= payment.human_payment_status
           %td.items-list-td= payment.formatted_status_changed_at
 - else
