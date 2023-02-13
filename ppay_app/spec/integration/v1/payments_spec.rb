@@ -15,7 +15,12 @@ describe 'Payments' do
 
       parameter name: :uuid, in: :path, type: :string
 
-      let(:payment) { create :payment, external_order_id: external_order_id }
+      let(:payment) do
+        create :payment,
+               [:deposit, :withdrawal].sample,
+               [:confirming, :transferring].sample,
+               external_order_id: external_order_id
+      end
       let(:external_order_id) { '1234' }
       let(:uuid) { payment.uuid }
 
@@ -36,8 +41,6 @@ describe 'Payments' do
                             cryptocurrency payment_system payment_status]
 
         context 'external_order_id is present' do
-          let(:external_order_id) { '1234' }
-
           run_test!
         end
 

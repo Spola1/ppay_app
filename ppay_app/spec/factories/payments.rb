@@ -9,6 +9,7 @@ FactoryBot.define do
 
     merchant
 
+    uuid { SecureRandom.uuid }
     external_order_id { [nil, '1234'].sample }
     national_currency { 'RUB' }
     national_currency_amount { 100 }
