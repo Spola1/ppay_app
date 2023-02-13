@@ -5,7 +5,7 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(current_user.payments)
+      @pagy, @payments = pagy(current_user.payments.includes(:merchant))
       @payments = @payments.decorate
     end
 

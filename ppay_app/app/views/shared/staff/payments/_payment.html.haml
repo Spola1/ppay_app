@@ -5,6 +5,9 @@
         .text-xl
           Данные платежа
         .flex-1.px-4
+          - if payment.completed?
+            .badge.bg-green-600
+              Завершён
           - if payment.cancelled?
             .badge.bg-gray-700
               Отменён
@@ -14,6 +17,9 @@
         .flex
           - if can_manage_payment?
             = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+
+      .my-4
+        = render 'shared/staff/payments/image', payment:
 
       = form_for payment, url: payment_path(payment), action: :update, html: { id: :payment_form } do |f|
         %table.item-card-table
@@ -40,6 +46,11 @@
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - else
                   = payment.payment_status
+
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Статус изменён
+              %td.item-card-td
+                = payment.formatted_status_changed_at
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Кол-во криптовалюты
@@ -77,8 +88,7 @@
             - if payment.merchant_id
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.item-card-td= "#{Merchant.find(payment.merchant_id).nickname} \| id: #{payment.merchant_id}"
-
+                %td.items-list-td= payment.merchant.decorate.display_name            
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Снимок курса
@@ -115,9 +125,14 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
+            - if can_manage_payment?
+              = render 'shared/staff/payments/payment_audit', payment:
 
   - if can_manage_payment?
     .card-wrap
+      - if payment_status_partial_exists?(payment, 'processers')
+        = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
+
       .item-card
         %p.text-xl.mb-2 Комментарии
 

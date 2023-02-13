@@ -1,8 +1,3 @@
-
-= render 'payments/errors', payment: payment
-
-
-
 .proc_head
   .proc_logo
   .proc_text
@@ -18,7 +13,7 @@
   .proc_amount_content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
 
- 
+
 .proc_card_sceomorph
   .proc_card_sceomorph_bank
     = payment.payment_system.upcase
@@ -45,26 +40,21 @@
   %br
   Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
 
+= simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+  = hidden_field_tag :event, 'check'
 
-
-
-
-
-.payment_image_tag_block
-  = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
-    = hidden_field_tag :event, 'check'
-
-    - if payment.image.present?
-      = image_tag payment.image
-      %br
-    .add_img_confirm
-      %b
-        2. Добавьте изображение:
+  - if payment.image.present?
+    = image_tag payment.image
     %br
-    = f.file_field :image
-    %br
+  .add_img_confirm
+    %b
+      2. Добавьте изображение:
+  %br
+  = render 'payments/errors', payment: payment
+  = f.file_field :image
+  %br
 
-    = f.submit "Оплата завершена", class: "payment-finished-button"
+  = f.submit "Оплата завершена", class: "payment-finished-button"
 
 
 .alerts_block_sending

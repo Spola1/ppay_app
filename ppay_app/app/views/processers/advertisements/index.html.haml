@@ -45,4 +45,5 @@
                 = link_to ad do
                   .icon-button-gray
                     = fa_icon 'search'
-          
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy
