@@ -1,47 +1,44 @@
-%section.basis-full
-  %h1.text-xl.my-10 Платежи
+%table.items-list-table
+  %thead.item-list-thead
+    %tr
+      %th.items-list-th Номер заказа
+      %th.items-list-th создан
+      %th.items-list-th направление
+      %th.items-list-th нац. валюта
+      %th.items-list-th кол-во нац. валюты
+      %th.items-list-th криптовалюта
+      %th.items-list-th кол-во криптовалюты
+      %th.items-list-th платежная система
+      %th.items-list-th статус
+      %th.items-list-th статус изменен
+      %th.items-list-th мерчант
+      %th.items-list-th скриншот
 
-  %table.min-w-full.text-center
-    %thead.border-b.bg-gray-50
-      %tr
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 Номер заказа
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 создан
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 направление
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 нац. валюта
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 кол-во нац. валюты
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 криптовалюта
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 кол-во криптовалюты
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 платежная система
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус изменен
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 мерчант
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4 скриншот
+      %th.items-list-th
+  
+  %tbody
+    - payments.each do |payment|
+      %tr.items-list-tr{ class: ('bg-green-100' if payment.confirming?) }
+        %td.items-list-td= payment.external_order_id
+        %td.items-list-td= payment.formatted_created_at
+        %td.items-list-td= payment.type
+        %td.items-list-td= payment.national_currency
+        %td.items-list-td= payment.national_currency_amount       
+        %td.items-list-td= payment.cryptocurrency
+        %td.items-list-td
+          = payment.cryptocurrency_amount
+          - if payment.transactions.main.present?
+            = "(#{payment.transactions.main.first.amount})"
+        %td.items-list-td= payment.payment_system
+        %td.items-list-td= payment.payment_status
+        %td.items-list-td= payment.formatted_status_changed_at
+        %td.items-list-td= payment.merchant.decorate.display_name
+        %td.items-list-td
+          - if payment.image.present?
+            = link_to payment.image, target: '_blank' do
+              = image_tag payment.image
 
-        %th.text-xs.font-medium.text-gray-900.px-6.py-4
-    
-    %tbody
-      - payments.each do |payment|
-        %tr{ class: ('bg-green-100' if payment.confirming?) }
-          %td.px-6.py-4.whitespace-nowrap.text-xs.font-medium.text-gray-900= payment.external_order_id
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.formatted_created_at
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.type
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.national_currency
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.national_currency_amount       
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.cryptocurrency
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
-            = payment.cryptocurrency_amount
-            - if payment.transactions.main.present?
-              = "(#{payment.transactions.main.first.amount})"
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.formatted_status_changed_at
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant.decorate.display_name
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
-            - if payment.image.present?
-              = link_to payment.image, target: '_blank' do
-                = image_tag payment.image
-
-          %td.text-lg.font-bold.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
-            - if payment.confirming?
-              = button_to 'Подтвердить', confirm_payments_deposit_path(uuid: payment.uuid),
-                form: { data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } }
+-#        %td.text-lg.font-bold.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
+-#          - if payment.confirming?
+-#            = button_to 'Подтвердить', confirm_payments_deposit_path(uuid: payment.uuid),
+-#              form: { data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } }
