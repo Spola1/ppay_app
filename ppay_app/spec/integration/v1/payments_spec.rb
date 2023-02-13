@@ -6,12 +6,12 @@ describe 'Payments' do
   include_context 'authorization'
 
   path '/api/v1/payments/{uuid}' do
-    get 'Show payment information' do
-      tags 'Payments'
+    get 'Получение информации по платежу' do
+      tags 'Платежи'
       produces 'application/json'
       security [bearerAuth: {}]
 
-      # description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments.md'))
 
       parameter name: :uuid, in: :path, type: :string
 
@@ -22,15 +22,15 @@ describe 'Payments' do
       response '200', 'payment with uuid is present' do
         schema type: :object,
                properties: {
-                 uuid: { type: :string },
-                 external_order_id: { type: :string },
-                 created_at: { type: :string },
-                 type: { type: :string },
-                 national_currency: { type: :string },
-                 national_currency_amount: { type: :number },
-                 cryptocurrency: { type: :string },
-                 payment_system: { type: :string },
-                 payment_status: { type: :string }
+                 uuid: { type: :string, example: SecureRandom.uuid },
+                 external_order_id: { type: :string, example: '1234' },
+                 created_at: { type: :string, example: Time.zone.now.as_json },
+                 type: { type: :string, example: 'Deposit' },
+                 national_currency: { type: :string, example: 'RUB' },
+                 national_currency_amount: { type: :number, example: 3000 },
+                 cryptocurrency: { type: :string, example: 'USDT' },
+                 payment_system: { type: :string, example: 'Sberbank' },
+                 payment_status: { type: :string, example: 'completed' }
                },
                required: %w[uuid created_at type national_currency national_currency_amount
                             cryptocurrency payment_system payment_status]
