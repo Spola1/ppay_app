@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_02_09_081600) do
-=======
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
->>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
