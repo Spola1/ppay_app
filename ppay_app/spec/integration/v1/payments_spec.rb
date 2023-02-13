@@ -15,8 +15,8 @@ describe 'Payments' do
 
       parameter name: :uuid, in: :path, type: :string
 
-      let!(:payments) { create_list :payment, 1 }
-      let(:payment) { Payment.last }
+      let(:payment) { create :payment, external_order_id: external_order_id }
+      let(:external_order_id) { '1234' }
       let(:uuid) { payment.uuid }
 
       response '200', 'payment with uuid is present' do
@@ -35,7 +35,17 @@ describe 'Payments' do
                required: %w[uuid created_at type national_currency national_currency_amount
                             cryptocurrency payment_system payment_status]
 
-        run_test!
+        context 'external_order_id is present' do
+          let(:external_order_id) { '1234' }
+
+          run_test!
+        end
+
+        context 'no external_order_id' do
+          let(:external_order_id) { nil }
+
+          run_test!
+        end
       end
 
       response '404', 'payment not found' do
