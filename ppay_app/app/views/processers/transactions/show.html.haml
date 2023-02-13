@@ -1,65 +1,9 @@
-.max-w-full
-  %h1 Транзакция
-  %p
-    = "(ID: #{@transaction.id})"
-%br
-%table.max-w-full.text-center
-
-  %thead.border-b.bg-gray-50
-    %tr
-      %th параметр
-      %th значение
-  %tbody
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap ID
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.id
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap создана в
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.created_at
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap размер
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.amount
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap баланс исходящий
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.from_balance&.id
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap баланс исходящий - ник хозяина
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.from_balance&.balanceable&.nickname
-
-
-
-
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap баланс входящий
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.to_balance_id
-
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap баланс входящий - ник хозяина
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.to_balance&.balanceable&.nickname
-
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap id платежка
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.payment_id
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap направление платежа
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable.try(:direction)
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap платежная система платежа
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable.try(:payment_system)
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус платежа
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable.try(:payment_status)
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap хозяин объявления (ник)
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transactionable.try(:advertisement)&.processer&.nickname
-
-
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap статус транзакции
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.status
-    %tr.bg-white.border-b
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap тип транзакции
-      %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= @transaction.transaction_type
-
-
-
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Транзакция (ID: #{@transaction.id})"
+      .mt-8.my-4
+        = render @transaction
+      .back-link
+        = link_to "<- К списку курсов", transactions_path

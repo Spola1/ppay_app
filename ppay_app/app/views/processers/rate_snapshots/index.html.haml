@@ -1,35 +1,42 @@
-%h1.ml-4 Курсы валют
+%section.wrap
+  .card-wrap
+    .item-card
+      %h1.mb-4.text-xl Курсы валют
 
-- if @rate_snapshots.size > 0
-  %table
-    %thead
-      %tr
-        %th ID
-        %th добавлен
-        %th направление
-        %th нац. валюта
-        %th криптовалюта
-        %th платежная система
-        %th позиция в стакане
-        %th exchange_portal_id
-        %th значение
-        %th
+      - if @rate_snapshots.size > 0
+        %table.items-list-table
+          %thead.item-list-thead
+            %tr
+              %th.items-list-th ID
+              %th.items-list-th добавлен
+              %th.items-list-th направление
+              %th.items-list-th нац. валюта
+              %th.items-list-th криптовалюта
+              %th.items-list-th платежная система
+              %th.items-list-th позиция в стакане
+              %th.items-list-th exchange_portal_id
+              %th.items-list-th значение
+              %th.items-list-th
 
-    %tbody
-      - @rate_snapshots.each do |rs|
-        %tr
-          %td= rs.id
-          %td= rs.created_at.in_time_zone("Moscow")
-          %td= rs.direction
-          %td= rs.national_currency
-          %td= rs.cryptocurrency
-          %td= rs.payment_system
-          %td= rs.position_number
-          %td= rs.exchange_portal_id
-          %td= rs.value
-          %td= link_to 'Перейти', rs
+          %tbody
+            - @rate_snapshots.each do |rs|
+              %tr.items-list-tr
+                %td.items-list-td-link= link_to rs.id, rs
+                %td.items-list-td= rs.created_at.in_time_zone("Moscow")
+                %td.items-list-td= rs.direction
+                %td.items-list-td= rs.national_currency
+                %td.items-list-td= rs.cryptocurrency
+                %td.items-list-td= rs.payment_system
+                %td.items-list-td= rs.position_number
+                %td.items-list-td= rs.exchange_portal_id
+                %td.items-list-td= rs.value
 
-  = render 'shared/pagination', pagy: @pagy
+                %td.items-list-td.px-1.w-0
+                  = link_to rs do
+                    .icon-button-gray
+                      = fa_icon 'search'
+        .card-wrap
+          = render 'shared/pagination', pagy: @pagy
 
-- else
-  %p Не найдено в базе
+      - else
+        %p Не найдено в базе

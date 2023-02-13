@@ -1,33 +1,38 @@
-%section.w-full
-  %h1.text-xl.ml-4 Транзакции
+%section.wrap
+  .card-wrap
+    .item-card
+      %h1.mb-4.text-xl Транзакции
 
-  %table.max-w-full.text-center
-    %thead.border-b.bg-gray-50
-      %tr
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 ID
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 создано
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 размер
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 баланс исходящий
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 баланс входящий
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 id платежа
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 статус
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2 тип транзакции
+      %table.items-list-table
+        %thead.item-list-thead
+          %tr
+            %th.items-list-th ID
+            %th.items-list-th создано
+            %th.items-list-th размер
+            %th.items-list-th баланс исходящий
+            %th.items-list-th баланс входящий
+            %th.items-list-th id платежа
+            %th.items-list-th статус
+            %th.items-list-th тип транзакции
 
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2
-        %th.text-xs.font-medium.text-gray-900.px-2.py-2
+            %th.items-list-th
+            %th.items-list-th
 
-    %tbody
-      - @transactions.each do |trans|
-        %tr.bg-white.border-b
-          %td.px-2.py-2.whitespace-nowrap.text-xs.font-medium.text-gray-900= trans.id
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.created_at
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.amount
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.from_balance_id
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.to_balance_id
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.transactionable_id
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.status
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= trans.transaction_type
+        %tbody
+          - @transactions.each do |trans|
+            %tr.items-list-tr
+              %td.items-list-td-link= link_to trans.id, trans
+              %td.items-list-td= trans.created_at
+              %td.items-list-td= trans.amount
+              %td.items-list-td= trans.from_balance_id
+              %td.items-list-td= trans.to_balance_id
+              %td.items-list-td= trans.transactionable_id
+              %td.items-list-td= trans.status
+              %td.items-list-td= trans.transaction_type
 
-          %td.text-xs.text-gray-900.font-light.px-2.py-2.whitespace-nowrap= link_to 'Перейти', trans
-
-  = render 'shared/pagination', pagy: @pagy
+              %td.items-list-td.px-1.w-0
+                = link_to trans do
+                  .icon-button-gray
+                    = fa_icon 'search'
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy
