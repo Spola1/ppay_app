@@ -1,28 +1,38 @@
-.proc_head
-  .proc_logo
-  .proc_text
+.proc-head
+  .proc-logo
+  .proc-text
     UID Check
 
-.proc_amount_block
-  .proc_amount_content
+.proc-amount-block
+  .proc-amount-content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
 
-.countdown_payment_block_text
+.proc-countdown-block
   Вы можете оплатить в течение:
-  .countdown_text
-    %span.countdown{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
-      = payment.countdown
+  .text-red{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
+    = payment.countdown
 
-.proc_order_block2
-  .proc_order_title
+.proc-shop-block
+  .proc-shop-title
+    Магазин
+  .proc-shop-content
+    = payment.merchant.name
+
+.proc-order-block
+  .proc-order-title
     Заказ
-  .proc_order_content
+  .proc-order-content
     = payment.external_order_id
 
+.text-instruction
+  %span.text-red
+    1.
+  %span
+    Сделайте перевод указанной суммы по номеру карты указанному ниже
 
 = render 'payments/deposits/bank_card', payment: payment
 
-= render 'payments/deposits/deposit_instruction'
+-# = render 'payments/deposits/deposit_instruction'
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
@@ -41,22 +51,16 @@
   -#     Выберите файл
 
   = f.file_field :image, id: "image"
+
+  .text-instruction
+    %span.text-red
+      2.
+    %span
+      После перевода нажмите кнопку «Оплата завершена»
+
   
+  = f.submit "Оплата завершена", class: 'green-button my-4'
 
-  = f.submit "Оплата завершена", class: "payment-finished-button"
-
-.block_sending_cancel_on_img_form
+.block-sending-cancel-on-img-form
   = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
-.alerts_block
-  .text-red
-    %p Внимание:
-  .my-2
-    %p 
-      1) при отправке денежных средств писать сообщения в приложении категорически запрещено.
-  .my-2
-    %p 
-      2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
-  .my-2
-    %p 
-      3) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.

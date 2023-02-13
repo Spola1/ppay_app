@@ -27,8 +27,8 @@ button, input[type=submit] {
 .show_deposit_draft_block{
   border: 1px solid #dedede;
   border-radius: 12px;
-  width: 340px;
-  padding: 20px 20px 20px 20px;
+  width: 440px;
+  padding: 20px 70px 20px 70px;
   /*color:red;*/
   margin: 0 auto  ;
   height: 650px;
@@ -38,8 +38,8 @@ button, input[type=submit] {
 .show_deposit_transfering_block{
   border: 1px solid #dedede;
   border-radius: 12px;
-  width: 340px;
-  padding: 20px 20px 20px 20px;
+  width: 440px;
+  padding: 20px 70px 20px 70px;
   /*color:red;*/
   margin: 0 auto  ;
   height: 800px;
@@ -49,8 +49,8 @@ button, input[type=submit] {
 .show_withdrawal_block{
   border: 1px solid #dedede;
   border-radius: 12px;
-  width: 340px;
-  padding: 20px 20px 20px 20px;
+  width: 440px;
+  padding: 20px 70px 20px 70px;
   /*color:red;*/
   margin: 0 auto  ;
   
@@ -61,8 +61,8 @@ button, input[type=submit] {
 .show_deposit_block{
   border: 1px solid #dedede;
   border-radius: 12px;
-  width: 340px;
-  padding: 20px 20px 20px 20px;
+  width: 440px;
+  padding: 20px 70px 20px 70px;
   /*color:red;*/
   margin: 0 auto  ;
   
@@ -81,7 +81,6 @@ button, input[type=submit] {
   width: 100px;
   height: 60px;
   background-size: cover;
-  float: left;
 }
 .proc_text{
   float: left;
@@ -91,12 +90,6 @@ button, input[type=submit] {
   margin: 20px 0px 30px 118px;
 }
 
-.proc_shop_block{
-  float: left;
-  width: 300px;
-  height: 20px;
-  margin-top:10px;
-}
 .proc_shop_title{
   color: #888888;
   width: 100px;
@@ -263,136 +256,6 @@ label[for=withdrawal_card_number]{
 }
 
 
-.proc_card_sceomorph{
-  float: left;
-  width: 300px;
-  height: 140px;
-  padding: 21px 1px 10px 1px;
-  background-color: #159e30;
-  border-radius: 15px;
-}
-
-.tinkoff_card{
-  float: left;
-  width: 300px;
-  height: 140px;
-  padding: 21px 1px 10px 1px;
-  background-color: #FFDD2D;
-  border-radius: 15px;
-}
-
-.raiffeisen_card{
-  float: left;
-  width: 300px;
-  height: 140px;
-  padding: 21px 1px 10px 1px;
-  background-color:  #ffed00;
-  border-radius: 15px;
-}
-
-.alfabank_card{
-  float: left;
-  width: 300px;
-  height: 140px;
-  padding: 21px 1px 10px 1px;
-  background-color: #ef3124;
-  border-radius: 15px;
-}
-
-.proc_card_sceomorph_bank{
-  color: white;
-  font-size: 20px;
-  font-style: bold;
-  padding-left:20px;
-}
-
-
-.alfabank_card_bank{
-  color: white;
-  font-size: 20px;
-  font-style: bold;
-  padding-left:20px;
-}
-
-.tinkoff_card_bank{
-  color: #000000;
-  font-size: 20px;
-  font-style: bold;
-  padding-left:20px;
-}
-
-.raiffeisen_card_bank{
-  color: #000000;
-  font-size: 20px;
-  font-style: bold;
-  padding-left:20px;
-}
-.proc_card_sceomorph_number{
-  margin-top: 15px;
-  font-size: 19px;
-  font-style: bold;
-  color: white;
-  padding-left:20px;
-}
-
-.alfabank_card_number{
-  margin-top: 15px;
-  font-size: 19px;
-  font-style: bold;
-  color: white;
-  padding-left:20px;
-}
-
-.tinkoff_card_number{
-  margin-top: 15px;
-  font-size: 19px;
-  font-style: bold;
-  color: #000000;
-  padding-left:20px;
-}
-
-.raiffeisen_card_number{
-  margin-top: 15px;
-  font-size: 19px;
-  font-style: bold;
-  color: #000000;
-  padding-left:20px;
-}
-
-.proc_card_sceomorph_name{
-  margin-top: 7px;
-  font-size: 17px;
-  font-style: bold;
-  color: white;
-  padding-left:20px;
-}
-
-.alfabank_card_name{
-  margin-top: 7px;
-  font-size: 17px;
-  font-style: bold;
-  color: white;
-  padding-left:20px;
-}
-
-.tinkoff_card_name{
-  margin-top: 7px;
-  font-size: 17px;
-  font-style: bold;
-  color: #000000;
-  padding-left:20px;
-}
-
-.raiffeisen_card_name{
-  margin-top: 7px;
-  font-size: 17px;
-  font-style: bold;
-  color: #000000;
-  padding-left:20px;
-}
-.proc_card_sceomorph_footer{
-  background-color: #159e30;
-}
 .proc_send_summ{
   font-size: 13px;
   line-height: 14px;
