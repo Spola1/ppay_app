@@ -27,5 +27,9 @@ FactoryBot.define do
     trait :deposit do
       type { 'Deposit' }
     end
+
+    trait :with_image do
+      image { fixture_file_upload('spec/fixtures/test_files/sample.jpeg', 'image/png') }
+    end
   end
 end
