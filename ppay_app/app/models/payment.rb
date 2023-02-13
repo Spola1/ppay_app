@@ -4,6 +4,8 @@ class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
 
+  audited
+
   default_scope { order(created_at: :desc) }
 
   enum :cancellation_reason, { by_client: 0 }
