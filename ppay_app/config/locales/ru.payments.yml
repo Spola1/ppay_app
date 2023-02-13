@@ -1,0 +1,25 @@
+ru:
+  payments:
+    attributes:
+      direction: Направление
+      cryptocurrency: Криптовалюта
+      cryptocurrency_amount: Количество криптовалюты
+      national_currency: Национальная валюта
+      national_currency_amount: Кол-во. нац. валюты
+      payment_system: Платежная система
+      payment_status: Статус
+      cancelled_on_status: Статус отменен
+      advertisement_id: Объявление
+      merchant_id: Мерчант
+      rate_snapshot_id: Снимок курса
+      first_ip: first_ip
+      first_user_agent: first_user_agent
+      uuid: UUID
+      external_order_id: Идентификатор внешнего заказа
+      type: Тип
+      status_changed_at: Статус изменен
+      card_number: Номер карты
+      arbitration: Арбитраж
+      support_id: Саппорт
+      redirect_url: redirect_url
+      callback_url: callback_url
