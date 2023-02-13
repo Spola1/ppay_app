@@ -38,20 +38,25 @@
     %br
     на этот номер карты.
   %br
-  Сумма должна быть в точности та, что указана на экране. Пожалуйста, добавьте изображение с подтверждением платежа. Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
+  Сумма должна быть в точности та, что указана на экране.
+
+  - if payment.merchant.check_required?
+    Пожалуйста, добавьте изображение с подтверждением платежа.
+    Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
 
-  - if payment.image.present?
-    = image_tag payment.image
+  - if payment.merchant.check_required?
+    - if payment.image.present?
+      = image_tag payment.image
+      %br
+    .add_img_confirm
+      %b
+        2. Добавьте изображение:
     %br
-  .add_img_confirm
-    %b
-      2. Добавьте изображение:
-  %br
-  = render 'payments/errors', payment: payment
-  = f.file_field :image
+    = render 'payments/errors', payment: payment
+    = f.file_field :image
   %br
 
   = f.submit "Оплата завершена", class: "payment-finished-button"
