@@ -132,17 +132,17 @@ class Payment < ApplicationRecord
   end
 
   def ensure_unique_amount
-    recent_payments = Payment.all.where(payment_status: ['confirming', 'transferring'], national_currency: payment.national_currency)
+    recent_payments = Payment.all.where(payment_status: ['confirming', 'transferring'], national_currency: self.national_currency)
     amounts = recent_payments.pluck(:national_currency_amount)
 
     while amounts.include?(self.national_currency_amount)
-      if self.merchant.unique_amount_none?
-        self.national_currency_amount
-      elsif self.merchant.unique_amount_integer?
+      if self.merchant.unique_amount_integer?
         self.national_currency_amount += 1
       elsif self.merchant.unique_amount_decimal?
         self.national_currency_amount += hundredths_needed
       end
+
+      break if self.merchant.unique_amount_none? || !amounts.include?(self.national_currency_amount)
     end
   end
 end
