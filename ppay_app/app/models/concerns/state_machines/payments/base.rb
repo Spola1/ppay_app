@@ -43,7 +43,7 @@ module StateMachines
         self.cryptocurrency_amount = rate_snapshot.to_crypto(national_currency_amount)
       end
 
-      def has_advertisement?
+      def advertisement?
         advertisement.present?
       end
 

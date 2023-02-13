@@ -5,6 +5,18 @@ shared_examples 'create_payment' do
             in: :body,
             schema: { '$ref' => '#/components/schemas/payments_create_parameter_body_schema' }
 
+  include_context 'create_params'
+
+  let(:currency) { 'RUB' }
+
+  include_context 'successful_creation_response'
+
+  include_context 'invalid_response'
+
+  include_context 'unauthorized_response'
+end
+
+shared_context 'create_params' do
   let(:params) do
     {
       national_currency: currency,
@@ -14,21 +26,9 @@ shared_examples 'create_payment' do
       callback_url: FFaker::Internet.http_url
     }
   end
+end
 
-  let(:currency) { 'RUB' }
-
-  response '201', 'успешное создание' do
-    include_context 'generate_examples'
-
-    it 'создаст платеж мерчанту' do |example|
-      expect { submit_request(example.metadata) }.to change {
-        user.reload.public_send(payment_type.to_s.underscore.pluralize).count
-      }.from(0).to(1)
-
-      assert_response_matches_metadata(example.metadata)
-    end
-  end
-
+shared_context 'invalid_response' do
   response '422', 'invalid' do
     include_context 'generate_examples'
 
@@ -48,7 +48,23 @@ shared_examples 'create_payment' do
       end
     end
   end
+end
 
+shared_context 'successful_creation_response' do
+  response '201', 'успешное создание' do
+    include_context 'generate_examples'
+
+    it 'создаст платеж мерчанту' do |example|
+      expect { submit_request(example.metadata) }.to change {
+        user.reload.public_send(payment_type.to_s.underscore.pluralize).count
+      }.from(0).to(1)
+
+      assert_response_matches_metadata(example.metadata)
+    end
+  end
+end
+
+shared_context 'unauthorized_response' do
   response '401', 'unauthorized' do
     let(:user_token) { invalid_token }
 

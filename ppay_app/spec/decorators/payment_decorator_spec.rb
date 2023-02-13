@@ -2,5 +2,5 @@
 
 require 'rails_helper'
 
-RSpec.describe PaymentDecorator do
-end
+# RSpec.describe PaymentDecorator do
+# end

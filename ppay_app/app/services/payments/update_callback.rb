@@ -18,8 +18,8 @@ module Payments
       uri = URI(callback_url)
       body = { uuid:, external_order_id:, payment_status: }.compact
       headers = {
-        'Content-Type':  'application/json',
-        'Authorization': "Bearer #{token}"
+        'Content-Type': 'application/json',
+        Authorization: "Bearer #{token}"
       }
       Net::HTTP.post(uri, body.to_json, headers)
     end

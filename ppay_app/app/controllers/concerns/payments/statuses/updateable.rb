@@ -14,11 +14,9 @@ module Payments
       private
 
       def allowed_event
-        if params[:event].to_sym.in?(allowed_events)
-          params[:event]
-        else
-          raise(ActionController::BadRequest)
-        end
+        raise(ActionController::BadRequest) unless params[:event].to_sym.in?(allowed_events)
+
+        params[:event]
       end
 
       def payment_type_namespace

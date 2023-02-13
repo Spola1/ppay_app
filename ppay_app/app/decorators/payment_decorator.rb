@@ -44,7 +44,7 @@ class PaymentDecorator < ApplicationDecorator
   private
 
   def fiat_amount
-    '%.2f' % national_currency_amount
+    format('%.2f', national_currency_amount)
   end
 
   def countdown_difference
