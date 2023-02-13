@@ -12,8 +12,8 @@ ru:
       advertisement_id: Объявление
       merchant_id: Мерчант
       rate_snapshot_id: Снимок курса
-      first_ip:
-      first_user_agent:
+      first_ip: first_ip
+      first_user_agent: first_user_agent
       uuid: UUID
       external_order_id: Идентификатор внешнего заказа
       type: Тип
@@ -21,5 +21,5 @@ ru:
       card_number: Номер карты
       arbitration: Арбитраж
       support_id: Саппорт
-      redirect_url:
-      callback_url:
+      redirect_url: redirect_url
+      callback_url: callback_url
