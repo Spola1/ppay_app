@@ -122,6 +122,8 @@
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
 
+            = render 'shared/staff/payments/payment_audit', payment:
+
   .card-wrap       
     - if payment_status_partial_exists?(payment, 'processers')
       = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
