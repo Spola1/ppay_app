@@ -1,5 +1,5 @@
 - if payment.arbitration
-  = form_for payment, url: payment_path(payment), action: :update,
+  = simple_form_for payment, url: payment_path(payment), action: :update,
              data: { turbo_confirm: 'Вы уверены, что хотите снять платёж с арбитража?' } do |f|
     = f.hidden_field :arbitration, value: false
     = f.submit 'Снять с арбитража', class: 'form-submit'
