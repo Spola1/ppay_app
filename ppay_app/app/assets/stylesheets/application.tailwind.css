@@ -41,7 +41,7 @@
   }
 
   .green-button-submit {
-    @apply w-72 px-6 py-2.5 h-12 bg-green-600 text-white text-sm rounded-xl shadow-md
+    @apply w-300 px-6 py-2.5 h-12 bg-green-600 text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
@@ -228,6 +228,10 @@
     @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-left text-black bg-gray-200 rounded md:mb-0; 
   }
 
+  .grey-cardplace {
+    @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0; 
+  }
+
   .proc-head {
     @apply flex justify-between; 
   }
@@ -353,13 +357,80 @@
   .alfabank-card-name{
     @apply proc-card-sceomorph-name
   }
-  
+
   .text-red {
     @apply text-red-500
   }
 
   .block-sending-cancel-on-img-form {
     @apply flex h-5
+  }
+
+  .font-firs {
+    font-family: 'TT Firs Neue', sans-serif;
+  }
+
+  .w-300 {
+    width: 300px;
+  }
+
+  .w-100 {
+    width: 460px;
+    border: 1px solid #dedede;
+  }
+  .show-deposit-block {
+    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white
+  }
+
+  .show-withdrawal-block {
+    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white
+  }
+
+  .show-deposit {
+    @apply flex justify-center
+  }
+
+  .show-withdrawal {
+    @apply flex justify-center
+  }
+
+  .please-pay-from-bank {
+    @apply text-sm my-4
+  }
+
+  .alerts-block{
+    @apply text-xs text-gray-400
+  }
+
+  .payment_img {
+    width: 300px;
+    height: 280px;
+  }
+  .proc-payment-waiting-img {
+    @apply payment_img flex bg-[url('/spinner-loading.webp')] mt-10 bg-contain
+  }
+
+  .proc-payment-done-img {
+    @apply proc-payment-waiting-img bg-[url('/green-spinner-loading.png')];
+  }
+
+  .proc-payment-cancelled-img {
+    @apply proc-payment-waiting-img bg-[url('/red-spinner-loading.png')];
+  }
+
+  .proc-payment-done-links-block{
+    @apply mt-7 text-center text-gray-400 underline
+  }
+
+  .proc-payment-cancelled-links-block{
+    @apply proc-payment-done-links-block
+  }
+
+  .proc-payment-done-block{
+    @apply mt-7 text-center
+  }
+  .proc-payment-cancelled-block{
+    @apply proc-payment-done-block
   }
 }
 

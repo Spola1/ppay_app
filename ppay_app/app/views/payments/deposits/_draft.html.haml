@@ -35,12 +35,12 @@
     
     = f.submit "Подтвердить", class: "green-button-submit my-4"
     
-.please_pay_from_bank 
+.please-pay-from-bank 
   Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
 
 = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
-.alerts_block
+.alerts-block
   .text-red
     Внимание:
   .my-2

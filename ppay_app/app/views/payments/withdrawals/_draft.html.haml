@@ -1,47 +1,49 @@
-.proc_head
-  .proc_logo
-  .proc_text
+.proc-head
+  .proc-logo
+  .proc-text
     UID Check
 
-.proc_shop_block
-  .proc_shop_title
-    Мерчант
-  .proc_shop_content
-    = payment.merchant.name
+.mt-4
+  .proc-shop-block
+    .proc-shop-title
+      Мерчант
+    .proc-shop-content
+      = payment.merchant.name
 
-.proc_shop_block
-  .proc_order_title
+.proc-shop-block
+  .proc-order-title
     Заказ
-  .proc_order_content
+  .proc-order-content
     = payment.external_order_id
 
-.proc_order_block
-  .proc_order_title
+.proc-order-block
+  .proc-order-title
     Сумма
-  .proc_order_content
+  .proc-order-content
     = "#{payment.national_currency_amount} #{payment.national_currency}"
 
-.please_pay_from_bank
+.please-pay-from-bank
   Пожалуйста, укажите карту, куда Вы хотите вывести средства
   = "(#{ payment.national_currency_amount } #{ payment.national_currency })"
 
 = render 'payments/errors', payment: payment
 
 = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
-  %b
+
+  .select-payment-system
     = f.label :payment_system, 'Банк'
-  %br
-  = f.select :payment_system, [["-выбрать-", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"],
-            id: 'payment_system_field', class: 'form_field appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500  my-2'
-  %br
-  %br
-  %b
+    = f.select :payment_system, [["Выбрать", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], {}, class: "grey-drop-down"
+
+  .select-payment-system
+    
     = f.label :card_number, 'Номер карты'
-  = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' },
-            class: 'card-number-field text-center border text-gray-700 px-4 pr-8 rounded'
+    = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }, class: "grey-cardplace"
+            
 
   = hidden_field_tag :event, 'search' 
 
-  = f.submit "Подтвердить", class: "confirm-payment-system-choose"
+  .mt-4
+    = f.submit "Подтвердить", class: "green-button"
 
-= render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)
+.mt-4
+  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)

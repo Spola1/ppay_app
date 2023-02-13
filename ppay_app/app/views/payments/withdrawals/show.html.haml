@@ -1,9 +1,10 @@
-.show_content{:class => "show_withdrawal_block"} 
-  = render 'show'
+.show-withdrawal 
+  .show-withdrawal-block 
+    = render 'show'
 
-  .uuid_payment_block
-    uuid: 
-    = @payment.uuid
-    - if user_signed_in?
-      = "(payment_status: \"#{@payment.reload.payment_status}\")"
-  .clear
+    .uuid_payment_block
+      uuid: 
+      = @payment.uuid
+      - if user_signed_in?
+        = "(payment_status: \"#{@payment.reload.payment_status}\")"
+    .clear
