@@ -25,6 +25,12 @@ module PaymentsHelper
     end
   end
 
+  def cancellation_reasons_collection
+    Payment.cancellation_reasons.keys.map do |reason|
+      [cancellation_reason_translation(reason), reason]
+    end
+  end
+
   def number_color(number)
     return if number.blank? || number.zero?
 
@@ -35,6 +41,10 @@ module PaymentsHelper
 
   def state_translation(state)
     Payment.human_attribute_name("payment_status.#{state}")
+  end
+
+  def cancellation_reason_translation(reason)
+    Payment.human_attribute_name("cancellation_reason.#{reason}")
   end
 
   def payment_prefixes(payment, prefix)

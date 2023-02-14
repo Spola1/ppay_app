@@ -11,6 +11,7 @@
       %th.items-list-th платежная система
       %th.items-list-th статус
       %th.items-list-th cтатус изменён
+      %th.items-list-th причина отмены
       %th.items-list-th мерчант
       %th.items-list-th
   
@@ -28,6 +29,7 @@
         %td.items-list-td= payment.payment_system
         %td.items-list-td= payment.human_payment_status
         %td.items-list-td= payment.formatted_status_changed_at
+        %td.items-list-td= payment.human_cancellation_reason
         %td.items-list-td= payment.merchant.decorate.display_name
 
         %td.items-list-td.px-1.w-0

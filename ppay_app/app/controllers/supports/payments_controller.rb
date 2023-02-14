@@ -27,7 +27,7 @@ module Supports
     end
 
     def payment_params
-      required_params.permit(:payment_status, :arbitration)
+      required_params.permit(:payment_status, :arbitration, :cancellation_reason)
     end
   end
 end
