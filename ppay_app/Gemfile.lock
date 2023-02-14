@@ -83,6 +83,8 @@ GEM
       activerecord (>= 4.2)
       activesupport
     ast (2.4.2)
+    audited (5.2.0)
+      activerecord (>= 5.0, < 7.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.644.0)
     aws-sdk-core (3.159.0)
@@ -417,6 +419,7 @@ DEPENDENCIES
   aasm
   active_model_serializers (~> 0.10.0)
   after_commit_everywhere (~> 1.0)
+  audited (~> 5.0)
   aws-sdk-s3
   bootsnap
   capybara

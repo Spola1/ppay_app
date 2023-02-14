@@ -43,6 +43,12 @@
               %td.item-card-td
                 = render "#{role_namespace}/payments/payment_status_field", f:, payment:
 
+            - if role_namespace == 'supports'
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина отмены
+                %td.item-card-td
+                  = render "supports/payments/payment_cancellation_reason_field", f:, payment:
+
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
               %td.item-card-td
@@ -75,6 +81,11 @@
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Отменён на статусе
               %td.item-card-td= "#{payment.cancelled_on_status}"
+
+            - if payment.cancellation_reason
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина отмены
+              %td.item-card-td= "#{payment.human_cancellation_reason}"
 
             - if payment.advertisement_id
               %tr.item-card-tr
@@ -121,6 +132,8 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
+
+            = render 'shared/staff/payments/payment_audit', payment:
 
   .card-wrap       
     - if payment_status_partial_exists?(payment, 'processers')

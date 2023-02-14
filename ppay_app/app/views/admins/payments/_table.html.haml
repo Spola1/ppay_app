@@ -14,6 +14,7 @@
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 платежная система
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 статус изменен
+        %th.text-xs.font-medium.text-gray-900.px-6.py-4 причина отмены
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 мерчант
         %th.text-xs.font-medium.text-gray-900.px-6.py-4 скриншот
 
@@ -33,8 +34,9 @@
             - if payment.transactions.main.present?
               = "(#{payment.transactions.main.first.amount})"
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_system
-          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.payment_status
+          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.human_payment_status
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.formatted_status_changed_at
+          %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.human_cancellation_reason
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap= payment.merchant.decorate.display_name
           %td.text-xs.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
             - if payment.image.present?
