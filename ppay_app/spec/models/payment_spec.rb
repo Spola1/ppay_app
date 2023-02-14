@@ -8,35 +8,45 @@ RSpec.describe Payment, type: :model do
   it { is_expected.to belong_to(:rate_snapshot).optional(true) }
   it { is_expected.to belong_to(:advertisement).optional(true) }
 
-  describe '#ensure_unique_amount' do
-    let!(:payment_1) { create(:payment, :confirming, :deposit) }
-    let!(:payment_2) { create(:payment, :transferring, :withdrawal, national_currency_amount: 101) }
-    let!(:payment_3) { create(:payment, :transferring, :withdrawal, national_currency_amount: 100.49) }
+  describe '#ensure_unique_amount for deposits' do
+    context 'bla bla' do
+      let!(:advertisement) { create(:advertisement, :deposit) }
+      let!(:payment1) { create(:payment, :deposit, :processer_search, advertisement: advertisement) }
+      let!(:payment2) { create(:payment, :deposit, :processer_search, advertisement: advertisement) }
+      let!(:payment3) { create(:payment, :deposit, :processer_search, advertisement: advertisement, unique_amount: 'integer') }
+      let!(:payment4) { create(:payment, :deposit, :processer_search, advertisement: advertisement, unique_amount: 'decimal') }
 
-    context 'when merchant unique_amount_none' do
-      it 'does not change national_currency_amount' do
-        payment = build(:payment, :deposit)
+      it 'changes national_currency_amount to a unique value' do
+        expect { payment3.bind }.to change { payment3.national_currency_amount }.from(10).to(9)
+      end
 
-        expect { payment.save }.not_to change(payment, :national_currency_amount)
+      it 'changes national_currency_amount to a unique value' do
+        expect { payment4.bind }.to change { payment4.national_currency_amount }.from(10).to(9)
+      end
+
+      it 'changes status from processer_search to transferring' do
+        expect { payment1.bind }.to change { payment1.payment_status }.from('processer_search').to('transferring')
       end
     end
+  end
 
-    context 'when merchant unique_amount_integer' do
-      it 'increases national_currency_amount by 1' do
-        payment = build(:payment, :deposit)
-        payment.merchant.unique_amount = 'integer'
+  describe '#ensure_unique_amount for withdrawals' do
+    let!(:advertisement) { create(:advertisement, :withdrawal) }
+    let!(:payment1) { create(:payment, :withdrawal, :processer_search, national_currency_amount: 10) }
+    let!(:payment2) { create(:payment, :withdrawal, :processer_search, national_currency_amount: 10) }
+    let!(:payment3) { create(:payment, :withdrawal, :processer_search, national_currency_amount: 10, unique_amount: 'integer') }
+    let!(:payment4) { create(:payment, :withdrawal, :processer_search, national_currency_amount: 10, unique_amount: 'decimal') }
 
-        expect { payment.save }.to change(payment, :national_currency_amount).from(100).to(102)
-      end
+    it 'changes national_currency_amount to a unique value' do
+      expect { payment3.bind }.to change { payment3.national_currency_amount }.from(10).to(11)
     end
 
-    context 'when merchant unique_amount_decimal' do
-      it 'increases national_currency_amount by difference between rounded number and national_currency_amount' do
-        payment = build(:payment, :deposit, national_currency_amount: 100.49)
-        payment.merchant.unique_amount = 'decimal'
+    it 'changes national_currency_amount to a unique value' do
+      expect { payment4.bind }.to change { payment4.national_currency_amount }.from(10).to(10.01)
+    end
 
-        expect { payment.save }.to change(payment, :national_currency_amount).from(100.49).to(102.0)
-      end
+    it 'changes status from processer_search to transferring' do
+      expect { payment1.bind }.to change { payment1.payment_status }.from('processer_search').to('transferring')
     end
   end
 

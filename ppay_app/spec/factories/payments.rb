@@ -9,6 +9,8 @@ FactoryBot.define do
 
     national_currency { 'RUB' }
     national_currency_amount { 100 }
+    cryptocurrency_amount { 1 }
+    payment_system { 'AlfaBank' }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
 
@@ -18,6 +20,10 @@ FactoryBot.define do
 
     trait :transferring do
       payment_status { 'transferring' }
+    end
+
+    trait :processer_search do
+      payment_status { 'processer_search' }
     end
 
     trait :withdrawal do
