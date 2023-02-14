@@ -78,9 +78,15 @@
 
 ```
 {
-  "uuid": "ac6774a4-bb84-46e9-a355-d5795dea903c",
-  "external_order_id": "1234",
-  "payment_status": "confirming"
+  "data": {
+    "id": "191",
+    "type": "Deposit",
+    "attributes": {
+      "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
+      "external_order_id": "1234",
+      "payment_status": "confirming"
+    }
+  }
 }
 ```
 
