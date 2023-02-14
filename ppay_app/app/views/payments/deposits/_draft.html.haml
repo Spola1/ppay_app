@@ -14,12 +14,12 @@
   .proc-shop-content
     = payment.merchant.name
 
-
-.proc-order-block
-  .proc-order-title
-    Заказ
-  .proc-order-content
-    = payment.external_order_id
+.mt-1
+  .proc-order-block
+    .proc-order-title
+      Заказ
+    .proc-order-content
+      = payment.external_order_id
 
 = render 'payments/errors', payment: payment
 
@@ -33,7 +33,7 @@
     
     = hidden_field_tag :event, 'search' 
     
-    = f.submit "Подтвердить", class: "green-button-submit my-4"
+    = f.submit "Подтвердить", class: "green-button-submit"
     
 .please-pay-from-bank 
   Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
@@ -41,12 +41,11 @@
 = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
 .alerts-block
-  .text-red
+  .text-red.font-semibold
     Внимание:
-  .my-2
+  .my-0.5 
     1) при отправке денежных средств писать сообщения в приложении категорически запрещено.
-  .my-2
+  .my-4
     2) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
-  .my-2
-    %p 
+  .my-4 
     3) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.

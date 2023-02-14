@@ -35,13 +35,13 @@
   }
 
   .green-button {
-    @apply w-full px-6 py-2.5 h-12 bg-green-600 text-white text-sm rounded-xl shadow-md
+    @apply w-full px-6 py-2.5 h-12 bg-[#21a038] text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
   .green-button-submit {
-    @apply w-300 px-6 py-2.5 h-12 bg-green-600 text-white text-sm rounded-xl shadow-md
+    @apply w-300 px-6 py-2.5 h-12 bg-[#21a038] text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
@@ -241,11 +241,11 @@
   }
 
   .proc-text {
-    @apply text-gray-500 text-lg mt-3;
+    @apply text-gray-400 mt-4;
   }
 
   .proc-amount-block{
-    @apply h-10 my-4;
+    @apply h-10 my-6;
   }
 
   .proc-amount-content {
@@ -257,7 +257,7 @@
   }
 
   .proc-countdown-block {
-    @apply flex justify-between text-sm;
+    @apply flex justify-between text-sm mt-2;
   }
 
   .proc-button-block {
@@ -286,16 +286,17 @@
   }
 
   .select-payment-system {
-    @apply font-semibold text;
+    @apply font-semibold text mb-2 mt-6;
   }
 
 
   .text-instruction {
-    @apply text-sm mt-3 font-medium;
+    @apply text-sm mt-5 font-medium;
   }
 
   .proc-card-sceomorph {
-    @apply mt-5 mb-4 px-6 pt-4 flex flex-col h-32 rounded-2xl bg-[#21a038];
+    @apply mt-3.5 mb-5 px-6 pt-4 flex flex-col h-32 rounded-2xl bg-[#21a038] shadow-md shadow-slate-500 border
+    border-solid border-gray-600;
   }
 
   .tinkoff-card {
@@ -311,7 +312,7 @@
   }
 
   .proc-card-sceomorph-bank {
-    @apply text-xl text-white;
+    @apply text-xl font-extralight text-white;
   }
 
   .tinkoff-card-bank {
@@ -327,7 +328,7 @@
   }
 
   .proc-card-sceomorph-number {
-    @apply mt-3 text-lg text-white;
+    @apply mt-2.5 text-lg text-white font-medium;
   }
 
   .tinkoff-card-number {
@@ -343,7 +344,7 @@
   }
 
   .proc-card-sceomorph-name{
-    @apply my-2 text-lg text-white;
+    @apply mt-1.5 text-lg text-white font-extralight;
   }
 
   .tinkoff-card-name{
@@ -395,11 +396,11 @@
   }
 
   .please-pay-from-bank {
-    @apply text-sm my-4;
+    @apply text-sm my-5 font-medium;
   }
 
   .alerts-block{
-    @apply text-xs text-gray-400;
+    @apply text-xs text-gray-600 mt-6;
   }
 
   .payment_img {

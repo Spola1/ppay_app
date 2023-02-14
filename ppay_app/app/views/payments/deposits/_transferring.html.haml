@@ -9,14 +9,15 @@
 
 .proc-countdown-block
   Вы можете оплатить в течение:
-  .text-red{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
+  .text-red.font-medium{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
     = payment.countdown
 
-.proc-shop-block
-  .proc-shop-title
-    Магазин
-  .proc-shop-content
-    = payment.merchant.name
+.mt-1
+  .proc-shop-block
+    .proc-shop-title
+      Магазин
+    .proc-shop-content
+      = payment.merchant.name
 
 .proc-order-block
   .proc-order-title
@@ -53,7 +54,7 @@
       После перевода нажмите кнопку «Оплата завершена»
 
   
-  = f.submit "Оплата завершена", class: 'green-button my-4'
+  = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5'
 
 .block-sending-cancel-on-img-form
   = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
