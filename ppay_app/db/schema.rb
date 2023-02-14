@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_10_125043) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_14_083819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -184,6 +184,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_125043) do
     t.string "redirect_url"
     t.string "callback_url"
     t.integer "cancellation_reason"
+    t.integer "unique_amount", default: 0
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
@@ -240,8 +241,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_125043) do
     t.decimal "deposit_commission", precision: 15, scale: 10
     t.decimal "withdrawal_commission", precision: 15, scale: 10
     t.string "usdt_trc20_address"
-    t.integer "unique_amount", default: 0
     t.boolean "check_required", default: true
+    t.integer "unique_amount", default: 0
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

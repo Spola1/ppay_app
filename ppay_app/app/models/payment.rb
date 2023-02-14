@@ -49,7 +49,7 @@ class Payment < ApplicationRecord
 
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) }
 
-  before_create :ensure_unique_amount
+  before_create :set_default_unique_amount
 
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
@@ -62,6 +62,12 @@ class Payment < ApplicationRecord
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
   end
+
+  enum unique_amount: {
+    none: 0,
+    integer: 1,
+    decimal: 2
+  }, _prefix: true
 
   def signature
     data = { national_currency:, national_currency_amount:, external_order_id: }.to_json
@@ -124,29 +130,7 @@ class Payment < ApplicationRecord
     )
   end
 
-  def hundredths_needed
-    rounded_number = self.national_currency_amount.ceil
-    difference = rounded_number - self.national_currency_amount
-
-    if difference == 0
-      return 1
-    else
-      return difference
-    end
-  end
-
-  def ensure_unique_amount
-    recent_payments = Payment.all.where(payment_status: ['confirming', 'transferring'], national_currency: self.national_currency)
-    amounts = recent_payments.pluck(:national_currency_amount)
-
-    while amounts.include?(self.national_currency_amount)
-      if self.merchant.unique_amount_integer?
-        self.national_currency_amount += 1
-      elsif self.merchant.unique_amount_decimal?
-        self.national_currency_amount += hundredths_needed
-      end
-
-      break if self.merchant.unique_amount_none? || !amounts.include?(self.national_currency_amount)
-    end
+  def set_default_unique_amount
+    self.unique_amount = self.merchant.unique_amount
   end
 end

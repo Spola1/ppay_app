@@ -32,10 +32,18 @@ module StateMachines
 
           # bind_operator
           event :bind do
-            after :create_transactions
+            after :ensure_unique_amount, :create_transactions
           ensure :search_processer
 
                  transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+          end
+
+          # inline_bind_operator
+          event :inline_bind do
+            after :ensure_unique_amount, :create_transactions
+          ensure :search_processer
+
+                  transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
 
           # make_deposit
@@ -79,6 +87,28 @@ module StateMachines
 
         errors.add(:card_number, :wrong_length, count: 16)
         false
+      end
+
+      def ensure_unique_amount
+        with_lock do
+          recent_payments = self.processer.payments.where.not(payment_status: ['completed', 'cancelled'])
+                                                  .where(national_currency: self.national_currency)
+          amounts = recent_payments.pluck(:national_currency_amount)
+
+          if !amounts.include?(self.national_currency_amount)
+            self.national_currency_amount
+          end
+
+          while amounts.include?(self.national_currency_amount) do
+            if self.unique_amount_integer?
+              self.national_currency_amount += 1
+            elsif self.unique_amount_decimal?
+              self.national_currency_amount += 0.01
+            end
+
+            break if !amounts.include?(self.national_currency_amount)
+          end
+        end
       end
     end
   end
