@@ -32,23 +32,17 @@
 
 = render 'payments/deposits/bank_card', payment: payment
 
--# = render 'payments/deposits/deposit_instruction'
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
 
   - if payment.image.present?
     = image_tag payment.image
-    %br
-  .add_img_confirm
-    %b
-      Добавьте изображение чека:
-  %br
-  = render 'payments/errors', payment: payment
+  
+  .add-img-confirm
+    Добавьте изображение чека:
 
-  -# %label.custom-file-upload{for: "image"}
-  -#   .text-xs
-  -#     Выберите файл
+  = render 'payments/errors', payment: payment
 
   = f.file_field :image, id: "image"
 

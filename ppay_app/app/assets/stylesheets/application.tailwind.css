@@ -245,53 +245,53 @@
   }
 
   .proc-amount-block{
-    @apply h-10 my-4
+    @apply h-10 my-4;
   }
 
   .proc-amount-content {
-    @apply text-left text-3xl font-medium
+    @apply text-left text-3xl font-medium;
   }
 
   .proc-shop-block {
-    @apply flex justify-between
+    @apply flex justify-between;
   }
 
   .proc-countdown-block {
-    @apply flex justify-between text-sm
+    @apply flex justify-between text-sm;
   }
 
   .proc-button-block {
-    @apply flex
+    @apply flex;
   }
 
   .proc-shop-title {
-    @apply text-gray-400 text mt-0
+    @apply text-gray-400 text mt-0;
   }
   .proc-shop-content {
-    @apply text
+    @apply text;
   }
 
   .proc-order-block {
-    @apply flex justify-between mb-2
+    @apply flex justify-between mb-2;
   }
   .proc-order-title {
-    @apply text-gray-400 text
+    @apply text-gray-400 text;
   }
   .proc-order-content {
-    @apply text
+    @apply text;
   }
 
   .simple-form-for-payment-deposit {
-    @apply flex 
+    @apply flex;
   }
 
   .select-payment-system {
-    @apply font-semibold text
+    @apply font-semibold text;
   }
 
 
   .text-instruction {
-    @apply text-sm mt-3 font-medium
+    @apply text-sm mt-3 font-medium;
   }
 
   .proc-card-sceomorph {
@@ -311,59 +311,59 @@
   }
 
   .proc-card-sceomorph-bank {
-    @apply text-xl text-white
+    @apply text-xl text-white;
   }
 
   .tinkoff-card-bank {
-    @apply proc-card-sceomorph-bank text-black
+    @apply proc-card-sceomorph-bank text-black;
   }
 
   .raiffeisen-card-bank {
-    @apply proc-card-sceomorph-bank text-black
+    @apply proc-card-sceomorph-bank text-black;
   }
 
   .alfabank-card-bank {
-    @apply proc-card-sceomorph-bank
+    @apply proc-card-sceomorph-bank;
   }
 
   .proc-card-sceomorph-number {
-    @apply mt-3 text-lg text-white
+    @apply mt-3 text-lg text-white;
   }
 
   .tinkoff-card-number {
-    @apply proc-card-sceomorph-number text-black
+    @apply proc-card-sceomorph-number text-black;
   }
 
   .raiffeisen-card-number {
-    @apply proc-card-sceomorph-number text-black
+    @apply proc-card-sceomorph-number text-black;
   }
 
   .alfabank-card-number {
-    @apply proc-card-sceomorph-number
+    @apply proc-card-sceomorph-number;
   }
 
   .proc-card-sceomorph-name{
-    @apply my-2 text-lg text-white
+    @apply my-2 text-lg text-white;
   }
 
   .tinkoff-card-name{
-    @apply proc-card-sceomorph-name text-black
+    @apply proc-card-sceomorph-name text-black;
   }
 
   .raiffeisen-card-name{
-    @apply proc-card-sceomorph-name text-black
+    @apply proc-card-sceomorph-name text-black;
   }
 
   .alfabank-card-name{
-    @apply proc-card-sceomorph-name
+    @apply proc-card-sceomorph-name;
   }
 
   .text-red {
-    @apply text-red-500
+    @apply text-red-500;
   }
 
   .block-sending-cancel-on-img-form {
-    @apply flex h-5
+    @apply flex h-5;
   }
 
   .font-firs {
@@ -379,27 +379,27 @@
     border: 1px solid #dedede;
   }
   .show-deposit-block {
-    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white
+    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
   }
 
   .show-withdrawal-block {
-    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white
+    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
   }
 
   .show-deposit {
-    @apply flex justify-center
+    @apply flex justify-center;
   }
 
   .show-withdrawal {
-    @apply flex justify-center
+    @apply flex justify-center;
   }
 
   .please-pay-from-bank {
-    @apply text-sm my-4
+    @apply text-sm my-4;
   }
 
   .alerts-block{
-    @apply text-xs text-gray-400
+    @apply text-xs text-gray-400;
   }
 
   .payment_img {
@@ -407,7 +407,7 @@
     height: 280px;
   }
   .proc-payment-waiting-img {
-    @apply payment_img flex bg-[url('/spinner-loading.webp')] mt-10 bg-contain
+    @apply payment_img flex bg-[url('/spinner-loading.webp')] mt-10 bg-contain;
   }
 
   .proc-payment-done-img {
@@ -419,18 +419,38 @@
   }
 
   .proc-payment-done-links-block{
-    @apply mt-7 text-center text-gray-400 underline
+    @apply mt-7 text-center text-gray-400 underline;
   }
 
   .proc-payment-cancelled-links-block{
-    @apply proc-payment-done-links-block
+    @apply proc-payment-done-links-block;
   }
 
   .proc-payment-done-block{
-    @apply mt-7 text-center
+    @apply mt-7 text-center;
   }
-  .proc-payment-cancelled-block{
-    @apply proc-payment-done-block
+  .proc-payment-cancelled-block {
+    @apply proc-payment-done-block;
+  }
+
+  .proc-payment-waiting-block {
+    @apply proc-payment-done-block;
+  }
+
+  .proc-payment-cancelled-links-dw {
+    @apply text-gray-400 underline mb-1;
+  }
+
+  .uuid-payment-block {
+    @apply text-xs text-gray-300 mt-5;
+  }
+
+  .add-img-confirm {
+    @apply my-2 text-sm;
+  }
+
+  .error-messages-in-payments-forms {
+    @apply py-3 mb-2;
   }
 }
 
