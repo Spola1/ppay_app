@@ -31,7 +31,7 @@
   %span
     Сделайте перевод указанной суммы по номеру карты указанному ниже
 
-= render 'payments/deposits/bank_card', payment: payment.decorate
+= render 'payments/deposits/bank_card', payment: payment
 
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|

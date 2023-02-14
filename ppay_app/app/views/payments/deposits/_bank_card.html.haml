@@ -7,7 +7,7 @@
         - #cards_string = ""
         - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
         = #cards_string
-        = payment.advertisement.card_number.gsub(/(.{4})/, '\1 ')
+        = payment.advertisement.decorate.formatted_card_number
       .proc-card-sceomorph-name
         Иван Иванов
 
@@ -16,7 +16,7 @@
       .tinkoff-card-bank
         = payment.payment_system.upcase
       .tinkoff-card-number
-        = payment.advertisement.card_number.gsub(/(.{4})/, '\1 ')
+        = payment.advertisement.decorate.formatted_card_number
       .tinkoff-card-name
         Иван Иванов
 
@@ -25,7 +25,7 @@
       .raiffeisen-card-bank
         = payment.payment_system.upcase
       .raiffeisen-card-number
-        = payment.advertisement.card_number.gsub(/(.{4})/, '\1 ')
+        = payment.advertisement.decorate.formatted_card_number
       .raiffeisen-card-name
         Иван Иванов
 
@@ -34,6 +34,6 @@
       .alfabank-card-bank
         = payment.payment_system.upcase
       .alfabank-card-number
-        = payment.advertisement.card_number.gsub(/(.{4})/, '\1 ')
+        = payment.advertisement.decorate.formatted_card_number
       .alfabank-card-name
         Иван Иванов
