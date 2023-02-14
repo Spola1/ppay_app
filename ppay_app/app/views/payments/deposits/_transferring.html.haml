@@ -31,7 +31,7 @@
   %span
     Сделайте перевод указанной суммы по номеру карты указанному ниже
 
-= render 'payments/deposits/bank_card', payment: payment
+= render 'payments/deposits/bank_card', payment: payment.decorate
 
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
@@ -41,7 +41,10 @@
     = image_tag payment.image
   
   .add-img-confirm
-    Добавьте изображение чека:
+    %span.text-red
+      2.
+    %span
+      Добавьте изображение чека:
 
   = render 'payments/errors', payment: payment
 
@@ -49,7 +52,7 @@
 
   .text-instruction
     %span.text-red
-      2.
+      3.
     %span
       После перевода нажмите кнопку «Оплата завершена»
 

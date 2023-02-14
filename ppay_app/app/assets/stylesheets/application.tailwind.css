@@ -443,11 +443,11 @@
   }
 
   .uuid-payment-block {
-    @apply text-xs text-gray-300 mt-5;
+    @apply text-xs text-gray-300 mt-5 mb-20;
   }
 
   .add-img-confirm {
-    @apply my-2 text-sm;
+    @apply my-2 text-sm font-medium;
   }
 
   .error-messages-in-payments-forms {
