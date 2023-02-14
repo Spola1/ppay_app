@@ -25,7 +25,7 @@ module Payments
     end
 
     def serializer
-      "Api::V1::Payments::#{payment.type}UpdateCallbackSerializer".classify.constantize
+      "Api::V1::Payments::UpdateCallback::#{payment.type}Serializer".constantize
     end
 
     def headers

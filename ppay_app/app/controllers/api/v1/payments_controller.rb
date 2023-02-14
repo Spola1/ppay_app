@@ -11,7 +11,17 @@ module Api
       rescue_from(ActiveRecord::RecordNotFound) { head :not_found }
 
       def show
-        respond_with Payment.find_by! uuid: params[:uuid]
+        render json: serializer.new(payment).serializable_hash
+      end
+
+      private
+
+      def payment
+        @payment ||= Payment.find_by! uuid: params[:uuid]
+      end
+
+      def serializer
+        "Api::V1::Payments::Show::#{payment.type}Serializer".constantize
       end
     end
   end

@@ -28,8 +28,14 @@
             "content": {
               "application/json": {
                 "example": {
-                  "uuid": "4d4e9c92-78c3-4ecb-a138-5dc12cf6216e",
-                  "url": "http://example.org/payments/deposits/4d4e9c92-78c3-4ecb-a138-5dc12cf6216e?signature=f35afb0d2494c5e545c42bfeb994ee106618023ad5527448243a33835e3f3f8a"
+                  "data": {
+                    "id": "177",
+                    "type": "Deposit",
+                    "attributes": {
+                      "uuid": "c3865697-7540-4e33-a3e9-e020982aae06",
+                      "url": "http://example.org/payments/deposits/c3865697-7540-4e33-a3e9-e020982aae06?signature=c13c5584c09b874093a6f3d8adbc201ce8880b20c739d2b2d8e1febf88e4d7a1"
+                    }
+                  }
                 },
                 "schema": {
                   "$ref": "#/components/schemas/payments_create_response_body_schema"
@@ -90,8 +96,14 @@
             "content": {
               "application/json": {
                 "example": {
-                  "uuid": "b9f0f378-30d2-44c9-97fa-8ef7a6f1c792",
-                  "url": "http://example.org/payments/withdrawals/b9f0f378-30d2-44c9-97fa-8ef7a6f1c792?signature=bc055e8088d2affb8107aec0d9da4a551d6f125271e78104501ae0215af7be10"
+                  "data": {
+                    "id": "178",
+                    "type": "Withdrawal",
+                    "attributes": {
+                      "uuid": "b5c93d7e-411b-4ccd-bd4c-55e486e2a6d9",
+                      "url": "http://example.org/payments/withdrawals/b5c93d7e-411b-4ccd-bd4c-55e486e2a6d9?signature=4b1a7682656494b21b58281c09ad66b4e09b4ba6cba87f77cd9d3f52532aee25"
+                    }
+                  }
                 },
                 "schema": {
                   "$ref": "#/components/schemas/payments_create_response_body_schema"
@@ -210,67 +222,110 @@
       "payments_create_response_body_schema": {
         "type": "object",
         "properties": {
-          "uuid": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uuid",
+                  "url"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
           }
         },
         "required": [
-          "uuid",
-          "url"
+          "data"
         ]
       },
       "payments_show_response_body_schema": {
         "type": "object",
         "properties": {
-          "uuid": {
-            "type": "string",
-            "example": "6cd01c7b-696b-4182-809f-131e3d535871"
-          },
-          "external_order_id": {
-            "type": "string",
-            "example": "1234"
-          },
-          "created_at": {
-            "type": "string",
-            "example": "2023-02-13T23:32:02.394+03:00"
-          },
-          "type": {
-            "type": "string",
-            "example": "Deposit"
-          },
-          "national_currency": {
-            "type": "string",
-            "example": "RUB"
-          },
-          "national_currency_amount": {
-            "type": "number",
-            "example": 3000.0
-          },
-          "cryptocurrency": {
-            "type": "string",
-            "example": "USDT"
-          },
-          "payment_system": {
-            "type": "string",
-            "example": "Sberbank"
-          },
-          "payment_status": {
-            "type": "string",
-            "example": "completed"
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "type": "string",
+                    "example": "44c5bda6-50d1-4d24-a653-5229e26a4691"
+                  },
+                  "external_order_id": {
+                    "type": "string",
+                    "example": "1234"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "example": "2023-02-14T23:25:36.547+03:00"
+                  },
+                  "national_currency": {
+                    "type": "string",
+                    "example": "RUB"
+                  },
+                  "national_currency_amount": {
+                    "type": "string",
+                    "example": "3000.0"
+                  },
+                  "cryptocurrency": {
+                    "type": "string",
+                    "example": "USDT"
+                  },
+                  "payment_system": {
+                    "type": "string",
+                    "example": "Sberbank"
+                  },
+                  "payment_status": {
+                    "type": "string",
+                    "example": "completed"
+                  }
+                },
+                "required": [
+                  "uuid",
+                  "created_at",
+                  "national_currency",
+                  "national_currency_amount",
+                  "cryptocurrency",
+                  "payment_system",
+                  "payment_status"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
           }
         },
         "required": [
-          "uuid",
-          "created_at",
-          "type",
-          "national_currency",
-          "national_currency_amount",
-          "cryptocurrency",
-          "payment_system",
-          "payment_status"
+          "data"
         ]
       }
     }
