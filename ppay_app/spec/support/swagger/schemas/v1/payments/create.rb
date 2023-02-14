@@ -36,10 +36,24 @@ module Swagger
               payments_create_response_body_schema: {
                 type: :object,
                 properties: {
-                  uuid: { type: :string },
-                  url: { type: :string }
+                  data: {
+                    type: :object,
+                    properties: {
+                      id: { type: :string },
+                      type: { type: :string },
+                      attributes: {
+                        type: :object,
+                        properties: {
+                          uuid: { type: :string },
+                          url: { type: :string }
+                        },
+                        required: %w[uuid url]
+                      }
+                    },
+                    required: %w[id type attributes]
+                  },
                 },
-                required: %w[uuid url]
+                required: %w[data]
               }
             }
           end

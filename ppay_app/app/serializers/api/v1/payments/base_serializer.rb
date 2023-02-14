@@ -3,7 +3,9 @@
 module Api
   module V1
     module Payments
-      class BaseSerializer < ActiveModel::Serializer
+      class BaseSerializer
+        include JSONAPI::Serializer
+
         attributes :uuid, :url
       end
     end
