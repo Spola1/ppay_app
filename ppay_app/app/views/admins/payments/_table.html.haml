@@ -38,7 +38,3 @@
             = link_to payment.image, target: '_blank' do
               = image_tag payment.image
 
--#        %td.text-lg.font-bold.text-gray-900.font-light.px-6.py-4.whitespace-nowrap
--#          - if payment.confirming?
--#            = button_to 'Подтвердить', confirm_payments_deposit_path(uuid: payment.uuid),
--#              form: { data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } }
