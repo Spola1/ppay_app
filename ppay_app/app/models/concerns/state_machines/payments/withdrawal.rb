@@ -3,6 +3,8 @@
 module StateMachines
   module Payments
     module Withdrawal
+      UNIQUEIZATION_DIFFERENCE = { integer: 1, decimal: 0.01 }.freeze
+
       extend ActiveSupport::Concern
       include Base
 
@@ -32,7 +34,7 @@ module StateMachines
 
           # bind_operator
           event :bind do
-            after :ensure_unique_amount, :create_transactions
+            after :create_transactions, :ensure_unique_amount
           ensure :search_processer
 
             transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
@@ -40,7 +42,7 @@ module StateMachines
 
           # inline_bind_operator
           event :inline_bind do
-            after :ensure_unique_amount, :create_transactions
+            after :create_transactions, :ensure_unique_amount
           ensure :inline_search_processer
 
             transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
@@ -87,24 +89,6 @@ module StateMachines
 
         errors.add(:card_number, :wrong_length, count: 16)
         false
-      end
-
-      def ensure_unique_amount
-        with_lock do
-          recent_payments = processer.payments.where.not(payment_status: ['completed', 'cancelled'])
-                                                  .where(national_currency: national_currency)
-          amounts = recent_payments.pluck(:national_currency_amount)
-
-          while amounts.include?(national_currency_amount) do
-            if unique_amount_integer?
-              self.national_currency_amount += 1
-            elsif unique_amount_decimal?
-              self.national_currency_amount += 0.01
-            else
-              self.national_currency_amount
-            end
-          end
-        end
       end
     end
   end

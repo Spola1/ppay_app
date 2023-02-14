@@ -67,6 +67,18 @@ module StateMachines
         errors.add(:image, :blank)
         false
       end
+
+      def ensure_unique_amount
+        with_lock do
+          recent_payments = advertisement.payments.active
+
+          amounts = recent_payments.pluck(:national_currency_amount)
+
+          while amounts.include?(national_currency_amount) do
+            self.national_currency_amount -= UNIQUEIZATION_DIFFERENCE[unique_amount]
+          end
+        end
+      end
     end
   end
 end

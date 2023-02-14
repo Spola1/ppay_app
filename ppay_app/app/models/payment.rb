@@ -58,6 +58,7 @@ class Payment < ApplicationRecord
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
   scope :arbitration, -> { where(arbitration: true) }
+  scope :active, -> { where.not(payment_status: ['completed', 'cancelled']) }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
