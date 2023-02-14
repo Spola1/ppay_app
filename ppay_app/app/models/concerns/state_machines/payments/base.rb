@@ -69,15 +69,18 @@ module StateMachines
       end
 
       def ensure_unique_amount
-        with_lock do
-          recent_payments = advertisement.payments.active
+        return if unique_amount_none?
 
-          amounts = recent_payments.pluck(:national_currency_amount)
+        recent_payments = advertisement.payments.active.excluding(self)
+        amounts = recent_payments.pluck(:national_currency_amount)
 
-          while amounts.include?(national_currency_amount) do
-            self.national_currency_amount -= UNIQUEIZATION_DIFFERENCE[unique_amount]
-          end
+        while amounts.include?(national_currency_amount) do
+          self.national_currency_amount += uniqueization_difference[unique_amount]
         end
+      end
+
+      def uniqueization_difference
+        self.class::UNIQUEIZATION_DIFFERENCE
       end
     end
   end

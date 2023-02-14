@@ -3,10 +3,10 @@
 module StateMachines
   module Payments
     module Withdrawal
-      UNIQUEIZATION_DIFFERENCE = { integer: 1, decimal: 0.01 }.freeze
-
       extend ActiveSupport::Concern
       include Base
+
+      UNIQUEIZATION_DIFFERENCE = { 'integer' => 1, 'decimal' => 0.01 }.freeze
 
       included do
         include AASM
@@ -35,7 +35,7 @@ module StateMachines
           # bind_operator
           event :bind do
             after :create_transactions, :ensure_unique_amount
-          ensure :search_processer
+            ensure :search_processer
 
             transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
@@ -43,7 +43,7 @@ module StateMachines
           # inline_bind_operator
           event :inline_bind do
             after :create_transactions, :ensure_unique_amount
-          ensure :inline_search_processer
+            ensure :inline_search_processer
 
             transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end

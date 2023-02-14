@@ -5,5 +5,9 @@ FactoryBot.define do
     type { 'Processer' }
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
+
+    after(:create) do |processer|
+      processer.balance.deposit(1000)
+    end
   end
 end

@@ -27,6 +27,8 @@ class Payment < ApplicationRecord
 
   has_many :comments, as: :commentable
 
+  before_create :set_default_unique_amount, unless: :unique_amount
+
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
   validates_presence_of :national_currency, :national_currency_amount,
@@ -49,8 +51,6 @@ class Payment < ApplicationRecord
 
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) }
 
-  before_create :set_default_unique_amount
-
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
   }
@@ -58,7 +58,7 @@ class Payment < ApplicationRecord
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
   scope :arbitration, -> { where(arbitration: true) }
-  scope :active, -> { where.not(payment_status: ['completed', 'cancelled']) }
+  scope :active,      -> { where.not(payment_status: %w[completed cancelled]) }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
