@@ -17,6 +17,10 @@ module StateMachines
       end
 
       def search_processer
+        "::Payments::SearchProcesser::#{type}Job".constantize.perform_async(id)
+      end
+
+      def inline_search_processer
         "::Payments::SearchProcesser::#{type}Job".constantize.new.perform(id)
       end
 

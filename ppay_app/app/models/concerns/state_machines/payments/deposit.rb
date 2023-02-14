@@ -41,7 +41,7 @@ module StateMachines
           # inline_bind_operator
           event :inline_bind do
             after :create_transactions, :ensure_unique_amount
-          ensure :search_processer
+          ensure :inline_search_processer
 
                   transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
@@ -84,7 +84,7 @@ module StateMachines
             self.national_currency_amount
           end
 
-          while amounts.include?(self.national_currency_amount)
+          while amounts.include?(self.national_currency_amount) do
             if self.unique_amount_integer?
               self.national_currency_amount -= 1
             elsif self.unique_amount_decimal?

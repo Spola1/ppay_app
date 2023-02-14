@@ -41,7 +41,7 @@ module StateMachines
           # inline_bind_operator
           event :inline_bind do
             after :ensure_unique_amount, :create_transactions
-          ensure :search_processer
+          ensure :inline_search_processer
 
                   transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
