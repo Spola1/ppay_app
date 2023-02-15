@@ -64,6 +64,14 @@ label[for=withdrawal_card_number]{
   clear: both;
 }
 
+.proc_send_summ{
+  font-size: 14px;
+  line-height: 14px;
+  float: left;
+  width: 300px;
+  margin:14px 0px 10px 0px;
+}
+
 
 
 

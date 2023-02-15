@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-V1_SCHEMAS = %w[payments/create].freeze
+V1_SCHEMAS = Dir.glob('spec/support/swagger/schemas/v1/**/*.rb')
+                .map { _1[%r{schemas/v1/(.*?)\.rb}, 1] }
+                .freeze
 
 V1_SCHEMAS.each do |path|
   require_relative "schemas/v1/#{path}"

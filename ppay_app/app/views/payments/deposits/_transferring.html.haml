@@ -37,24 +37,34 @@
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
 
-  - if payment.image.present?
-    = image_tag payment.image
+  - if payment.merchant.check_required?
+    - if payment.image.present?
+      = image_tag payment.image
   
-  .add-img-confirm
-    %span.text-red
-      2.
-    %span
-      Добавьте изображение чека:
+    .add-img-confirm
+      %span.text-red
+        2.
+      %span
+        Добавьте изображение чека:
 
-  = render 'payments/errors', payment: payment
+    = render 'payments/errors', payment: payment
+
 
   = f.file_field :image, id: "image"
 
-  .text-instruction
-    %span.text-red
-      3.
-    %span
-      После перевода нажмите кнопку «Оплата завершена»
+  - if payment.merchant.check_required?
+    .text-instruction
+      %span.text-red
+        3.
+      %span
+        После перевода нажмите кнопку «Оплата завершена»
+  
+  - else
+    .text-instruction
+      %span.text-red
+        2.
+      %span        
+        После перевода нажмите кнопку «Оплата завершена»
 
   
   = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5'

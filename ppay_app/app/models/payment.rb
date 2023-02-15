@@ -4,7 +4,11 @@ class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
 
+  audited
+
   default_scope { order(created_at: :desc) }
+
+  enum :cancellation_reason, { by_client: 0 }
 
   has_many :transactions, as: :transactionable
 
@@ -22,6 +26,8 @@ class Payment < ApplicationRecord
   has_one_attached :image
 
   has_many :comments, as: :commentable
+
+  before_create :set_default_unique_amount, unless: :unique_amount
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
@@ -52,10 +58,17 @@ class Payment < ApplicationRecord
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
   scope :arbitration, -> { where(arbitration: true) }
+  scope :active,      -> { where.not(payment_status: %w[completed cancelled]) }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
   end
+
+  enum unique_amount: {
+    none: 0,
+    integer: 1,
+    decimal: 2
+  }, _prefix: true
 
   def signature
     data = { national_currency:, national_currency_amount:, external_order_id: }.to_json
@@ -116,5 +129,9 @@ class Payment < ApplicationRecord
       locals: { payment: decorate, signature: nil, role_namespace: 'supports' },
       target: "supports_payment_#{uuid}"
     )
+  end
+
+  def set_default_unique_amount
+    self.unique_amount = self.merchant.unique_amount
   end
 end

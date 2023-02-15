@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_14_223251) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -76,6 +76,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
     t.datetime "updated_at", null: false
     t.index ["bearer_id", "bearer_type"], name: "index_api_keys_on_bearer_id_and_bearer_type"
     t.index ["token"], name: "index_api_keys_on_token", unique: true
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.integer "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.integer "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.jsonb "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "balance_requests", force: :cascade do |t|
@@ -164,6 +186,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
     t.bigint "support_id"
     t.string "redirect_url"
     t.string "callback_url"
+    t.integer "cancellation_reason"
+    t.integer "unique_amount"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
@@ -220,6 +244,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_151506) do
     t.decimal "deposit_commission", precision: 15, scale: 10
     t.decimal "withdrawal_commission", precision: 15, scale: 10
     t.string "usdt_trc20_address"
+    t.boolean "check_required", default: true
+    t.integer "unique_amount", default: 0
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
