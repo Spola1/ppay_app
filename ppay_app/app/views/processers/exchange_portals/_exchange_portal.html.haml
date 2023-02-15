@@ -6,7 +6,7 @@
         %td.item-card-td= @exchange_portal.id
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Создан в
-        %td.item-card-td= l(@exchange_portal.created_at, format: :short)
+        %td.item-card-td= @exchange_portal.decorate.formatted_created_at
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Название
         %td.item-card-td= @exchange_portal.name

@@ -17,7 +17,7 @@
             - @exchange_portals.each do |ep|
               %tr.items-list-tr
                 %td.items-list-td-link= link_to ep.id, ep
-                %td.items-list-td= l(ep.created_at.in_time_zone("Moscow"), format: :short)
+                %td.items-list-td= ep.decorate.formatted_created_at
                 %td.items-list-td= ep.name
 
                 %td.items-list-td.px-1.w-0
