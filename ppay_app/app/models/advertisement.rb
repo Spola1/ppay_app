@@ -9,7 +9,7 @@ class Advertisement < ApplicationRecord
   # STI модель - processer < user
   belongs_to :processer
 
-  enum payment_system_type: [:card_nubmber], _prefix: true
+  enum payment_system_type: [:card_number], _prefix: true
 
   scope :active,               -> { where(status: true) }
   scope :by_payment_system,    ->(payment_system) { where(payment_system:) }

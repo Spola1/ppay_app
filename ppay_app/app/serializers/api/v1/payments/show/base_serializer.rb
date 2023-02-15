@@ -7,6 +7,8 @@ module Api
         class BaseSerializer
           include JSONAPI::Serializer
 
+          set_id :uuid
+
           attribute :uuid
           attribute :external_order_id, if: proc { |record| record.external_order_id.present? }
           attributes :created_at, :national_currency, :national_currency_amount,

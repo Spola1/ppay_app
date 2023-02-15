@@ -1,17 +1,15 @@
-.proc_head
-  .proc_logo
-  .proc_text
+.proc-head
+  .proc-logo
+  .proc-text
     UID Check
 
-.proc_payment_waiting_block
-  .proc_payment_waiting_img
-  %p Идёт обработка
-  %p Ожидайте пожалуйста...
+.proc-payment-waiting-block
+  .proc-payment-waiting-img
+  Идёт обработка
+  .mt-2
+    Ожидайте пожалуйста...
 
-.alerts_block
-  %p Внимание:
-  %p 
-    i) при отправке денежных средств писать сообщения в приложении категорически запрещено;
-    ii) платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой;
-    iii) средства необходимо отправлять строго внутрибанковским переводом, банк отправитель и банк получатель должны быть одинаковыми. В противном случае зачисление оплаты не гарантируется.
+- if payment.arbitration
+  = render "/shared/tg_link", class: 'text-center'
 
+= render 'payments/uuid', payment:

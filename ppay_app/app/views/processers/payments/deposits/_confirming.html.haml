@@ -1,5 +1,5 @@
 .item-card.mb-4
-  %p Вы получили деньги?
+  Вы получили деньги?
 
   = form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update,
     data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
