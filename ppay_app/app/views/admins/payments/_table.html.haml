@@ -1,7 +1,8 @@
 %table.items-list-table
-  %thead.item-list-thead
+  %thead.items-list-thead
     %tr
-      %th.items-list-th Номер заказа
+      %th.items-list-th
+      %th.items-list-th ID
       %th.items-list-th создан
       %th.items-list-th направление
       %th.items-list-th нац. валюта
@@ -11,30 +12,32 @@
       %th.items-list-th платежная система
       %th.items-list-th статус
       %th.items-list-th статус изменен
+      %th.items-list-th причина отмены
       %th.items-list-th мерчант
-      %th.items-list-th скриншот
 
       %th.items-list-th
   
   %tbody
     - payments.each do |payment|
-      %tr.items-list-tr{ class: ('bg-green-100' if payment.confirming?) }
-        %td.items-list-td= payment.external_order_id
+      %tr.items-list-tr
+        %td.items-list-td
+          - if payment.arbitration
+            .badge А
+        %td.items-list-td-link
+          = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
         %td.items-list-td= payment.formatted_created_at
-        %td.items-list-td= payment.type
+        %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
         %td.items-list-td= payment.national_currency_amount       
         %td.items-list-td= payment.cryptocurrency
-        %td.items-list-td
-          = payment.cryptocurrency_amount
-          - if payment.transactions.main.present?
-            = "(#{payment.transactions.main.first.amount})"
+        %td.items-list-td= payment.cryptocurrency_amount
         %td.items-list-td= payment.payment_system
-        %td.items-list-td= payment.payment_status
+        %td.items-list-td= payment.human_payment_status
         %td.items-list-td= payment.formatted_status_changed_at
+        %td.items-list-td= payment.human_cancellation_reason
         %td.items-list-td= payment.merchant.decorate.display_name
-        %td.items-list-td
-          - if payment.image.present?
-            = link_to payment.image, target: '_blank' do
-              = image_tag payment.image
 
+        %td.items-list-td.px-1.w-0
+          = link_to payment_path(payment), data: { turbo_action: :advance } do
+            .icon-button-gray
+              = fa_icon 'search'

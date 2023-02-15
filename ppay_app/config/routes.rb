@@ -32,7 +32,11 @@ Rails.application.routes.draw do
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
-    root 'transactions#index', as: :admins_root
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index update show edit]
+      resources :withdrawals, param: :uuid, only: %i[index update show edit]
+    end
+    root 'payments#index', as: :admins_root
   end
 
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do

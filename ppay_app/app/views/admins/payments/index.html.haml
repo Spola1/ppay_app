@@ -1,9 +1,16 @@
-= turbo_frame_tag 'payments' do
+= turbo_frame_tag 'content' do
   %section.wrap
     .card-wrap
       .item-card
-        %h1.mb-4.text-xl Платежи
-        = render 'table', payments: @payments
+        %h1.mb-4.text-xl На арбитраже
+        = render 'table', payments: @arbitration_payments
 
+        .card-wrap
+          = render 'shared/pagination', pagy: @arbitration_payments_pagy
+    .card-wrap
+      .item-card
+        %h1.mb-4.text-xl Все платежи
+        = render 'table', payments: @payments
+        
         .card-wrap
           = render 'shared/pagination', pagy: @pagy
