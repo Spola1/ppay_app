@@ -32,18 +32,21 @@ module StateMachines
                         after: :set_cryptocurrency_amount
           end
 
-          # bind_operator
-          event :bind do
-            after :create_transactions, :ensure_unique_amount
-            ensure :search_processer
+          # search_operator
+          event :inline_search do
+            before :bind_rate_snapshot
+            after_commit :inline_search_processer
 
-            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+            transitions from: :draft, to: :processer_search,
+                        guard: proc { |params| available_processer_search?(params) },
+                        after: :set_cryptocurrency_amount
           end
 
-          # inline_bind_operator
-          event :inline_bind do
+          # bind_operator
+          event :bind do
+            before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount
             after :create_transactions, :ensure_unique_amount
-            ensure :inline_search_processer
+            ensure :search_processer
 
             transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
           end
