@@ -12,20 +12,20 @@ RSpec.describe Payment, type: :model do
   it { is_expected.to belong_to(:advertisement).optional(true) }
 
   describe ':bind event' do
+    shared_examples 'changes payment status to transferring' do
+      it do
+        expect { payment1.bind }.to change { payment1.payment_status }.from('processer_search').to('transferring')
+        expect { payment2.bind }.to change { payment2.payment_status }.from('processer_search').to('transferring')
+        expect { payment3.bind }.to change { payment3.payment_status }.from('processer_search').to('transferring')
+      end
+    end
+
     describe '#ensure_unique_amount for deposits' do
       let(:advertisement) { create(:advertisement, :deposit) }
       let(:unique_amount) { nil }
       let(:payment1) { create(:payment, :deposit, :processer_search, advertisement:, unique_amount:) }
       let(:payment2) { create(:payment, :deposit, :processer_search, advertisement:, unique_amount:) }
       let(:payment3) { create(:payment, :deposit, :processer_search, advertisement:, unique_amount:) }
-
-      shared_examples 'changes payment status to transferring' do
-        it do
-          expect { payment1.bind }.to change { payment1.payment_status }.from('processer_search').to('transferring')
-          expect { payment2.bind }.to change { payment2.payment_status }.from('processer_search').to('transferring')
-          expect { payment3.bind }.to change { payment3.payment_status }.from('processer_search').to('transferring')
-        end
-      end
 
       it 'doesnt change amount' do
         expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
