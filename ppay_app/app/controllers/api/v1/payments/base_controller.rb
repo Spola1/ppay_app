@@ -29,7 +29,7 @@ module Api
         end
 
         def serializer
-          "Api::V1::Payments::#{model_class}Serializer".classify.constantize
+          "Api::V1::Payments::Create::#{model_class}Serializer".classify.constantize
         end
       end
     end
