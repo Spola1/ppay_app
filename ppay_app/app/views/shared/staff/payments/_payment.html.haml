@@ -1,3 +1,4 @@
+= turbo_stream_from payment
 %section.wrap
   .card-wrap
     .item-card
@@ -95,7 +96,7 @@
             - if payment.merchant_id
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.items-list-td= payment.merchant.decorate.display_name            
+                %td.items-list-td= payment.merchant.decorate.display_name
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Снимок курса
@@ -135,7 +136,7 @@
 
             = render 'shared/staff/payments/payment_audit', payment:
 
-  .card-wrap       
+  .card-wrap
     - if payment_status_partial_exists?(payment, 'processers')
       = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
 
@@ -161,3 +162,16 @@
 
           = f.text_area :text, class: 'form-input w-full h-16'
           = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
+
+    - if payment.arbitration?
+      .item-card
+        %p.text-xl.mb-2 Чат
+        .h-96.overflow-auto#chat-container
+          = turbo_frame_tag :chats do
+            = render partial: '/shared/chat', collection: payment.chats
+
+        .mt-4
+          = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true, data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
+
+            = f.text_area :text, class: 'form-input w-full h-16'
+            = f.submit 'Отправить', class: 'form-submit mt-4'

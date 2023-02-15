@@ -26,6 +26,7 @@ class Payment < ApplicationRecord
   has_one_attached :image
 
   has_many :comments, as: :commentable
+  has_many :chats
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
