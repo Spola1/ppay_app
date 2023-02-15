@@ -225,7 +225,7 @@
 
   
   .grey-drop-down {
-    @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-left text-black bg-gray-200 rounded md:mb-0; 
+    @apply w-full h-12 px-3 py-2.5 mr-3 text-sm font-medium text-left text-black bg-gray-200 rounded md:mb-0; 
   }
 
   .grey-cardplace {
@@ -443,7 +443,7 @@
   }
 
   .uuid-payment-block {
-    @apply text-xs text-gray-300 mt-5 mb-20;
+    @apply text-xs text-gray-300 mt-5 mb-16;
   }
 
   .add-img-confirm {
