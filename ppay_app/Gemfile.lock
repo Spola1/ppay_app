@@ -123,6 +123,8 @@ GEM
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
     connection_pool (2.3.0)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
     credit_card_validations (6.0.0)
       activemodel (>= 5.2, < 7.1)
@@ -197,6 +199,7 @@ GEM
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
+    hashdiff (1.0.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.5)
@@ -213,6 +216,8 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     jsonapi-renderer (0.2.2)
+    jsonapi-serializer (2.2.0)
+      activesupport (>= 4.2)
     loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -396,6 +401,10 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
+    webmock (3.18.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -434,6 +443,7 @@ DEPENDENCIES
   haml
   importmap-rails
   jbuilder
+  jsonapi-serializer
   pagy
   pg
   pry-rails
@@ -455,6 +465,7 @@ DEPENDENCIES
   tzinfo-data
   web-console
   webdrivers
+  webmock
   whenever
 
 RUBY VERSION
