@@ -3,7 +3,7 @@
 shared_examples 'create_payment' do
   parameter name: :params,
             in: :body,
-            schema: { '$ref' => '#/components/schemas/payments_create_parameter_body_schema' }
+            schema: { '$ref': '#/components/schemas/payments_create_parameter_body_schema' }
 
   let(:params) do
     {
@@ -18,6 +18,8 @@ shared_examples 'create_payment' do
   let(:currency) { 'RUB' }
 
   response '201', 'успешное создание' do
+    schema '$ref': '#/components/schemas/payments_create_response_body_schema'
+
     include_context 'generate_examples'
 
     it 'создаст платеж мерчанту' do |example|

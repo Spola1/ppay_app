@@ -3,7 +3,7 @@
 module Api
   module V1
     module Payments
-      class DepositSerializer < PaymentSerializer
+      class DepositSerializer < BaseSerializer
         type :deposit
       end
     end
