@@ -8,7 +8,10 @@ module Swagger
           extend self
 
           def schemas
-            create_parameter_body_schema
+            [
+              create_parameter_body_schema,
+              create_response_body_schema
+            ].inject(:merge)
           end
 
           private
@@ -24,6 +27,19 @@ module Swagger
                   redirect_url: { type: :string, example: 'https://example.com/redirect_url' },
                   callback_url: { type: :string, example: 'https://example.com/callback_url' }
                 }
+              }
+            }
+          end
+
+          def create_response_body_schema
+            {
+              payments_create_response_body_schema: {
+                type: :object,
+                properties: {
+                  uuid: { type: :string },
+                  url: { type: :string }
+                },
+                required: %w[uuid url]
               }
             }
           end

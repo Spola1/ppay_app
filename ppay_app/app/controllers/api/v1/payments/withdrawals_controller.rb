@@ -3,7 +3,7 @@
 module Api
   module V1
     module Payments
-      class WithdrawalsController < PaymentsController
+      class WithdrawalsController < BaseController
       end
     end
   end
