@@ -3,8 +3,11 @@
   .proc-text
     UID Check
 
-.proc-payment-waiting-img
-Переводим деньги...
+.proc-payment-waiting-block
+  .proc-payment-waiting-img
+  Переводим деньги...
 
-.mt-4
-  = render 'payments/alerts_block'
+- if payment.arbitration
+  = render "/shared/tg_link", class: 'text-center'
+
+= render 'payments/uuid', payment:, class: 'text-center'

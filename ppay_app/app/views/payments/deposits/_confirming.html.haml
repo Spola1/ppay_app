@@ -9,5 +9,7 @@
   .mt-2
     Ожидайте пожалуйста...
 
-.mt-4
-  = render 'payments/alerts_block'
+- if payment.arbitration
+  = render "/shared/tg_link", class: 'text-center'
+
+= render 'payments/uuid', payment:

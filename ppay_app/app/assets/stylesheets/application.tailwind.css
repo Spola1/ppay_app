@@ -295,7 +295,7 @@
   }
 
   .proc-card-sceomorph {
-    @apply mt-3.5 mb-5 p-6 flex flex-col h-32 rounded-2xl bg-[#21a038] shadow-md shadow-slate-400;
+    @apply mt-3.5 mb-5 p-6 flex flex-col h-32 rounded-2xl bg-[#21a038] shadow-lg;
   }
 
   .tinkoff-card {
@@ -419,7 +419,7 @@
   }
 
   .proc-payment-done-links-block{
-    @apply mt-7 text-center text-gray-400 underline;
+    @apply mt-7 mb-16 text-center text-gray-400 underline;
   }
 
   .proc-payment-cancelled-links-block{
@@ -442,7 +442,7 @@
   }
 
   .uuid-payment-block {
-    @apply text-xs text-gray-300 mt-5 mb-16 text-center;
+    @apply text-xs text-gray-300 mt-5 mb-16;
   }
 
   .add-img-confirm {

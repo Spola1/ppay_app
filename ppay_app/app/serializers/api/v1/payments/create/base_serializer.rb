@@ -7,6 +7,8 @@ module Api
         class BaseSerializer
           include JSONAPI::Serializer
 
+          set_id :uuid
+
           attributes :uuid, :url
         end
       end

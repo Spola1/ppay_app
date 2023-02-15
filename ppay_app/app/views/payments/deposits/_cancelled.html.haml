@@ -9,3 +9,8 @@
 
 .proc-payment-cancelled-links-block
   = link_to "вернуться в магазин", payment.redirect_url
+
+- if payment.arbitration
+  = render "/shared/tg_link", class: 'text-center'
+
+= render 'payments/uuid', payment:, class: 'text-center'

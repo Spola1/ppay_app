@@ -41,3 +41,8 @@
 = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
 = render 'payments/alerts_block'
+
+- if payment.arbitration
+  = render "/shared/tg_link"
+
+= render 'payments/uuid', payment:

@@ -44,11 +44,12 @@ module StateMachines
 
           # bind_operator
           event :bind do
-            before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount
+            before :bind_rate_snapshot, :set_cryptocurrency_amount
             after :create_transactions, :ensure_unique_amount
             ensure :search_processer
 
-            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+            transitions from: :processer_search, to: :transferring, before: :ensure_unique_amount,
+                                                                    guard: :has_advertisement?
           end
 
           # make_deposit

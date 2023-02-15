@@ -9,3 +9,5 @@
 
 .proc-payment-cancelled-links-block
   = link_to "вернуться в магазин", payment.redirect_url
+
+= render 'payments/uuid', payment:, class: 'text-center'

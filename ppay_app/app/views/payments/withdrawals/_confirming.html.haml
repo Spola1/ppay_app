@@ -13,5 +13,6 @@
         = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',
         class: 'green-button'
 
-      - unless payment.arbitration
-        = render "/shared/tg_link"
+= render "/shared/tg_link"
+
+= render 'payments/uuid', payment:
