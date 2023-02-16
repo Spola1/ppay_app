@@ -1,5 +1,5 @@
 - unless payment.unique_amount_none?
-  #my-modal.modal.show
+  #change-sum.modal.show
     %div
       .modal_amount 
         .proc-amount-content.pt-1
@@ -14,5 +14,5 @@
 
   :javascript
     $(document).on('click', '.modal_button', function() {
-      $('#my-modal').removeClass('show');
+      $('#change-sum').removeClass('show');
     });
