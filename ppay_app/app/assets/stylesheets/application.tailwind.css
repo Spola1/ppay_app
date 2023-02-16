@@ -452,6 +452,19 @@
   .error-messages-in-payments-forms {
     @apply py-3 mb-2;
   }
+
+  .modal_title {
+    @apply font-medium text-sm;
+  }
+  
+  .modal_text {
+    @apply text-sm text-xs;
+  }
+
+  .modal_button {
+    @apply green-button w-1/2 h-8 text-xs px-1 pt-2 rounded-lg items-center;
+  }
+
 }
 
 
