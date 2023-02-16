@@ -1,24 +1,32 @@
-<% @body_id = 'product-details' %>
+<div data-controller="increments" class="container py-3">
+  <div class="row">
+    <div class="col-6 col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h1><%= @product.name %></h1>
+          <p><%=@product.description  %></p>
 
-<% cache [I18n.locale, current_pricing_options, @product] do %>
-  <article class="product-page" itemscope itemtype="http://schema.org/Product">
-    <div class="product-page-row">
-      <div class="product-page__images">
-        <%= render 'product_image', product: @product %>
-        <%= render 'product_thumbnails', product: @product %>
-      </div>
 
-      <div class="product-page__info">
-        <%= render 'product_header', product: @product %>
-        <%= render 'product_promotions', product: @product %>
-        <%= render 'cart_line_items/form', product: @product %>
-        <%= render 'product_taxons', product: @product %>
+            <% @product.photos.each do |photo|%>
+            <%= cl_image_tag photo.key, class:"img-fluid d-block", crop: :fill%>
+            <% end %>
+          <%# cl_image_tag @product.photos.first.key, height: 300, width: 400, crop: :fill %>
+          <%= simple_form_for([@product, @line_item], url: product_line_items_path(@product) ) do |f| %>
+            <%= f.input :quantity, input_html: {style: 'display: none;', data: { target: "increments.quantity" }, value: 1} %>
+            <p class="text-center mt-2">₽<span data-increments-target="price"><%=@product.price_cents%></span></p>
+            <div class="flex-it text-center mt-2">
+              <i data-action="click->increments#decrement" class="fa-solid fa-minus decrement"></i>
+              <h4 data-increments-target="show">1</h4>
+              <i data-action="click->increments#increment" class="fa-solid fa-plus increment"></i>
+            </div>
+            <%= f.input :comment, prompt: "If you'd like a custom cake please descripe it here" %>
+            <%= f.submit "Add to basket ₽", data: { target: "increments.basket" }, class: 'btn btn-primary' %>
+          <% end %>
+          <% if current_user.try(:admin?) %>
+            <%= link_to "Edit", edit_product_path(@product), class: 'btn btn-primary mt-1' %>
+          <% end %>
+        </div>
       </div>
     </div>
-
-    <div class="product-page-row">
-      <%= render 'product_info', product: @product %>
-      <%= render 'product_properties', product_properties: @product_properties %>
-    </div>
-  </article>
-<% end %>
+  </div>
+</div>
