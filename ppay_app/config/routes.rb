@@ -87,6 +87,13 @@ Rails.application.routes.draw do
         resources :deposits,    only: :create
         resources :withdrawals, only: :create
       end
+
+      namespace :external_processing do
+        namespace :payments do
+          resources :deposits,    only: :create
+          resources :withdrawals, only: :create
+        end
+      end
     end
   end
 

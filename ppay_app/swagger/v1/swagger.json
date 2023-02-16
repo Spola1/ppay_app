@@ -6,6 +6,140 @@
     "version": "v1"
   },
   "paths": {
+    "/api/v1/external_processing/payments/deposits": {
+      "post": {
+        "summary": "Создание депозита с внешним процессингом",
+        "tags": [
+          "Платежи"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "успешное создание",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "4e3f2089-4255-4c1b-ba40-1f726c81d0b2",
+                    "type": "Deposit",
+                    "attributes": {
+                      "uuid": "4e3f2089-4255-4c1b-ba40-1f726c81d0b2",
+                      "url": "http://example.org/payments/deposits/4e3f2089-4255-4c1b-ba40-1f726c81d0b2?signature=31ea34523e84501daa92b772c083d83c1dec0410bd6b7986a4d2991944c599b0"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/payments_create_response_body_schema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": [
+                    {
+                      "title": "payment_system",
+                      "detail": "не выбрана",
+                      "code": 422
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/external_processing_deposits_create_parameter_body_schema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/external_processing/payments/withdrawals": {
+      "post": {
+        "summary": "Создание вывода средств с внешним процессингом",
+        "tags": [
+          "Платежи"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "успешное создание",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "61aa11df-5a8c-4a50-8c63-9132f3b019f8",
+                    "type": "Withdrawal",
+                    "attributes": {
+                      "uuid": "61aa11df-5a8c-4a50-8c63-9132f3b019f8",
+                      "url": "http://example.org/payments/withdrawals/61aa11df-5a8c-4a50-8c63-9132f3b019f8?signature=cac96171998dada3deafc7387b3f75de9c03bd7f4a3436cfcb6971c2a35d6084"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/payments_create_response_body_schema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid",
+            "content": {
+              "application/json": {
+                "example": {
+                  "errors": [
+                    {
+                      "title": "card_number",
+                      "detail": "не указан",
+                      "code": 422
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/external_processing_deposits_create_parameter_body_schema"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/payments/deposits": {
       "post": {
         "summary": "Создание депозита",
@@ -29,11 +163,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "192",
+                    "id": "8fcc1ed1-d4a4-44c8-8f26-c122c4765942",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "51c8190f-e670-4c5f-afbb-3c77096d9ef5",
-                      "url": "http://example.org/payments/deposits/51c8190f-e670-4c5f-afbb-3c77096d9ef5?signature=8bfa0446faf0566a387ee0b848c52293f6ebe83e9e9afcd6e6f20e1355099c8b"
+                      "uuid": "8fcc1ed1-d4a4-44c8-8f26-c122c4765942",
+                      "url": "http://example.org/payments/deposits/8fcc1ed1-d4a4-44c8-8f26-c122c4765942?signature=6d03bbe127bf13a0beaacd5a7c3d3680290541556fa3798b9efa5b07015497ab"
                     }
                   }
                 },
@@ -97,11 +231,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "193",
+                    "id": "1232bec8-60a5-4192-a932-4ffbe3959b09",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "59aabd08-1467-42f6-b5c5-aade0c41b483",
-                      "url": "http://example.org/payments/withdrawals/59aabd08-1467-42f6-b5c5-aade0c41b483?signature=89970db256144c3ff9361ffd8ea940f475b35139026933fcc75d5a693cd4458a"
+                      "uuid": "1232bec8-60a5-4192-a932-4ffbe3959b09",
+                      "url": "http://example.org/payments/withdrawals/1232bec8-60a5-4192-a932-4ffbe3959b09?signature=7367926c0ab071078f2f6679884cdd9bd7c2c724f9904001c47d54dba9696c04"
                     }
                   }
                 },
@@ -194,6 +328,107 @@
       }
     },
     "schemas": {
+      "external_processing_deposits_create_parameter_body_schema": {
+        "type": "object",
+        "properties": {
+          "payment_system": {
+            "type": "string",
+            "example": "Sberbank"
+          },
+          "national_currency": {
+            "type": "string",
+            "example": "RUB"
+          },
+          "national_currency_amount": {
+            "type": "number",
+            "example": 3000.0
+          },
+          "external_order_id": {
+            "type": "string",
+            "example": "1234"
+          },
+          "redirect_url": {
+            "type": "string",
+            "example": "https://example.com/redirect_url"
+          },
+          "callback_url": {
+            "type": "string",
+            "example": "https://example.com/callback_url"
+          }
+        }
+      },
+      "external_processing_withdrawals_create_parameter_body_schema": {
+        "type": "object",
+        "properties": {
+          "payment_system": {
+            "type": "string",
+            "example": "Sberbank"
+          },
+          "card_number": {
+            "type": "string",
+            "example": "1234 5678 9012 3456"
+          },
+          "national_currency": {
+            "type": "string",
+            "example": "RUB"
+          },
+          "national_currency_amount": {
+            "type": "number",
+            "example": 3000.0
+          },
+          "external_order_id": {
+            "type": "string",
+            "example": "1234"
+          },
+          "redirect_url": {
+            "type": "string",
+            "example": "https://example.com/redirect_url"
+          },
+          "callback_url": {
+            "type": "string",
+            "example": "https://example.com/callback_url"
+          }
+        }
+      },
+      "external_processing_payments_create_response_body_schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uuid",
+                  "url"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "payments_create_parameter_body_schema": {
         "type": "object",
         "properties": {
@@ -275,7 +510,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "48deeea7-ac0e-4b5a-995a-5b98d7fe5bbe"
+                    "example": "4a7b0ffd-7fcc-4076-990c-b38005a099fd"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -283,7 +518,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-02-15T02:06:48.310+03:00"
+                    "example": "2023-02-16T22:17:49.656+03:00"
                   },
                   "national_currency": {
                     "type": "string",
