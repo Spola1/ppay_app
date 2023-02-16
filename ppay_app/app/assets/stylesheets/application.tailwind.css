@@ -458,11 +458,11 @@
   }
   
   .modal_text {
-    @apply text-sm text-xs;
+    @apply text-sm text-xs mt-2;
   }
 
   .modal_button {
-    @apply green-button w-1/2 h-8 text-xs px-1 pt-2 rounded-lg items-center;
+    @apply green-button w-1/2 h-10 text-xs px-1 pt-2 mt-4 rounded-md items-center;
   }
 
 }

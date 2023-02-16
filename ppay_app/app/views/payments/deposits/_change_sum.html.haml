@@ -1,0 +1,18 @@
+- unless payment.unique_amount_none?
+  #my-modal.modal.show
+    %div
+      .modal_amount 
+        .proc-amount-content.pt-1
+          = "#{payment.national_currency_amount} #{payment.national_currency}"
+      .modal_content
+        .modal_title
+          Скопируйте точную сумму депозита 
+        .modal_text
+          Мы изменили сумму, чтобы определить Ваш платеж и обработать его быстрее
+
+        = button_tag "Продолжить оплату", class: 'modal_button'
+
+  :javascript
+    $(document).on('click', '.modal_button', function() {
+      $('#my-modal').removeClass('show');
+    });

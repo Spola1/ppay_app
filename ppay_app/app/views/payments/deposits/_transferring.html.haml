@@ -31,24 +31,7 @@
   %span
     Сделайте перевод указанной суммы по номеру карты указанному ниже
 
-#my-modal.modal.show
-  .modal_body 
-    .modal_content
-      .modal_amount
-      .modal_title
-        Скопируйте точную сумму депозита 
-      .modal_text
-        Мы изменили сумму, чтобы определить Ваш платеж и обработать его быстрее
-
-      = button_tag "Продолжить оплату", class: 'modal_button'
-
-
-
-:javascript
-  $(document).on('click', '.modal_button', function() {
-    $('#my-modal').removeClass('show');
-  });
-
+= render 'payments/deposits/change_sum', payment: payment
 = render 'payments/deposits/bank_card', payment: payment
 
 
