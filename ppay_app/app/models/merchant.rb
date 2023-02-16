@@ -7,4 +7,10 @@ class Merchant < User
   has_many :cards
 
   belongs_to :agent, optional: true
+
+  enum unique_amount: {
+    none: 0,
+    integer: 1,
+    decimal: 2
+  }, _prefix: true
 end

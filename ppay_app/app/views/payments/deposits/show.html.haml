@@ -1,9 +1,3 @@
-.show_content{:class => "show_deposit_block"}
-  = render 'show'
-
-  .uuid_payment_block
-    uuid:
-    = @payment.uuid
-    - if user_signed_in?
-      = "(payment_status: \"#{@payment.reload.payment_status}\")"
-  .clear
+.show-deposit
+  .show-deposit-block
+    = render 'show'
