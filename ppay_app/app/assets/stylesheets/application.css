@@ -24,6 +24,9 @@ button, input[type=submit] {
   cursor: pointer;
 }
 
+#image{
+  max-width: 300px;
+}
 
 #deposit_payment_system{
   float: left;
