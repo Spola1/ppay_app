@@ -30,14 +30,7 @@ module PaymentsHelper
       [cancellation_reason_translation(reason), reason]
     end
   end
-
-  def payment_systems_collection
-    ["Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"]
-  end
-
-  def types_collection
-    Payment.types.map
-  end
+  
   # end
   def number_color(number)
     return if number.blank? || number.zero?

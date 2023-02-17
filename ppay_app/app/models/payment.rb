@@ -8,13 +8,16 @@ class Payment < ApplicationRecord
   audited
 
   default_scope { order(created_at: :desc) }
-  scope :filter_by_created_to, -> (created_to) { where('created_at < ?', created_to)}
-  scope :filter_by_created_from, -> (created_from) { where('created_at > ?', created_from)}
-  scope :filter_by_type, -> (type) { where type: type }
-  scope :filter_by_cryptocurrency, -> (cryptocurrency) { where cryptocurrency: cryptocurrency }
-  scope :filter_by_national_currency, -> (national_currency) { where national_currency: national_currency }
-  scope :filter_by_payment_status, -> (status) { where payment_status: status }
-  scope :filter_by_id, -> (id) { where id: id }
+  scope :filter_by_created_from, ->(created_from) { where('created_at > ?', created_from)}
+  scope :filter_by_created_to, ->(created_to) { where('created_at < ?', created_to)}
+  scope :filter_by_cancellation_reason, ->(cancellation_reason) { where cancellation_reason: cancellation_reason }
+  scope :filter_by_payment_status, ->(payment_status) { where payment_status: payment_status }
+  scope :filter_by_payment_system, ->(payment_system) { where payment_system: payment_system }
+  scope :filter_by_national_currency, ->(national_currency) { where national_currency: national_currency }
+  scope :filter_by_national_currency_amount_from, ->(national_currency_amount) { where 'national_currency_amount > ?', national_currency_amount }
+  scope :filter_by_national_currency_amount_to, ->(national_currency_amount) { where 'national_currency_amount < ?', national_currency_amount }
+  scope :filter_by_cryptocurrency_amount_from, ->(cryptocurrency_amount) { where 'cryptocurrency_amount_from > ?',  cryptocurrency_amount }
+  scope :filter_by_cryptocurrency_amount_to, ->(cryptocurrency_amount) { where 'cryptocurrency_amount_to < ?', cryptocurrency_amount }
 
   enum :cancellation_reason, { by_client: 0 }
 

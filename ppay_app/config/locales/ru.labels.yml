@@ -1,0 +1,19 @@
+ru:
+  payments:
+    attributes:
+      labels:
+        date_from: Дата от
+        date_to: Дата до
+        cryptocurrency: Криптовалюта
+        cryptocurrency_amount_from: Количество криптовалюты от
+        cryptocurrency_amount_to: Количество криптовалюты до
+        national_currency: Национальная валюта
+        national_currency_amount_from: Кол-во. нац. валюты от
+        national_currency_amount_to: Кол-во. нац. валюты до
+        payment_system: Платежная система
+        payment_status: Статус
+        cancellation_reason: Причина отмены
+
+  buttons:
+    submit: Применить
+    reset: Сброс

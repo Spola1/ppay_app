@@ -6,7 +6,6 @@ module Supports
 
     def index
       @pagy, @payments = pagy(Payment.filter(filtering_params).includes(:merchant))
-      puts "Вариванты: #{ @payments }"
       @payments = @payments.decorate
 
       @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.includes(:merchant), page_param: :arbitration_page)
@@ -32,7 +31,9 @@ module Supports
     end
 
     def filtering_params
-      params.slice(:created_from, :created_to, :payment_status, :cancellation_reason, :payment_system, :amount_from, :amount_to)
+      params.slice(:date_from, :date_to, :cancellation_reason, :payment_status, :payment_system, :national_currency,
+                   :national_currency_amount_from, :national_currency_amount_to, :cryptocurrency_amount_from, 
+                   :cryptocurrency_amount_to)
     end
   end
 end

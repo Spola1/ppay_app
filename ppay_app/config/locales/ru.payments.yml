@@ -9,6 +9,7 @@ ru:
       payment_system: Платежная система
       payment_status: Статус
       cancelled_on_status: Статус отменен
+      cancellation_reason: Причина отмены
       advertisement_id: Объявление
       merchant_id: Мерчант
       rate_snapshot_id: Снимок курса
