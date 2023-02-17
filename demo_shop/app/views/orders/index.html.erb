@@ -8,11 +8,13 @@
         <div class="col-6 col-md-4">
           <div class="card m-2">
             <div class="card-body">
-                <%= link_to 'Order', order_path(order)  %>
+              <h3>Order: <%= order.id %></h3>
+              -------------------------------
               <h5> <% order.products.each do |product| %>
                 |<%= product.name %>|
                 <% end %>
               </h5>
+              -------------------------------
               <% @total = 0 %>
                 <% order.line_items.each do |item| %>
                   <% @total += item.product.price_cents * item.quantity %>

@@ -76,12 +76,12 @@ class OrdersController < ApplicationController
   end
 
   def callback
-    order_id = params.dig('data', 'attributes', 'external_order_id')
-    payment_status = params.dig('data', 'attributes', 'payment_status')
+    order_id = request['order_id']
+    payment_status = request['data']['attributes']['payment_status']
 
-    @order = Order.find_by(id: order_id)
-    if @order
-      @order.update(status: payment_status)
+    order = Order.find_by(id: order_id)
+    if order
+      order.update(status: payment_status)
       render plain: "Order status updated successfully"
     else
       render plain: "Order not found", status: :unprocessable_entity
