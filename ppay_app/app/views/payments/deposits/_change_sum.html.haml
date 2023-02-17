@@ -1,5 +1,5 @@
 - unless payment.unique_amount_none?
-  #change-sum.modal.show
+  #change-sum.modal.show{ 'data-controller': 'modal' }
     %div
       .modal_amount 
         .proc-amount-content.pt-1
@@ -10,9 +10,4 @@
         .modal_text
           Мы изменили сумму, чтобы определить Ваш платеж и обработать его быстрее
 
-        = button_tag "Продолжить оплату", class: 'modal_button'
-
-  :javascript
-    $(document).on('click', '.modal_button', function() {
-      $('#change-sum').removeClass('show');
-    });
+        = button_tag "Продолжить оплату", class: 'modal_button', data: { action: "click->modal#hide" }
