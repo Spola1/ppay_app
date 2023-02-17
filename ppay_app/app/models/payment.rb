@@ -32,8 +32,11 @@ class Payment < ApplicationRecord
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
+  before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
+
   validates_presence_of :national_currency, :national_currency_amount,
                         :redirect_url, :callback_url
+  
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 
@@ -85,6 +88,10 @@ class Payment < ApplicationRecord
 
   def in_hotlist?
     (type == 'Deposit' && confirming?) || (type == 'Withdrawal' && transferring?)
+  end
+
+  def take_off_arbitration
+    self.arbitration = false
   end
 
   def broadcast_replace_payment_to_client
