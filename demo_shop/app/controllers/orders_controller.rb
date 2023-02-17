@@ -76,8 +76,8 @@ class OrdersController < ApplicationController
   end
 
   def callback
-    order_id = params.dig(:data, :order_id)
-    payment_status = params.dig(:data, :attributes, :payment_status)
+    order_id = params.dig('data', 'attributes', 'external_order_id')
+    payment_status = params.dig('data', 'attributes', 'payment_status')
 
     @order = Order.find_by(id: order_id)
     if @order
