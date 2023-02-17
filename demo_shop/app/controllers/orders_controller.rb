@@ -54,7 +54,6 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @current_order = current_user.orders.where(status: 'pending').last
     @order = Order.find(params[:id])
     render :current_order unless params.key?(:user_id)
   end
@@ -77,10 +76,9 @@ class OrdersController < ApplicationController
   end
 
   def callback
-    order_id = params[:order_id]
-    payment_status = params[:payment_status]
+    order_id = params.dig(:data, :order_id)
+    payment_status = params.dig(:data, :attributes, :payment_status)
 
-    # Обновляем статус заказа в соответствии с данными из запроса
     @order = Order.find_by(id: order_id)
     if @order
       @order.update(status: payment_status)
