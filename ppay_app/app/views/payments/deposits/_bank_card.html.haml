@@ -1,0 +1,28 @@
+- case payment.payment_system
+  - when "Sberbank"
+    .proc-card-sceomorph
+      .proc-card-sceomorph-bank
+        = payment.payment_system.upcase
+      .proc-card-sceomorph-number
+        = payment.advertisement.decorate.formatted_card_number
+
+  - when "Tinkoff"
+    .tinkoff-card
+      .tinkoff-card-bank
+        = payment.payment_system.upcase
+      .tinkoff-card-number
+        = payment.advertisement.decorate.formatted_card_number
+
+  - when "Raiffeisen"
+    .raiffeisen-card
+      .raiffeisen-card-bank
+        = payment.payment_system.upcase
+      .raiffeisen-card-number
+        = payment.advertisement.decorate.formatted_card_number
+
+  - when "AlfaBank"
+    .alfabank-card
+      .alfabank-card-bank
+        = payment.payment_system.upcase
+      .alfabank-card-number
+        = payment.advertisement.decorate.formatted_card_number

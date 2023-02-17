@@ -1,12 +1,18 @@
-.proc_head
-  .proc_logo
-  .proc_text
+.proc-head
+  .proc-logo
+  .proc-text
     UID Check
 
-.proc_payment_done_block
-  .proc_payment_done_img
-  %p Успешно!
-  %p Платеж выполнен!
+.proc-payment-done-block
+  .proc-payment-done-img
+  Успешно!
+  .mt-4
+    Платеж выполнен!
 
-.proc_payment_done_links_block
+.proc-payment-done-links-block
   = link_to "вернуться в магазин", payment.redirect_url
+
+- if payment.arbitration
+  = render "/shared/tg_link", class: 'text-center'
+
+= render 'payments/uuid', payment:, class: 'text-center'

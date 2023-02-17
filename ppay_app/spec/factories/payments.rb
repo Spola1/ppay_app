@@ -1,14 +1,46 @@
-FactoryBot.define do
-  factory :payment do
-    national_currency { 'RUB' }
-    national_currency_amount { 50 }
-    redirect_url { 'file/' }
-    callback_url { 'file/payment/' }
-    arbitration { true }
-    payment_status { :processer_search }
+# frozen_string_literal: true
 
-    trait :cancelled do
-      payment_status { :cancelled }
+FactoryBot.define do
+  factory :payment, class: Payment do
+    initialize_with do
+      klass = type.constantize
+      klass.new(attributes)
+    end
+
+    merchant
+
+    uuid { SecureRandom.uuid }
+    external_order_id { '1234' }
+    national_currency { 'RUB' }
+    national_currency_amount { 100 }
+    cryptocurrency_amount { 1 }
+    cryptocurrency { 'USDT' }
+    payment_system { Settings.payment_systems.first }
+    callback_url { FFaker::Internet.http_url }
+    redirect_url { FFaker::Internet.http_url }
+
+    trait :confirming do
+      payment_status { 'confirming' }
+    end
+
+    trait :transferring do
+      payment_status { 'transferring' }
+    end
+
+    trait :processer_search do
+      payment_status { 'processer_search' }
+    end
+
+    trait :withdrawal do
+      type { 'Withdrawal' }
+    end
+
+    trait :deposit do
+      type { 'Deposit' }
+    end
+
+    trait :with_image do
+      image { fixture_file_upload('spec/fixtures/test_files/sample.jpeg', 'image/png') }
     end
   end
 end

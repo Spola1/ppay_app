@@ -6,6 +6,8 @@ module StateMachines
       extend ActiveSupport::Concern
       include Base
 
+      UNIQUEIZATION_DIFFERENCE = { 'integer' => 1, 'decimal' => 0.01 }.freeze
+
       included do
         include AASM
 
@@ -30,12 +32,24 @@ module StateMachines
                         after: :set_cryptocurrency_amount
           end
 
+          # search_operator
+          event :inline_search do
+            before :bind_rate_snapshot
+            after_commit :inline_search_processer
+
+            transitions from: :draft, to: :processer_search,
+                        guard: proc { |params| available_processer_search?(params) },
+                        after: :set_cryptocurrency_amount
+          end
+
           # bind_operator
           event :bind do
-            after :create_transactions
-          ensure :search_processer
+            before :bind_rate_snapshot, :set_cryptocurrency_amount
+            after :create_transactions, :ensure_unique_amount
+            ensure :search_processer
 
-                 transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+            transitions from: :processer_search, to: :transferring, before: :ensure_unique_amount,
+                                                                    guard: :has_advertisement?
           end
 
           # make_deposit

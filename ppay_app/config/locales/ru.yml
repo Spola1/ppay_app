@@ -28,6 +28,8 @@ ru:
         confirming: Подтверждение перевода
         completed: Успешно завершён
         cancelled: Отменён
+      payment/cancellation_reason:
+        by_client: Отменено клиентом
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена
