@@ -1,0 +1,18 @@
+= form_with url: payments_path, method: :get, data: {turbo_frame: 'content'} do |f|
+  = f.label :from
+  = f.date_field :created_from
+  = f.label :before
+  = f.date_field :created_to
+  = f.label :status
+  = f.select :payment_status, payment_statuses_collection, { include_blank: true}
+  = f.label :cancellation_reason
+  = f.select :cancellation_reason, cancellation_reasons_collection, { include_blank: true}
+  = f.label :payment_system
+  = f.select :payment_system, payment_systems_collection, { include_blank: true}
+  = f.label :amount_from
+  = f.number_field :amount_from
+  = f.label :amount_to
+  = f.number_field :amount_to
+  = f.submit 'Применить'
+  = f.submit 'Сброс'
+

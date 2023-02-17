@@ -3,10 +3,18 @@
 class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
+  include Filterable
 
   audited
 
   default_scope { order(created_at: :desc) }
+  scope :filter_by_created_to, -> (created_to) { where('created_at < ?', created_to)}
+  scope :filter_by_created_from, -> (created_from) { where('created_at > ?', created_from)}
+  scope :filter_by_type, -> (type) { where type: type }
+  scope :filter_by_cryptocurrency, -> (cryptocurrency) { where cryptocurrency: cryptocurrency }
+  scope :filter_by_national_currency, -> (national_currency) { where national_currency: national_currency }
+  scope :filter_by_payment_status, -> (status) { where payment_status: status }
+  scope :filter_by_id, -> (id) { where id: id }
 
   enum :cancellation_reason, { by_client: 0 }
 
