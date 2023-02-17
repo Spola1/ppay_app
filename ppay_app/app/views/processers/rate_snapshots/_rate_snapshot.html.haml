@@ -1,0 +1,30 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label ID
+        %td.item-card-td= @rate_snapshot.id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Направление
+        %td.item-card-td= @rate_snapshot.direction
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Нац. валюта
+        %td.item-card-td= @rate_snapshot.national_currency
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Криптовалюта
+        %td.item-card-td= @rate_snapshot.cryptocurrency
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Платежная система
+        %td.item-card-td= @rate_snapshot.payment_system
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Позиция в стакане
+        %td.item-card-td= @rate_snapshot.position_number
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label exchange_portal_id
+        %td.item-card-td= @rate_snapshot.exchange_portal_id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Портал
+        %td.item-card-td= @rate_portal_name
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Значение
+        %td.item-card-td= @rate_portal_value

@@ -2,19 +2,20 @@
   %section.wrap
     .card-wrap
       .item-card
-        %h1.mb-4 Фильтры
+        %h1.mb-4.text-xl Фильтры
         = render 'shared/staff/payments/filter', payments: @payments
 
-        = render 'shared/pagination', pagy: @arbitration_payments_pagy
     .card-wrap
       .item-card
-        %h1.mb-4 На арбитраже
+        %h1.mb-4.text-xl На арбитраже
         = render 'table', payments: @arbitration_payments
 
-        = render 'shared/pagination', pagy: @arbitration_payments_pagy
+        .card-wrap
+          = render 'shared/pagination', pagy: @arbitration_payments_pagy
     .card-wrap
       .item-card
-        %h1.mb-4 Все платежи
+        %h1.mb-4.text-xl Все платежи
         = render 'table', payments: @payments
-
-        = render 'shared/pagination', pagy: @pagy
+        
+        .card-wrap
+          = render 'shared/pagination', pagy: @pagy
