@@ -28,6 +28,7 @@ class Payment < ApplicationRecord
   has_many :comments, as: :commentable
 
   before_create :set_default_unique_amount, unless: :unique_amount
+  before_create :set_initial_amount
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
@@ -71,7 +72,7 @@ class Payment < ApplicationRecord
   }, _prefix: true
 
   def signature
-    data = { national_currency:, national_currency_amount:, external_order_id: }.to_json
+    data = { national_currency:, initial_amount:, external_order_id: }.to_json
 
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), merchant.api_keys.last.token, data)
   end
@@ -133,5 +134,9 @@ class Payment < ApplicationRecord
 
   def set_default_unique_amount
     self.unique_amount = self.merchant.unique_amount
+  end
+
+  def set_initial_amount
+    self.initial_amount = national_currency_amount
   end
 end
