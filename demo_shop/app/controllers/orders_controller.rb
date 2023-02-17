@@ -37,9 +37,8 @@ class OrdersController < ApplicationController
                     'Authorization' => "Bearer 4aa0e37e403ac40f3ee9cdf1c9b2c703aacde017df65bb4e"
                    } )
 
-    order.url = @result.parsed_response["url"]
-    order.uuid = @result.parsed_response["uuid"]
-
+    order.url  = @result.parsed_response.dig('data', 'attributes', 'url')
+    order.uuid = @result.parsed_response.dig('data', 'attributes', 'uuid')
 
     order.save
 
