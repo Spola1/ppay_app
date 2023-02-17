@@ -1,0 +1,2 @@
+= turbo_frame_tag "supports_payment_#{payment.uuid}" do
+  = render 'shared/staff/payments/payment', payment: payment.decorate, signature:, role_namespace:
