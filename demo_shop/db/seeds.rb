@@ -18,6 +18,6 @@ sponge_cake.save!
 birthday_cake.save!
 
 puts "Generating main user"
-main_user = User.create!(first_name: "Ben", last_name: "Franky", email: "user@test.com", password: 'password')
+main_user = User.create!(first_name: "user", last_name: "user", email: "user@test.com", password: 'password')
 
-admin_user = User.create!(first_name: "Dan", last_name: "Cranky", email: "admin@test.com", password: 'password', admin: true)
+admin_user = User.create!(first_name: "admin", last_name: "admin", email: "admin@test.com", password: 'password', admin: true)
