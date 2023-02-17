@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :payment, class: Payment do
     initialize_with do
@@ -7,8 +9,13 @@ FactoryBot.define do
 
     merchant
 
+    uuid { SecureRandom.uuid }
+    external_order_id { '1234' }
     national_currency { 'RUB' }
     national_currency_amount { 100 }
+    cryptocurrency_amount { 1 }
+    cryptocurrency { 'USDT' }
+    payment_system { Settings.payment_systems.first }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
 
@@ -18,6 +25,10 @@ FactoryBot.define do
 
     trait :transferring do
       payment_status { 'transferring' }
+    end
+
+    trait :processer_search do
+      payment_status { 'processer_search' }
     end
 
     trait :withdrawal do

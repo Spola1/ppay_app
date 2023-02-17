@@ -1,11 +1,13 @@
-.proc_head
-  .proc_logo
-  .proc_text
+.proc-head
+  .proc-logo
+  .proc-text
     UID Check
 
-.proc_payment_cancelled_block
-  .proc_payment_cancelled_img
-  %p Платеж отменён !
+.proc-payment-cancelled-block
+  .proc-payment-cancelled-img
+  Платеж отменён !
 
-.proc_payment_cancelled_links_block
+.proc-payment-cancelled-links-block
   = link_to "вернуться в магазин", payment.redirect_url
+
+= render 'payments/uuid', payment:, class: 'text-center'

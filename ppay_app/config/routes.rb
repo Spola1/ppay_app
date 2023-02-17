@@ -82,6 +82,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :payments, param: :uuid, only: :show
       namespace :payments do
         resources :deposits,    only: :create
         resources :withdrawals, only: :create

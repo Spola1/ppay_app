@@ -20,6 +20,10 @@ module StateMachines
         "::Payments::SearchProcesser::#{type}Job".constantize.perform_async(id)
       end
 
+      def inline_search_processer
+        "::Payments::SearchProcesser::#{type}Job".constantize.new.perform(id)
+      end
+
       def valid_payment_system?(params)
         assign_params(params, %i[payment_system])
         validate_payment_system
@@ -62,6 +66,21 @@ module StateMachines
 
         errors.add(:image, :blank)
         false
+      end
+
+      def ensure_unique_amount
+        return if unique_amount_none?
+
+        recent_payments = advertisement.payments.active.excluding(self)
+        amounts = recent_payments.pluck(:national_currency_amount)
+
+        while amounts.include?(national_currency_amount) do
+          self.national_currency_amount += uniqueization_difference[unique_amount]
+        end
+      end
+
+      def uniqueization_difference
+        self.class::UNIQUEIZATION_DIFFERENCE
       end
     end
   end
