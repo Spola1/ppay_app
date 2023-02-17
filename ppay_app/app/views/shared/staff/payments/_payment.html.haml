@@ -21,7 +21,7 @@
       .my-4
         = render 'shared/staff/payments/image', payment:
 
-      = form_for payment, url: payment_path(payment), action: :update, html: { id: :payment_form } do |f|
+      = simple_form_for payment, url: payment_path(payment), action: :update, html: { id: :payment_form } do |f|
         %table.item-card-table
           %tbody
             %tr.item-card-tr
@@ -46,6 +46,12 @@
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - else
                   = payment.payment_status
+
+            - if role_namespace == 'supports'
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина отмены
+                %td.item-card-td
+                  = render "supports/payments/payment_cancellation_reason_field", f:, payment:
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
@@ -79,6 +85,11 @@
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Отменён на статусе
               %td.item-card-td= "#{payment.cancelled_on_status}"
+
+            - if payment.cancellation_reason
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина отмены
+              %td.item-card-td= "#{payment.human_cancellation_reason}"
 
             - if payment.advertisement_id
               %tr.item-card-tr

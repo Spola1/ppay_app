@@ -6,6 +6,10 @@ FactoryBot.define do
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
 
+    after(:create) do |merchant|
+      merchant.balance.deposit(1000)
+    end
+
     trait :with_all_kind_of_payments do
       after(:create) do |user, _evaluator|
         create :payment, :withdrawal, :transferring, merchant: user

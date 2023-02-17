@@ -22,7 +22,15 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def human_payment_status
+    return unless payment_status
+
     Payment.human_attribute_name("payment_status.#{payment_status}")
+  end
+
+  def human_cancellation_reason
+    return unless cancellation_reason
+
+    Payment.human_attribute_name("cancellation_reason.#{cancellation_reason}")
   end
 
   def fiat_amount_with_currency

@@ -71,6 +71,8 @@ gem 'active_model_serializers', '~> 0.10.0'
 # decorators
 gem 'draper'
 
+gem 'jsonapi-serializer'
+
 gem 'credit_card_validations'
 gem 'font-awesome-rails'
 gem 'simple_form'
@@ -108,6 +110,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
+  gem 'webmock'
 end
 
 gem 'aasm'

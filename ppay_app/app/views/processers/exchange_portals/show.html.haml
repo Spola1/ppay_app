@@ -1,22 +1,9 @@
-%h1 Обменный портал
-%p
-  = "(ID: #{@exchange_portal.id})"
-
-%br
-
-%table
-  %thead
-    %tr
-      %th ID
-      %th created_at
-      %th название
-
-
-  %tbody
-    %tr
-      %td= @exchange_portal.id
-      %td= @exchange_portal.created_at
-      %td= @exchange_portal.name
-
-%br
-= link_to "<- К списку объявлений", advertisements_path
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Обменный портал (ID: #{@exchange_portal.id})"
+      .mt-8.my-4
+        = render @exchange_portal
+      .back-link
+        = link_to "<- К списку бирж", exchange_portals_path
