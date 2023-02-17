@@ -1,0 +1,45 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label ID
+        %td.item-card-td= @transaction.id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Создана в
+        %td.item-card-td= @transaction.decorate.formatted_created_at
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Размер
+        %td.item-card-td= @transaction.amount
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Баланс исходящий
+        %td.item-card-td= @transaction.from_balance&.id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Баланс исходящий - ник хозяина
+        %td.item-card-td= @transaction.from_balance&.balanceable&.nickname
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Баланс входящий
+        %td.item-card-td= @transaction.to_balance_id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Баланс входящий - ник хозяина
+        %td.item-card-td= @transaction.to_balance&.balanceable&.nickname
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label ID платежа
+        %td.item-card-td= @transaction.transactionable_id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Направление платежа
+        %td.item-card-td= @transaction.transactionable.try(:direction)
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Платежная система платежа
+        %td.item-card-td= @transaction.transactionable.try(:payment_system)
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Статус платежа
+        %td.item-card-td= @transaction.transactionable.try(:payment_status)
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Хозяин объявления (ник)
+        %td.item-card-td= @transaction.transactionable.try(:advertisement)&.processer&.nickname
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Статус транзакции
+        %td.item-card-td= @transaction.status
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Тип транзакции
+        %td.item-card-td= @transaction.transaction_type
