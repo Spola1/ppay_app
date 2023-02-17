@@ -32,5 +32,7 @@
         %td.items-list-td= payment.human_cancellation_reason
         %td.items-list-td= payment.merchant.decorate.display_name
 
-        %td.items-list-td-link
-          = link_to 'Перейти', payment_path(payment), data: { turbo_action: :advance }
+        %td.items-list-td.px-1.w-0
+          = link_to payment_path(payment) do
+            .icon-button-gray
+              = fa_icon 'search'

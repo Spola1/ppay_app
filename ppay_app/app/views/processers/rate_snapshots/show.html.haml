@@ -1,38 +1,12 @@
-%h1 Курс
-%p
-  = "(ID: #{@rate_snapshot.id})"
-
-
-%table
-  %thead
-    %tr
-      %th ID
-      %th направление
-      %th нац. валюта
-      %th криптовалюта
-      %th платежная система
-      %th позиция в стакане
-      %th exchange_portal_id
-      %th портал
-      %th значение
-
-
-  %tbody
-    %tr
-      %td= @rate_snapshot.id
-      %td= @rate_snapshot.direction
-      %td= @rate_snapshot.national_currency
-      %td= @rate_snapshot.cryptocurrency
-      %td= @rate_snapshot.payment_system
-      %td= @rate_snapshot.position_number
-      %td= @rate_snapshot.exchange_portal_id
-      %td= @rate_portal_name
-      %td= @rate_snapshot.value
-
-
-
-%br
-= link_to "<- К списку курсов", rate_snapshots_path
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Курс (ID: #{@rate_snapshot.id})"
+      .mt-8.my-4
+        = render @rate_snapshot
+      .back-link
+        = link_to "<- К списку курсов", rate_snapshots_path
 
 
 

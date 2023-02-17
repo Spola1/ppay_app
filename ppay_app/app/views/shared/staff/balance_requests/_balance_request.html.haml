@@ -3,7 +3,7 @@
     %tbody
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Создана в
-        %td.item-card-td= @balance_request.created_at
+        %td.item-card-td= @balance_request.decorate.formatted_created_at
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Тип
         %td.item-card-td= @balance_request.requests_type
