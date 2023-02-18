@@ -18,3 +18,6 @@ application.register("notifications", NotificationsController)
 
 import ModalController from "controllers/modal_controller"
 application.register("modal", ModalController)
+
+import ClipboardController from "controllers/clipboard_controller"
+application.register("clipboard", ClipboardController)
