@@ -1,0 +1,16 @@
+<%= content_for :title, "Заказ успешно оплачен" %>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Заказ №<%= @order.id %> успешно оплачен</h5>
+          <p class="card-text">Спасибо за покупку!</p>
+          <%= link_to "Home page", root_path, class: "btn btn-primary" %>
+          <%= link_to "My orders", "/users/#{current_user.id}/orders", class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
