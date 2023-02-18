@@ -15,7 +15,8 @@
             .badge
               На арбитраже
         .flex
-          = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+          - if can_manage_payment?
+            = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
 
       .my-4
         = render 'shared/staff/payments/image', payment:
@@ -41,7 +42,10 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус
               %td.item-card-td
-                = render "#{role_namespace}/payments/payment_status_field", f:, payment:
+                - if can_manage_payment?
+                  = render "#{role_namespace}/payments/payment_status_field", f:, payment:
+                - else
+                  = payment.payment_status
 
             - if role_namespace == 'supports'
               %tr.item-card-tr
@@ -132,32 +136,33 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
+            - if can_manage_payment?
+              = render 'shared/staff/payments/payment_audit', payment:
 
-            = render 'shared/staff/payments/payment_audit', payment:
+  - if can_manage_payment?
+    .card-wrap
+      - if payment_status_partial_exists?(payment, 'processers')
+        = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
 
-  .card-wrap       
-    - if payment_status_partial_exists?(payment, 'processers')
-      = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
+      .item-card
+        %p.text-xl.mb-2 Комментарии
 
-    .item-card
-      %p.text-xl.mb-2 Комментарии
+        - if payment.comments.present?
+          .flex.flex-col
+            - payment.comments.decorate.each do |comment|
+              .flex.flex-col.my-2.items-start
+                .text-xs.mb-1
+                  = "#{comment.user.nickname} (#{comment.user.decorate.human_type})"
+                .comment_item.px-4.py-2.rounded-lg.text-sm.border{
+                  class: comment.user&.support? ? 'bg-blue-100' : 'bg-slate-100'
+                }
+                  .comment_item_text
+                    = comment.text
+                .text-xs.mt-1.text-gray-500
+                  = comment.formatted_created_at
 
-      - if payment.comments.present?
-        .flex.flex-col
-          - payment.comments.decorate.each do |comment|
-            .flex.flex-col.my-2.items-start
-              .text-xs.mb-1
-                = "#{comment.user.nickname} (#{comment.user.decorate.human_type})"
-              .comment_item.px-4.py-2.rounded-lg.text-sm.border{
-                class: comment.user&.support? ? 'bg-blue-100' : 'bg-slate-100'
-              }
-                .comment_item_text
-                  = comment.text
-              .text-xs.mt-1.text-gray-500
-                = comment.formatted_created_at
+        .mt-4
+          = form_for Comment.new, url: payment_comments_path(payment_uuid: payment.uuid), remote: true do |f|
 
-      .mt-4
-        = form_for Comment.new, url: payment_comments_path(payment_uuid: payment.uuid), remote: true do |f|
-
-          = f.text_area :text, class: 'form-input w-full h-16'
-          = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
+            = f.text_area :text, class: 'form-input w-full h-16'
+            = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
