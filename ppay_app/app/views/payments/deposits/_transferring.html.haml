@@ -4,8 +4,13 @@
     UID Check
 
 .proc-amount-block
-  .proc-amount-content
-    = "#{payment.national_currency_amount} #{payment.national_currency}"
+  .proc-amount-content1{ 'data-controller': 'clipboard' }
+    %div{ 'data-clipboard-target': 'source' }
+      #{payment.national_currency_amount}
+    %div.pr-3
+      #{payment.national_currency}
+    .copy-button
+      = button_tag fa_icon('copy'), data: { action: "click->clipboard#copy" }
 
 .proc-countdown-block
   Вы можете оплатить в течение:

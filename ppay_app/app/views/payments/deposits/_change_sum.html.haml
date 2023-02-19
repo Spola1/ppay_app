@@ -4,7 +4,9 @@
       .modal_amount{ 'data-controller': 'clipboard' }
         .proc-amount-content1.pt-1
           %div{ 'data-clipboard-target': 'source' }
-            #{payment.national_currency_amount} #{payment.national_currency}
+            #{payment.national_currency_amount}
+          %div.pr-3
+            #{payment.national_currency}
           .copy-button
             = button_tag fa_icon('copy'), data: { action: "click->clipboard#copy" }
       .modal_content
