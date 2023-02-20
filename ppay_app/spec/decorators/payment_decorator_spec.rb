@@ -3,22 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe PaymentDecorator do
-  let(:payment) { create :payment }
+  let(:payment) { create(:payment, status_changed_at:, type:) }
+  let(:time_now) { Time.now }
+  let(:status_changed_at) { time_now - 10.minutes }
+  let(:type) { 'Withdrawal' }
+
+  before do
+    allow(Time).to receive(:now).and_return(time_now)
+  end
+
   describe '#countdown' do
-    it 'Should return 00:00:00' do
-      payment.status_changed_at = Time.new(2022, 1, 1)
-      expect(payment.decorate.countdown).to eq '00:00:00'
+    it 'should return countdown' do
+      expect(payment.decorate.countdown).to eq('00:10:00')
     end
 
-    it 'Should return correct Time' do
-      payment.status_changed_at = Time.now
-      expect(payment.decorate.countdown.to_i).to be_within(1.second).of Time.now.strftime('%H:%M:%S').to_i
+    context 'when the status was changed long ago' do
+      let(:status_changed_at) { 1.day.ago }
+      it 'should return 00:00:00' do
+        expect(payment.decorate.countdown).to eq '00:00:00'
+      end
     end
   end
 
   describe '#countdown_end_time' do
     it 'Should return status_changed_at + 20' do
-      payment.status_changed_at = Time.now
       expect(payment.decorate.countdown_end_time).to eq(payment.status_changed_at + 20.minutes)
     end
   end
@@ -31,30 +39,32 @@ RSpec.describe PaymentDecorator do
 
   describe '#fiat_amount_with_currency' do
     it 'Should pass' do
-      expect(payment.decorate.fiat_amount_with_currency).to eq "#{'%.2f' % payment.national_currency_amount} #{payment.national_currency}"
+      expect(payment.decorate.fiat_amount_with_currency).to eq '100.00 RUB'
     end
   end
 
   describe '#human_type' do
-    it 'If type == deposit then return Депозит' do
-      payment.type = 'Deposit'
-      expect(payment.decorate.human_type).to eq 'Депозит'
+    context 'when payment.type == Deposit' do
+      let(:type) { 'Deposit' }
+      it 'If type == deposit then return Депозит' do
+        expect(payment.decorate.human_type).to eq 'Депозит'
+      end
     end
 
     it 'If type != deposit then return Вывод' do
-      payment.type = ''
       expect(payment.decorate.human_type).to eq 'Вывод'
     end
   end
 
   describe '#type_icon' do
-    it 'If type == deposit then return arrow-up' do
-      payment.type = 'Deposit'
-      expect(payment.decorate.type_icon).to eq 'arrow-up'
+    context 'when payment.type == Deposit' do
+      let(:type) { 'Deposit' }
+      it 'If type == deposit then return arrow-up' do
+        expect(payment.decorate.type_icon).to eq 'arrow-up'
+      end
     end
 
     it 'If type == deposit then return arrow-down' do
-      payment.type = ''
       expect(payment.decorate.type_icon).to eq 'arrow-down'
     end
   end

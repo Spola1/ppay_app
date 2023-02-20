@@ -3,7 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe UserDecorator do
-  let(:user) {create :user, :merchant}
+  let(:user) { create :user, :merchant, name:, nickname: }
+  let(:name) { 'Artur' }
+  let(:nickname) { 'JustKing' }
+
   describe '#human_type' do
     it 'should return Мерчант if type Merchant' do
       expect(user.decorate.human_type).to eq 'Мерчант'
@@ -11,29 +14,36 @@ RSpec.describe UserDecorator do
   end
 
   describe '#display_name' do
-    it 'should return ID if nickname = nil and full_name = nil' do
-      user.name = nil
-      expect(user.decorate.display_name).to eq "ID: #{user.id}"
+    context 'When nickname, name annd surname = nil' do
+      let(:name) { nil }
+      let(:nickname) { nil }
+      it 'should return ID if nickname = nil and full_name = nil' do
+        expect(user.decorate.display_name).to eq "ID: #{user.id}"
+      end
     end
 
-    it 'should return full_name if nickname not presence' do
-      expect(user.decorate.display_name).to eq user.decorate.full_name
+    context 'When nickname = nil' do
+      let(:nickname) { nil }
+      it 'should return full_name if nickname not presence' do
+        expect(user.decorate.display_name).to eq user.decorate.full_name
+      end
     end
 
-    it 'should return nickname if presence' do
-      user.nickname = 'Artur'
+    it 'should return nickname' do
       expect(user.decorate.display_name).to eq user.nickname
     end
   end
 
   describe '#full_name' do
-    it 'should return nickname if type precense' do
-      expect(user.decorate.full_name).to eq user.decorate.full_name
+    it 'should return name + surname if one of the two precense' do
+      expect(user.decorate.full_name).to eq 'Artur'
     end
 
-    it 'should return false if type not precense' do
-      user.nickname = nil
-      expect(user.decorate.full_name).to eq false
+    context 'When name and surname = nil' do
+      let(:name) { nil }
+      it 'should return false if name and surname not precense' do
+        expect(user.decorate.full_name).to eq nil
+      end
     end
   end
 

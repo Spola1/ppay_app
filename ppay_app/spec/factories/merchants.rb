@@ -3,8 +3,8 @@
 
 FactoryBot.define do
   factory :merchant do
-    email { 'merchant@test.com' }
-    password { 'NQg6By9QncR5KssZ' }
+    email { FFaker::Internet.email }
+    password { FFaker::Internet.password(10) }
     nickname { 'AvangardBet' }
     name { 'Петр Петрович' }
 
