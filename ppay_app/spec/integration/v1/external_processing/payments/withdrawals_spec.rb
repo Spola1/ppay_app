@@ -20,7 +20,7 @@ describe 'Withdrawals' do
 
       parameter name: :params,
                 in: :body,
-                schema: { '$ref': '#/components/schemas/external_processing_deposits_create_parameter_body_schema' }
+                schema: { '$ref': '#/components/schemas/external_processing_withdrawals_create_parameter_body_schema' }
 
       let(:payment_system) { 'Tinkoff' }
       let(:national_currency) { 'RUB' }
