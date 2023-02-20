@@ -107,7 +107,7 @@ class Payment < ApplicationRecord
     broadcast_replace_later_to(
       "processers_payment_#{uuid}",
       partial: 'processers/payments/show_turbo_frame',
-      locals: { payment: decorate, signature: nil, role_namespace: 'processers' },
+      locals: { payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
       target: "processers_payment_#{uuid}"
     )
   end
@@ -134,7 +134,7 @@ class Payment < ApplicationRecord
     broadcast_replace_later_to(
       "supports_payment_#{uuid}",
       partial: 'supports/payments/show_turbo_frame',
-      locals: { payment: decorate, signature: nil, role_namespace: 'supports' },
+      locals: { payment: decorate, signature: nil, role_namespace: 'supports', can_manage_payment?: true },
       target: "supports_payment_#{uuid}"
     )
   end

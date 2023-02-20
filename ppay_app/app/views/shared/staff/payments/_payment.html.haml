@@ -15,7 +15,7 @@
             .badge
               На арбитраже
         .flex
-          - if can_manage_payment?
+          - if local_assigns[:can_manage_payment?]
             = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
 
       .my-4
@@ -42,7 +42,7 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус
               %td.item-card-td
-                - if can_manage_payment?
+                - if local_assigns[:can_manage_payment?]
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - else
                   = payment.payment_status
@@ -136,10 +136,10 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
-            - if can_manage_payment?
+            - if local_assigns[:can_manage_payment?]
               = render 'shared/staff/payments/payment_audit', payment:
 
-  - if can_manage_payment?
+  - if local_assigns[:can_manage_payment?]
     .card-wrap
       - if payment_status_partial_exists?(payment, 'processers')
         = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
