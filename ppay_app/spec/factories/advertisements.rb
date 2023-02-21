@@ -7,6 +7,7 @@ FactoryBot.define do
     national_currency { 'RUB' }
     payment_system { 'AlfaBank' }
     card_number { '1111111111111111' }
+    status { true }
 
     trait :deposit do
       direction { 'Deposit' }

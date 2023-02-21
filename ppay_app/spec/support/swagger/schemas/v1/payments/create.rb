@@ -45,9 +45,10 @@ module Swagger
                         type: :object,
                         properties: {
                           uuid: { type: :string },
-                          url: { type: :string }
+                          card_number: { type: :string },
+                          expiration_time: { type: :string }
                         },
-                        required: %w[uuid url]
+                        required: %w[uuid card_number expiration_time]
                       }
                     },
                     required: %w[id type attributes]

@@ -20,6 +20,7 @@ class PaymentDecorator < ApplicationDecorator
   def countdown_end_time
     status_changed_at + 20.minutes
   end
+  alias expiration_time countdown_end_time
 
   def human_payment_status
     return unless payment_status
@@ -47,6 +48,10 @@ class PaymentDecorator < ApplicationDecorator
 
   def formatted_status_changed_at
     formatted_date(status_changed_at)
+  end
+
+  def card_number
+    advertisement.card_number
   end
 
   private

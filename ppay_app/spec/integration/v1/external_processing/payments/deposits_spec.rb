@@ -6,6 +6,8 @@ describe 'Deposits' do
   include_context 'authorization'
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
+  let!(:adv) { create :advertisement, :deposit, payment_system: 'Tinkoff' }
+  let!(:ppay) { create :user, :ppay }
 
   path '/api/v1/external_processing/payments/deposits' do
     post 'Создание депозита с внешним процессингом' do
