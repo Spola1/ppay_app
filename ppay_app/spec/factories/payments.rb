@@ -2,10 +2,6 @@
 
 FactoryBot.define do
   factory :payment, class: Payment do
-    initialize_with do
-      klass = type.constantize
-      klass.new(attributes)
-    end
 
     merchant
 
@@ -41,6 +37,10 @@ FactoryBot.define do
 
     trait :with_image do
       image { fixture_file_upload('spec/fixtures/test_files/sample.jpeg', 'image/png') }
+    end
+
+    trait :with_transactions do
+      transactions { [build(:transaction, transaction_type: :main), build(:transaction, transaction_type: :processer_commission), build(:transaction, transaction_type: :ppay_commission)] }
     end
   end
 end

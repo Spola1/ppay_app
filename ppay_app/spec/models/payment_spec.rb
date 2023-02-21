@@ -14,23 +14,40 @@ RSpec.describe Payment, type: :model do
   context 'validation' do
     let(:payment1) { create :payment }
     let(:payment2) { create :payment, :cancelled }
+    let(:payment3) { create :payment, :with_transactions, payment_status: }
     describe 'before_save' do
-      it 'Arbitration should be true if status is not cancelled or completed and not changed' do
-        expect(payment1.arbitration).to eq true
+      context 'auto take off arbitration' do
+        it 'Arbitration should be true if status is not cancelled or completed and not changed' do
+          expect(payment1.arbitration).to eq true
+        end
+
+        it 'Arbitration should be true if status is not cancelled or completed and changed' do
+          payment1.payment_status = :transferring
+          expect(payment1.arbitration).to eq true
+        end
+
+        it 'Arbitration should be true if status is completed or cancelled and not changed' do
+          expect(payment1.arbitration).to eq true
+        end
+
+        it 'Arbitration should be false if status is completed or cancelled and changed' do
+          payment2.payment_status = :completed
+          expect(payment2.arbitration).to eq false
+        end
       end
 
-      it 'Arbitration should be true if status is not cancelled or completed and changed' do
-        payment1.payment_status = :transferring
-        expect(payment1.arbitration).to eq true
+      context 'cancel transaction' do
+        let(:payment_status) { :cancelled }
+        it 'sets transactions to cancelled status' do
+          expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'cancelled')
+        end
       end
 
-      it 'Arbitration should be true if status is completed or cancelled and not changed' do
-        expect(payment1.arbitration).to eq true
-      end
-
-      it 'Arbitration should be false if status is completed or cancelled and changed' do
-        payment2.payment_status = :completed
-        expect(payment2.arbitration).to eq false
+      context 'completed transaction' do
+        let(:payment_status) { :completed }
+        it 'sets transactions to cancelled status' do
+          expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'completed')
+        end
       end
     end
   end
