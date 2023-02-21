@@ -38,6 +38,8 @@ class Payment < ApplicationRecord
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
   before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
+  before_save :complete_transactions, if: -> { payment_status.in?(%w[completed]) && payment_status_changed? }
+  before_save :cancel_transactions, if: -> { payment_status.in?(%w[cancelled]) && payment_status_changed? }
 
   validates_presence_of :national_currency, :national_currency_amount,
                         :redirect_url, :callback_url
