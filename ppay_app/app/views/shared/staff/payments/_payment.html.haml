@@ -42,10 +42,10 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус
               %td.item-card-td
-                - if local_assigns[:can_manage_payment?]
+                - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled])
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - else
-                  = payment.payment_status
+                  = payment.human_payment_status
 
             - if role_namespace == 'supports'
               %tr.item-card-tr

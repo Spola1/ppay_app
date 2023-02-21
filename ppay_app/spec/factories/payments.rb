@@ -40,7 +40,21 @@ FactoryBot.define do
     end
 
     trait :with_transactions do
-      transactions { [build(:transaction, transaction_type: :main), build(:transaction, transaction_type: :processer_commission), build(:transaction, transaction_type: :ppay_commission)] }
+      transactions { [build(:transaction, transaction_type: :main),
+                      build(:transaction, transaction_type: :processer_commission),
+                      build(:transaction, transaction_type: :ppay_commission)] }
+    end
+
+    trait :with_completed_transactions do
+      transactions { [build(:transaction, transaction_type: :main, status: :completed),
+                      build(:transaction, transaction_type: :processer_commission, status: :completed),
+                      build(:transaction, transaction_type: :ppay_commission, status: :completed)] }
+    end
+
+    trait :with_cancelled_transactions do
+      transactions { [build(:transaction, transaction_type: :main, status: :cancelled),
+                      build(:transaction, transaction_type: :processer_commission, status: :cancelled),
+                      build(:transaction, transaction_type: :ppay_commission, status: :cancelled)] }
     end
   end
 end

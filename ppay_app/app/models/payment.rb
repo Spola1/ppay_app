@@ -47,6 +47,8 @@ class Payment < ApplicationRecord
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 
+  validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
+
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
@@ -152,5 +154,11 @@ class Payment < ApplicationRecord
 
   def set_initial_amount
     self.initial_amount = national_currency_amount
+  end
+
+  def transactions_cannot_be_completed_or_cancelled
+    return if transactions.pluck(:status).all?('frozen')
+
+    errors.add(:transactions, 'already completed or cancelled')
   end
 end

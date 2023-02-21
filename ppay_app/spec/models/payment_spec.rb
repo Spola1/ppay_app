@@ -15,6 +15,7 @@ RSpec.describe Payment, type: :model do
     let(:payment1) { create :payment }
     let(:payment2) { create :payment, :cancelled }
     let(:payment3) { create :payment, :with_transactions, payment_status: }
+
     describe 'before_save' do
       context 'auto take off arbitration' do
         it 'Arbitration should be true if status is not cancelled or completed and not changed' do
@@ -48,6 +49,28 @@ RSpec.describe Payment, type: :model do
         it 'sets transactions to cancelled status' do
           expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'completed')
         end
+      end
+    end
+
+    describe '#transactions_cannot_be_completed_or_cancelled' do
+      subject { payment.errors[:transactions] }
+
+      let(:payment) { create(:payment, :with_transactions) }
+
+      before { payment.update(payment_status: :draft) }
+
+      it { is_expected.to be_empty }
+
+      context 'completed transactions' do
+        let(:payment) { create(:payment, :with_completed_transactions) }
+
+        it { is_expected.to match_array(['already completed or cancelled']) }
+      end
+
+      context 'cancelled transactions' do
+        let(:payment) { create(:payment, :with_completed_transactions) }
+
+        it { is_expected.to match_array(['already completed or cancelled']) }
       end
     end
   end
