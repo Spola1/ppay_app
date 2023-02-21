@@ -8,7 +8,12 @@ class Payment < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
 
-  enum :cancellation_reason, { by_client: 0 }
+  enum cancellation_reason: {
+    by_client: 0,
+    duplicate_payment: 1,
+    fraud_attempt: 2,
+    incorrect_amount: 3
+  }
 
   has_many :transactions, as: :transactionable
 
