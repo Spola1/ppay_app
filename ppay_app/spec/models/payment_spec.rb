@@ -178,39 +178,6 @@ RSpec.describe Payment, type: :model do
   end
 
   describe "cancellation_reason" do
-    let(:payment) { create(:payment, :deposit) }
-
-    it "can be set to by_client" do
-      payment.cancellation_reason = "by_client"
-      expect(payment.cancellation_reason).to eq("by_client")
-    end
-
-    it "can be set to duplicate_payment" do
-      payment.cancellation_reason = "duplicate_payment"
-      expect(payment.cancellation_reason).to eq("duplicate_payment")
-    end
-
-    it "can be set to fraud_attempt" do
-      payment.cancellation_reason = "fraud_attempt"
-      expect(payment.cancellation_reason).to eq("fraud_attempt")
-    end
-
-    it "can be set to incorrect_amount" do
-      payment.cancellation_reason = "incorrect_amount"
-      expect(payment.cancellation_reason).to eq("incorrect_amount")
-    end
-
-    it "raises an error for an invalid cancellation reason" do
-      expect { Payment.new(cancellation_reason: :invalid) }.to raise_error(ArgumentError)
-    end
-
-    it "returns a hash of cancellation reasons" do
-      expect(Payment.cancellation_reasons).to eq({
-        "by_client" => 0,
-        "duplicate_payment" => 1,
-        "fraud_attempt" => 2,
-        "incorrect_amount" => 3
-      })
-    end
+    it { is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1, fraud_attempt: 2, incorrect_amount: 3)}
   end
 end
