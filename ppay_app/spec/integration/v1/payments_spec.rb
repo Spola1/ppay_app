@@ -30,7 +30,7 @@ describe 'Payments' do
       end
 
       response '401', 'unauthorized' do
-        let(:user_token) { invalid_token }
+        let(:merchant_token) { invalid_merchant_token }
         run_test!
       end
     end

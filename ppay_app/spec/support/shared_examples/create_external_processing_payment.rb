@@ -10,13 +10,20 @@ shared_examples 'create_external_processing_payment' do |type:|
       run_test!
     end
 
-    it 'создаст платеж мерчанту' do |example|
-      expect { submit_request(example.metadata) }.to change {
-        user.reload.public_send(payment_type.to_s.underscore.pluralize).count
-      }.from(0).to(1)
 
-      assert_response_matches_metadata(example.metadata)
+    it 'creates a payment for the merchant' do |example|
+      expect { submit_request(example.metadata) }.to change {
+        merchant.reload.public_send(payment_type.to_s.underscore.pluralize).count
+      }.from(0).to(1)
     end
+
+    it 'creates an external processing payment' do |example|
+      submit_request(example.metadata)
+
+      expect(merchant.public_send(payment_type.to_s.underscore.pluralize).last)
+        .to be_external
+    end
+
   end
 
   response '422', 'invalid' do
@@ -76,7 +83,7 @@ shared_examples 'create_external_processing_payment' do |type:|
   end
 
   response '401', 'unauthorized' do
-    let(:user_token) { invalid_token }
+    let(:merchant_token) { invalid_merchant_token }
 
     run_test!
   end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 shared_context 'authorization' do
-  let(:Authorization) { "Bearer #{user_token}" }
-  let(:invalid_token) { ::Base64.strict_encode64('bogus:bogus') }
-  let(:valid_token) { user.api_keys.first.token }
-  let!(:user) { create(:merchant) }
-  let(:user_token) { valid_token }
+  let(:Authorization) { "Bearer #{merchant_token}" }
+  let(:invalid_merchant_token) { ::Base64.strict_encode64('bogus:bogus') }
+  let(:valid_merchant_token) { merchant.api_keys.first.token }
+  let!(:merchant) { create :merchant }
+  let(:merchant_token) { valid_merchant_token }
 end
