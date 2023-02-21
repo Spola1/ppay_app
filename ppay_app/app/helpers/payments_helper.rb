@@ -2,6 +2,7 @@
 
 module PaymentsHelper
 
+  AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
 
   def edit_payment_path(payment)
@@ -26,6 +27,10 @@ module PaymentsHelper
     Deposit.aasm.states.map do |state|
       [state_translation(state.name), state.name]
     end
+  end
+
+  def support_payment_statuses_collection
+    AVAILABLE_STATUSES_COLLECTION.map { |status| [state_translation(status), status] }
   end
 
   def can_manage_payment?
