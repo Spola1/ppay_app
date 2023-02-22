@@ -27,6 +27,10 @@ FactoryBot.define do
       payment_status { 'processer_search' }
     end
 
+    trait :completed do
+      payment_status { 'completed' }
+    end
+
     trait :withdrawal do
       type { 'Withdrawal' }
     end
