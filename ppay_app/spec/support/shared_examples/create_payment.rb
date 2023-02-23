@@ -24,7 +24,7 @@ shared_examples 'create_payment' do
 
     it 'создаст платеж мерчанту' do |example|
       expect { submit_request(example.metadata) }.to change {
-        user.reload.public_send(payment_type.to_s.underscore.pluralize).count
+        merchant.reload.public_send(payment_type.to_s.underscore.pluralize).count
       }.from(0).to(1)
 
       assert_response_matches_metadata(example.metadata)
@@ -52,7 +52,7 @@ shared_examples 'create_payment' do
   end
 
   response '401', 'unauthorized' do
-    let(:user_token) { invalid_token }
+    let(:merchant_token) { invalid_merchant_token }
 
     run_test!
   end

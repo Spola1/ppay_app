@@ -14,6 +14,7 @@ class Payment < ApplicationRecord
     fraud_attempt: 2,
     incorrect_amount: 3
   }
+  enum :processing_type, { internal: 0, external: 1 }
 
   has_many :transactions, as: :transactionable
 
@@ -41,9 +42,11 @@ class Payment < ApplicationRecord
   before_save :complete_transactions, if: -> { payment_status.in?(%w[completed]) && payment_status_changed? }
   before_save :cancel_transactions, if: -> { payment_status.in?(%w[cancelled]) && payment_status_changed? }
 
+  validates_presence_of :payment_system, if: :external?
+  validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
   validates_presence_of :national_currency, :national_currency_amount,
                         :redirect_url, :callback_url
-  
+
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 

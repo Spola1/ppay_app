@@ -187,6 +187,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
     t.string "redirect_url"
     t.string "callback_url"
     t.integer "cancellation_reason"
+    t.integer "processing_type", default: 0
     t.integer "unique_amount"
     t.decimal "initial_amount", precision: 12, scale: 2
     t.index ["support_id"], name: "index_payments_on_support_id"

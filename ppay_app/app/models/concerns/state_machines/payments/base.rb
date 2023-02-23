@@ -8,6 +8,8 @@ module StateMachines
       private
 
       def assign_params(params, keys)
+        return false if params.nil?
+
         assign_attributes(params.slice(*keys))
         valid?
       end
@@ -56,12 +58,13 @@ module StateMachines
       end
 
       def valid_image?(params)
+        return true unless merchant.check_required
+
         assign_params(params, %i[image])
         validate_image
       end
 
       def validate_image
-        return true unless merchant.check_required
         return true if image.present?
 
         errors.add(:image, :blank)
