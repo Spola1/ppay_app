@@ -11,6 +11,8 @@ module Api
           prepend_before_action :authenticate_with_api_key!
 
           def create
+            return render_check_required_error if current_bearer.check_required?
+
             @object = current_bearer.becomes(Merchant).public_send(model_class_plural.to_s)
                         .new(permitted_params.merge(processing_type: :external))
 
@@ -27,6 +29,15 @@ module Api
 
           def serializer
             "Api::V1::ExternalProcessing::Payments::Create::#{model_class}Serializer".classify.constantize
+          end
+
+          def render_check_required_error
+            render json: {
+                     errors: [::JsonApi::Error.new(
+                                code: 422, title: 'check_required_error',
+                                detail: I18n.t('errors.check_required_with_external_processing')
+                              ).to_hash]
+                   }, status: :unprocessable_entity
           end
         end
       end

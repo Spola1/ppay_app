@@ -4,6 +4,7 @@ require 'swagger_helper'
 
 describe 'External processing withdrawals' do
   include_context 'authorization'
+  let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:adv) { create :advertisement, :withdrawal, payment_system: 'Tinkoff' }

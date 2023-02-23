@@ -43,6 +43,24 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
       end
     end
 
+    context 'with check_required' do
+      let(:check_required) { true }
+
+      let(:expected_errors) do
+        [
+          {
+            title: 'check_required_error',
+            detail: I18n.t('errors.check_required_with_external_processing'),
+            code: 422
+          }.stringify_keys
+        ]
+      end
+
+      run_test! do |_response|
+        expect(response_body['errors']).to eq(expected_errors)
+      end
+    end
+
     context 'without payment system' do
       let(:payment_system) { nil }
 

@@ -28,12 +28,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "952ca946-e8ff-42f9-b452-282a70c019f7",
+                    "id": "8c2a7703-4c94-4529-9fe6-663a9b64d30d",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "952ca946-e8ff-42f9-b452-282a70c019f7",
+                      "uuid": "8c2a7703-4c94-4529-9fe6-663a9b64d30d",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-02-23T12:01:28.420+03:00"
+                      "expiration_time": "2023-02-23T14:23:42.057+03:00"
                     }
                   }
                 },
@@ -96,10 +96,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "3dd4480f-2f0a-42e0-80a0-6855cbd4ff1f",
+                    "id": "ec6a077d-d49d-4218-9c66-abf6dfcee02b",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "3dd4480f-2f0a-42e0-80a0-6855cbd4ff1f"
+                      "uuid": "ec6a077d-d49d-4218-9c66-abf6dfcee02b"
                     }
                   }
                 },
@@ -163,11 +163,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "312301b6-f999-4fb7-9b1e-6fb170747e0c",
+                    "id": "2205eccf-2aa1-4d44-b385-b7581677577c",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "312301b6-f999-4fb7-9b1e-6fb170747e0c",
-                      "url": "http://example.org/payments/deposits/312301b6-f999-4fb7-9b1e-6fb170747e0c?signature=76033b5f1581d9868bbcea612eeea5b90cc0b940c1a80c45401e7978df47dad5"
+                      "uuid": "2205eccf-2aa1-4d44-b385-b7581677577c",
+                      "url": "http://example.org/payments/deposits/2205eccf-2aa1-4d44-b385-b7581677577c?signature=b8b6957ace6d774578011a9888c5516e9b90ccb8fe7c8f7de16d1bb60fc00ed7"
                     }
                   }
                 },
@@ -280,11 +280,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "21ee0933-206f-4aee-8621-c863f85c1546",
+                    "id": "2091c918-3bce-4c3f-9f4c-0e73063c8a00",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "21ee0933-206f-4aee-8621-c863f85c1546",
-                      "url": "http://example.org/payments/withdrawals/21ee0933-206f-4aee-8621-c863f85c1546?signature=9d8d29d18f740476b861730bb3d1131bed99378a86ff44c296e5706d7e938b8e"
+                      "uuid": "2091c918-3bce-4c3f-9f4c-0e73063c8a00",
+                      "url": "http://example.org/payments/withdrawals/2091c918-3bce-4c3f-9f4c-0e73063c8a00?signature=5acbf8f0530b9c53b2715f2bc713b4d49421e08bd9c7cc3629c30de6461d044c"
                     }
                   }
                 },
@@ -598,7 +598,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "e1c12289-ff62-4f2c-87b6-6d53e97cd0a3"
+                    "example": "7259cd06-aa28-493d-ae12-5c9be2f02239"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -606,7 +606,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-02-23T11:41:26.707+03:00"
+                    "example": "2023-02-23T14:03:40.302+03:00"
                   },
                   "national_currency": {
                     "type": "string",
