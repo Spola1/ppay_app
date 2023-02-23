@@ -2,14 +2,16 @@
 
 require 'swagger_helper'
 
-describe 'Withdrawals' do
+describe 'External processing withdrawals' do
   include_context 'authorization'
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
+  let!(:adv) { create :advertisement, :withdrawal, payment_system: 'Tinkoff' }
+  let!(:ppay) { create :user, :ppay }
 
   path '/api/v1/external_processing/payments/withdrawals' do
     post 'Создание вывода средств с внешним процессингом' do
-      tags 'Платежи'
+      tags 'Платежи с внешним процессингом'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]

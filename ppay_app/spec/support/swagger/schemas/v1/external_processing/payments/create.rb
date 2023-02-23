@@ -47,7 +47,7 @@ module Swagger
 
             def create_response_body_schema
               {
-                external_processing_payments_create_response_body_schema: {
+                external_processing_deposits_create_response_body_schema: {
                   type: :object,
                   properties: {
                     data: {
@@ -59,9 +59,31 @@ module Swagger
                           type: :object,
                           properties: {
                             uuid: { type: :string },
-                            url: { type: :string }
+                            card_number: { type: :string },
+                            expiration_time: { type: :string }
                           },
-                          required: %w[uuid url]
+                          required: %w[uuid card_number expiration_time]
+                        }
+                      },
+                      required: %w[id type attributes]
+                    },
+                  },
+                  required: %w[data]
+                },
+                external_processing_withdrawals_create_response_body_schema: {
+                  type: :object,
+                  properties: {
+                    data: {
+                      type: :object,
+                      properties: {
+                        id: { type: :string },
+                        type: { type: :string },
+                        attributes: {
+                          type: :object,
+                          properties: {
+                            uuid: { type: :string }
+                          },
+                          required: %w[uuid]
                         }
                       },
                       required: %w[id type attributes]

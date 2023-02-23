@@ -5,13 +5,13 @@ module Api
     module ExternalProcessing
       module Payments
         module Create
-          class DepositSerializer
+          class WithdrawalSerializer
             include JSONAPI::Serializer
 
             set_id :uuid
-            set_type :Deposit
+            set_type :Withdrawal
 
-            attributes :uuid, :card_number, :expiration_time
+            attributes :uuid
           end
         end
       end

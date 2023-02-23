@@ -71,6 +71,8 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include JsonApiHelper
+
+  config.include_context 'turn off UpdateCallbackJob'
 end
 
 Shoulda::Matchers.configure do |config|

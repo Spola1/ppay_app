@@ -15,7 +15,7 @@ describe 'Payments' do
 
       parameter name: :uuid, in: :path, type: :string
 
-      let(:payment) { create :payment, :deposit, :confirming }
+      let(:payment) { create :payment, :deposit, :confirming, merchant: }
       let(:uuid) { payment.uuid }
 
       response '200', 'payment with uuid is present' do
@@ -24,12 +24,17 @@ describe 'Payments' do
         run_test!
       end
 
-      response '404', 'payment not found' do
+      response '404', 'does not found payment with invalid uuid' do
         let(:uuid) { 'invalid' }
         run_test!
       end
 
-      response '401', 'unauthorized' do
+      response '404', 'does not found with unauthorized payment access' do
+        let(:payment) { create :payment, :deposit, :confirming }
+        run_test!
+      end
+
+      response '401', 'unauthorized on invalid token' do
         let(:merchant_token) { invalid_merchant_token }
         run_test!
       end

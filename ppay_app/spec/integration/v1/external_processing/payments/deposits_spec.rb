@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'Deposits' do
+describe 'External processing deposits' do
   include_context 'authorization'
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
@@ -11,7 +11,7 @@ describe 'Deposits' do
 
   path '/api/v1/external_processing/payments/deposits' do
     post 'Создание депозита с внешним процессингом' do
-      tags 'Платежи'
+      tags 'Платежи с внешним процессингом'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]

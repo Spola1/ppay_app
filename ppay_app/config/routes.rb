@@ -18,14 +18,18 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
-    resources :deposits, param: :uuid, only: :show
-    resources :withdrawals, param: :uuid, only: :show
-
+  concern :statuses_updatable do
     namespace :statuses do
       resources :deposits, param: :uuid, only: :update
       resources :withdrawals, param: :uuid, only: :update
     end
+  end
+
+  namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
+    resources :deposits, param: :uuid, only: :show
+    resources :withdrawals, param: :uuid, only: :show
+
+    concerns :statuses_updatable
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
@@ -61,10 +65,7 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: %i[index show update]
       resources :withdrawals, param: :uuid, only: %i[index show update]
 
-      namespace :statuses do
-        resources :deposits, param: :uuid, only: :update
-        resources :withdrawals, param: :uuid, only: :update
-      end
+      concerns :statuses_updatable
     end
     root 'payments#index', as: :processers_root
   end
@@ -80,19 +81,21 @@ Rails.application.routes.draw do
     root 'payments#index', as: :supports_root
   end
 
+  concern :payments_creatable do
+    namespace :payments do
+      resources :deposits,    only: :create
+      resources :withdrawals, only: :create
+    end
+  end
+
   namespace :api do
     namespace :v1 do
       resources :payments, param: :uuid, only: :show
-      namespace :payments do
-        resources :deposits,    only: :create
-        resources :withdrawals, only: :create
-      end
+      patch 'payments/:uuid/statuses/:event', to: 'payments/statuses#update'
 
+      concerns :payments_creatable
       namespace :external_processing do
-        namespace :payments do
-          resources :deposits,    only: :create
-          resources :withdrawals, only: :create
-        end
+        concerns :payments_creatable
       end
     end
   end

@@ -10,7 +10,7 @@
       "post": {
         "summary": "Создание депозита с внешним процессингом",
         "tags": [
-          "Платежи"
+          "Платежи с внешним процессингом"
         ],
         "security": [
           {
@@ -28,16 +28,17 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "6cb445a8-9309-40d7-ae9c-97e91bf2c3e1",
+                    "id": "952ca946-e8ff-42f9-b452-282a70c019f7",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "6cb445a8-9309-40d7-ae9c-97e91bf2c3e1",
-                      "url": "http://example.org/payments/deposits/6cb445a8-9309-40d7-ae9c-97e91bf2c3e1?signature=9bf347babc8e169e86bc552b6a5afaf9cfd98c8d5d13ae899a6f0e10d8e06bad"
+                      "uuid": "952ca946-e8ff-42f9-b452-282a70c019f7",
+                      "card_number": "1111111111111111",
+                      "expiration_time": "2023-02-23T12:01:28.420+03:00"
                     }
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/payments_create_response_body_schema"
+                  "$ref": "#/components/schemas/external_processing_deposits_create_response_body_schema"
                 }
               }
             }
@@ -77,7 +78,7 @@
       "post": {
         "summary": "Создание вывода средств с внешним процессингом",
         "tags": [
-          "Платежи"
+          "Платежи с внешним процессингом"
         ],
         "security": [
           {
@@ -95,16 +96,15 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "e030eb7c-4e7d-4176-bfc8-2f2c9b507530",
+                    "id": "3dd4480f-2f0a-42e0-80a0-6855cbd4ff1f",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "e030eb7c-4e7d-4176-bfc8-2f2c9b507530",
-                      "url": "http://example.org/payments/withdrawals/e030eb7c-4e7d-4176-bfc8-2f2c9b507530?signature=4d23857e658120ab9a5e84e5f4b1716afea9101cdea77ea4667667fcc7787931"
+                      "uuid": "3dd4480f-2f0a-42e0-80a0-6855cbd4ff1f"
                     }
                   }
                 },
                 "schema": {
-                  "$ref": "#/components/schemas/payments_create_response_body_schema"
+                  "$ref": "#/components/schemas/external_processing_withdrawals_create_response_body_schema"
                 }
               }
             }
@@ -152,7 +152,7 @@
             }
           }
         ],
-        "description": "## Создание депозита\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр                   | Название                    | Тип    | Наличие     | Описание                                                                                       |\n|----------------------------|-----------------------------|--------|-------------|------------------------------------------------------------------------------------------------|\n| `national_currency`        | Национальная валюта         | String | Обязательно | Укажите валюту, в которой клиент будет вносить деньги                                          |\n| `national_currency_amount` | Сумма                       | Number | Обязательно | Укажите сумму платежа                                                                          |\n| `external_order_id`        | Внешний ID заявки           | String | Опционально | Укажите ID платежа или заявки в Вашей системе, чтобы можно было по нему отследить платёж у нас |\n| `redirect_url`             | Ссылка на возврат в магазин | String | Обязательно | Укажите ссылку, по которой клиент вернётся в магазин в конце оплаты                            |\n| `callback_url`             | Ссылка обратного вызова     | String | Обязательно | Укажите Вашу ссылку обратного вызова, для POST запросов об изменениях статуса                  |\n\n<br>\n\n## Ссылка обратного вызова (callback_url)\n\nСервис создания депозита будет информировать Вас об изменениях статуса платежа с\nпомощью ссылки callback_url. По ней будет отправляться серия POST запросов (при\nкаждом изменении статуса) со следующей информацией.\n\n### В загаловках (headers):\n\n| Заголовок                              | Описание                                                               |\n|----------------------------------------|------------------------------------------------------------------------|\n| `Content-Type: application/json`       | Тело запроса содержит JSON объект                                      |\n| `Authorization: Bearer {Ваш API-ключ}` | Ваш API ключ, для удостоверения того что запрос пришёл с нашей стороны |\n\n<br>\n\n### В теле запроса в формате JSON:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>uuid</code></td>\n      <td>Идентификатор платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Универсальный уникальный идентификатор платежа</td>\n    </tr>\n    <tr>\n      <td><code>extenal_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>ID платежа в Вашей системе</td>\n    </tr>\n    <tr>\n      <td><code>payment_status</code></td>\n      <td>Статус платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>\n        Статус платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>draft</strong> — Ввод данных карты</li>\n          <li><strong>processer_search</strong> — Поиск оператора</li>\n          <li><strong>transferring</strong> — Перевод денег</li>\n          <li><strong>confirming</strong> — Подтверждение перевода</li>\n          <li><strong>completed</strong> — Успешно завершён</li>\n          <li><strong>cancelled</strong> — Отменён</li>\n        </ul>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Пример:\n\n```\n{\n  \"data\": {\n    \"id\": \"191\",\n    \"type\": \"Deposit\",\n    \"attributes\": {\n      \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n      \"external_order_id\": \"1234\",\n      \"payment_status\": \"confirming\"\n    }\n  }\n}\n```\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "description": "## Создание депозита\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр                   | Название                    | Тип    | Наличие     | Описание                                                                                       |\n|----------------------------|-----------------------------|--------|-------------|------------------------------------------------------------------------------------------------|\n| `national_currency`        | Национальная валюта         | String | Обязательно | Укажите валюту, в которой клиент будет вносить деньги                                          |\n| `national_currency_amount` | Сумма                       | Number | Обязательно | Укажите сумму платежа                                                                          |\n| `external_order_id`        | Внешний ID заявки           | String | Опционально | Укажите ID платежа или заявки в Вашей системе, чтобы можно было по нему отследить платёж у нас |\n| `redirect_url`             | Ссылка на возврат в магазин | String | Обязательно | Укажите ссылку, по которой клиент вернётся в магазин в конце оплаты                            |\n| `callback_url`             | Ссылка обратного вызова     | String | Обязательно | Укажите Вашу ссылку обратного вызова, для POST запросов об изменениях статуса                  |\n\n<br>\n\n## Ссылка обратного вызова (callback_url)\n\nСервис создания депозита будет информировать Вас об изменениях статуса платежа с\nпомощью ссылки callback_url. По ней будет отправляться серия POST запросов (при\nкаждом изменении статуса) со следующей информацией.\n\n### В заголовках (headers):\n\n| Заголовок                              | Описание                                                               |\n|----------------------------------------|------------------------------------------------------------------------|\n| `Content-Type: application/json`       | Тело запроса содержит JSON объект                                      |\n| `Authorization: Bearer {Ваш API-ключ}` | Ваш API ключ, для удостоверения того что запрос пришёл с нашей стороны |\n\n<br>\n\n### В теле запроса в формате JSON:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>uuid</code></td>\n      <td>Идентификатор платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Универсальный уникальный идентификатор платежа</td>\n    </tr>\n    <tr>\n      <td><code>extenal_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>ID платежа в Вашей системе</td>\n    </tr>\n    <tr>\n      <td><code>payment_status</code></td>\n      <td>Статус платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>\n        Статус платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>draft</strong> — Ввод данных карты</li>\n          <li><strong>processer_search</strong> — Поиск оператора</li>\n          <li><strong>transferring</strong> — Перевод денег</li>\n          <li><strong>confirming</strong> — Подтверждение перевода</li>\n          <li><strong>completed</strong> — Успешно завершён</li>\n          <li><strong>cancelled</strong> — Отменён</li>\n        </ul>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Пример приходящего по callback_url запроса:\n\n```\n{\n  \"data\": {\n    \"id\": \"191\",\n    \"type\": \"Deposit\",\n    \"attributes\": {\n      \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n      \"external_order_id\": \"1234\",\n      \"payment_status\": \"confirming\"\n    }\n  }\n}\n```\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
 
         ],
@@ -163,11 +163,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "5aadf10b-166e-4b33-8322-1a829a563ab7",
+                    "id": "312301b6-f999-4fb7-9b1e-6fb170747e0c",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "5aadf10b-166e-4b33-8322-1a829a563ab7",
-                      "url": "http://example.org/payments/deposits/5aadf10b-166e-4b33-8322-1a829a563ab7?signature=61088510df8bbe002e5d5bad88827ff69f0dc3c482327ae8743f3c874308361b"
+                      "uuid": "312301b6-f999-4fb7-9b1e-6fb170747e0c",
+                      "url": "http://example.org/payments/deposits/312301b6-f999-4fb7-9b1e-6fb170747e0c?signature=76033b5f1581d9868bbcea612eeea5b90cc0b940c1a80c45401e7978df47dad5"
                     }
                   }
                 },
@@ -208,6 +208,55 @@
         }
       }
     },
+    "/api/v1/payments/{uuid}/statuses/{event}": {
+      "patch": {
+        "summary": "Обновление статуса платежа с внешним процессингом",
+        "tags": [
+          "Платежи с внешним процессингом"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "event",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "on allowed event"
+          },
+          "422": {
+            "description": "on merchant requires image"
+          },
+          "400": {
+            "description": "on internal processing type"
+          },
+          "404": {
+            "description": "does not found with unauthorized payment access"
+          },
+          "401": {
+            "description": "unauthorized on invalid token"
+          }
+        }
+      }
+    },
     "/api/v1/payments/withdrawals": {
       "post": {
         "summary": "Создание вывода средств",
@@ -220,7 +269,7 @@
             }
           }
         ],
-        "description": "## Создание вывода средств\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр                   | Название                    | Тип    | Наличие     | Описание                                                                                       |\n|----------------------------|-----------------------------|--------|-------------|------------------------------------------------------------------------------------------------|\n| `national_currency`        | Национальная валюта         | String | Обязательно | Укажите валюту, в которой клиент хочет получить деньги                                         |\n| `national_currency_amount` | Сумма                       | Number | Обязательно | Укажите сумму платежа                                                                          |\n| `external_order_id`        | Внешний ID заявки           | String | Опционально | Укажите ID платежа или заявки в Вашей системе, чтобы можно было по нему отследить платёж у нас |\n| `redirect_url`             | Ссылка на возврат в магазин | String | Обязательно | Укажите ссылку, по которой клиент вернётся в магазин в конце оплаты                            |\n| `callback_url`             | Ссылка обратного вызова     | String | Обязательно | Укажите Вашу ссылку обратного вызова, для POST запросов об изменениях статуса                  |\n\n<br>\n\n## Ссылка обратного вызова (callback_url)\n\nСервис создания вывода средств будет информировать Вас об изменениях статуса платежа с\nпомощью ссылки callback_url. По ней будет отправляться серия POST запросов (при\nкаждом изменении статуса) со следующей информацией.\n\n### В загаловках (headers):\n\n| Заголовок                              | Описание                                                               |\n|----------------------------------------|------------------------------------------------------------------------|\n| `Content-Type: application/json`       | Тело запроса содержит JSON объект                                      |\n| `Authorization: Bearer {Ваш API-ключ}` | Ваш API ключ, для удостоверения того что запрос пришёл с нашей стороны |\n\n<br>\n\n### В теле запроса в формате JSON:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>uuid</code></td>\n      <td>Идентификатор платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Универсальный уникальный идентификатор платежа</td>\n    </tr>\n    <tr>\n      <td><code>extenal_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>ID платежа в Вашей системе</td>\n    </tr>\n    <tr>\n      <td><code>payment_status</code></td>\n      <td>Статус платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>\n        Статус платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>draft</strong> — Ввод данных карты</li>\n          <li><strong>processer_search</strong> — Поиск оператора</li>\n          <li><strong>transferring</strong> — Перевод денег</li>\n          <li><strong>confirming</strong> — Подтверждение перевода</li>\n          <li><strong>completed</strong> — Успешно завершён</li>\n          <li><strong>cancelled</strong> — Отменён</li>\n        </ul>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Пример:\n\n```\n{\n  \"data\": {\n    \"id\": \"191\",\n    \"type\": \"Deposit\",\n    \"attributes\": {\n      \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n      \"external_order_id\": \"1234\",\n      \"payment_status\": \"confirming\"\n    }\n  }\n}\n```\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "description": "## Создание вывода средств\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр                   | Название                    | Тип    | Наличие     | Описание                                                                                       |\n|----------------------------|-----------------------------|--------|-------------|------------------------------------------------------------------------------------------------|\n| `national_currency`        | Национальная валюта         | String | Обязательно | Укажите валюту, в которой клиент хочет получить деньги                                         |\n| `national_currency_amount` | Сумма                       | Number | Обязательно | Укажите сумму платежа                                                                          |\n| `external_order_id`        | Внешний ID заявки           | String | Опционально | Укажите ID платежа или заявки в Вашей системе, чтобы можно было по нему отследить платёж у нас |\n| `redirect_url`             | Ссылка на возврат в магазин | String | Обязательно | Укажите ссылку, по которой клиент вернётся в магазин в конце оплаты                            |\n| `callback_url`             | Ссылка обратного вызова     | String | Обязательно | Укажите Вашу ссылку обратного вызова, для POST запросов об изменениях статуса                  |\n\n<br>\n\n## Ссылка обратного вызова (callback_url)\n\nСервис создания вывода средств будет информировать Вас об изменениях статуса платежа с\nпомощью ссылки callback_url. По ней будет отправляться серия POST запросов (при\nкаждом изменении статуса) со следующей информацией.\n\n### В заголовках (headers):\n\n| Заголовок                              | Описание                                                               |\n|----------------------------------------|------------------------------------------------------------------------|\n| `Content-Type: application/json`       | Тело запроса содержит JSON объект                                      |\n| `Authorization: Bearer {Ваш API-ключ}` | Ваш API ключ, для удостоверения того что запрос пришёл с нашей стороны |\n\n<br>\n\n### В теле запроса в формате JSON:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>uuid</code></td>\n      <td>Идентификатор платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Универсальный уникальный идентификатор платежа</td>\n    </tr>\n    <tr>\n      <td><code>extenal_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>ID платежа в Вашей системе</td>\n    </tr>\n    <tr>\n      <td><code>payment_status</code></td>\n      <td>Статус платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>\n        Статус платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>draft</strong> — Ввод данных карты</li>\n          <li><strong>processer_search</strong> — Поиск оператора</li>\n          <li><strong>transferring</strong> — Перевод денег</li>\n          <li><strong>confirming</strong> — Подтверждение перевода</li>\n          <li><strong>completed</strong> — Успешно завершён</li>\n          <li><strong>cancelled</strong> — Отменён</li>\n        </ul>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Пример приходящего по callback_url запроса:\n\n```\n{\n  \"data\": {\n    \"id\": \"191\",\n    \"type\": \"Deposit\",\n    \"attributes\": {\n      \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n      \"external_order_id\": \"1234\",\n      \"payment_status\": \"confirming\"\n    }\n  }\n}\n```\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
 
         ],
@@ -231,11 +280,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "2d4bfd31-5923-4c9d-8f1e-20b4eb1cda0f",
+                    "id": "21ee0933-206f-4aee-8621-c863f85c1546",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "2d4bfd31-5923-4c9d-8f1e-20b4eb1cda0f",
-                      "url": "http://example.org/payments/withdrawals/2d4bfd31-5923-4c9d-8f1e-20b4eb1cda0f?signature=490369a100e7b8d2e712f6867263ce6374e6bde958b8362835eb7439ef70df9e"
+                      "uuid": "21ee0933-206f-4aee-8621-c863f85c1546",
+                      "url": "http://example.org/payments/withdrawals/21ee0933-206f-4aee-8621-c863f85c1546?signature=9d8d29d18f740476b861730bb3d1131bed99378a86ff44c296e5706d7e938b8e"
                     }
                   }
                 },
@@ -311,10 +360,10 @@
             }
           },
           "404": {
-            "description": "payment not found"
+            "description": "does not found with unauthorized payment access"
           },
           "401": {
-            "description": "unauthorized"
+            "description": "unauthorized on invalid token"
           }
         }
       }
@@ -390,7 +439,7 @@
           }
         }
       },
-      "external_processing_payments_create_response_body_schema": {
+      "external_processing_deposits_create_response_body_schema": {
         "type": "object",
         "properties": {
           "data": {
@@ -408,13 +457,52 @@
                   "uuid": {
                     "type": "string"
                   },
-                  "url": {
+                  "card_number": {
+                    "type": "string"
+                  },
+                  "expiration_time": {
                     "type": "string"
                   }
                 },
                 "required": [
                   "uuid",
-                  "url"
+                  "card_number",
+                  "expiration_time"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "external_processing_withdrawals_create_response_body_schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "uuid"
                 ]
               }
             },
@@ -510,7 +598,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "5c7fbb2d-bcab-4576-b301-05d0f44fb1b6"
+                    "example": "e1c12289-ff62-4f2c-87b6-6d53e97cd0a3"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -518,7 +606,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-02-16T22:25:10.250+03:00"
+                    "example": "2023-02-23T11:41:26.707+03:00"
                   },
                   "national_currency": {
                     "type": "string",

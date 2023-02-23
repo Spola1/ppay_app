@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-shared_examples 'create_external_processing_payment' do |type:|
+shared_examples 'create_external_processing_payment' do |type: :deposit|
   response '201', 'успешное создание' do
-    schema '$ref': '#/components/schemas/payments_create_response_body_schema'
+    schema '$ref': "#/components/schemas/external_processing_#{type}s_create_response_body_schema"
 
     include_context 'generate_examples'
 
     context 'validates schema' do
       run_test!
     end
-
 
     it 'creates a payment for the merchant' do |example|
       expect { submit_request(example.metadata) }.to change {
@@ -23,7 +22,6 @@ shared_examples 'create_external_processing_payment' do |type:|
       expect(merchant.public_send(payment_type.to_s.underscore.pluralize).last)
         .to be_external
     end
-
   end
 
   response '422', 'invalid' do

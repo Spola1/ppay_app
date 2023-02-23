@@ -7,8 +7,12 @@ module Api
         class WithdrawalsController < BaseController
           private
 
+          def search_params
+            permitted_params.slice(:payment_system, :card_number)
+          end
+
           def permitted_params
-            params.permit(
+            params.require(:withdrawal).permit(
               :payment_system, :card_number, :national_currency_amount, :national_currency,
               :external_order_id, :redirect_url, :callback_url
             )
