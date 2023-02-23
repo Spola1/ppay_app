@@ -15,6 +15,10 @@ FactoryBot.define do
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
 
+    trait :created do
+      payment_status { 'created' }
+    end
+
     trait :confirming do
       payment_status { 'confirming' }
     end
