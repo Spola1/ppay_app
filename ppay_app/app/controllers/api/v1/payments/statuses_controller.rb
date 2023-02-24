@@ -7,35 +7,24 @@ module Api
         def update
           raise ActionController::BadRequest unless payment.external?
 
-          render_errors unless payment.public_send("#{allowed_event}!")
+          render_object_errors(payment) unless payment.public_send("#{allowed_event}!")
         end
 
         private
 
-        def allowed_events
-          case payment.type
-          when 'Deposit'
-            %i[check cancel]
-          when 'Withdrawal'
-            %i[confirm]
-          end
+        def deposit_allowed_events
+          %i[check cancel]
+        end
+
+        def withdrawal_allowed_events
+          %i[confirm]
         end
 
         def allowed_event
-          raise(ActionController::BadRequest) unless params[:event].to_sym.in?(allowed_events)
+          raise(ActionController::BadRequest) unless
+            params[:event].to_sym.in?(send("#{payment.type.underscore}_allowed_events"))
 
           params[:event]
-        end
-
-        def render_errors
-          errors = payment.errors.map do |error_object|
-            ::JsonApi::Error.new(
-              code: 422, title: error_object.attribute,
-              detail: Array(error_object.message).join(', ')
-            ).to_hash
-          end
-
-          render json: { errors: }, status: :unprocessable_entity
         end
       end
     end
