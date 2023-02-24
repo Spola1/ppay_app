@@ -4,6 +4,7 @@ require 'swagger_helper'
 
 describe 'External processing withdrawals' do
   include_context 'authorization'
+  let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:adv) { create :advertisement, :withdrawal, payment_system: 'Tinkoff' }
@@ -34,7 +35,6 @@ describe 'External processing withdrawals' do
           card_number:,
           national_currency_amount: 3000.0,
           external_order_id: '1234',
-          redirect_url: FFaker::Internet.http_url,
           callback_url: FFaker::Internet.http_url
         }
       end

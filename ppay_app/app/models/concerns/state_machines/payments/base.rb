@@ -8,9 +8,7 @@ module StateMachines
       private
 
       def assign_params(params, keys)
-        return false if params.nil?
-
-        assign_attributes(params.slice(*keys))
+        assign_attributes(params.slice(*keys)) if params.is_a?(Hash)
         valid?
       end
 

@@ -51,7 +51,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def card_number
-    advertisement.card_number
+    type == 'Deposit' ? advertisement.card_number : super
+  end
+
+  def formatted_card_number
+    card_number.gsub(/(.{4})/, '\1 ')
   end
 
   private

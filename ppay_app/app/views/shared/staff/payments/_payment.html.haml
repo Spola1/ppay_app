@@ -127,7 +127,7 @@
                 - if payment.type == 'Deposit'
                   = "номер карты не нужен"
                 - else
-                  = "#{payment.card_number}"
+                  = "#{payment.formatted_card_number}"
 
 
             %tr.item-card-tr
