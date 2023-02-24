@@ -44,8 +44,8 @@ class Payment < ApplicationRecord
 
   validates_presence_of :payment_system, if: :external?
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
-  validates_presence_of :national_currency, :national_currency_amount,
-                        :redirect_url, :callback_url
+  validates_presence_of :national_currency, :national_currency_amount, :callback_url
+  validates_presence_of :redirect_url, if: :internal?
 
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
