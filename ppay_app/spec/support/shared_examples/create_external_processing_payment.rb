@@ -49,7 +49,7 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
       let(:expected_errors) do
         [
           {
-            title: 'check_required_error',
+            title: 'check_required',
             detail: I18n.t('errors.check_required_with_external_processing'),
             code: 422
           }.stringify_keys
