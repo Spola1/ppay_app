@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'External processing withdrawals' do
+describe 'External processing withdrawals', document: false do
   include_context 'authorization'
   let(:check_required) { false }
 

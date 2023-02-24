@@ -6,140 +6,6 @@
     "version": "v1"
   },
   "paths": {
-    "/api/v1/external_processing/payments/deposits": {
-      "post": {
-        "summary": "Создание депозита с внешним процессингом",
-        "tags": [
-          "Платежи с внешним процессингом"
-        ],
-        "security": [
-          {
-            "bearerAuth": {
-            }
-          }
-        ],
-        "parameters": [
-
-        ],
-        "responses": {
-          "201": {
-            "description": "успешное создание",
-            "content": {
-              "application/json": {
-                "example": {
-                  "data": {
-                    "id": "5054ec33-2ee6-4f50-beaf-3cf4686e4446",
-                    "type": "Deposit",
-                    "attributes": {
-                      "uuid": "5054ec33-2ee6-4f50-beaf-3cf4686e4446",
-                      "card_number": "1111111111111111",
-                      "expiration_time": "2023-02-24T11:07:07.032+03:00"
-                    }
-                  }
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/external_processing_deposits_create_response_body_schema"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "invalid",
-            "content": {
-              "application/json": {
-                "example": {
-                  "errors": [
-                    {
-                      "title": "payment_system",
-                      "detail": "не выбрана",
-                      "code": 422
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "unauthorized"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/external_processing_deposits_create_parameter_body_schema"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/external_processing/payments/withdrawals": {
-      "post": {
-        "summary": "Создание вывода средств с внешним процессингом",
-        "tags": [
-          "Платежи с внешним процессингом"
-        ],
-        "security": [
-          {
-            "bearerAuth": {
-            }
-          }
-        ],
-        "parameters": [
-
-        ],
-        "responses": {
-          "201": {
-            "description": "успешное создание",
-            "content": {
-              "application/json": {
-                "example": {
-                  "data": {
-                    "id": "171478a9-3f58-4149-949b-2e3508ee7495",
-                    "type": "Withdrawal",
-                    "attributes": {
-                      "uuid": "171478a9-3f58-4149-949b-2e3508ee7495"
-                    }
-                  }
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/external_processing_withdrawals_create_response_body_schema"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "invalid",
-            "content": {
-              "application/json": {
-                "example": {
-                  "errors": [
-                    {
-                      "title": "card_number",
-                      "detail": "не указан",
-                      "code": 422
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "unauthorized"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/external_processing_withdrawals_create_parameter_body_schema"
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/payments/deposits": {
       "post": {
         "summary": "Создание депозита",
@@ -163,11 +29,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "6321eb0e-ee0e-4b4d-b9a1-5c142a21d3f8",
+                    "id": "08c22436-7515-4d2f-8ac4-48a377d4b633",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "6321eb0e-ee0e-4b4d-b9a1-5c142a21d3f8",
-                      "url": "http://example.org/payments/deposits/6321eb0e-ee0e-4b4d-b9a1-5c142a21d3f8?signature=86d65b0b781d4c5e60e7bebec1fb98e38e217f313051fadfd1bf84058f6d2222"
+                      "uuid": "08c22436-7515-4d2f-8ac4-48a377d4b633",
+                      "url": "http://example.org/payments/deposits/08c22436-7515-4d2f-8ac4-48a377d4b633?signature=cfcec3351c0f19be8542dbb963a084e25152cb80017f574504771569d80c4a36"
                     }
                   }
                 },
@@ -208,55 +74,6 @@
         }
       }
     },
-    "/api/v1/payments/{uuid}/statuses/{event}": {
-      "patch": {
-        "summary": "Обновление статуса платежа с внешним процессингом",
-        "tags": [
-          "Платежи с внешним процессингом"
-        ],
-        "security": [
-          {
-            "bearerAuth": {
-            }
-          }
-        ],
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "event",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "on allowed event"
-          },
-          "422": {
-            "description": "on merchant requires image"
-          },
-          "400": {
-            "description": "on internal processing type"
-          },
-          "404": {
-            "description": "does not found with unauthorized payment access"
-          },
-          "401": {
-            "description": "unauthorized on invalid token"
-          }
-        }
-      }
-    },
     "/api/v1/payments/withdrawals": {
       "post": {
         "summary": "Создание вывода средств",
@@ -280,11 +97,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "94da9773-1024-4e80-afc2-3652fa87bf77",
+                    "id": "aabe3b23-3287-4a71-92f8-73298612a32a",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "94da9773-1024-4e80-afc2-3652fa87bf77",
-                      "url": "http://example.org/payments/withdrawals/94da9773-1024-4e80-afc2-3652fa87bf77?signature=95b321ee9ca330dd65f6f4ff60392f03e69af9a9011f0c198d26e98b50367771"
+                      "uuid": "aabe3b23-3287-4a71-92f8-73298612a32a",
+                      "url": "http://example.org/payments/withdrawals/aabe3b23-3287-4a71-92f8-73298612a32a?signature=9b176b2ed313b39daabec297fbee49da7ac9934fe167c0dd83a00176ec1540a3"
                     }
                   }
                 },
@@ -590,7 +407,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "c6b025f5-d938-4274-ba72-ae057c5f58dd"
+                    "example": "cffe02c3-bc05-4406-bafc-92424219e533"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -598,7 +415,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-02-24T10:47:05.281+03:00"
+                    "example": "2023-02-24T13:19:32.444+03:00"
                   },
                   "national_currency": {
                     "type": "string",
