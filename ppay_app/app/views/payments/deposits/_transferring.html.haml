@@ -50,7 +50,7 @@
     = render 'payments/errors', payment: payment
 
 
-    = f.file_field :image, id: "image"
+    = f.file_field :image, id: "image", class: 'filepond', direct_upload: true
 
   - if payment.merchant.check_required?
     .text-instruction
