@@ -66,12 +66,11 @@ module Binance
         # QIWI
         # ABank
         # HomeCreditBank
-        form_data_hash[:payTypes] = p_method
       else
-        p_method = ''
         puts "любой или неизвестный платежный метод (#{advs_params[:pay_types]})"
       end
 
+      form_data_hash[:pay_types] = p_method if p_method.present?
       # puts "== form_data_hash.to_json: =="
       # puts form_data_hash.to_json
       uri = URI('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search')
