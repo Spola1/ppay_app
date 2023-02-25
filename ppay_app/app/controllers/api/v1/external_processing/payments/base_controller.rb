@@ -14,7 +14,7 @@ module Api
             return render_check_required_error if current_bearer.check_required?
 
             @object = current_bearer.becomes(Merchant).public_send(model_class_plural.to_s)
-                        .new(permitted_params.merge(processing_type: :external))
+                                    .new(permitted_params.merge(processing_type: :external))
 
             if @object.save
               @object.inline_search!(search_params)
@@ -33,11 +33,11 @@ module Api
 
           def render_check_required_error
             render json: {
-                     errors: [::JsonApi::Error.new(
-                                code: 422, title: 'check_required',
-                                detail: I18n.t('errors.check_required_with_external_processing')
-                              ).to_hash]
-                   }, status: :unprocessable_entity
+              errors: [::JsonApi::Error.new(
+                code: 422, title: 'check_required',
+                detail: I18n.t('errors.check_required_with_external_processing')
+              ).to_hash]
+            }, status: :unprocessable_entity
           end
         end
       end

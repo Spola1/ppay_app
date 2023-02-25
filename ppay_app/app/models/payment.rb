@@ -152,7 +152,7 @@ class Payment < ApplicationRecord
   end
 
   def set_default_unique_amount
-    self.unique_amount = self.merchant.unique_amount
+    self.unique_amount = merchant.unique_amount
   end
 
   def set_initial_amount

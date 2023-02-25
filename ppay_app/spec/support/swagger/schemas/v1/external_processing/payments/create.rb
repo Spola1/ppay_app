@@ -64,7 +64,7 @@ module Swagger
                         }
                       },
                       required: %w[id type attributes]
-                    },
+                    }
                   },
                   required: %w[data]
                 },
@@ -85,7 +85,7 @@ module Swagger
                         }
                       },
                       required: %w[id type attributes]
-                    },
+                    }
                   },
                   required: %w[data]
                 }

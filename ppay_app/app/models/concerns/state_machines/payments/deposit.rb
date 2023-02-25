@@ -48,7 +48,7 @@ module StateMachines
             after :create_transactions
             ensure :search_processer
 
-            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+            transitions from: :processer_search, to: :transferring, guard: :advertisement?
           end
 
           # make_deposit

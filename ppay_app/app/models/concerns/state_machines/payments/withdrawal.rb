@@ -49,7 +49,7 @@ module StateMachines
             ensure :search_processer
 
             transitions from: :processer_search, to: :transferring, before: :ensure_unique_amount,
-                                                                    guard: :has_advertisement?
+                        guard: :advertisement?
           end
 
           # make_deposit

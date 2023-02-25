@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module PaymentsHelper
-
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
 

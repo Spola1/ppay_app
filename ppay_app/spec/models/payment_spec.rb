@@ -186,7 +186,7 @@ RSpec.describe Payment, type: :model do
 
     context 'when image is not present and merchant check is required' do
       let(:payment) { create(:payment, :deposit, :transferring) }
-      let(:params) { { } }
+      let(:params) { {} }
 
       it 'does not transition to confirming state' do
         payment.check(params)
@@ -197,7 +197,7 @@ RSpec.describe Payment, type: :model do
     context 'when image is not present and merchant check is not required' do
       let(:payment) { create(:payment, :deposit, :transferring, merchant:) }
       let(:merchant) { create(:merchant, check_required: false) }
-      let(:params) { { } }
+      let(:params) { {} }
 
       it 'transitions to confirming state' do
         payment.check(params)
@@ -206,18 +206,21 @@ RSpec.describe Payment, type: :model do
     end
   end
 
-  describe "#auditing" do
-    it "audits changes to the payment model" do
+  describe '#auditing' do
+    it 'audits changes to the payment model' do
       payment = create(:payment, :deposit)
-      payment.update(payment_status: "completed")
+      payment.update(payment_status: 'completed')
 
       expect(payment.audits.count).to eq(2)
-      expect(payment.audits.last.action).to eq("update")
-      expect(payment.audits.last.audited_changes).to include("payment_status" => ["created", "completed"])
+      expect(payment.audits.last.action).to eq('update')
+      expect(payment.audits.last.audited_changes).to include('payment_status' => %w[created completed])
     end
   end
 
-  describe "cancellation_reason" do
-    it { is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1, fraud_attempt: 2, incorrect_amount: 3)}
+  describe 'cancellation_reason' do
+    it {
+      is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1, fraud_attempt: 2,
+                                                                       incorrect_amount: 3)
+    }
   end
 end
