@@ -15,3 +15,6 @@ application.register("inputmask--card-number", Inputmask__CardNumberController)
 
 import NotificationsController from "controllers/notifications_controller"
 application.register("notifications", NotificationsController)
+
+import FilepondController from "controllers/filepond_controller"
+application.register("filepond", FilepondController)

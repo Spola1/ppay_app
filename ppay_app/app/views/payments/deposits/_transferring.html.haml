@@ -49,8 +49,7 @@
 
     = render 'payments/errors', payment: payment
 
-
-    = f.file_field :image, id: "image", class: 'filepond', direct_upload: true
+    = f.file_field :image, id: "image", class: 'filepond', direct_upload: true, data: { controller: 'filepond', action: 'filepond#connect' }
 
   - if payment.merchant.check_required?
     .text-instruction
