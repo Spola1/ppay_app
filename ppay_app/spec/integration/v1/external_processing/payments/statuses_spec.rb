@@ -6,7 +6,7 @@ describe 'External processing payments statuses', document: false do
   include_context 'authorization'
   let(:check_required) { false }
 
-  path '/api/v1/payments/{uuid}/statuses/{event}' do
+  path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do
     patch 'Обновление статуса платежа с внешним процессингом' do
       tags 'Платежи с внешним процессингом'
       security [bearerAuth: {}]
