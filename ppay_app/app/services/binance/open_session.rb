@@ -4,6 +4,8 @@ require 'net/http'
 
 module Binance
   class OpenSession
+    attr_reader :advs_params
+
     def initialize(advs_params)
       @advs_params = advs_params
       @otc_advs_data_hash = nil
@@ -26,8 +28,6 @@ module Binance
       #      "tradeType": "SELL",
       #      "transAmount":  "5000"
       #  }
-      advs_params = @advs_params
-
       form_data_hash = create_form_date_hash
 
       check_merchant(form_data_hash, advs_params)
@@ -110,6 +110,7 @@ module Binance
       Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         req = Net::HTTP::Post.new(uri)
         req.body = form_data_hash.to_json
+        puts req.body
         req.set_content_type('application/json')
         http.request(req)
       end
@@ -137,18 +138,17 @@ module Binance
       # p_method = ''
       case advs_params[:pay_types]
       when 'sberbank'
-        form_data_hash[:payTypes] = ['RosBankNew']
+        form_data_hash[:pay_types] = ['RosBankNew']
       when 'tinkoff'
-        form_data_hash[:payTypes] = ['TinkoffNew']
+        form_data_hash[:pay_types] = ['TinkoffNew']
       when 'RaiffeisenBank'
-        form_data_hash[:payTypes] = ['RaiffeisenBankNew']
+        form_data_hash[:pay_types] = ['RaiffeisenBankNew']
       when 'ABank'
         # p_method = ['ABankNew']
         # RaiffeisenBankRussia
         # QIWI
         # ABank
         # HomeCreditBank
-        form_data_hash[:payTypes] = ['ABankNew']
       else
         # p_method = ''
         puts "любой или неизвестный платежный метод (#{advs_params[:pay_types]})"

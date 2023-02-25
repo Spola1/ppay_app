@@ -28,6 +28,11 @@ ru:
         confirming: Подтверждение перевода
         completed: Успешно завершён
         cancelled: Отменён
+      payment/cancellation_reason:
+        by_client: Отменено клиентом
+        duplicate_payment: Задублированный платеж
+        fraud_attempt: Попытка мошенничества
+        incorrect_amount: Переведённая клиентом сумма не соответствует запрошенной
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена

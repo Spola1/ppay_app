@@ -2,9 +2,10 @@
 
 FactoryBot.define do
   factory :rate_snapshot do
-    direction { :buy }
+    direction { :sell }
+    national_currency { 'RUB' }
     cryptocurrency { 'USDT' }
     value { 61.29 }
-    exchange_portal { association(:exchange_portal) }
+    exchange_portal
   end
 end
