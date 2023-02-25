@@ -10,8 +10,8 @@ module RateSnapshots
       # делаем это через sleep 10
       # 5.times do
       Settings.national_currencies.each do |currency|
-        GetBinanceP2pRatesJob.perform_async('USDT', currency, 'sell', false, false, false, 1)
-        GetBinanceP2pRatesJob.perform_async('USDT', currency, 'buy', false, false, false, 1)
+        GetBinanceP2pRatesJob.perform_async('USDT', currency, 'sell', false, 'sberbank', false, 1)
+        GetBinanceP2pRatesJob.perform_async('USDT', currency, 'buy', false, 'sberbank', false, 1)
       end
       # sleep 10
       # end

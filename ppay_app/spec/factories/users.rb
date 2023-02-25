@@ -5,8 +5,8 @@ FactoryBot.define do
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
 
-    trait :merchant do
-      type { 'Merchant' }
+    trait :ppay do
+      type { 'Ppay' }
     end
   end
 end

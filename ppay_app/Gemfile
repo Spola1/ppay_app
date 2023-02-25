@@ -71,12 +71,15 @@ gem 'active_model_serializers', '~> 0.10.0'
 # decorators
 gem 'draper'
 
+gem 'jsonapi-serializer'
+
 gem 'credit_card_validations'
 gem 'font-awesome-rails'
 gem 'simple_form'
 
 gem 'data_migrate'
 gem 'after_commit_everywhere', '~> 1.0'
+gem "audited",  "~> 5.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -107,6 +110,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
+  gem 'webmock'
 end
 
 gem 'aasm'

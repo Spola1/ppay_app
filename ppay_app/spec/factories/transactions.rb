@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :transaction do
-    status { 'frozen' }
-    transaction_type { 'main' }
+    association :transactionable, factory: :payment, strategy: :create
   end
 end

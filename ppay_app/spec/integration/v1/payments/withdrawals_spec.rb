@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'Платежи' do
+describe 'Withdrawals' do
   include_context 'authorization'
 
   let!(:rate_snapshot) { create(:rate_snapshot) }

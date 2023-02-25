@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe UserDecorator do
-  let(:user) { create :user, :merchant, name:, nickname: }
+  let(:user) { create :merchant, name:, nickname: }
   let(:name) { 'Artur' }
   let(:nickname) { 'JustKing' }
 

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PaymentDecorator do
-  let(:payment) { create(:payment, status_changed_at:, type:) }
+  let(:payment) { create(:payment, :processer_search, status_changed_at:, type:) }
   let(:time_now) { Time.now }
   let(:status_changed_at) { time_now - 10.minutes }
   let(:type) { 'Withdrawal' }
