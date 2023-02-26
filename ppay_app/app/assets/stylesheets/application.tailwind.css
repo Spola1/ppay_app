@@ -474,7 +474,7 @@
   }
 
   .svg-button {
-    @apply bg-[url('/copy.svg')] w-6 h-6 inline px-4 py-2 rounded-md font-bold ;
+    @apply w-6 h-6 mt-1;
   }
 }
 

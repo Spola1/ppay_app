@@ -1,4 +1,4 @@
-- unless payment.unique_amount_none?
+- unless payment.initial_amount == payment.national_currency_amount
   #change-sum.modal.show{ 'data-controller': 'modal' }
     %div
       .modal_amount{ 'data-controller': 'clipboard' }
@@ -8,8 +8,8 @@
           %div.pr-3
             #{payment.national_currency}
           .copy-button
-            = button_tag fa_icon('copy'), data: { action: "click->clipboard#copy" }
-            -# = button_tag "с", class: 'svg-button', data: { action: "click->clipboard#copy" }   
+            = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+              = image_tag 'copy'
       .modal_content
         .modal_title
           Скопируйте точную сумму депозита 
