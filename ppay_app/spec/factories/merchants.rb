@@ -1,10 +1,11 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :merchant do
     type { 'Merchant' }
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
+    nickname { 'AvangardBet' }
+    name { 'Петр Петрович' }
+    check_required { true }
 
     after(:create) do |merchant|
       merchant.balance.deposit(1000)

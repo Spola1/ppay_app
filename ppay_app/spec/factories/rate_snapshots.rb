@@ -5,7 +5,7 @@ FactoryBot.define do
     direction { :sell }
     national_currency { 'RUB' }
     cryptocurrency { 'USDT' }
-    value { 0.6129e2 }
+    value { 61.29 }
     exchange_portal
   end
 end

@@ -37,7 +37,7 @@ module StateMachines
             before :bind_rate_snapshot
             after_commit :inline_search_processer
 
-            transitions from: :draft, to: :processer_search,
+            transitions from: :created, to: :processer_search,
                         guard: proc { |params| available_processer_search?(params) },
                         after: :set_cryptocurrency_amount
           end
@@ -49,7 +49,7 @@ module StateMachines
             ensure :search_processer
 
             transitions from: :processer_search, to: :transferring, before: :ensure_unique_amount,
-                                                                    guard: :has_advertisement?
+                        guard: :advertisement?
           end
 
           # make_deposit

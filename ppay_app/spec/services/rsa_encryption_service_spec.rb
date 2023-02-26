@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RsaEncryptionService, type: :service do
-  let(:data) { 'test rsa' }
-
+shared_context 'public_encrypt' do
   xdescribe '#public_encrypt' do
     subject { described_class.new(data, Settings.rsa.public_key).public_encrypt }
 
@@ -14,7 +12,9 @@ RSpec.describe RsaEncryptionService, type: :service do
       expect(decrypted_subject).to eq(data)
     end
   end
+end
 
+shared_context 'public_decrypt' do
   xdescribe '#public_decrypt' do
     subject { described_class.new(encrypted_data, Settings.rsa.public_key).public_decrypt }
 
@@ -24,7 +24,9 @@ RSpec.describe RsaEncryptionService, type: :service do
       is_expected.to eq(data)
     end
   end
+end
 
+shared_context 'encrypt' do
   xdescribe '#encrypt' do
     subject { described_class.new(data, Settings.rsa.private_key).encrypt }
 
@@ -34,7 +36,9 @@ RSpec.describe RsaEncryptionService, type: :service do
       expect(decrypted_subject).to eq(data)
     end
   end
+end
 
+shared_context 'decrypt' do
   xdescribe '#decrypt' do
     subject { described_class.new(encrypted_data, Settings.rsa.private_key).decrypt }
 
@@ -44,4 +48,16 @@ RSpec.describe RsaEncryptionService, type: :service do
       is_expected.to eq(data)
     end
   end
+end
+
+RSpec.describe RsaEncryptionService, type: :service do
+  let(:data) { 'test rsa' }
+
+  include_context 'public_encrypt'
+
+  include_context 'public_decrypt'
+
+  include_context 'encrypt'
+
+  include_context 'decrypt'
 end

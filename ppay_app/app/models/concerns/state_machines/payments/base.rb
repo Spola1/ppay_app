@@ -8,7 +8,7 @@ module StateMachines
       private
 
       def assign_params(params, keys)
-        assign_attributes(params.slice(*keys))
+        assign_attributes(params.slice(*keys)) if params
         valid?
       end
 
@@ -51,17 +51,18 @@ module StateMachines
         self.cancellation_reason = 0
       end
 
-      def has_advertisement?
+      def advertisement?
         advertisement.present?
       end
 
       def valid_image?(params)
+        return true unless merchant.check_required
+
         assign_params(params, %i[image])
         validate_image
       end
 
       def validate_image
-        return true unless merchant.check_required
         return true if image.present?
 
         errors.add(:image, :blank)
@@ -74,7 +75,7 @@ module StateMachines
         recent_payments = advertisement.payments.active.excluding(self)
         amounts = recent_payments.pluck(:national_currency_amount)
 
-        while amounts.include?(national_currency_amount) do
+        while amounts.include?(national_currency_amount)
           self.national_currency_amount += uniqueization_difference[unique_amount]
         end
       end

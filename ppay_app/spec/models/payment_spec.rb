@@ -11,6 +11,70 @@ RSpec.describe Payment, type: :model do
   it { is_expected.to belong_to(:rate_snapshot).optional(true) }
   it { is_expected.to belong_to(:advertisement).optional(true) }
 
+  context 'validation' do
+    let(:payment1) { create :payment }
+    let(:payment2) { create :payment, :cancelled }
+    let(:payment3) { create :payment, :with_transactions, payment_status: }
+
+    describe 'before_save' do
+      context 'auto take off arbitration' do
+        it 'Arbitration should be true if status is not cancelled or completed and not changed' do
+          expect(payment1.arbitration).to eq true
+        end
+
+        it 'Arbitration should be true if status is not cancelled or completed and changed' do
+          payment1.payment_status = :transferring
+          expect(payment1.arbitration).to eq true
+        end
+
+        it 'Arbitration should be true if status is completed or cancelled and not changed' do
+          expect(payment1.arbitration).to eq true
+        end
+
+        it 'Arbitration should be false if status is completed or cancelled and changed' do
+          payment2.payment_status = :completed
+          expect(payment2.arbitration).to eq false
+        end
+      end
+
+      context 'cancel transaction' do
+        let(:payment_status) { :cancelled }
+        it 'sets transactions to cancelled status' do
+          expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'cancelled')
+        end
+      end
+
+      context 'completed transaction' do
+        let(:payment_status) { :completed }
+        it 'sets transactions to cancelled status' do
+          expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'completed')
+        end
+      end
+    end
+
+    describe '#transactions_cannot_be_completed_or_cancelled' do
+      subject { payment.errors[:transactions] }
+
+      let(:payment) { create(:payment, :with_transactions) }
+
+      before { payment.update(payment_status: :draft) }
+
+      it { is_expected.to be_empty }
+
+      context 'completed transactions' do
+        let(:payment) { create(:payment, :with_completed_transactions) }
+
+        it { is_expected.to match_array(['already completed or cancelled']) }
+      end
+
+      context 'cancelled transactions' do
+        let(:payment) { create(:payment, :with_completed_transactions) }
+
+        it { is_expected.to match_array(['already completed or cancelled']) }
+      end
+    end
+  end
+
   describe ':bind event' do
     shared_examples 'changes payment status to transferring' do
       it do
@@ -122,7 +186,7 @@ RSpec.describe Payment, type: :model do
 
     context 'when image is not present and merchant check is required' do
       let(:payment) { create(:payment, :deposit, :transferring) }
-      let(:params) { { } }
+      let(:params) { {} }
 
       it 'does not transition to confirming state' do
         payment.check(params)
@@ -133,7 +197,7 @@ RSpec.describe Payment, type: :model do
     context 'when image is not present and merchant check is not required' do
       let(:payment) { create(:payment, :deposit, :transferring, merchant:) }
       let(:merchant) { create(:merchant, check_required: false) }
-      let(:params) { { } }
+      let(:params) { {} }
 
       it 'transitions to confirming state' do
         payment.check(params)
@@ -142,15 +206,21 @@ RSpec.describe Payment, type: :model do
     end
   end
 
-  describe "#auditing" do
-    it "audits changes to the payment model" do
+  describe '#auditing' do
+    it 'audits changes to the payment model' do
       payment = create(:payment, :deposit)
-      payment.update(payment_status: "completed")
+      payment.update(payment_status: 'completed')
 
       expect(payment.audits.count).to eq(2)
-      expect(payment.audits.last.action).to eq("update")
-      expect(payment.audits.last.audited_changes).to include("payment_status" => ["created", "completed"])
+      expect(payment.audits.last.action).to eq('update')
+      expect(payment.audits.last.audited_changes).to include('payment_status' => %w[created completed])
     end
   end
-end
 
+  describe 'cancellation_reason' do
+    it {
+      is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1, fraud_attempt: 2,
+                                                                       incorrect_amount: 3)
+    }
+  end
+end

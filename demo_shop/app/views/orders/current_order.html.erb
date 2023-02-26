@@ -1,0 +1,45 @@
+<div class="container">
+  <h1>Basket</h1>
+  <div class="row">
+    <% @order.line_items.each_with_index do |item, index| %>
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= item.product.name %></h5>   
+            <%= cl_image_tag item.product.photos.first.key, class:"img-fluid d-block", crop: :fill %>
+            <p class="card-price mt-2 text-center">Price: <%= item.product.price_cents * item.quantity %>₽</p>
+            <% if item.comment.length > 0 %>
+              <p class="card-price">Comment: <%= item.comment %></p>
+            <% end %>
+
+            <%= simple_form_for item, url: order_update_quantity_path(item), method: :post, html: { "data-controller": "auto-update" }  do |f| %>
+            <%= f.hidden_field :id %>
+            <%= f.simple_fields_for :line_items do |p| %>
+              <%= p.input :quantity, collection: 1..10,  selected: "#{item.quantity}", input_html:{style: 'display: none;', "data-target" => "auto-update.quantity"} %>
+            
+            <div class="row">
+              <div class="flex-it mb-2">
+                <i data-action="click->auto-update#decrement" class="fa-solid fa-minus decrement"></i>
+                <h4 data-auto-update-target="show"><%= item.quantity %></h4>
+                <i data-action="click->auto-update#increment" class="fa-solid fa-plus increment"></i>
+              </div>
+                          
+              <%=link_to product_line_item_path(item.product, item), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-outline-warning bottom-1 end-1 " do %>
+                <i class="fa-solid fa-trash pt-2"></i>
+              <% end %>             
+            </div>
+
+            <% end %>
+            <%= f.submit "Update quantity", "data-action": "auto-update#submit", style: "display:none;" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%= form_with url: orders_path do %>
+    <%= hidden_field_tag 'order_id', @order.id %>
+    <%= submit_tag 'Create order', class: 'btn btn-primary mt-3' %>
+    <%= link_to 'Back to shop', products_path, class: 'btn btn-primary mt-3' %>
+    <% end %>
+  </div>
+</div>

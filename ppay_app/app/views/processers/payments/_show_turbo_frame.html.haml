@@ -1,2 +1,6 @@
 = turbo_frame_tag "processers_payment_#{payment.uuid}" do
-  = render 'shared/staff/payments/payment', payment: payment.decorate, signature:, role_namespace:
+  = render 'shared/staff/payments/payment',
+    payment: payment.decorate,
+    signature:,
+    role_namespace:,
+    can_manage_payment?: local_assigns[:can_manage_payment?] || can_manage_payment?
