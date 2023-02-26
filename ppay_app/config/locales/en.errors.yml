@@ -1,0 +1,3 @@
+en:
+  errors:
+    check_required_with_external_processing: You need to switch off check required option to create external processing payments.

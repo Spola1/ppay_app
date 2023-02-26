@@ -54,11 +54,11 @@ module Binance
 
         # puts ".can_change?(adv): #{self.can_change?(adv)}"
         # puts "results.size: #{results.size}"
-        if ((fiat_amount == false) || can_change?(adv)) && results.size < 4
-          results << adv_arr_item
-        else
-          # puts "-1-1-1-"
-        end
+        next unless ((fiat_amount == false) || can_change?(adv)) && results.size < 4
+
+        results << adv_arr_item
+        # else
+        # puts "-1-1-1-"
       end
       # puts "\n\n--- выбранные 2 объявления на Binance P2P: ---\n\n"
       # puts "results size: #{results.size}"

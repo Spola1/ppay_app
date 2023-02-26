@@ -4,39 +4,24 @@ require 'net/http'
 
 module Payments
   class UpdateCallbackService < ApplicationService
-    attr_reader :payment
+    attr_reader :callback_url, :uuid, :external_order_id, :payment_status, :token
 
     def initialize(payment)
-      @payment = payment
+      @callback_url = payment.callback_url
+      @uuid = payment.uuid
+      @external_order_id = payment.external_order_id
+      @payment_status = payment.payment_status
+      @token = payment.merchant.token
     end
 
     def call
-      Net::HTTP.post(uri, request, headers)
-    end
-
-    private
-
-    def uri
-      URI(payment.callback_url)
-    end
-
-    def request
-      serializer.new(payment).serializable_hash.to_json
-    end
-
-    def serializer
-      "Api::V1::Payments::UpdateCallback::#{payment.type}Serializer".constantize
-    end
-
-    def headers
-      {
-        'Content-Type':  'application/json',
-        'Authorization': "Bearer #{token}"
+      uri = URI(callback_url)
+      body = { uuid:, external_order_id:, payment_status: }.compact
+      headers = {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer #{token}"
       }
-    end
-
-    def token
-      payment.merchant.token
+      Net::HTTP.post(uri, body.to_json, headers)
     end
   end
 end

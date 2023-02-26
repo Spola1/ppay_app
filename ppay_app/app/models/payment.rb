@@ -19,7 +19,13 @@ class Payment < ApplicationRecord
   scope :filter_by_cryptocurrency_amount_from, ->(cryptocurrency_amount) { where 'cryptocurrency_amount_from > ?',  cryptocurrency_amount }
   scope :filter_by_cryptocurrency_amount_to, ->(cryptocurrency_amount) { where 'cryptocurrency_amount_to < ?', cryptocurrency_amount }
 
-  enum :cancellation_reason, { by_client: 0 }
+  enum cancellation_reason: {
+    by_client: 0,
+    duplicate_payment: 1,
+    fraud_attempt: 2,
+    incorrect_amount: 3
+  }
+  enum :processing_type, { internal: 0, external: 1 }
 
   has_many :transactions, as: :transactionable
 
@@ -44,12 +50,18 @@ class Payment < ApplicationRecord
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
   before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
+  before_save :complete_transactions, if: -> { payment_status.in?(%w[completed]) && payment_status_changed? }
+  before_save :cancel_transactions, if: -> { payment_status.in?(%w[cancelled]) && payment_status_changed? }
 
-  validates_presence_of :national_currency, :national_currency_amount,
-                        :redirect_url, :callback_url
-  
+  validates_presence_of :payment_system, if: :external?
+  validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
+  validates_presence_of :national_currency, :national_currency_amount, :callback_url
+  validates_presence_of :redirect_url, if: :internal?
+
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
+
+  validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
 
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
@@ -64,7 +76,7 @@ class Payment < ApplicationRecord
     end
   }
 
-  after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) }
+  after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
@@ -118,7 +130,7 @@ class Payment < ApplicationRecord
     broadcast_replace_later_to(
       "processers_payment_#{uuid}",
       partial: 'processers/payments/show_turbo_frame',
-      locals: { payment: decorate, signature: nil, role_namespace: 'processers' },
+      locals: { payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
       target: "processers_payment_#{uuid}"
     )
   end
@@ -145,16 +157,22 @@ class Payment < ApplicationRecord
     broadcast_replace_later_to(
       "supports_payment_#{uuid}",
       partial: 'supports/payments/show_turbo_frame',
-      locals: { payment: decorate, signature: nil, role_namespace: 'supports' },
+      locals: { payment: decorate, signature: nil, role_namespace: 'supports', can_manage_payment?: true },
       target: "supports_payment_#{uuid}"
     )
   end
 
   def set_default_unique_amount
-    self.unique_amount = self.merchant.unique_amount
+    self.unique_amount = merchant.unique_amount
   end
 
   def set_initial_amount
     self.initial_amount = national_currency_amount
+  end
+
+  def transactions_cannot_be_completed_or_cancelled
+    return if transactions.pluck(:status).all?('frozen')
+
+    errors.add(:transactions, 'already completed or cancelled')
   end
 end

@@ -4,7 +4,7 @@ module Payments
   module SearchProcesser
     class Base
       include Sidekiq::Job
-      sidekiq_options queue: 'critical', tags: ['search_processer']
+      sidekiq_options queue: 'high', tags: ['search_processer']
 
       def perform(payment_id)
         payment = Payment.find(payment_id)

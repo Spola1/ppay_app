@@ -20,6 +20,7 @@ class PaymentDecorator < ApplicationDecorator
   def countdown_end_time
     status_changed_at + 20.minutes
   end
+  alias expiration_time countdown_end_time
 
   def human_payment_status
     return unless payment_status
@@ -49,10 +50,18 @@ class PaymentDecorator < ApplicationDecorator
     formatted_date(status_changed_at)
   end
 
+  def card_number
+    type == 'Deposit' ? advertisement.card_number : super
+  end
+
+  def formatted_card_number
+    card_number.gsub(/(.{4})/, '\1 ')
+  end
+
   private
 
   def fiat_amount
-    '%.2f' % national_currency_amount
+    format('%.2f', national_currency_amount)
   end
 
   def countdown_difference
