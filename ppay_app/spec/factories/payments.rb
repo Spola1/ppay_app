@@ -1,9 +1,10 @@
 # frozen_string_literal: true
-
 require 'securerandom'
 
 FactoryBot.define do
   factory :payment, class: Payment do
+    initialize_with { type.present? ? type.constantize.new : Payment.new }
+
     merchant
 
     external_order_id { '1234' }
@@ -15,6 +16,7 @@ FactoryBot.define do
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
     uuid { SecureRandom.uuid }
+    type { nil }
 
     trait :confirming do
       payment_status { 'confirming' }
