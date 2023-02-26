@@ -476,6 +476,14 @@
   .svg-button {
     @apply w-6 h-6 mt-1;
   }
+
+  .items-list-td.direction-deposit, .items-list-td.advertisement-status-true {
+    @apply text-green-500;
+  }
+
+  .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
+    @apply text-red-500;
+  }
 }
 
 
