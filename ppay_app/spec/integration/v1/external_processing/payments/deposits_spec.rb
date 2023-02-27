@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'External processing deposits', document: false do
+describe 'External processing deposits' do
   include_context 'authorization'
   let(:check_required) { false }
 
@@ -17,7 +17,7 @@ describe 'External processing deposits', document: false do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      # description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments/deposits.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/deposits.md'))
 
       let(:payment_type) { Deposit }
 

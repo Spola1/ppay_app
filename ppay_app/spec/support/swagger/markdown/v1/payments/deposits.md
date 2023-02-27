@@ -79,7 +79,7 @@
 ```
 {
   "data": {
-    "id": "191",
+    "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
     "type": "Deposit",
     "attributes": {
       "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",

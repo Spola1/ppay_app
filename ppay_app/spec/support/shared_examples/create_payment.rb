@@ -72,7 +72,7 @@ shared_context 'successful_creation_response' do
 
     it 'создаст платеж мерчанту' do |example|
       expect { submit_request(example.metadata) }.to change {
-        user.reload.public_send(payment_type.to_s.underscore.pluralize).count
+        merchant.reload.public_send(payment_type.to_s.underscore.pluralize).count
       }.from(0).to(1)
 
       assert_response_matches_metadata(example.metadata)
