@@ -8,7 +8,7 @@
     .card-wrap
       .item-card
         %h1.mb-4.text-xl Все платежи
-        = render 'table', payments: @payments
+        = render 'table', payments: @filtered_payments
 
         .card-wrap
           = render 'shared/pagination', pagy: @pagy

@@ -5,10 +5,10 @@ module Supports
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(Payment.filter(filtering_params).includes(:merchant))
+      @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
       @payments = @payments.decorate
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.includes(:merchant),
+      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.filter_by(filtering_params).includes(:merchant),
                                                                page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end

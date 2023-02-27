@@ -41,8 +41,7 @@ module PaymentsHelper
       [cancellation_reason_translation(reason), reason]
     end
   end
-  
-  # end
+
   def number_color(number)
     return if number.blank? || number.zero?
 
