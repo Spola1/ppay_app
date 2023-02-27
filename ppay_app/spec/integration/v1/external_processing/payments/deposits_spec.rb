@@ -27,12 +27,14 @@ describe 'External processing deposits', document: false do
 
       let(:payment_system) { 'Tinkoff' }
       let(:national_currency) { 'RUB' }
+      let(:national_currency_amount) { 100 }
       let(:params) do
         {
           payment_system:,
           national_currency:,
           national_currency_amount: 3000.0,
           external_order_id: '1234',
+          national_currency_amount: '100.0',
           callback_url: FFaker::Internet.http_url
         }
       end
