@@ -4,8 +4,14 @@
     UID Check
 
 .proc-amount-block
-  .proc-amount-content
-    = "#{payment.national_currency_amount} #{payment.national_currency}"
+  .proc-amount-content1{ 'data-controller': 'clipboard' }
+    %div{ 'data-clipboard-target': 'source' }
+      #{payment.national_currency_amount}
+    %div.pr-3
+      #{payment.national_currency}
+    .copy-button
+      = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+        = image_tag 'copy.svg'
 
 .proc-countdown-block
   Вы можете оплатить в течение:
@@ -31,6 +37,7 @@
   %span
     Сделайте перевод указанной суммы по номеру карты указанному ниже
 
+= render 'payments/deposits/change_sum', payment: payment
 = render 'payments/deposits/bank_card', payment: payment
 
 

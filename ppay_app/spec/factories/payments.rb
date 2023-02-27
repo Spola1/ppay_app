@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+require 'securerandom'
 
 FactoryBot.define do
   factory :payment, class: Payment do
+    initialize_with { type.present? ? type.constantize.new : Payment.new }
 
     merchant
 
-    uuid { SecureRandom.uuid }
     external_order_id { '1234' }
     national_currency { 'RUB' }
     national_currency_amount { 100 }
@@ -14,6 +15,8 @@ FactoryBot.define do
     payment_system { Settings.payment_systems.first }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
+    uuid { SecureRandom.uuid }
+    type { nil }
 
     trait :created do
       payment_status { 'created' }
@@ -44,21 +47,27 @@ FactoryBot.define do
     end
 
     trait :with_transactions do
-      transactions { [build(:transaction, transaction_type: :main),
-                      build(:transaction, transaction_type: :processer_commission),
-                      build(:transaction, transaction_type: :ppay_commission)] }
+      transactions do
+        [build(:transaction, transaction_type: :main),
+         build(:transaction, transaction_type: :processer_commission),
+         build(:transaction, transaction_type: :ppay_commission)]
+      end
     end
 
     trait :with_completed_transactions do
-      transactions { [build(:transaction, transaction_type: :main, status: :completed),
-                      build(:transaction, transaction_type: :processer_commission, status: :completed),
-                      build(:transaction, transaction_type: :ppay_commission, status: :completed)] }
+      transactions do
+        [build(:transaction, transaction_type: :main, status: :completed),
+         build(:transaction, transaction_type: :processer_commission, status: :completed),
+         build(:transaction, transaction_type: :ppay_commission, status: :completed)]
+      end
     end
 
     trait :with_cancelled_transactions do
-      transactions { [build(:transaction, transaction_type: :main, status: :cancelled),
-                      build(:transaction, transaction_type: :processer_commission, status: :cancelled),
-                      build(:transaction, transaction_type: :ppay_commission, status: :cancelled)] }
+      transactions do
+        [build(:transaction, transaction_type: :main, status: :cancelled),
+         build(:transaction, transaction_type: :processer_commission, status: :cancelled),
+         build(:transaction, transaction_type: :ppay_commission, status: :cancelled)]
+      end
     end
   end
 end

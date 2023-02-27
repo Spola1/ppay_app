@@ -2,5 +2,5 @@
 
 require 'rails_helper'
 
-RSpec.describe CommentDecorator do
-end
+# RSpec.describe CommentDecorator do
+# end

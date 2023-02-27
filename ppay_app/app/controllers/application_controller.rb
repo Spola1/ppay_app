@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include Pagy::Backend
 
-  MANAGEMENT_NAMESPACES = %w[admins supports]
+  MANAGEMENT_NAMESPACES = %w[admins supports].freeze
 
   helper_method :role_namespace, :management_namespace?
 
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def management_namespace?
-    role_namespace.in?(MANAGEMENT_NAMESPACES) if role_namespace
+    role_namespace&.in?(MANAGEMENT_NAMESPACES)
   end
 
   def model_class

@@ -2,6 +2,16 @@
 
 AllCops:
   NewCops: enable
-
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'public/**/*'
+    - 'config/**/*'
+    - 'Gemfile'
+    - 'lib/tasks/*'
+    - 'services/binance/*'
+    
 Style/Documentation:
   Enabled: false

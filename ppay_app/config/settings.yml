@@ -1,7 +1,7 @@
 basic_auth:
   username: ppay
   password: password
-ppay_commission: 1
+ppay_commission: 4
 national_currencies:
   - RUB
   - UZS
