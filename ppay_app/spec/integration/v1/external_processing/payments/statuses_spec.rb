@@ -8,7 +8,7 @@ describe 'External processing payments statuses' do
 
   path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do
     patch 'Обновление статуса платежа с внешним процессингом' do
-      tags 'Платежи с внешним процессингом'
+      tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
       security [bearerAuth: {}]
 
       description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/statuses.md'))
