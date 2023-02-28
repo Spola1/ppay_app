@@ -185,7 +185,7 @@ RSpec.describe Payment, type: :model do
   end
 
   describe '#auditing' do
-    let(:payment) { create(:payment, :deposit) }
+    let(:payment) { create(:payment, :deposit, status_changed_at: nil) }
 
     before do
       payment.update(
