@@ -22,7 +22,6 @@ feature 'Processor can confirm deposit', type: :feature do
     expect(page).to have_content('Завершён')
 
     payment.reload
-    advertisement.processer.reload
 
     expect(payment.payment_status).to eq('completed')
   end
