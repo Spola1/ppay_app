@@ -133,7 +133,7 @@ RSpec.describe Payment, type: :model do
         it 'changes amount depending on unique_amount' do
           expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
           expect { payment2.bind! }.to change { payment2.reload.national_currency_amount }.from(100).to(99.99)
-          expect { payment3.bind! }.to     change { payment3.reload.national_currency_amount }.from(100).to(99.98)
+          expect { payment3.bind! }.to change { payment3.reload.national_currency_amount }.from(100).to(99.98)
         end
 
         it_behaves_like 'changes payment status to transferring'
@@ -185,13 +185,34 @@ RSpec.describe Payment, type: :model do
   end
 
   describe '#auditing' do
-    it 'audits changes to the payment model' do
-      payment = create(:payment, :deposit)
-      payment.update(payment_status: 'completed')
+    let(:payment) { create(:payment, :deposit) }
 
+    before do
+      payment.update(
+        payment_status: 'completed',
+        cancellation_reason: :duplicate_payment,
+        unique_amount: :integer,
+        payment_system: 'Tinkoff',
+        national_currency: 'IDR',
+        national_currency_amount: 1000,
+        cryptocurrency_amount: 2,
+        cryptocurrency: 'BTC',
+        status_changed_at: Time.now.to_s
+      )
+    end
+
+    it 'audits changes to the payment model' do
       expect(payment.audits.count).to eq(2)
       expect(payment.audits.last.action).to eq('update')
-      expect(payment.audits.last.audited_changes).to include('payment_status' => %w[created completed])
+      expect(payment.audits.last.audited_changes).to include('payment_status' => %w[created completed],
+                                                             'cancellation_reason' => [nil, 1],
+                                                             'unique_amount' => [0, 1],
+                                                             'payment_system' => %w[Sberbank Tinkoff],
+                                                             'national_currency' => %w[RUB IDR],
+                                                             'national_currency_amount' => ['100.0', '1000.0'],
+                                                             'cryptocurrency_amount' => ['1.0', '2.0'],
+                                                             'cryptocurrency' => %w[USDT BTC],
+                                                             'status_changed_at' => [nil, payment.status_changed_at])
     end
   end
 

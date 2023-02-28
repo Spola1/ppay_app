@@ -9,6 +9,14 @@ class UserDecorator < PaymentDecorator
     User.human_attribute_name("type.#{type.underscore}")
   end
 
+  def audit_user_info
+    "#{human_type} #{display_name} (#{display_email})"
+  end
+
+  def display_email
+    "#{email}"
+  end
+
   def display_name
     nickname.presence || full_name || display_id
   end
