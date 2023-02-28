@@ -2,16 +2,16 @@
 
 require 'swagger_helper'
 
-describe 'External processing payments statuses', document: false do
+describe 'External processing payments statuses' do
   include_context 'authorization'
   let(:check_required) { false }
 
-  path '/api/v1/payments/{uuid}/statuses/{event}' do
+  path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do
     patch 'Обновление статуса платежа с внешним процессингом' do
       tags 'Платежи с внешним процессингом'
       security [bearerAuth: {}]
 
-      # description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/statuses.md'))
 
       parameter name: :uuid, in: :path, type: :string
       parameter name: :event, in: :path, type: :string

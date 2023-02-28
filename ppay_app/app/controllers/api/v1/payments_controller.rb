@@ -4,6 +4,7 @@ module Api
   module V1
     class PaymentsController < ActionController::API
       include ApiKeyAuthenticatable
+      include Resourceable
 
       prepend_before_action :authenticate_with_api_key!
 
