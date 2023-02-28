@@ -58,10 +58,6 @@ class PaymentDecorator < ApplicationDecorator
     card_number&.gsub(/(.{4})/, '\1 ')
   end
 
-  def formatted_date_str(status_changed_at)
-    status_changed_at.to_datetime.strftime('%Y-%m-%d %H:%M')
-  end
-
   private
 
   def fiat_amount
