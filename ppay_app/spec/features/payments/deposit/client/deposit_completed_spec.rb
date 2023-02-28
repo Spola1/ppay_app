@@ -15,7 +15,7 @@ feature 'Client can completed deposit', type: :feature do
     scenario 'client try to completed deposit with image' do
       expect(page).to have_content('Добавьте изображение чека:')
 
-      attach_file 'image', image_path
+      attach_file 'deposit_image', image_path
 
       click_on 'Оплата завершена'
 
