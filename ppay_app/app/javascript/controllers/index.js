@@ -18,3 +18,9 @@ application.register("notifications", NotificationsController)
 
 import FilepondController from "controllers/filepond_controller"
 application.register("filepond", FilepondController)
+
+import ModalController from "controllers/modal_controller"
+application.register("modal", ModalController)
+
+import ClipboardController from "controllers/clipboard_controller"
+application.register("clipboard", ClipboardController)

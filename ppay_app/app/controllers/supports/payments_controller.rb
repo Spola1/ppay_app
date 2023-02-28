@@ -8,7 +8,8 @@ module Supports
       @pagy, @payments = pagy(Payment.includes(:merchant))
       @payments = @payments.decorate
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.includes(:merchant), page_param: :arbitration_page)
+      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.includes(:merchant),
+                                                               page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end
 

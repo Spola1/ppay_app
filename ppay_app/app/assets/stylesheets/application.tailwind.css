@@ -252,6 +252,10 @@
     @apply text-left text-3xl font-medium;
   }
 
+  .proc-amount-content1 {
+    @apply text-left text-3xl font-medium flex justify-between;
+  }
+
   .proc-shop-block {
     @apply flex justify-between;
   }
@@ -451,6 +455,34 @@
 
   .error-messages-in-payments-forms {
     @apply py-3 mb-2;
+  }
+
+  .modal_title {
+    @apply font-medium text-sm;
+  }
+  
+  .modal_text {
+    @apply text-sm text-xs mt-2;
+  }
+
+  .modal_button {
+    @apply green-button w-1/2 h-10 text-xs px-1 pt-2 mt-4 rounded-md items-center;
+  }
+
+  .copy-button {
+    @apply pr-20
+  }
+
+  .svg-button {
+    @apply w-6 h-6 mt-1;
+  }
+
+  .items-list-td.direction-deposit, .items-list-td.advertisement-status-true {
+    @apply text-green-500;
+  }
+
+  .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
+    @apply text-red-500;
   }
 }
 

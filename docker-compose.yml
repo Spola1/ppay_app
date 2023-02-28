@@ -30,6 +30,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
+      - assets:/app/public/assets
 
   cron:
     build:

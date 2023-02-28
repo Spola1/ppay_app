@@ -6,7 +6,7 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def formatted_created_at_moscow
-    formatted_date(created_at.in_time_zone("Moscow"))
+    formatted_date(created_at.in_time_zone('Moscow'))
   end
 
   private

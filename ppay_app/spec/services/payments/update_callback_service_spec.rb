@@ -13,12 +13,12 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
       stub_request(:post, callback_url)
         .with(
           headers: {
-            'Content-Type':  'application/json',
-            'Authorization': "Bearer #{payment.merchant.token}",
+            'Content-Type': 'application/json',
+            Authorization: "Bearer #{payment.merchant.token}"
           },
           body: {
             data: {
-              id: payment.id.to_s,
+              id: payment.uuid,
               type: 'Deposit',
               attributes: {
                 uuid: payment.uuid,

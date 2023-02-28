@@ -51,7 +51,7 @@ module StateMachines
         self.cancellation_reason = 0
       end
 
-      def has_advertisement?
+      def advertisement?
         advertisement.present?
       end
 
@@ -67,17 +67,6 @@ module StateMachines
 
         errors.add(:image, :blank)
         false
-      end
-
-      def ensure_unique_amount
-        return if unique_amount_none?
-
-        recent_payments = advertisement.payments.active.excluding(self)
-        amounts = recent_payments.pluck(:national_currency_amount)
-
-        while amounts.include?(national_currency_amount) do
-          self.national_currency_amount += uniqueization_difference[unique_amount]
-        end
       end
 
       def uniqueization_difference
