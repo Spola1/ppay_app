@@ -142,7 +142,7 @@
   }
 
   .simple_form .input input.string, .simple_form .input input.text, .simple_form .input input.numeric,
-  .simple_form .input textarea.text {
+  .simple_form .input textarea.text, .simple_form .input input.date {
     @apply form-input;
   }
 
@@ -165,6 +165,27 @@
 
   .simple_form .input .error {
     @apply text-red-500 text-xs block;
+  }
+
+  .simple_form.filters .filters-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8;
+  }
+
+  .simple_form.filters .filters-grid .input label abbr[title=required] {
+    @apply hidden;
+  }
+
+  .simple_form.filters .filters-grid .input, .simple_form.filters .filters-grid label {
+    @apply my-0;
+  }
+
+  .simple_form.filters .filters-grid label {
+    @apply mb-1;
+  }
+
+  .simple_form.filters .filters-grid .input input, .simple_form.filters .filters-grid .input select,
+  .simple_form.filters .filters-grid .input textarea {
+    @apply w-full max-w-full;
   }
 
   .toast {

@@ -1,0 +1,6 @@
+ru:
+  simple_form:
+    labels:
+      payment_filters:
+        created_from: 'Дата от:'
+        created_to: 'Дата до:'
