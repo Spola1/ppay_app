@@ -14,6 +14,8 @@
  *= require_self
  *= require font-awesome
  *= require font
+ *= require filepond.min
+ *= require filepond-plugin-image-preview.min
  */
 
 .menu_block{
@@ -108,16 +110,10 @@ label[for=withdrawal_card_number]{
   padding: 10px 30px
 }
 
+.filepond--credits {
+  display: none;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+.filepond--file-action-button.filepond--file-action-button:after {
+  cursor: pointer;
+}

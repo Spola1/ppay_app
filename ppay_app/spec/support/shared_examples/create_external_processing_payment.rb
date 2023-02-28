@@ -22,6 +22,12 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
       expect(merchant.public_send(payment_type.to_s.underscore.pluralize).last)
         .to be_external
     end
+
+    it 'sets unique_amount', if: type == :deposit do |example|
+      submit_request(example.metadata)
+
+      expect(merchant.deposits.last).to send("be_unique_amount_#{unique_amount}")
+    end
   end
 
   response '422', 'invalid' do
@@ -91,6 +97,22 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
           }.stringify_keys
         ]
       end
+
+      run_test! do |_response|
+        expect(response_body['errors']).to eq(expected_errors)
+      end
+    end
+
+    context 'unsupported unique_amount', if: type == :deposit do
+      let(:unique_amount) { :bool }
+
+      let(:expected_errors) do
+        [
+          { title: 'unique_amount', detail: unique_amount_error, code: 422 }.stringify_keys
+        ]
+      end
+
+      let(:unique_amount_error) { "Доступные значения #{Payment.unique_amounts.keys.join(', ')}" }
 
       run_test! do |_response|
         expect(response_body['errors']).to eq(expected_errors)

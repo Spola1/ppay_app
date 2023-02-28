@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'External processing deposits', document: false do
+describe 'External processing deposits' do
   include_context 'authorization'
   let(:check_required) { false }
 
@@ -17,7 +17,7 @@ describe 'External processing deposits', document: false do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      # description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments/deposits.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/deposits.md'))
 
       let(:payment_type) { Deposit }
 
@@ -27,12 +27,14 @@ describe 'External processing deposits', document: false do
 
       let(:payment_system) { 'Tinkoff' }
       let(:national_currency) { 'RUB' }
+      let(:unique_amount) { :integer }
       let(:params) do
         {
           payment_system:,
           national_currency:,
-          national_currency_amount: 3000.0,
+          unique_amount:,
           external_order_id: '1234',
+          national_currency_amount: '100.0',
           callback_url: FFaker::Internet.http_url
         }
       end
