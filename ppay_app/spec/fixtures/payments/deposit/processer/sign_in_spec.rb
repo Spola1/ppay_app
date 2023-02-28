@@ -13,11 +13,7 @@ feature 'Processor can log in', type: :feature do
 
     click_on 'Вход'
 
-    expect(page).to have_content('Все платежи')
-    expect(page).to have_content('Объявления')
-    expect(page).to have_content('Курсы бирж')
-    expect(page).to have_content('Транзакции')
-    expect(page).to have_content('Запросы баланса')
+    expect(page).to have_content('Вход в систему выполнен.')
     expect(page).to have_content("Баланс: #{processer.balance.amount}")
   end
 

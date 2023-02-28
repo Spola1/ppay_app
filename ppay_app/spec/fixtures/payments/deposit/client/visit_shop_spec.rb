@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-feature 'Client can come back to shop after payment or after cancelled payment', type: :feature do
+feature 'Client can come back to shop after deposit or after cancelled deposit', type: :feature do
   before do
     visit "/payments/deposits/#{payment.uuid}?signature=#{payment.signature}"
   end
 
-  describe 'payment status is completed' do
+  context 'deposit status is completed' do
     let!(:payment) { create(:payment, :deposit, :completed) }
 
     scenario 'client try to come back to shop' do
@@ -22,7 +22,7 @@ feature 'Client can come back to shop after payment or after cancelled payment',
     end
   end
 
-  describe 'payment status is cancelled' do
+  context 'deposit status is cancelled' do
     let!(:payment) { create(:payment, :deposit, :cancelled) }
 
     scenario 'client try to come back to shop' do
