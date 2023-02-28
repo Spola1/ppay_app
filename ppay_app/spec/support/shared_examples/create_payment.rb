@@ -1,34 +1,16 @@
 # frozen_string_literal: true
 
-shared_examples 'create_payment' do
-  parameter name: :params,
-            in: :body,
-            schema: { '$ref': '#/components/schemas/payments_create_parameter_body_schema' }
-
-  include_context 'create_params'
-
+shared_examples 'create_payment' do |type: :deposit|
   let(:currency) { 'RUB' }
 
-  include_context 'successful_creation_response'
+  include_context 'successful_creation_response', { type: }
 
-  include_context 'invalid_response'
+  include_context 'invalid_response', { type: }
 
   include_context 'unauthorized_response'
 end
 
-shared_context 'create_params' do
-  let(:params) do
-    {
-      national_currency: currency,
-      national_currency_amount: 3000.0,
-      external_order_id: '1234',
-      redirect_url: FFaker::Internet.http_url,
-      callback_url: FFaker::Internet.http_url
-    }
-  end
-end
-
-shared_context 'invalid_response' do
+shared_context 'invalid_response' do |type: :deposit|
   let(:currency) { 'RUB' }
 
   response '201', 'успешное создание' do
@@ -63,10 +45,26 @@ shared_context 'invalid_response' do
         expect(response_body['errors']).to eq(expected_errors)
       end
     end
+
+    context 'unsupported unique_amount', if: type == :deposit do
+      let(:unique_amount) { :bool }
+
+      let(:expected_errors) do
+        [
+          { title: 'unique_amount', detail: unique_amount_error, code: 422 }.stringify_keys
+        ]
+      end
+
+      let(:unique_amount_error) { "Доступные значения #{Payment.unique_amounts.keys.join(', ')}" }
+
+      run_test! do |_response|
+        expect(response_body['errors']).to eq(expected_errors)
+      end
+    end
   end
 end
 
-shared_context 'successful_creation_response' do
+shared_context 'successful_creation_response' do |type: :deposit|
   response '201', 'успешное создание' do
     include_context 'generate_examples'
 
@@ -76,6 +74,12 @@ shared_context 'successful_creation_response' do
       }.from(0).to(1)
 
       assert_response_matches_metadata(example.metadata)
+    end
+
+    it 'sets unique_amount', if: type == :deposit do |example|
+      submit_request(example.metadata)
+
+      expect(merchant.deposits.last).to send("be_unique_amount_#{unique_amount}")
     end
   end
 end
