@@ -7,7 +7,7 @@ describe 'Payments' do
 
   path '/api/v1/payments/{uuid}' do
     get 'Получение информации по платежу' do
-      tags 'Платежи'
+      tags 'Платежи - внутренний процессинг (оплата с переходом по ссылке на наш сайт)'
       produces 'application/json'
       security [bearerAuth: {}]
 

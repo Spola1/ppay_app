@@ -17,6 +17,11 @@ FactoryBot.define do
     redirect_url { FFaker::Internet.http_url }
     uuid { SecureRandom.uuid }
     type { nil }
+    status_changed_at { Time.now }
+
+    trait :created do
+      payment_status { 'created' }
+    end
 
     trait :confirming do
       payment_status { 'confirming' }
@@ -28,6 +33,14 @@ FactoryBot.define do
 
     trait :processer_search do
       payment_status { 'processer_search' }
+    end
+
+    trait :completed do
+      payment_status { 'completed' }
+    end
+
+    trait :cancelled do
+      payment_status { 'cancelled' }
     end
 
     trait :withdrawal do
