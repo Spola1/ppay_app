@@ -6,6 +6,7 @@ FactoryBot.define do
     nickname { 'AvangardBet' }
     name { 'Петр Петрович' }
     check_required { true }
+    crypto_wallet { create(:crypto_wallet) }
 
     after(:create) do |merchant|
       merchant.balance.deposit(1000)
