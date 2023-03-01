@@ -477,7 +477,7 @@
   }
 
   .copy-card-button {
-    @apply pt-2.5 pr-6 
+    @apply pt-3 pr-7; 
   }
 
   .svg-button {
