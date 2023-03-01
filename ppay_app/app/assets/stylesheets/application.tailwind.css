@@ -470,7 +470,7 @@
   }
 
   .copy-button {
-    @apply pr-20
+    @apply pr-16;
   }
 
   .svg-button {

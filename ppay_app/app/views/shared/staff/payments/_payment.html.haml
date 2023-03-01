@@ -72,7 +72,7 @@
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Кол-во нац. валюты
-              %td.item-card-td= "#{payment.national_currency_amount}"
+              %td.item-card-td= "#{payment.decorate.national_formatted}"
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Платежная система
               %td.item-card-td

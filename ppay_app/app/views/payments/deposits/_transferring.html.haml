@@ -6,7 +6,7 @@
 .proc-amount-block
   .proc-amount-content1{ 'data-controller': 'clipboard' }
     %div{ 'data-clipboard-target': 'source' }
-      #{payment.national_currency_amount}
+      #{payment.decorate.national_formatted}
     %div.pr-3
       #{payment.national_currency}
     .copy-button
