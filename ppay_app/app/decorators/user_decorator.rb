@@ -14,7 +14,7 @@ class UserDecorator < PaymentDecorator
   end
 
   def display_email
-    "#{email}"
+    email.to_s
   end
 
   def display_name

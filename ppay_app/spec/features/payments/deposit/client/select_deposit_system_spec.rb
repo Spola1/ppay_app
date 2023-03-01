@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Client can select payment system', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:advertisement) { create(:advertisement, :deposit, payment_system: 'Tinkoff') }
-  let!(:payment) { create(:payment, :deposit, :created, advertisement: advertisement) }
+  let!(:payment) { create(:payment, :deposit, :created, advertisement:) }
 
   before do
     visit "/payments/deposits/#{payment.uuid}?signature=#{payment.signature}"

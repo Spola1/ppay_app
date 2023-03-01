@@ -38,7 +38,7 @@ module Swagger
                   redirect_url: { type: :string, example: 'https://example.com/redirect_url' },
                   callback_url: { type: :string, example: 'https://example.com/callback_url' }
                 }
-              },
+              }
             }
           end
 

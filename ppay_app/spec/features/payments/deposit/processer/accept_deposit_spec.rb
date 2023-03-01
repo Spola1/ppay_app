@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Processor can confirm deposit', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:advertisement) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-  let!(:payment) { create(:payment, :deposit, :confirming, advertisement: advertisement) }
+  let!(:payment) { create(:payment, :deposit, :confirming, advertisement:) }
 
   before do
     visit '/users/sign_in'
