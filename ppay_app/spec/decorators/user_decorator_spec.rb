@@ -52,4 +52,16 @@ RSpec.describe UserDecorator do
       expect(user.decorate.display_id).to eq "ID: #{user.id}"
     end
   end
+
+  describe '#display_email' do
+    it 'should return email' do
+      expect(user.decorate.email).to eq user.email
+    end
+  end
+
+  describe '#audit_user_info' do
+    it 'should return human type + name/surname/ID + (email)' do
+      expect(user.decorate.audit_user_info).to eq ("Мерчант JustKing (#{user.email})")
+    end
+  end
 end
