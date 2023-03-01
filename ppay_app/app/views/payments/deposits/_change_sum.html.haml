@@ -1,10 +1,10 @@
-- unless payment.initial_amount == payment.national_currency_amount
+- unless payment.decorate.initial_formatted == payment.decorate.national_formatted
   #change-sum.modal.show{ 'data-controller': 'modal' }
     %div
       .modal_amount{ 'data-controller': 'clipboard' }
         .proc-amount-content1.pt-1
           %div{ 'data-clipboard-target': 'source' }
-            #{payment.national_currency_amount}
+            #{payment.decorate.national_formatted}
           %div.pr-3
             #{payment.national_currency}
           .copy-button

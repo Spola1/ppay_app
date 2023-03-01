@@ -22,11 +22,11 @@
       .proc-order-title
         Сумма
       .proc-order-content
-        = "#{payment.national_currency_amount} #{payment.national_currency}"
+        = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
-    .please-pay-from-bank
-      Пожалуйста, укажите карту, куда Вы хотите вывести средства
-      = "(#{ payment.national_currency_amount } #{ payment.national_currency })"
+.please-pay-from-bank
+  Пожалуйста, укажите карту, куда Вы хотите вывести средства
+  = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
 
     = render 'payments/errors', payment: payment
 
