@@ -19,9 +19,9 @@ class Payment < ApplicationRecord
   scope :filter_by_national_currency_amount_to,
         ->(national_currency_amount) { where 'national_currency_amount < ?', national_currency_amount }
   scope :filter_by_cryptocurrency_amount_from,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount_from > ?',  cryptocurrency_amount }
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount > ?',  cryptocurrency_amount }
   scope :filter_by_cryptocurrency_amount_to,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount_to < ?', cryptocurrency_amount }
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount < ?', cryptocurrency_amount }
 
   enum cancellation_reason: {
     by_client: 0,

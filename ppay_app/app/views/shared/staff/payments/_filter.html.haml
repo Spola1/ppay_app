@@ -1,36 +1,27 @@
-/ = form_with url: payments_path, method: :get, data: {turbo_frame: 'content'}, class: 'filter-block' do |f|
-/   = f.label :date_from, t('payments.attributes.labels.date_from')
-/   = f.date_field :created_from, value: params[:created_from]
-/   = f.label :date_to, t('payments.attributes.labels.date_to')
-/   = f.date_field :created_to, value: params[:created_to]
-/   = f.label :cancellation_reason, t('payments.attributes.labels.cancellation_reason')
-/   = f.select :cancellation_reason, cancellation_reasons_collection, selected: params[:cancellation_reason], include_blank: 'Выберите'
-/   = f.label :payment_status, t('payments.attributes.labels.payment_status')
-/   = f.select :payment_status, payment_statuses_collection, selected: params[:payment_status], include_blank: 'Выберите'
-/   = f.label :payment_system, t('payments.attributes.labels.payment_system')
-/   = f.select :payment_system, Settings.payment_systems, selected: params[:payment_system], include_blank: 'Выберите'
-/   = f.label :national_currency, t('payments.attributes.labels.national_currency')
-/   = f.select :national_currency, Settings.national_currencies, selected: params[:national_currency], include_blank: 'Выберите'
-/   = f.label :national_currency_amount_from, t('payments.attributes.labels.national_currency_amount_from')
-/   = f.number_field :national_currency_amount_from, value: params[:national_currency_amount_from]
-/   = f.label :national_currency_amount_to, t('payments.attributes.labels.national_currency_amount_to')
-/   = f.number_field :national_currency_amount_to, value: params[:national_currency_amount_to]
-/   = f.label :cryptocurrency_amount_from, t('payments.attributes.labels.cryptocurrency_amount_from')
-/   = f.number_field :cryptocurrency_amount_from, value: params[:cryptocurrency_amount_from]
-/   = f.label :cryptocurrency_amount_to, t('payments.attributes.labels.cryptocurrency_amount_to')
-/   = f.number_field :cryptocurrency_amount_to, value: params[:cryptocurrency_amount_to]
-/   = f.submit t('buttons.submit'), class: 'form-submit'
-/   = f.submit t('buttons.reset'),type: :reset
-
 = simple_form_for :payment_filters, url: payments_path,
   method: :get,
-  data: { turbo_frame: 'content', turbo_action: :advance },
-  html: { class: 'filters' } do |f|
+  data: { turbo_frame: 'content', turbo_action: :advance, controller: 'reset-form-button' },
+  html: { class: 'filters'} do |f|
 
   .filters-grid
-    = f.input :created_from, as: :date, html5: true
-    = f.input :created_to, as: :date, html5: true
-    = f.input :cancellation_reason, collection: cancellation_reasons_collection, include_blank: 'Все'
-    = f.input :payment_status, collection: payment_statuses_collection, include_blank: 'Все'
-    = f.input :payment_system, collection: Settings.payment_systems, include_blank: 'Все'
+    = f.input :created_from, as: :date, html5: true, input_html:{ value: payment_filters_params(:created_from) }
+    = f.input :created_to, as: :date, html5: true,  input_html:{ value: payment_filters_params(:created_to) }
+    = f.input :cancellation_reason, collection: cancellation_reasons_collection, include_blank: 'Все',
+                                                                selected: payment_filters_params(:cancellation_reason)
+    = f.input :payment_status, collection: payment_statuses_collection, include_blank: 'Все',
+                                                                selected: payment_filters_params(:payment_status)
+    = f.input :payment_system, collection: Settings.payment_systems, include_blank: 'Все',
+                                                                selected: payment_filters_params(:payment_system)
+    = f.input :national_currency, collection: Settings.national_currencies, include_blank: 'Все',
+                                                                selected: payment_filters_params(:national_currency)
+    = f.input :national_currency_amount_from, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:national_currency_amount_from) }
+    = f.input :national_currency_amount_to, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:national_currency_amount_to) }
+    = f.input :cryptocurrency_amount_from, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:cryptocurrency_amount_from) }
+    = f.input :cryptocurrency_amount_to, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:cryptocurrency_amount_to) }
+
   = f.submit t('buttons.submit'), class: 'form-submit'
+  = f.submit t('buttons.reset'), type: :reset, class: 'reset-button', data: { action: "reset-form-button#clear" }

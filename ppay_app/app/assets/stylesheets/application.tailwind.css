@@ -119,6 +119,10 @@
     @apply flex flex-wrap;
   }
 
+  .filters-wrap {
+    @apply p-2 w-full
+  }
+
   .icon-button {
     @apply border border-transparent text-center bg-blue-600 text-white font-medium text-xs leading-tight uppercase
       rounded shadow-md w-min px-3 py-2
@@ -496,6 +500,12 @@
 
   .svg-button {
     @apply w-6 h-6 mt-1;
+  }
+
+  .reset-button {
+    @apply px-6 py-2.5 bg-gray-100 font-medium text-sm leading-tight uppercase rounded shadow-md
+      hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out;
   }
 }
 
