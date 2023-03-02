@@ -3,7 +3,12 @@
     .item-card
       %h1.mb-4.text-xl Объявления
 
-      .flex.my-6= link_to '+ Создать объявление', new_advertisement_path, class: 'form-submit'
+      .flex.my-6
+        = link_to '+ Создать объявление', new_advertisement_path, class: 'form-submit'
+        .ml-3
+          = button_to 'Активировать все', activate_all_advertisements_path, method: :post, class: 'form-submit'
+        .ml-3
+          = button_to 'Деактивировать все', deactivate_all_advertisements_path, method: :post, class: 'form-submit'
 
       %table.items-list-table
         %thead.item-list-thead
