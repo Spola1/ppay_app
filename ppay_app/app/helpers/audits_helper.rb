@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AuditsHelper
   FORMAT_MAPPING = { 'status_changed_at' => :formatted_date_string }.freeze
 
