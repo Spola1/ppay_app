@@ -45,14 +45,15 @@
   = hidden_field_tag :event, 'check'
 
   - if payment.merchant.check_required?
-    - if payment.image.present?
-      = image_tag payment.image
   
     .add-img-confirm
       %span.text-red
         2.
       %span
         Добавьте изображение чека:
+
+    - if payment.image.present?
+      = image_tag payment.image
 
     = render 'payments/errors', payment: payment
 
