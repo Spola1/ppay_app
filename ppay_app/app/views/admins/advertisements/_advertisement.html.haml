@@ -1,0 +1,24 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Направление
+        %td.item-card-td= @advertisement.direction
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Нац. валюта
+        %td.item-card-td= @advertisement.national_currency
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Платежная система
+        %td.item-card-td= @advertisement.payment_system
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Номер карты
+        %td.item-card-td= @advertisement.card_number
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Комментарий
+        %td.item-card-td= @advertisement.comment
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Источник курса
+        %td.item-card-td= @advertisement.exchange_rate_source
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Статус
+        %td.item-card-td= @advertisement.status ? 'Активно' : 'Неактивно'
