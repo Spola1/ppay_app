@@ -1,0 +1,56 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      %h1.mb-4.text-xl Объявления
+
+      %table.items-list-table
+        %thead.item-list-thead
+          %tr
+            %th.items-list-th ID
+            %th.items-list-th оператор
+            %th.items-list-th id аккаунта
+            %th.items-list-th создано
+            %th.items-list-th направление
+            %th.items-list-th нац. валюта
+            %th.items-list-th платежная система
+            %th.items-list-th номер карты
+            %th.items-list-th комментарий
+            %th.items-list-th источник курса
+            %th.items-list-th статус
+
+
+            %th.items-list-th
+            %th.items-list-th
+            %th.items-list-th
+
+        %tbody
+          - @advertisements.each do |ad|
+            %tr.items-list-tr
+              %td.items-list-td-link= link_to ad.id, ad
+              %td.items-list-td= "#{ad.processer.name} (#{ad.processer.email})"
+              %td.items-list-td= ad.processer_id
+              %td.items-list-td= ad.formatted_created_at
+              %td.items-list-td{ class: "direction-#{ ad.direction.underscore }" }
+                = ad.direction
+              %td.items-list-td= ad.national_currency
+              %td.items-list-td= ad.payment_system
+              %td.items-list-td= ad.card_number
+              %td.items-list-td= ad.comment
+              %td.items-list-td= ad.exchange_rate_source
+              %td.items-list-td{ class: "advertisement-status-#{ ad.status }" }
+                = ad.status ? 'Активно' : 'Неактивно'
+
+              %td.items-list-td.px-1.w-0
+                = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
+                  .icon-button-red
+                    = fa_icon 'trash'
+              %td.items-list-td.px-1.w-0
+                = link_to edit_advertisement_path(ad) do
+                  .icon-button
+                    = fa_icon 'pencil'
+              %td.items-list-td.px-1.w-0
+                = link_to ad do
+                  .icon-button-gray
+                    = fa_icon 'search'
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy

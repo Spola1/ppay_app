@@ -22,21 +22,28 @@
 
             %th.items-list-th
             %th.items-list-th
+            %th.items-list-th
 
         %tbody
           - @advertisements.each do |ad|
             %tr.items-list-tr
               %td.items-list-td-link= link_to ad.id, ad
               %td.items-list-td= ad.formatted_created_at
-              %td.items-list-td= ad.direction
+              %td.items-list-td{ class: "direction-#{ ad.direction.underscore }" }
+                = ad.direction
               %td.items-list-td= ad.national_currency
               %td.items-list-td= ad.payment_system
               %td.items-list-td= ad.card_number
               %td.items-list-td= ad.comment
               %td.items-list-td= ad.exchange_rate_source
-              %td.items-list-td= ad.status ? 'Активно' : 'Неактивно'
+              %td.items-list-td{ class: "advertisement-status-#{ ad.status }" }
+                = ad.status ? 'Активно' : 'Неактивно'
               %td.items-list-td= ad.processer_id
 
+              %td.items-list-td.px-1.w-0
+                = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
+                  .icon-button-red
+                    = fa_icon 'trash'
               %td.items-list-td.px-1.w-0
                 = link_to edit_advertisement_path(ad) do
                   .icon-button

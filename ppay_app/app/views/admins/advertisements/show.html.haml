@@ -1,0 +1,15 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Объявление (ID: #{@advertisement.id})"
+        .flex.text-right
+          = link_to edit_advertisement_path(@advertisement), class: 'icon-button' do
+            .flex
+              .mr-2
+                = fa_icon 'pencil'
+              Редактировать
+      .mt-8.my-4
+        = render @advertisement
+      .back-link
+        = link_to '<- К списку объявлений', advertisements_path

@@ -24,3 +24,7 @@ ru:
       support_id: Саппорт
       redirect_url: redirect_url
       callback_url: callback_url
+      initial_amount: Начальное кол-во. нац. валюты
+      cancellation_reason: Причина отмены
+      unique_amount: Тип уникализации
+      processing_type: Тип обработки

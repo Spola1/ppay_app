@@ -4,6 +4,7 @@ class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
   include Filterable
+  include EnumValidatable
 
   audited
 
@@ -29,7 +30,12 @@ class Payment < ApplicationRecord
     fraud_attempt: 2,
     incorrect_amount: 3
   }
-  enum :processing_type, { internal: 0, external: 1 }
+  enum processing_type: { internal: 0, external: 1 }
+  enum unique_amount: {
+    none: 0,
+    integer: 1,
+    decimal: 2
+  }, _prefix: true
 
   has_many :transactions, as: :transactionable
 
@@ -67,6 +73,10 @@ class Payment < ApplicationRecord
 
   validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
 
+  validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),
+                                         valid_values: unique_amounts.keys.join(', ') }
+  validatable_enum :unique_amount
+
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
@@ -94,12 +104,6 @@ class Payment < ApplicationRecord
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
   end
-
-  enum unique_amount: {
-    none: 0,
-    integer: 1,
-    decimal: 2
-  }, _prefix: true
 
   def signature
     data = { national_currency:, initial_amount:, external_order_id: }.to_json

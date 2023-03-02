@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'External processing withdrawals', document: false do
+describe 'External processing withdrawals' do
   include_context 'authorization'
   let(:check_required) { false }
 
@@ -12,12 +12,12 @@ describe 'External processing withdrawals', document: false do
 
   path '/api/v1/external_processing/payments/withdrawals' do
     post 'Создание вывода средств с внешним процессингом' do
-      tags 'Платежи с внешним процессингом'
+      tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]
 
-      # description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments/withdrawals.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/withdrawals.md'))
 
       let(:payment_type) { Withdrawal }
 
@@ -31,8 +31,8 @@ describe 'External processing withdrawals', document: false do
       let(:params) do
         {
           payment_system:,
-          national_currency:,
           card_number:,
+          national_currency:,
           national_currency_amount: 3000.0,
           external_order_id: '1234',
           callback_url: FFaker::Internet.http_url

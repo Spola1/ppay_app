@@ -3,7 +3,7 @@
 module Processers
   class RateSnapshotsController < Staff::BaseController
     def index
-      @pagy, @rate_snapshots = pagy(RateSnapshot.all)
+      @pagy, @rate_snapshots = pagy(RateSnapshot.all.order(created_at: :desc))
     end
 
     def show

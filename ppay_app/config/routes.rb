@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
+    resources :advertisements, except: %i[new create]
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
@@ -71,6 +72,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
+    resources :advertisements, except: %i[new create]
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
@@ -91,11 +93,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :payments, param: :uuid, only: :show
-      patch 'payments/:uuid/statuses/:event', to: 'payments/statuses#update'
 
       concerns :payments_creatable
       namespace :external_processing do
         concerns :payments_creatable
+        patch 'payments/:uuid/statuses/:event', to: 'payments/statuses#update'
       end
     end
   end
