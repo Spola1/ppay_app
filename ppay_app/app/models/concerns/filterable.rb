@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Filterable
   extend ActiveSupport::Concern
   module ClassMethods
     def filter_by(filtering_params)
-      results = self.where(nil)
+      results = where(nil)
 
       return results if filtering_params.nil?
 

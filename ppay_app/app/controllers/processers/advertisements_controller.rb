@@ -50,13 +50,13 @@ module Processers
 
       redirect_to advertisements_path
     end
-  
+
     def deactivate_all
       current_user.advertisements.where(status: true).update_all(status: false)
 
       redirect_to advertisements_path
     end
-    
+
     private
 
     def find_advertisement

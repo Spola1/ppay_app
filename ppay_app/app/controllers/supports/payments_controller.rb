@@ -8,8 +8,7 @@ module Supports
       @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
       @payments = @payments.decorate
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.filter_by(filtering_params).includes(:merchant),
-                                                               page_param: :arbitration_page)
+      @arbitration_payments_pagy, @arbitration_payments = pagy(filtered_payments, page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end
 
@@ -36,6 +35,10 @@ module Supports
                                       :payment_system, :national_currency, :national_currency_amount_from,
                                       :national_currency_amount_to, :cryptocurrency_amount_from,
                                       :cryptocurrency_amount_to)
+    end
+
+    def filtered_payments
+      Payment.arbitration.filter_by(filtering_params).includes(:merchant)
     end
   end
 end
