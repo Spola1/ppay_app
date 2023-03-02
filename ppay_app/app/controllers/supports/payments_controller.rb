@@ -5,10 +5,10 @@ module Supports
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(Payment.includes(:merchant))
+      @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
       @payments = @payments.decorate
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.includes(:merchant),
+      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.filter_by(filtering_params).includes(:merchant),
                                                                page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end
@@ -29,6 +29,13 @@ module Supports
 
     def payment_params
       required_params.permit(:payment_status, :arbitration, :cancellation_reason)
+    end
+
+    def filtering_params
+      params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
+                                      :payment_system, :national_currency, :national_currency_amount_from,
+                                      :national_currency_amount_to, :cryptocurrency_amount_from,
+                                      :cryptocurrency_amount_to)
     end
   end
 end

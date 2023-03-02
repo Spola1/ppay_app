@@ -3,17 +3,12 @@
     .item-card
       %h1.mb-4.text-xl Объявления
 
-      .flex.my-6
-        = link_to '+ Создать объявление', new_advertisement_path, class: 'form-submit'
-        .ml-3
-          = button_to 'Активировать все', activate_all_advertisements_path, method: :post, class: 'form-submit'
-        .ml-3
-          = button_to 'Деактивировать все', deactivate_all_advertisements_path, method: :post, class: 'form-submit'
-
       %table.items-list-table
         %thead.item-list-thead
           %tr
             %th.items-list-th ID
+            %th.items-list-th оператор
+            %th.items-list-th id аккаунта
             %th.items-list-th создано
             %th.items-list-th направление
             %th.items-list-th нац. валюта
@@ -22,7 +17,6 @@
             %th.items-list-th комментарий
             %th.items-list-th источник курса
             %th.items-list-th статус
-            %th.items-list-th id аккаунта
 
 
             %th.items-list-th
@@ -33,6 +27,8 @@
           - @advertisements.each do |ad|
             %tr.items-list-tr
               %td.items-list-td-link= link_to ad.id, ad
+              %td.items-list-td= "#{ad.processer.name} (#{ad.processer.email})"
+              %td.items-list-td= ad.processer_id
               %td.items-list-td= ad.formatted_created_at
               %td.items-list-td{ class: "direction-#{ ad.direction.underscore }" }
                 = ad.direction
@@ -43,7 +39,6 @@
               %td.items-list-td= ad.exchange_rate_source
               %td.items-list-td{ class: "advertisement-status-#{ ad.status }" }
                 = ad.status ? 'Активно' : 'Неактивно'
-              %td.items-list-td= ad.processer_id
 
               %td.items-list-td.px-1.w-0
                 = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do

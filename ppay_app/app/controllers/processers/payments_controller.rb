@@ -5,7 +5,7 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(current_user.payments.includes(:merchant))
+      @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params).includes(:merchant))
       @payments = @payments.decorate
     end
 
@@ -25,6 +25,13 @@ module Processers
 
     def payment_params
       required_params.permit(:arbitration)
+    end
+
+    def filtering_params
+      params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
+                                      :payment_system, :national_currency, :national_currency_amount_from,
+                                      :national_currency_amount_to, :cryptocurrency_amount_from, 
+                                      :cryptocurrency_amount_to)
     end
   end
 end

@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
+    resources :advertisements, except: %i[new create]
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
@@ -76,6 +77,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
+    resources :advertisements, except: %i[new create]
     resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
