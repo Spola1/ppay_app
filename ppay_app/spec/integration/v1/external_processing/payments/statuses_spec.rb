@@ -11,7 +11,8 @@ describe 'External processing payments statuses' do
       tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
       security [bearerAuth: {}]
 
-      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/statuses.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
+                                            'statuses.md'))
 
       parameter name: :uuid, in: :path, type: :string
       parameter name: :event, in: :path, type: :string
@@ -21,9 +22,9 @@ describe 'External processing payments statuses' do
       let(:event) { 'check' }
 
       response '204', 'on allowed event' do
-        %w[check cancel].each do |_event|
-          context "deposit #{_event}" do
-            let(:event) { _event }
+        %w[check cancel].each do |event|
+          context "deposit #{event}" do
+            let(:event) { event }
             run_test!
           end
         end

@@ -13,8 +13,7 @@ module Api
           def create
             return render_check_required_error if current_bearer.check_required?
 
-            @object = current_bearer.becomes(Merchant).public_send(model_class_plural.to_s)
-                                    .new(permitted_params.merge(processing_type: :external))
+            @object = set_object
 
             if @object.save
               @object.inline_search!(search_params)
@@ -40,6 +39,11 @@ module Api
                 ).to_hash
               ]
             }, status: :unprocessable_entity
+          end
+
+          def set_object
+            @object = current_bearer.becomes(Merchant).public_send(model_class_plural.to_s)
+                                    .new(permitted_params.merge(processing_type: :external))
           end
         end
       end

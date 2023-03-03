@@ -34,7 +34,6 @@ describe 'Deposits' do
         }
       end
 
-
       it_behaves_like 'create_payment', type: :deposit
     end
   end

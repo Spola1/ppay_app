@@ -7,10 +7,10 @@ feature 'Client can completed deposit', type: :feature do
     visit "/payments/deposits/#{payment.uuid}?signature=#{payment.signature}"
   end
 
-  context 'merchant check required true' do 
+  context 'merchant check required true' do
     let(:image_path) { Rails.root.join('spec', 'fixtures', 'test_files', 'sample.jpeg') }
     let(:advertisement) { create(:advertisement, :deposit, payment_system: 'Tinkoff') }
-    let(:payment) { create(:payment, :deposit, :transferring, advertisement: advertisement) }
+    let(:payment) { create(:payment, :deposit, :transferring, advertisement:) }
 
     scenario 'client try to completed deposit with image' do
       expect(page).to have_content('Добавьте изображение чека:')
@@ -44,7 +44,7 @@ feature 'Client can completed deposit', type: :feature do
   context 'merchant check required false' do
     let(:merchant) { create(:merchant, check_required: false) }
     let(:advertisement) { create(:advertisement, :deposit, payment_system: 'Tinkoff') }
-    let(:payment) { create(:payment, :deposit, :transferring, advertisement: advertisement, merchant: merchant) }
+    let(:payment) { create(:payment, :deposit, :transferring, advertisement:, merchant:) }
 
     scenario 'client try to completed deposit' do
       expect(page).not_to have_content('Добавьте изображение чека:')

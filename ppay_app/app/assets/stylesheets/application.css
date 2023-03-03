@@ -85,6 +85,7 @@ label[for=withdrawal_card_number]{
   background-color: rgba(128, 128, 128, 0.7);
   top: 0;
   left: 0;
+  z-index: 100;
 }
 
 .modal.show {

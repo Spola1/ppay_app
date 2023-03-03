@@ -16,6 +16,8 @@ navbar:
   admin:
     - name: Все платежи
       path: payments_path
+    - name: Объявления
+      path: advertisements_path
     - name: Транзакции
       path: transactions_path
     - name: Запросы баланса
@@ -41,8 +43,8 @@ navbar:
   support:
     - name: Все платежи
       path: payments_path
-    # - name: Объявления
-    #   path: advertisements_path
+    - name: Объявления
+      path: advertisements_path
     # - name: Курсы бирж
     #   path: rate_snapshots_path
     # - name: Транзакции

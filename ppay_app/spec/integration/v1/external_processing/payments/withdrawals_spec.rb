@@ -17,7 +17,8 @@ describe 'External processing withdrawals' do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/withdrawals.md'))
+      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
+                                            'withdrawals.md'))
 
       let(:payment_type) { Withdrawal }
 
