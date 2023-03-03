@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Support can accept balance request', type: :feature do
@@ -12,7 +14,7 @@ feature 'Support can accept balance request', type: :feature do
     visit '/balance_requests'
   end
 
-  scenario 'support logs in, opens a balance requests page, select balance request 
+  scenario 'support logs in, opens a balance requests page, select balance request
     and try to accept balance request' do
     expect(page).to have_content('1')
     expect(page).to have_content('withdraw')

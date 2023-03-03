@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Client can cancel withdrawal', type: :feature do
@@ -12,7 +14,7 @@ feature 'Client can cancel withdrawal', type: :feature do
 
     expect(page).to have_content('Платеж отменён !')
     expect(page).to have_content("uuid: #{payment.uuid}")
-    expect(page).to have_link('вернуться в магазин', href: "#{payment.redirect_url}")
+    expect(page).to have_link('вернуться в магазин', href: payment.redirect_url.to_s)
 
     payment.reload
 

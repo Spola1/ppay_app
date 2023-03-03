@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Processor can confirm withdrawal', type: :feature do
@@ -9,12 +11,12 @@ feature 'Processor can confirm withdrawal', type: :feature do
     visit "/payments/withdrawals/#{payment.uuid}"
   end
 
-  context 'merchant check required true' do 
+  context 'merchant check required true' do
     let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
-    let!(:payment) { create(:payment, :withdrawal, :transferring, advertisement: advertisement) }
+    let!(:payment) { create(:payment, :withdrawal, :transferring, advertisement:) }
     let(:image_path) { Rails.root.join('spec', 'fixtures', 'test_files', 'sample.jpeg') }
 
-    scenario 'processer logs in, opens a new withdrawal and try to 
+    scenario 'processer logs in, opens a new withdrawal and try to
       confirms it without screenshot' do
       expect(page).to have_content('Данные платежа')
       expect(page).to have_button('Оплата завершена')
@@ -45,8 +47,10 @@ feature 'Processor can confirm withdrawal', type: :feature do
   context 'merchant check required false' do
     let!(:merchant) { create(:merchant, check_required: false) }
     let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
-    let!(:payment) { create(:payment, :withdrawal, :transferring, advertisement: advertisement, 
-      merchant: merchant) }
+    let!(:payment) do
+      create(:payment, :withdrawal, :transferring, advertisement:,
+                                                   merchant:)
+    end
 
     scenario 'processer logs in, opens a new withdrawal and try to confirms it' do
       expect(page).to have_content('Данные платежа')

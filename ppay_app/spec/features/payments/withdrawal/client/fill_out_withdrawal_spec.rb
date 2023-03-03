@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Client can fill out the withdrawal form', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
-  let!(:payment) { create(:payment, :withdrawal, :created, advertisement: advertisement) }
+  let!(:payment) { create(:payment, :withdrawal, :created, advertisement:) }
 
   before do
     visit "/payments/withdrawals/#{payment.uuid}?signature=#{payment.signature}"

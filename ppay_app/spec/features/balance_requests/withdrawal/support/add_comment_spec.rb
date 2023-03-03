@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Support can add comments to balance request' do
@@ -19,7 +21,7 @@ feature 'Support can add comments to balance request' do
 
     click_on 'Сохранить'
 
-    expect(page).to have_content "My new comment"
+    expect(page).to have_content 'My new comment'
     expect(balance_request.status).to eq('processing')
   end
 end

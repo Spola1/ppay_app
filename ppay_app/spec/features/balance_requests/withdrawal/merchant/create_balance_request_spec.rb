@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Merchant can create new balance request', type: :feature do
@@ -57,7 +59,7 @@ feature 'Merchant can create new balance request', type: :feature do
     select('Снятие', from: 'balance_request_requests_type')
 
     fill_in 'balance_request_amount', with: 20
-    fill_in 'balance_request_crypto_address', with: "#{merchant.crypto_wallet.address}"
+    fill_in 'balance_request_crypto_address', with: merchant.crypto_wallet.address.to_s
 
     click_on 'Сохранить'
   end

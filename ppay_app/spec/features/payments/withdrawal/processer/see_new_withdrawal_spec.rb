@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Processor can see new withdrawal', type: :feature do
   context 'processer have advertisement for withdrawal' do
     let!(:rate_snapshot) { create(:rate_snapshot) }
     let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
-    let!(:payment) { create(:payment, :withdrawal, :transferring, advertisement: advertisement) }
+    let!(:payment) { create(:payment, :withdrawal, :transferring, advertisement:) }
 
     before do
       visit '/users/sign_in'
