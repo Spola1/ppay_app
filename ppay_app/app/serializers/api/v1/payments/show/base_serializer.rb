@@ -11,6 +11,7 @@ module Api
 
           attribute :uuid
           attribute :external_order_id, if: proc { |record| record.external_order_id.present? }
+          attribute :cancellation_reason, if: proc { |record| record.cancellation_reason.present? }
           attributes :created_at, :national_currency, :national_currency_amount,
                      :cryptocurrency, :payment_system, :payment_status
         end
