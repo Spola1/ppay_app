@@ -43,6 +43,6 @@ class BalanceRequest < ApplicationRecord
   end
 
   def set_crypto_address
-    self.crypto_address = user.crypto_wallet&.address
+    self.crypto_address = user&.crypto_wallet&.address
   end
 end
