@@ -48,6 +48,10 @@ module PaymentsHelper
     number.positive? ? 'text-green-500' : 'text-red-500'
   end
 
+  def payment_filters_params(key)
+    params[:payment_filters][key] if params[:payment_filters]
+  end
+
   private
 
   def state_translation(state)
