@@ -9,16 +9,22 @@ module Payments
       def perform(payment_id)
         payment = Payment.find(payment_id)
 
+        search_advertisment(payment)
+
+        payment.bind! if payment.reload.processer_search?
+
+        puts 'найден' if payment.advertisement.present?
+      end
+
+      private
+
+      def search_advertisment(payment)
         while payment.reload.advertisement.blank? && payment.reload.processer_search?
           puts 'не найден'
           payment.advertisement = selected_advertisement(payment)
           payment.bind!
           sleep 0.5
         end
-
-        payment.bind! if payment.reload.processer_search?
-
-        puts 'найден' if payment.advertisement.present?
       end
     end
   end

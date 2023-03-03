@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Client can come back to shop after deposit or after cancelled deposit', type: :feature do
@@ -12,7 +14,7 @@ feature 'Client can come back to shop after deposit or after cancelled deposit',
       expect(page).to have_content('Успешно!')
       expect(page).to have_content('Платеж выполнен!')
       expect(page).to have_content("uuid: #{payment.uuid}")
-      expect(page).to have_link('вернуться в магазин', href: "#{payment.redirect_url}")
+      expect(page).to have_link('вернуться в магазин', href: payment.redirect_url.to_s)
 
       click_on 'вернуться в магазин'
 
@@ -28,7 +30,7 @@ feature 'Client can come back to shop after deposit or after cancelled deposit',
     scenario 'client try to come back to shop' do
       expect(page).to have_content('Платеж отменён !')
       expect(page).to have_content("uuid: #{payment.uuid}")
-      expect(page).to have_link('вернуться в магазин', href: "#{payment.redirect_url}")
+      expect(page).to have_link('вернуться в магазин', href: payment.redirect_url.to_s)
 
       click_on 'вернуться в магазин'
 
