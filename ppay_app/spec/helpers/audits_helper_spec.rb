@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AuditsHelper, type: :helper do
@@ -6,7 +8,7 @@ RSpec.describe AuditsHelper, type: :helper do
 
     context 'when attribute is not "status_changed_at"' do
       let(:attribute) { 'payment_status' }
-      let(:values) { ['transferring', 'confirming'] }
+      let(:values) { %w[transferring confirming] }
 
       it 'returns values joined with " -> "' do
         expect(subject).to eq('transferring -> confirming')
@@ -44,7 +46,7 @@ RSpec.describe AuditsHelper, type: :helper do
 
     context 'when values is an array and attribute is not "status_changed_at"' do
       let(:attribute) { 'payment_status' }
-      let(:values) { ['transferring', 'confirming'] }
+      let(:values) { %w[transferring confirming] }
 
       it 'returns formatted changes' do
         expect(helper.verify_array(attribute, values)).to eq('transferring -> confirming')

@@ -61,7 +61,7 @@ RSpec.describe UserDecorator do
 
   describe '#audit_user_info' do
     it 'should return human type + name/surname/ID + (email)' do
-      expect(user.decorate.audit_user_info).to eq ("Мерчант JustKing (#{user.email})")
+      expect(user.decorate.audit_user_info).to eq("Мерчант JustKing (#{user.email})")
     end
   end
 end
