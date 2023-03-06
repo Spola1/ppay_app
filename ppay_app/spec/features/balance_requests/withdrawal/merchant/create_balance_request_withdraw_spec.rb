@@ -64,7 +64,7 @@ feature 'Merchant can create new balance request', type: :feature do
     click_on 'Сохранить'
 
     expect(page).to have_content("Запрос баланса (ID: #{merchant.balance_requests.last.id})")
-    expect(page).to have_content("Тип withdraw")
+    expect(page).to have_content('Тип withdraw')
 
     merchant.reload
 

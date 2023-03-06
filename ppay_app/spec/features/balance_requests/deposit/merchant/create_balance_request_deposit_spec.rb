@@ -62,7 +62,7 @@ feature 'Merchant can create new balance request', type: :feature do
 
     expect(page).to have_content("Запрос баланса (ID: #{merchant.balance_requests.last.id})")
     expect(page).to have_content("Переведите 100.0 USDT на кошелёк #{merchant.crypto_wallet.address}")
-    expect(page).to have_content("Тип deposit")
+    expect(page).to have_content('Тип deposit')
     expect(merchant.balance_requests.size).to eq(1)
 
     merchant.balance_requests.last.complete!

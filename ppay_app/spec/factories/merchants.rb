@@ -9,7 +9,7 @@ FactoryBot.define do
     name { 'Петр Петрович' }
     check_required { true }
     crypto_wallet
-    usdt_trc20_address { "ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUt" }
+    usdt_trc20_address { 'ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUt' }
 
     after(:create) do |merchant|
       merchant.balance.deposit(1000)
