@@ -121,3 +121,6 @@ gem 'aws-sdk-s3', require: false
 gem 'pagy'
 gem 'pundit', '~> 2.2'
 gem 'tailwindcss-rails', '~> 2.0'
+gem 'caxlsx'
+gem 'caxlsx_rails'
+

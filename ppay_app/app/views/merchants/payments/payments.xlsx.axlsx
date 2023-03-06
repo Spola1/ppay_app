@@ -1,0 +1,12 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: 'payments') do |sheet|
+    sheet.add_row ['Номер заказа', 'Создан', 'Направление', 'Нац.валюта', 'Кол-во нац. валюты', 'Криптовалюта',
+                    'Кол-во криптовалюты', 'Платежная система', 'uuid', 'Статус', 'Статус изменен', 'Причина отмены']
+
+    payments.each do |p|
+        sheet.add_row [p.external_order_id, p.formatted_created_at, p.human_type, p.national_currency,
+                        p.national_currency_amount, p.cryptocurrency, p.cryptocurrency_amount, p.payment_system, p.uuid,
+                            p.human_payment_status, p.formatted_status_changed_at, p.human_cancellation_reason]
+    end
+end
