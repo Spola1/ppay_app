@@ -95,7 +95,7 @@ RSpec.describe Payment, type: :model do
         expect { payment2.bind! }.not_to change { payment2.reload.national_currency_amount }.from(100)
         expect { payment3.bind! }.not_to change { payment3.reload.national_currency_amount }.from(100)
       end
-      
+
       it_behaves_like 'changes payment status to transferring'
 
       context 'when unique_amount is integer' do
@@ -133,10 +133,11 @@ RSpec.describe Payment, type: :model do
 
         context 'when different types' do
           let(:payment1) { create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:) }
+
           it 'changes amount depending on unique_amount' do
             expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
-            expect { payment2.bind! }.to change { payment2.reload.national_currency_amount }.from(100).to(100.01)
-            expect { payment3.bind! }.to change { payment3.reload.national_currency_amount }.from(100).to(100.02)
+            expect { payment2.bind! }.not_to change { payment2.reload.national_currency_amount }.from(100)
+            expect { payment3.bind! }.to     change { payment3.reload.national_currency_amount }.from(100).to(99.99)
           end
         end
       end
