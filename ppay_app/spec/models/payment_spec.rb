@@ -95,7 +95,7 @@ RSpec.describe Payment, type: :model do
         expect { payment2.bind! }.not_to change { payment2.reload.national_currency_amount }.from(100)
         expect { payment3.bind! }.not_to change { payment3.reload.national_currency_amount }.from(100)
       end
-
+      
       it_behaves_like 'changes payment status to transferring'
 
       context 'when unique_amount is integer' do
@@ -103,8 +103,8 @@ RSpec.describe Payment, type: :model do
 
         it 'changes amount depending on unique_amount' do
           expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
-          expect { payment2.bind! }.to change { payment2.reload.national_currency_amount }.from(100).to(99)
-          expect { payment3.bind! }.to change { payment3.reload.national_currency_amount }.from(100).to(98)
+          expect { payment2.bind! }.to     change { payment2.reload.national_currency_amount }.from(100).to(99)
+          expect { payment3.bind! }.to     change { payment3.reload.national_currency_amount }.from(100).to(98)
         end
 
         it_behaves_like 'changes payment status to transferring'
@@ -133,49 +133,13 @@ RSpec.describe Payment, type: :model do
 
         context 'when different types' do
           let(:payment1) { create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:) }
-
           it 'changes amount depending on unique_amount' do
             expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
-            expect { payment2.bind! }.not_to change { payment2.reload.national_currency_amount }.from(100)
-            expect { payment3.bind! }.to     change { payment3.reload.national_currency_amount }.from(100).to(99.99)
+            expect { payment2.bind! }.to change { payment2.reload.national_currency_amount }.from(100).to(100.01)
+            expect { payment3.bind! }.to change { payment3.reload.national_currency_amount }.from(100).to(100.02)
           end
         end
       end
-<<<<<<< HEAD
-
-      it 'doesnt change amount' do
-        expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
-        expect { payment2.bind! }.not_to change { payment2.reload.national_currency_amount }.from(100)
-        expect { payment3.bind! }.not_to change { payment3.reload.national_currency_amount }.from(100)
-      end
-
-      it_behaves_like 'changes payment status to transferring'
-
-      context 'when unique_amount is integer' do
-        let(:unique_amount) { :integer }
-
-        it 'changes amount depending on unique_amount' do
-          expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
-          expect { payment2.bind! }.to change { payment2.reload.national_currency_amount }.from(100).to(101)
-          expect { payment3.bind! }.to change { payment3.reload.national_currency_amount }.from(100).to(102)
-        end
-
-        it_behaves_like 'changes payment status to transferring'
-      end
-
-      context 'when unique_amount is decimal' do
-        let(:unique_amount) { :decimal }
-
-        it 'changes amount depending on unique_amount' do
-          expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
-          expect { payment2.bind! }.to change { payment2.reload.national_currency_amount }.from(100).to(100.01)
-          expect { payment3.bind! }.to change { payment3.reload.national_currency_amount }.from(100).to(100.02)
-        end
-
-        it_behaves_like 'changes payment status to transferring'
-      end
-=======
->>>>>>> master
     end
   end
 
