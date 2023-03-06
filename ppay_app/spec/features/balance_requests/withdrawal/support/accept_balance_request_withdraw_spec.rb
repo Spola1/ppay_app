@@ -4,7 +4,8 @@ require 'rails_helper'
 
 feature 'Support can accept balance request withdraw', type: :feature do
   let!(:support) { create(:support) }
-  let!(:balance_request) { create(:balance_request, :withdraw) }
+  let!(:user) { create(:merchant) }
+  let!(:balance_request) { create(:balance_request, :withdraw, crypto_address: user.usdt_trc20_address) }
 
   before do
     visit '/users/sign_in'

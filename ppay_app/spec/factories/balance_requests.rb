@@ -4,7 +4,6 @@ FactoryBot.define do
   factory :balance_request do
     user { create(:merchant) }
     amount { 1 }
-    crypto_address { user.crypto_wallet.address }
     status { :processing }
   end
 
