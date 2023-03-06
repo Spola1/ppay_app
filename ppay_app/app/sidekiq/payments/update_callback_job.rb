@@ -3,7 +3,7 @@
 module Payments
   class UpdateCallbackJob
     include Sidekiq::Job
-    sidekiq_options queue: 'critical', tags: ['payments_update_callback']
+    sidekiq_options queue: 'default', tags: ['payments_update_callback']
 
     def perform(payment_id)
       payment = Payment.find(payment_id)

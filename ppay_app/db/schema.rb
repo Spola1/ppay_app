@@ -189,6 +189,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
     t.integer "cancellation_reason"
     t.integer "unique_amount"
     t.decimal "initial_amount", precision: 12, scale: 2
+    t.integer "processing_type", default: 0
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 

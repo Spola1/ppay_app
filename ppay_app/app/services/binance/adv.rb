@@ -7,8 +7,11 @@ module Binance
 
     def initialize(item_hash)
       #
-      # {:adv_no=>"11367926890814218240", :price=>"65.00", :surplus_amount=>"5539.56", :crypto_asset=>"USDT", :max_amount=>"870000.00", :min_amount=>"10000.00", :fiat_unit=>"RUB", :user_no=>"sc62353f480ba3cfda68d684492c9355e", :user_nick=>"shan06", :user_month_order_count=>3811, :month_finish_rate=>0.996, :user_type=>"merchant", :user_identity=>"MASS_MERCHANT"}
-      #
+      # {:adv_no=>"11367926890814218240", :price=>"65.00", :surplus_amount=>"5539.56", :crypto_asset=>"USDT",
+      #         :max_amount=>"870000.00", :min_amount=>"10000.00", :fiat_unit=>"RUB",
+      #             :user_no=>"sc62353f480ba3cfda68d684492c9355e", :user_nick=>"shan06", :user_month_order_count=>3811,
+      #                  :month_finish_rate=>0.996, :user_type=>"merchant", :user_identity=>"MASS_MERCHANT"}
+
       @adv_no = item_hash[:adv_no]
       @price =  item_hash[:price].to_f
       @surplus_amount = item_hash[:surplus_amount].to_f

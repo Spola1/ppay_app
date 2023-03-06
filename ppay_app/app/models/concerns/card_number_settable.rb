@@ -5,7 +5,7 @@ module CardNumberSettable
 
   included do
     def card_number=(value)
-      super(value.tr('^0-9', ''))
+      super(value&.tr('^0-9', ''))
     end
   end
 end

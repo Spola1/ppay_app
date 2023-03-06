@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module PaymentsHelper
-
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
 
@@ -47,6 +46,10 @@ module PaymentsHelper
     return if number.blank? || number.zero?
 
     number.positive? ? 'text-green-500' : 'text-red-500'
+  end
+
+  def payment_filters_params(key)
+    params[:payment_filters][key] if params[:payment_filters]
   end
 
   private

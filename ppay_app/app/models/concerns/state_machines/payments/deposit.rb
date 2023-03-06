@@ -37,7 +37,7 @@ module StateMachines
             before :bind_rate_snapshot
             after_commit :inline_search_processer
 
-            transitions from: :draft, to: :processer_search,
+            transitions from: :created, to: :processer_search,
                         guard: proc { |params| available_processer_search?(params) },
                         after: :set_cryptocurrency_amount
           end
@@ -46,9 +46,9 @@ module StateMachines
           event :bind do
             before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount
             after :create_transactions
-            ensure :search_processer
+          ensure :search_processer
 
-            transitions from: :processer_search, to: :transferring, guard: :has_advertisement?
+                 transitions from: :processer_search, to: :transferring, guard: :advertisement?
           end
 
           # make_deposit
@@ -77,6 +77,17 @@ module StateMachines
 
       def available_processer_search?(params)
         valid_payment_system?(params) && rate_snapshot.present?
+      end
+
+      def ensure_unique_amount
+        return if unique_amount_none?
+
+        recent_payments = advertisement.deposits.active.excluding(self)
+        amounts = recent_payments.pluck(:national_currency_amount)
+
+        while amounts.include?(national_currency_amount)
+          self.national_currency_amount += uniqueization_difference[unique_amount]
+        end
       end
     end
   end

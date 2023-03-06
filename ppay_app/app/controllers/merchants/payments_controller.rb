@@ -19,8 +19,17 @@ module Merchants
     def set_all_payments
       @deposits = current_user.deposits
       @withdrawals = current_user.withdrawals
-      @pagy, @payments = pagy(current_user.payments)
+      @pagy, @filtered_payments = pagy(current_user.payments.filter_by(filtering_params))
+      @filtered_payments = @filtered_payments.decorate
+      @payments = current_user.payments
       @payments = @payments.decorate
+    end
+
+    def filtering_params
+      params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
+                                      :payment_system, :national_currency, :national_currency_amount_from,
+                                      :national_currency_amount_to, :cryptocurrency_amount_from,
+                                      :cryptocurrency_amount_to)
     end
   end
 end

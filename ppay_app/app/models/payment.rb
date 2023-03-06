@@ -3,10 +3,26 @@
 class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
+  include Filterable
+  include EnumValidatable
 
   audited
 
   default_scope { order(created_at: :desc) }
+  scope :filter_by_created_from, ->(created_from) { where('payments.created_at > ?', created_from) }
+  scope :filter_by_created_to, ->(created_to) { where('payments.created_at < ?', created_to) }
+  scope :filter_by_cancellation_reason, ->(cancellation_reason) { where(cancellation_reason:) }
+  scope :filter_by_payment_status, ->(payment_status) { where(payment_status:) }
+  scope :filter_by_payment_system, ->(payment_system) { where(payment_system:) }
+  scope :filter_by_national_currency, ->(national_currency) { where(national_currency:) }
+  scope :filter_by_national_currency_amount_from,
+        ->(national_currency_amount) { where 'national_currency_amount > ?', national_currency_amount }
+  scope :filter_by_national_currency_amount_to,
+        ->(national_currency_amount) { where 'national_currency_amount < ?', national_currency_amount }
+  scope :filter_by_cryptocurrency_amount_from,
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount > ?', cryptocurrency_amount }
+  scope :filter_by_cryptocurrency_amount_to,
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount < ?', cryptocurrency_amount }
 
   enum cancellation_reason: {
     by_client: 0,
@@ -14,6 +30,12 @@ class Payment < ApplicationRecord
     fraud_attempt: 2,
     incorrect_amount: 3
   }
+  enum processing_type: { internal: 0, external: 1 }
+  enum unique_amount: {
+    none: 0,
+    integer: 1,
+    decimal: 2
+  }, _prefix: true
 
   has_many :transactions, as: :transactionable
 
@@ -41,13 +63,19 @@ class Payment < ApplicationRecord
   before_save :complete_transactions, if: -> { payment_status.in?(%w[completed]) && payment_status_changed? }
   before_save :cancel_transactions, if: -> { payment_status.in?(%w[cancelled]) && payment_status_changed? }
 
-  validates_presence_of :national_currency, :national_currency_amount,
-                        :redirect_url, :callback_url
-  
+  validates_presence_of :payment_system, if: :external?
+  validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
+  validates_presence_of :national_currency, :national_currency_amount, :callback_url
+  validates_presence_of :redirect_url, if: :internal?
+
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 
   validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
+
+  validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),
+                                         valid_values: unique_amounts.keys.join(', ') }
+  validatable_enum :unique_amount
 
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
@@ -62,7 +90,7 @@ class Payment < ApplicationRecord
     end
   }
 
-  after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) }
+  after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
@@ -76,12 +104,6 @@ class Payment < ApplicationRecord
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
   end
-
-  enum unique_amount: {
-    none: 0,
-    integer: 1,
-    decimal: 2
-  }, _prefix: true
 
   def signature
     data = { national_currency:, initial_amount:, external_order_id: }.to_json
@@ -149,7 +171,7 @@ class Payment < ApplicationRecord
   end
 
   def set_default_unique_amount
-    self.unique_amount = self.merchant.unique_amount
+    self.unique_amount = merchant.unique_amount
   end
 
   def set_initial_amount

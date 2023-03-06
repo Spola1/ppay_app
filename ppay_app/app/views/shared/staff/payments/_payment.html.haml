@@ -125,9 +125,9 @@
               %td.item-card-td.item-card-td-label Номер карты
               %td.item-card-td
                 - if payment.type == 'Deposit'
-                  = "номер карты не нужен"
+                  = payment.advertisement&.decorate&.formatted_card_number
                 - else
-                  = "#{payment.card_number}"
+                  = payment.formatted_card_number
 
 
             %tr.item-card-tr

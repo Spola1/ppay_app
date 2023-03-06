@@ -119,11 +119,22 @@
     @apply flex flex-wrap;
   }
 
+  .filters-wrap {
+    @apply p-2 w-full
+  }
+
   .icon-button {
     @apply border border-transparent text-center bg-blue-600 text-white font-medium text-xs leading-tight uppercase
       rounded shadow-md w-min px-3 py-2
       hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .icon-button-red {
+    @apply border border-transparent text-center bg-red-700 text-white font-medium text-xs leading-tight uppercase
+      rounded shadow-md w-min px-3 py-2
+      hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
   .icon-button-gray {
@@ -142,7 +153,7 @@
   }
 
   .simple_form .input input.string, .simple_form .input input.text, .simple_form .input input.numeric,
-  .simple_form .input textarea.text {
+  .simple_form .input textarea.text, .simple_form .input input.date {
     @apply form-input;
   }
 
@@ -165,6 +176,27 @@
 
   .simple_form .input .error {
     @apply text-red-500 text-xs block;
+  }
+
+  .simple_form.filters .filters-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8;
+  }
+
+  .simple_form.filters .filters-grid .input label abbr[title=required] {
+    @apply hidden;
+  }
+
+  .simple_form.filters .filters-grid .input, .simple_form.filters .filters-grid label {
+    @apply my-0;
+  }
+
+  .simple_form.filters .filters-grid label {
+    @apply mb-1;
+  }
+
+  .simple_form.filters .filters-grid .input input, .simple_form.filters .filters-grid .input select,
+  .simple_form.filters .filters-grid .input textarea {
+    @apply w-full max-w-full;
   }
 
   .toast {
@@ -250,6 +282,10 @@
 
   .proc-amount-content {
     @apply text-left text-3xl font-medium;
+  }
+
+  .proc-amount-content1 {
+    @apply text-left text-3xl font-medium flex justify-between;
   }
 
   .proc-shop-block {
@@ -451,6 +487,40 @@
 
   .error-messages-in-payments-forms {
     @apply py-3 mb-2;
+  }
+
+  .modal_title {
+    @apply font-medium text-sm;
+  }
+  
+  .modal_text {
+    @apply text-sm text-xs mt-2;
+  }
+
+  .modal_button {
+    @apply green-button w-1/2 h-10 text-xs px-1 pt-2 mt-4 rounded-md items-center;
+  }
+
+  .copy-button {
+    @apply pr-20
+  }
+
+  .svg-button {
+    @apply w-6 h-6 mt-1;
+  }
+
+  .reset-button {
+    @apply px-6 py-2.5 bg-gray-100 font-medium text-sm leading-tight uppercase rounded shadow-md
+      hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .items-list-td.direction-deposit, .items-list-td.advertisement-status-true {
+    @apply text-green-500;
+  }
+
+  .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
+    @apply text-red-500;
   }
 }
 

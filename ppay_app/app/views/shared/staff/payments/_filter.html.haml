@@ -1,0 +1,27 @@
+= simple_form_for :payment_filters, url: payments_path,
+  method: :get,
+  data: { turbo_frame: 'content', turbo_action: :advance, controller: 'reset-form-button' },
+  html: { class: 'filters'} do |f|
+
+  .filters-grid
+    = f.input :created_from, as: :date, html5: true, input_html:{ value: payment_filters_params(:created_from) }
+    = f.input :created_to, as: :date, html5: true,  input_html:{ value: payment_filters_params(:created_to) }
+    = f.input :cancellation_reason, collection: cancellation_reasons_collection, include_blank: 'Все',
+                                                                selected: payment_filters_params(:cancellation_reason)
+    = f.input :payment_status, collection: payment_statuses_collection, include_blank: 'Все',
+                                                                selected: payment_filters_params(:payment_status)
+    = f.input :payment_system, collection: Settings.payment_systems, include_blank: 'Все',
+                                                                selected: payment_filters_params(:payment_system)
+    = f.input :national_currency, collection: Settings.national_currencies, include_blank: 'Все',
+                                                                selected: payment_filters_params(:national_currency)
+    = f.input :national_currency_amount_from, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:national_currency_amount_from) }
+    = f.input :national_currency_amount_to, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:national_currency_amount_to) }
+    = f.input :cryptocurrency_amount_from, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:cryptocurrency_amount_from) }
+    = f.input :cryptocurrency_amount_to, as: :numeric,
+                                          input_html:{ value: payment_filters_params(:cryptocurrency_amount_to) }
+
+  = f.submit t('buttons.submit'), class: 'form-submit'
+  = link_to t('buttons.reset'), payments_path, data: { turbo_action: :advance }, class: 'reset-button'

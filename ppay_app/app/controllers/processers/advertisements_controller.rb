@@ -2,22 +2,20 @@
 
 module Processers
   class AdvertisementsController < Staff::BaseController
+    before_action :find_advertisement, only: %i[show edit update destroy]
+
     def index
       @pagy, @advertisements = pagy(current_user.advertisements)
       @advertisements = @advertisements.decorate
     end
 
-    def show
-      @advertisement = current_user.advertisements.find(params[:id])
-    end
+    def show; end
 
     def new
       @advertisement = current_user.advertisements.new
     end
 
-    def edit
-      @advertisement = current_user.advertisements.find(params[:id])
-    end
+    def edit; end
 
     def create
       @advertisement = current_user.advertisements.new(advertisement_params)
@@ -30,7 +28,6 @@ module Processers
     end
 
     def update
-      @advertisement = current_user.advertisements.find(params[:id])
       @advertisement.assign_attributes(advertisement_params)
 
       if @advertisement.save
@@ -40,9 +37,31 @@ module Processers
       end
     end
 
-    def destroy; end
+    def destroy
+      if @advertisement.delete
+        redirect_to advertisements_path, notice: 'Объявление успешно удалено'
+      else
+        redirect_to advertisements_path, alert: 'Ошибка удаления объявления'
+      end
+    end
+
+    def activate_all
+      current_user.advertisements.where(status: false).update_all(status: true)
+
+      redirect_to advertisements_path
+    end
+
+    def deactivate_all
+      current_user.advertisements.where(status: true).update_all(status: false)
+
+      redirect_to advertisements_path
+    end
 
     private
+
+    def find_advertisement
+      @advertisement = current_user.advertisements.find(params[:id])
+    end
 
     def advertisement_params
       params.require(:advertisement).permit(:id, :direction, :national_currency, :cryptocurrency, :payment_system,
