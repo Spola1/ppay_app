@@ -10,4 +10,8 @@ class Commission < ApplicationRecord
     working_group: 2,
     agent: 3
   }
+
+  %i[ppay processer working_group agent].each do |commission_type|
+    scope commission_type, -> { where(commission_type:) }
+  end
 end
