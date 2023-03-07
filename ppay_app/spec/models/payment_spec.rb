@@ -13,40 +13,40 @@ RSpec.describe Payment, type: :model do
 
   describe 'before_save' do
     describe 'take_off_arbitration' do
-      let(:payment) { create :payment, payment_status: }
-      let(:payment_status) { :processer_search }
+      let(:payment) { create :payment, payment_status: :processer_search, arbitration: true }
 
-      before(:each) { payment.update(arbitration: true) }
-
-      context 'when status != cancelled or completed and not changed' do
+      context 'status does not change' do
+        before { payment.update(national_currency_amount: (rand(1..1_000_000) / 100.0)) }
         it { expect(payment.arbitration).to eq true }
       end
 
-      context 'when status != cancelled or completed and changed' do
-        before { payment.update(payment_status: :draft) }
-        it { expect(payment.arbitration).to eq true }
+      context 'status changes not to completed or cancelled' do
+        %i[draft processer_search transferring confirming].each do |new_status|
+          before { payment.update(payment_status: new_status) }
+          it { expect(payment.arbitration).to eq true }
+        end
       end
 
-      context 'when status = completed or cancelled and not changed' do
-        let(:payment_status) { :completed }
-        it { expect(payment.arbitration).to eq true }
-      end
-
-      context 'when = completed or cancelled and changed' do
-        before { payment.update(payment_status: :completed) }
-        it { expect(payment.arbitration).to eq false }
+      context 'status changes to completed or cancelled' do
+        %i[cancelled completed].each do |new_status|
+          before { payment.update(payment_status: new_status) }
+          it { expect(payment.arbitration).to eq false }
+        end
       end
     end
 
-    describe 'cancel/complete payment transactions' do
-      let(:payment) { create :payment, :with_transactions, payment_status: }
-      context 'when the payment status = cancelled' do
-        let(:payment_status) { :cancelled }
+    describe 'cancel/complete transactions' do
+      let(:payment) { create :payment, :with_transactions, payment_status: :transferring }
+
+      it { expect(payment.transactions.map(&:status)).to all(eq 'frozen') }
+
+      context 'status changes to cancelled' do
+        before { payment.update payment_status: :cancelled }
         it { expect(payment.transactions.map(&:status)).to all(eq 'cancelled') }
       end
 
-      context 'when the payment status = completed' do
-        let(:payment_status) { :completed }
+      context 'status changes to completed' do
+        before { payment.update payment_status: :completed }
         it { expect(payment.transactions.map(&:status)).to all(eq 'completed') }
       end
     end
@@ -55,22 +55,26 @@ RSpec.describe Payment, type: :model do
   describe '#transactions_cannot_be_completed_or_cancelled' do
     subject { payment.errors[:transactions] }
 
-    let(:payment) { create(:payment, :with_transactions) }
+    context 'on status changes' do
+      before { payment.update(payment_status: :draft) }
 
-    before { payment.update(payment_status: :draft) }
+      context 'frozen transactions' do
+        let(:payment) { create(:payment, :with_transactions) }
 
-    it { is_expected.to be_empty }
+        it { is_expected.to be_empty }
+      end
 
-    context 'completed transactions' do
-      let(:payment) { create(:payment, :with_completed_transactions) }
+      context 'completed transactions' do
+        let(:payment) { create(:payment, :with_completed_transactions) }
 
-      it { is_expected.to match_array(['already completed or cancelled']) }
-    end
+        it { is_expected.to match_array(['already completed or cancelled']) }
+      end
 
-    context 'cancelled transactions' do
-      let(:payment) { create(:payment, :with_completed_transactions) }
+      context 'cancelled transactions' do
+        let(:payment) { create(:payment, :with_completed_transactions) }
 
-      it { is_expected.to match_array(['already completed or cancelled']) }
+        it { is_expected.to match_array(['already completed or cancelled']) }
+      end
     end
   end
 
@@ -208,7 +212,7 @@ RSpec.describe Payment, type: :model do
                                                              'status_changed_at' => [nil, payment.status_changed_at])
     end
   end
-  
+
   describe 'cancellation_reason' do
     it {
       is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1,
