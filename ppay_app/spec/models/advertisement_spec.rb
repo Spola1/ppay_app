@@ -13,81 +13,102 @@ RSpec.describe Advertisement, type: :model do
     it { is_expected.to validate_presence_of(:national_currency) }
     it { is_expected.to validate_presence_of(:cryptocurrency) }
     it { is_expected.to validate_presence_of(:payment_system) }
-    # it { is_expected.to validate_presence_of(:card_number) }
+  end
+
+  describe 'presence of card_number validation' do
+    let!(:advertisement1) { create(:advertisement, :deposit) }
+    let!(:advertisement2) { create(:advertisement, :withdrawal) }
+
+    describe 'when direction is Deposit' do
+      it 'is valid' do
+        expect(Advertisement.by_direction('Deposit')).to include(advertisement1)
+      end
+    end
+
+    describe 'when direction is not Deposit' do
+      it 'is invalid' do
+        expect(Advertisement.by_direction('Deposit')).not_to include(advertisement2)
+      end
+    end
   end
 
   describe 'scopes' do
-    let(:advertisement1) { create(:advertisement, :deposit) }
-    let(:advertisement2) { create(:advertisement, :withdrawal) }
-
-    describe '.active' do
-      let(:advertisement1) { create(:advertisement, :deposit, status: true) }
+    describe 'active scope' do
+      let!(:advertisement1) { create(:advertisement, :deposit, status: true) }
+      let!(:advertisement2) { create(:advertisement, :deposit, status: false) }
 
       it 'returns active advertisements' do
-        expect(Advertisement.active).to match_array [advertisement1]
+        expect(Advertisement.active).to include(advertisement1)
       end
 
       it 'does not returns active advertisements' do
-        create(:advertisement, :deposit, status: false)
-        expect(Advertisement.active).to be_empty
+        expect(Advertisement.active).not_to include(advertisement2)
       end
     end
 
     describe '.by_payment_system' do
+      let!(:advertisement1) { create(:advertisement, :deposit, :payment_system) }
+
       it 'returns advertisements by payment system' do
-        expect(Advertisement.by_payment_system('AlfaBank')).to match_array [advertisement1]
+        expect(Advertisement.by_payment_system('AlfaBank')).to include(advertisement1)
       end
 
       it 'does not returns advertisements by payment system' do
-        create(:advertisement, :deposit)
-        expect(Advertisement.by_payment_system('Tinkoff')).to be_empty
+        expect(Advertisement.by_payment_system('Tinkoff')).not_to include(advertisement1)
       end
     end
 
     describe '.by_amount' do
+      let(:max_summ) { 10_000 }
+      let(:min_summ) { 10 }
+      let!(:advertisement1) { create(:advertisement, :deposit, :min_summ, :max_summ) }
       it 'returns advertisements by amount' do
-        expect(Advertisement.by_amount(1000)).to match_array [advertisement1]
+        expect(Advertisement.by_amount(max_summ - 1)).to include(advertisement1)
+        expect(Advertisement.by_amount(min_summ + 1)).to include(advertisement1)
       end
 
       it 'does not returns advertisements by amount < min_summ' do
-        create(:advertisement, :deposit)
-        expect(Advertisement.by_amount(9)).to be_empty
+        expect(Advertisement.by_amount(min_summ - 1)).not_to include(advertisement1)
       end
 
       it 'does not returns advertisements by amount > max_summ' do
-        create(:advertisement, :deposit)
-        expect(Advertisement.by_amount(10_001)).to be_empty
+        expect(Advertisement.by_amount(max_summ + 1)).not_to include(advertisement1)
       end
     end
 
     describe '.by_processer_balance' do
-      it 'returns advertisements by amount' do
-        expect(Advertisement.by_processer_balance(1000)).to match_array [advertisement1]
+      let!(:advertisement1) { create(:advertisement, :deposit) }
+      let!(:processer1) { create(:processer) }
+      it 'returns advertisements by amount == processer_balance' do
+        expect(Advertisement.by_processer_balance(processer1.balance.amount)).to include(advertisement1)
+      end
+
+      it 'returns advertisements by amount < processer_balance' do
+        expect(Advertisement.by_processer_balance(processer1.balance.amount - 1)).to include(advertisement1)
       end
 
       it 'does not returns advertisements by amount > processer_balance' do
-        create(:advertisement, :deposit)
-        expect(Advertisement.by_processer_balance(1001)).to be_empty
+        expect(Advertisement.by_processer_balance(processer1.balance.amount + 1)).not_to include(advertisement1)
       end
     end
 
     describe '.by_direction' do
+      let!(:advertisement1) { create(:advertisement, :deposit) }
+      let!(:advertisement2) { create(:advertisement, :withdrawal) }
       it 'returns advertisements by deposit direction' do
-        expect(Advertisement.by_direction('Deposit')).to match_array [advertisement1]
+        expect(Advertisement.by_direction('Deposit')).to include(advertisement1)
       end
 
       it 'does not returns advertisements by deposit direction' do
-        create(:advertisement, :withdrawal)
-        expect(Advertisement.by_direction('Deposit')).to be_empty
+        expect(Advertisement.by_direction('Deposit')).not_to include(advertisement2)
       end
 
       it 'returns advertisements by withdrawal direction' do
-        expect(Advertisement.by_direction('Withdrawal')).to match_array [advertisement2]
+        expect(Advertisement.by_direction('Withdrawal')).to include(advertisement2)
       end
 
       it 'does not returns advertisements by withdrawal direction' do
-        create(:advertisement, :deposit)
-        expect(Advertisement.by_direction('Withdrawal')).to be_empty
+        expect(Advertisement.by_direction('Withdrawal')).not_to include(advertisement1)
       end
     end
   end
