@@ -7,6 +7,14 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  # https://github.com/eeshugerman/postgres-backup-s3
+  postgres-backup:
+    image: eeshugerman/postgres-backup-s3:14
+    environment:
+      SCHEDULE: '@daily'
+      BACKUP_KEEP_DAYS: 7
+      S3_PREFIX: backup
+
   redis:
     image: redis:7.0.5-bullseye
     restart: unless-stopped
