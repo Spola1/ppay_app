@@ -10,7 +10,7 @@ module Payments
           merchant.commissions
                   .where(
                     direction: type,
-                    payment_system:,
+                    payment_system: PaymentSystem.find_by(name: payment_system),
                     national_currency:
                   )
       end
