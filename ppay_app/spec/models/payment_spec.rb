@@ -222,4 +222,94 @@ RSpec.describe Payment, type: :model do
                                                                        fraud_attempt: 2, incorrect_amount: 3)
     }
   end
+
+  describe 'scope' do
+    let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount: }
+    let!(:payment2) { create :payment, :UZS, created_at: }
+    let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
+    let(:created_at)  { 'Mon, 06 Mar 2023 22:53:42.811063000 MSK +03:00' }
+    let(:national_currency_amount) { 1000 }
+    let(:cryptocurrency_amount) { 111 }
+
+    describe 'filter_by_created_from' do
+      context 'when 03.09.2023' do
+        subject(:payment) { Payment.filter_by_created_from('03.09.2023') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_created_to' do
+      context 'when 03.09.2023' do
+        subject(:payment) { Payment.filter_by_created_to('03.09.2023') }
+        let(:correct_result) { [payment2] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+
+    describe 'filter_by_cancellation_reason' do
+      context 'when by_client' do
+        subject(:payment) { Payment.filter_by_cancellation_reason('by_client') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_payment_status' do
+      context 'when cancelled' do
+        subject(:payment) { Payment.filter_by_payment_status('cancelled') }
+        let(:correct_result) { [payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_national_currency' do
+      context 'when RUB' do
+        subject(:payment) { Payment.filter_by_national_currency('RUB') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_payment_system' do
+      context 'when Tinkoff' do
+        subject(:payment) { Payment.filter_by_payment_system('Tinkoff') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_national_currency_amount_from' do
+      context 'when 500' do
+        subject(:payment) { Payment.filter_by_national_currency_amount_from('500') }
+        let(:correct_result) { [payment3] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_national_currency_amount_to' do
+      context 'when 500' do
+        subject(:payment) { Payment.filter_by_national_currency_amount_to('500') }
+        let(:correct_result) { [payment1, payment2] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_cryptocurrency_amount_from' do
+      context 'when 50' do
+        subject(:payment) { Payment.filter_by_cryptocurrency_amount_from('50') }
+        let(:correct_result) { [payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_cryptocurrency_amount_to' do
+      context 'when 50' do
+        subject(:payment) { Payment.filter_by_cryptocurrency_amount_to('50') }
+        let(:correct_result) { [payment3, payment2] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+  end
 end
