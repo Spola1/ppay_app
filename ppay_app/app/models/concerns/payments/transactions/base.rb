@@ -16,19 +16,19 @@ module Payments
       end
 
       def processer_commission
-        merchant_commissions.processer.first&.commission || 1
+        merchant_commissions.processer.first.commission
       end
 
       def working_group_commission
-        merchant_commissions.working_group.first&.commission || 0
+        merchant_commissions.working_group.first.commission
       end
 
       def agent_commission
-        merchant_commissions.agent.first&.commission || 0
+        merchant_commissions.agent.first.commission
       end
 
       def ppay_commission
-        merchant_commissions.ppay.first&.commission || Settings.ppay_commission
+        merchant_commissions.ppay.first.commission
       end
 
       def complete_transactions

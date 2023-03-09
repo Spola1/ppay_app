@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_06_145525) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -154,6 +154,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_06_145525) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["merchant_id"], name: "index_commissions_on_merchant_id"
+    t.index ["payment_system_id", "national_currency", "direction", "commission_type", "merchant_id"], name: "index_unique_commission", unique: true
     t.index ["payment_system_id"], name: "index_commissions_on_payment_system_id"
   end
 
