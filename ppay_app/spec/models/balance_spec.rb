@@ -7,6 +7,10 @@ RSpec.describe Balance, type: :model do
   it { is_expected.to have_many(:to_transactions).class_name('Transaction').with_foreign_key(:to_balance_id) }
   it { is_expected.to belong_to(:balanceable) }
 
+  describe 'validations' do
+    it { is_expected.to validate_numericality_of(:amount).is_greater_than_or_equal_to(0) }
+  end
+
   describe '#withdraw' do
     let(:processer1) { create(:processer) }
 
