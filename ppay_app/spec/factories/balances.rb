@@ -7,5 +7,9 @@ FactoryBot.define do
     trait :with_money do
       amount { 1000 }
     end
+
+    trait :amount do
+      amount { 1000 }
+    end
   end
 end

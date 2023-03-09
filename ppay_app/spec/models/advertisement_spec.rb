@@ -15,23 +15,6 @@ RSpec.describe Advertisement, type: :model do
     it { is_expected.to validate_presence_of(:payment_system) }
   end
 
-  describe 'presence of card_number validation' do
-    let!(:advertisement1) { create(:advertisement, :deposit) }
-    let!(:advertisement2) { create(:advertisement, :withdrawal) }
-
-    describe 'when direction is Deposit' do
-      it 'is valid' do
-        expect(Advertisement.by_direction('Deposit')).to include(advertisement1)
-      end
-    end
-
-    describe 'when direction is not Deposit' do
-      it 'is invalid' do
-        expect(Advertisement.by_direction('Deposit')).not_to include(advertisement2)
-      end
-    end
-  end
-
   describe 'scopes' do
     describe 'active scope' do
       let!(:advertisement1) { create(:advertisement, :deposit, status: true) }

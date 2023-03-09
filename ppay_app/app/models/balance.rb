@@ -9,6 +9,8 @@ class Balance < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   def withdraw(amount)
+    raise(ArgumentError, 'Amount must be positive') unless amount.positive?
+
     with_lock do
       self.amount -= amount
       save!
@@ -16,6 +18,8 @@ class Balance < ApplicationRecord
   end
 
   def deposit(amount)
+    raise(ArgumentError, 'Amount must be positive') unless amount.positive?
+
     with_lock do
       self.amount += amount
       save!
