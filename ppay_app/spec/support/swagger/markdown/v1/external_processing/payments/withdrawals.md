@@ -71,6 +71,21 @@
         </ul>
       </td>
     </tr>
+    <tr>
+      <td><code>cancellation_reason</code></td>
+      <td>Причина отмены</td>
+      <td>String</td>
+      <td>Опционально</td>
+      <td>
+        Причина отмены платежа. Может иметь следующие значения:
+        <ul>
+          <li><strong>by_client</strong> — Отменено клиентом</li>
+          <li><strong>duplicate_payment</strong> — Задублированный платеж</li>
+          <li><strong>fraud_attempt</strong> — Попытка мошенничества</li>
+          <li><strong>incorrect_amount</strong> — Переведённая клиентом сумма не соответствует запрошенной</li>
+        </ul>
+      </td>
+    </tr>
   </tbody>
 </table>
 
