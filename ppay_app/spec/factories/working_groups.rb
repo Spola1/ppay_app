@@ -2,5 +2,6 @@
 
 FactoryBot.define do
   factory :working_group do
+    name { 'working_group' }
   end
 end

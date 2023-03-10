@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module PaymentsHelper
+  AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
+  MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
+
   def edit_payment_path(payment)
     public_send("edit_payments_#{payment.type.underscore}_path", uuid: payment.uuid)
   end
@@ -25,6 +28,14 @@ module PaymentsHelper
     end
   end
 
+  def support_payment_statuses_collection
+    AVAILABLE_STATUSES_COLLECTION.map { |status| [state_translation(status), status] }
+  end
+
+  def can_manage_payment?
+    role_namespace.in?(MANAGEMENT_NAMESPACES)
+  end
+
   def cancellation_reasons_collection
     Payment.cancellation_reasons.keys.map do |reason|
       [cancellation_reason_translation(reason), reason]
@@ -35,6 +46,10 @@ module PaymentsHelper
     return if number.blank? || number.zero?
 
     number.positive? ? 'text-green-500' : 'text-red-500'
+  end
+
+  def payment_filters_params(key)
+    params[:payment_filters][key] if params[:payment_filters]
   end
 
   private

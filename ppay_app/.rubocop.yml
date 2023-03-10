@@ -2,6 +2,42 @@
 
 AllCops:
   NewCops: enable
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'public/**/*'
+    - 'config/**/*'
+    - 'Gemfile'
+    - 'lib/tasks/*'
+    - 'app/services/binance/**/*'
 
+Metrics/ParameterLists:
+  Exclude:
+    - 'app/sidekiq/rate_snapshots/get_binance_p2p_rates_job.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'app/models/concerns/state_machines/**/*'
+
+Lint/Void:
+  Exclude:
+    - 'app/models/concerns/state_machines/payments/**/*'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'app/models/payment.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/support/swagger/schemas/v1/**/*'
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/payments/update_callback_service.rb'
+
+    
 Style/Documentation:
   Enabled: false

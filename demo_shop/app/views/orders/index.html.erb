@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>My Orders</h1>
+  <% if @orders.empty?%>
+    <h1>You have no past orders!</h1>
+  <% else %>
+    <div class="row">
+      <% @orders.each do |order| %>
+        <div class="col-6 col-md-4">
+          <div class="card m-2">
+            <div class="card-body">
+              <h3>Order: <%= order.id %></h3>
+              -------------------------------
+              <h5> <% order.products.each do |product| %>
+                |<%= product.name %>|
+                <% end %>
+              </h5>
+              -------------------------------
+              <% @total = 0 %>
+                <% order.line_items.each do |item| %>
+                  <% @total += item.product.price_cents * item.quantity %>
+                <% end %>
+              <p class="card-price">Price: <%= @total %>₽</p>
+              <p class="card-price">Status: <%= order.status %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+  </div>
+  <% end %>
+</div>

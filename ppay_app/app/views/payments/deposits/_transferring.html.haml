@@ -1,71 +1,87 @@
-.proc_head
-  .proc_logo
-  .proc_text
+.proc-head
+  .proc-logo
+  .proc-text
     UID Check
 
-.countdown_payment_block_text
+.proc-amount-block
+  .proc-amount-content1{ 'data-controller': 'clipboard' }
+    %div{ 'data-clipboard-target': 'source' }
+      #{payment.national_currency_amount}
+    %div.pr-3
+      #{payment.national_currency}
+    .copy-button
+      = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+        = image_tag 'copy.svg', class: 'h-full'
+
+.proc-countdown-block
   Вы можете оплатить в течение:
-  %span.countdown{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
+  .text-red.font-medium{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
     = payment.countdown
 
+.mt-1
+  .proc-shop-block
+    .proc-shop-title
+      Магазин
+    .proc-shop-content
+      = payment.merchant.name
 
-.proc_amount_block
-  .proc_amount_content
-    = "#{payment.national_currency_amount} #{payment.national_currency}"
-
-
-.proc_card_sceomorph
-  .proc_card_sceomorph_bank
-    = payment.payment_system.upcase
-  .proc_card_sceomorph_number
-    - #cards_string = ""
-    - #payment.advertisement.card_number.scan(/.{4}/).each {|word| cards_string << "#{word} " }
-    = #cards_string
-    = payment.advertisement.card_number
-  .proc_card_sceomorph_footer
-
-
-.proc_order_block2
-  .proc_order_title2
+.proc-order-block
+  .proc-order-title
     Заказ
-  .proc_order_content2
+  .proc-order-content
     = payment.external_order_id
 
+.text-instruction
+  %span.text-red
+    1.
+  %span
+    Сделайте перевод указанной суммы по номеру карты указанному ниже
 
-.proc_send_summ
-  %b
-    1. Отправьте указанную сумму 
-    %br
-    на этот номер карты.
-  %br
-  Сумма должна быть в точности та, что указана на экране.
+= render 'payments/deposits/change_sum', payment: payment
+= render 'payments/deposits/bank_card', payment: payment
 
-  - if payment.merchant.check_required?
-    Пожалуйста, добавьте изображение с подтверждением платежа.
-    Добавление изображения позволит нам обработать Ваш платеж значительно быстрее.
 
 = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
   = hidden_field_tag :event, 'check'
 
   - if payment.merchant.check_required?
+  
+    .add-img-confirm
+      %span.text-red
+        2.
+      %span
+        Добавьте изображение чека:
+
     - if payment.image.present?
       = image_tag payment.image
-      %br
-    .add_img_confirm
-      %b
-        2. Добавьте изображение:
-    %br
+
     = render 'payments/errors', payment: payment
-    = f.file_field :image
-  %br
 
-  = f.submit "Оплата завершена", class: "payment-finished-button"
+    = f.file_field :image, class: 'filepond',
+                           direct_upload: true,
+                           data: { controller: 'filepond', 'max-file-size': '5MB' }
 
+  - if payment.merchant.check_required?
+    .text-instruction
+      %span.text-red
+        3.
+      %span
+        После перевода нажмите кнопку «Оплата завершена»
+  
+  - else
+    .text-instruction
+      %span.text-red
+        2.
+      %span        
+        После перевода нажмите кнопку «Оплата завершена»
 
-.alerts_block_sending
-  %p Внимание:
-  %p 
-    Если Вы совершили оплату и не нажали на кнопку "Оплата завершена", то зачисление оплаты не гарантируется. Если Вы совершили оплату и нажали на кнопку "Отмена", то оплата не будет зачислена. При отправке денежных средств по указанным реквизитам оставлять комментарии в назначении платежа категорически запрещено.
+  
+  = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5'
 
-.block_sending_cancel_on_img_form
+.block-sending-cancel-on-img-form
   = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+
+- if payment.arbitration
+  = render "/shared/tg_link"
+
+= render 'payments/uuid', payment:

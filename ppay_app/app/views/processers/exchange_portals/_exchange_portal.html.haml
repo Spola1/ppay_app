@@ -1,0 +1,12 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label ID
+        %td.item-card-td= @exchange_portal.id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Создан в
+        %td.item-card-td= @exchange_portal.decorate.formatted_created_at
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Название
+        %td.item-card-td= @exchange_portal.name

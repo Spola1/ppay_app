@@ -8,7 +8,7 @@ module StateMachines
       private
 
       def assign_params(params, keys)
-        assign_attributes(params.slice(*keys))
+        assign_attributes(params.slice(*keys)) if params
         valid?
       end
 
@@ -18,6 +18,10 @@ module StateMachines
 
       def search_processer
         "::Payments::SearchProcesser::#{type}Job".constantize.perform_async(id)
+      end
+
+      def inline_search_processer
+        "::Payments::SearchProcesser::#{type}Job".constantize.new.perform(id)
       end
 
       def valid_payment_system?(params)
@@ -47,21 +51,26 @@ module StateMachines
         self.cancellation_reason = 0
       end
 
-      def has_advertisement?
+      def advertisement?
         advertisement.present?
       end
 
       def valid_image?(params)
+        return true unless merchant.check_required
+
         assign_params(params, %i[image])
         validate_image
       end
 
       def validate_image
-        return true unless merchant.check_required
         return true if image.present?
 
         errors.add(:image, :blank)
         false
+      end
+
+      def uniqueization_difference
+        self.class::UNIQUEIZATION_DIFFERENCE
       end
     end
   end

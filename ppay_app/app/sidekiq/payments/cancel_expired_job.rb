@@ -3,7 +3,7 @@
 module Payments
   class CancelExpiredJob
     include Sidekiq::Job
-    sidekiq_options queue: 'high', tags: ['cancel_expired']
+    sidekiq_options queue: 'low', tags: ['cancel_expired']
 
     def perform
       Payment.transferring.expired.find_each do |payment|
