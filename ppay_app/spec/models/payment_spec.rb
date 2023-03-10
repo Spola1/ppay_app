@@ -94,9 +94,18 @@ RSpec.describe Payment, type: :model do
     describe '#ensure_unique_amount for deposits' do
       let(:advertisement) { create(:advertisement, :deposit) }
       let(:unique_amount) { nil }
-      let(:payment1) { create(:payment, :deposit, :processer_search, advertisement:, unique_amount:, payment_system: payment_system.name) }
-      let(:payment2) { create(:payment, :deposit, :processer_search, advertisement:, unique_amount:, payment_system: payment_system.name) }
-      let(:payment3) { create(:payment, :deposit, :processer_search, advertisement:, unique_amount:, payment_system: payment_system.name) }
+      let(:payment1) do
+        create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      payment_system: payment_system.name)
+      end
+      let(:payment2) do
+        create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      payment_system: payment_system.name)
+      end
+      let(:payment3) do
+        create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      payment_system: payment_system.name)
+      end
 
       it 'doesnt change amount' do
         expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
@@ -118,7 +127,10 @@ RSpec.describe Payment, type: :model do
         it_behaves_like 'changes payment status to transferring'
 
         context 'when different types' do
-          let(:payment1) { create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:, payment_system: payment_system.name) }
+          let(:payment1) do
+            create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:,
+                                                             payment_system: payment_system.name)
+          end
 
           it 'changes amount depending on unique_amount' do
             expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
@@ -140,7 +152,10 @@ RSpec.describe Payment, type: :model do
         it_behaves_like 'changes payment status to transferring'
 
         context 'when different types' do
-          let(:payment1) { create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:, payment_system: payment_system.name) }
+          let(:payment1) do
+            create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:,
+                                                             payment_system: payment_system.name)
+          end
 
           it 'changes amount depending on unique_amount' do
             expect { payment1.bind! }.not_to change { payment1.reload.national_currency_amount }.from(100)
