@@ -15,6 +15,26 @@ RSpec.describe Advertisement, type: :model do
     it { is_expected.to validate_presence_of(:payment_system) }
   end
 
+  describe 'card_number validations' do
+    it 'validates the length of card_number == 16' do
+      advertisement = build(:advertisement, direction: 'Deposit', card_number: '1234567812345678')
+      expect(advertisement.save).to be_truthy
+      expect(advertisement).to be_valid
+    end
+
+    it 'does not validates the length of card_number.length < 16' do
+      advertisement = build(:advertisement, direction: 'Deposit', card_number: '123456781234567')
+      expect(advertisement.save).not_to be_truthy
+      expect(advertisement).not_to be_valid
+    end
+
+    it 'does not validates the length of card_number.length > 16' do
+      advertisement = build(:advertisement, direction: 'Deposit', card_number: '12345678123456789')
+      expect(advertisement.save).not_to be_truthy
+      expect(advertisement).not_to be_valid
+    end
+  end
+
   describe 'scopes' do
     describe 'active scope' do
       let!(:advertisement1) { create(:advertisement, :deposit, status: true) }

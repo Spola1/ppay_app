@@ -108,8 +108,12 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are transactions but not today' do
-      let!(:transaction1) { create(:transaction, to_balance: processer1.balance, amount: 100, created_at: Date.today - 1.day) }
-      let!(:transaction2) { create(:transaction, from_balance: processer1.balance, amount: 50, created_at: Date.today - 1.day) }
+      let!(:transaction1) do
+        create(:transaction, to_balance: processer1.balance, amount: 100, created_at: Date.today - 1.day)
+      end
+      let!(:transaction2) do
+        create(:transaction, from_balance: processer1.balance, amount: 50, created_at: Date.today - 1.day)
+      end
 
       it 'returns 0' do
         expect(processer1.balance.today_change).to eq(0)
@@ -128,7 +132,9 @@ RSpec.describe Balance, type: :model do
 
     context 'when there are negative from transactions and positive to transactions today' do
       let!(:transaction1) { create(:transaction, to_balance: processer1.balance, amount: 100, created_at: Date.today) }
-      let!(:transaction2) { create(:transaction, from_balance: processer1.balance, amount: 150, created_at: Date.today) }
+      let!(:transaction2) do
+        create(:transaction, from_balance: processer1.balance, amount: 150, created_at: Date.today)
+      end
 
       it 'returns a negative number' do
         expect(processer1.balance.today_change).to eq(-50)
@@ -155,10 +161,18 @@ RSpec.describe Balance, type: :model do
   describe '#transactions' do
     let!(:processer1) { create(:processer) }
     let!(:merchant1) { create(:merchant) }
-    let!(:from_transaction1) { create(:transaction, :completed, from_balance: processer1.balance, to_balance: merchant1.balance) }
-    let!(:frozen_from_transaction2) { create(:transaction, :frozen, from_balance: processer1.balance, to_balance: merchant1.balance) }
-    let!(:to_transaction1) { create(:transaction, :completed, from_balance: merchant1.balance, to_balance: processer1.balance) }
-    let!(:frozen_to_transaction2) { create(:transaction, :frozen, from_balance: merchant1.balance, to_balance: processer1.balance) }
+    let!(:from_transaction1) do
+      create(:transaction, :completed, from_balance: processer1.balance, to_balance: merchant1.balance)
+    end
+    let!(:frozen_from_transaction2) do
+      create(:transaction, :frozen, from_balance: processer1.balance, to_balance: merchant1.balance)
+    end
+    let!(:to_transaction1) do
+      create(:transaction, :completed, from_balance: merchant1.balance, to_balance: processer1.balance)
+    end
+    let!(:frozen_to_transaction2) do
+      create(:transaction, :frozen, from_balance: merchant1.balance, to_balance: processer1.balance)
+    end
 
     it 'returns transactions for the balance' do
       expect(processer1.balance.transactions).to include(from_transaction1, frozen_from_transaction2, to_transaction1)

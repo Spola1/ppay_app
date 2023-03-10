@@ -7,7 +7,7 @@ FactoryBot.define do
     trait :frozen do
       status { 'frozen' }
     end
-    
+
     trait :completed do
       status { 'completed' }
     end
