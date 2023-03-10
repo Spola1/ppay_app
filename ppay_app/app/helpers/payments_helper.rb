@@ -54,10 +54,10 @@ module PaymentsHelper
 
   def payment_systems_collection_for_payment(payment)
     payment.merchant.payment_systems
-      .joins(:commissions)
-      .where(commissions: { direction: payment.type })
-      .distinct
-      .pluck(:name)
+           .joins(:commissions)
+           .where(commissions: { direction: payment.type })
+           .distinct
+           .pluck(:name)
   end
 
   private
