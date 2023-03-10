@@ -17,15 +17,17 @@ RSpec.describe 'Payment transactions commissions' do
     ].flatten
   end
 
-  let!(:commissions) do
-    build_list(:commission, 2 * 4) do |record, i|
-      record.payment_system = payment_system
-      record.national_currency = national_currency
-      record.direction = %w[Deposit Withdrawal][(i / 4) % 2]
-      record.commission_type = %i[ppay processer agent working_group][i % 4]
-      record.commission = commissions_values[i]
-      record.merchant = merchant
-      record.save!
+  before do
+    %w[Deposit Withdrawal].each_with_index do |direction, di|
+      %i[ppay processer agent working_group].each_with_index do |commission_type, ci|
+        Commission.find_by(
+          payment_system:,
+          national_currency:,
+          direction:,
+          commission_type:,
+          merchant:
+        ).update(commission: commissions_values[(di * 4) + ci])
+      end
     end
   end
 

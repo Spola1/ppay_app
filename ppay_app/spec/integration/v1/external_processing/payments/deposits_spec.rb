@@ -7,7 +7,7 @@ describe 'External processing deposits' do
   let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:adv) { create :advertisement, :deposit, payment_system: 'Tinkoff' }
+  let!(:adv) { create :advertisement, :deposit, payment_system: payment_system.name }
   let!(:ppay) { create :user, :ppay }
 
   path '/api/v1/external_processing/payments/deposits' do
@@ -26,12 +26,12 @@ describe 'External processing deposits' do
                 in: :body,
                 schema: { '$ref': '#/components/schemas/external_processing_deposits_create_parameter_body_schema' }
 
-      let(:payment_system) { 'Tinkoff' }
       let(:national_currency) { 'RUB' }
       let(:unique_amount) { :integer }
+      let(:payment_system_name) { payment_system.name }
       let(:params) do
         {
-          payment_system:,
+          payment_system: payment_system_name,
           national_currency:,
           unique_amount:,
           external_order_id: '1234',
