@@ -4,7 +4,14 @@ import { cable } from "@hotwired/turbo-rails"
 export default class extends Controller {
   connect() {
     this.subscribe()
-    this.scrollMessages()
+    const chatContainer = document.getElementById("chat-container")
+    chatContainer.addEventListener("DOMNodeInserted", this.scrollMessages);
+    this.scrollMessages(chatContainer)
+  }
+
+  disconnect() {
+    const chatContainer = document.getElementById("chat-container")
+    chatContainer.removeEventListener("DOMNodeInserted", this.scrollMessages);
   }
 
   subscribe() {
@@ -27,6 +34,6 @@ export default class extends Controller {
 
   scrollMessages() {
     const chatContainer = document.getElementById("chat-container")
-    if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight
+    chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight
   }
 }
