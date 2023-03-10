@@ -1,13 +1,10 @@
-.flex.flex-col.my-2.items-start
-  .text-xs.mb-1
-    - if chat.user_id?
-      #{chat.user.nickname} (#{chat.user.decorate.human_type})
-    - else
-      Client
-  .chat_item.px-4.py-2.rounded-lg.text-sm.border{
-    class: chat.user_id? ? 'bg-blue-100' : 'bg-slate-100'
-  }
-    .chat_item_text
-      = chat.text
-  .text-xs.mt-1.text-gray-500
-    = chat.created_at.strftime('%Y-%m-%d %H:%M')
+.show_deposit_block
+  %p.text-xl.mb-2 Чат
+  .h-96.overflow-auto#chat-container
+    = turbo_frame_tag :chats do
+      = render partial: '/shared/chat_message', collection: payment.chats, as: :chat
+  .mt-4
+    = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
+          data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
+      = f.text_area :text, class: 'form-input w-full h-16'
+      = f.submit 'Отправить', class: 'form-submit mt-4'

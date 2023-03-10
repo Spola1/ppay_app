@@ -7,7 +7,7 @@ module Payments
     def create
       @chat = @payment.chats.create(**chat_params, user: current_user)
 
-      @chat.broadcast_append_to @chat.payment, partial: '/shared/chat'
+      @chat.broadcast_append_to @chat.payment, partial: '/shared/chat_message'
     end
 
     private
