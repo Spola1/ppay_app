@@ -145,10 +145,6 @@
       - if payment_status_partial_exists?(payment, 'processers')
         = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
 
-  .card-wrap
-    - if payment_status_partial_exists?(payment, 'processers')
-      = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
-      
       .item-card
         %p.text-xl.mb-2 Комментарии
 
