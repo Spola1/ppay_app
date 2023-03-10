@@ -6,6 +6,7 @@ class Merchant < User
   has_many :withdrawals, foreign_key: :merchant_id
   has_many :cards
   has_many :commissions, foreign_key: :merchant_id
+  has_many :payment_systems, through: :commissions
 
   belongs_to :agent, optional: true
 
