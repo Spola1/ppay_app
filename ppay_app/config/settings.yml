@@ -12,6 +12,7 @@ payment_systems:
   - Tinkoff
   - Raiffeisen
   - AlfaBank
+  - HUMO
 navbar:
   admin:
     - name: Все платежи
