@@ -1,16 +1,18 @@
-.proc-head
-  .proc-logo
-  .proc-text
-    UID Check
+.show-deposit
+  .show-deposit-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
-.proc-payment-cancelled-block
-  .proc-payment-cancelled-img
-  Платеж отменён !
+    .proc-payment-cancelled-block
+      .proc-payment-cancelled-img
+      Платеж отменён !
 
-.proc-payment-cancelled-links-block
-  = link_to "вернуться в магазин", payment.redirect_url
+    .proc-payment-cancelled-links-block
+      = link_to "вернуться в магазин", payment.redirect_url
 
-- if payment.arbitration
-  = render "/shared/tg_link", class: 'text-center'
+    - if payment.arbitration
+      = render "/shared/tg_link", class: 'text-center'
 
-= render 'payments/uuid', payment:, class: 'text-center'
+    = render 'payments/uuid', payment:, class: 'text-center'

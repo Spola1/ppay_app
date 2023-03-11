@@ -99,7 +99,7 @@
             - if payment.merchant_id
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.items-list-td= payment.merchant.decorate.display_name            
+                %td.items-list-td= payment.merchant.decorate.display_name
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Снимок курса
@@ -163,6 +163,12 @@
 
         .mt-4
           = form_for Comment.new, url: payment_comments_path(payment_uuid: payment.uuid), remote: true do |f|
-
             = f.text_area :text, class: 'form-input w-full h-16'
             = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
+
+    - if payment.arbitration?
+      .card-wrap
+        .item-card
+          = render 'shared/chat', payment: payment
+
+

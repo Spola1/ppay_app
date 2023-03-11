@@ -1,18 +1,20 @@
-.proc-head
-  .proc-logo
-  .proc-text
-    UID Check
+.show-deposit
+  .show-deposit-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
-.proc-payment-done-block
-  .proc-payment-done-img
-  Успешно!
-  .mt-4
-    Платеж выполнен!
+    .proc-payment-done-block
+      .proc-payment-done-img
+      Успешно!
+      .mt-4
+        Платеж выполнен!
 
-.proc-payment-done-links-block
-  = link_to "вернуться в магазин", payment.redirect_url
+    .proc-payment-done-links-block
+      = link_to "вернуться в магазин", payment.redirect_url
 
-- if payment.arbitration
-  = render "/shared/tg_link", class: 'text-center'
+    - if payment.arbitration
+      = render "/shared/tg_link", class: 'text-center'
 
-= render 'payments/uuid', payment:, class: 'text-center'
+    = render 'payments/uuid', payment:, class: 'text-center'

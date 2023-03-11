@@ -109,6 +109,7 @@ Rails.application.routes.draw do
 
   resources :payments, param: :uuid, only: [] do
     resources :comments, only: :create, controller: 'payments/comments'
+    resources :chats, only: :create, controller: 'payments/chats'
   end
 
   scope module: :processers do
