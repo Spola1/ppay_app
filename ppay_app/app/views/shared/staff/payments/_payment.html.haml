@@ -1,4 +1,3 @@
-= turbo_stream_from payment
 %section.wrap
   .card-wrap
     .item-card
@@ -170,15 +169,6 @@
     - if payment.arbitration?
       .card-wrap
         .item-card
-          %p.text-xl.mb-2 Чат
-          .h-96.overflow-auto#chat-container
-            = turbo_frame_tag :chats do
-              = render partial: '/shared/chat_message', collection: payment.chats, as: :chat
+          = render 'shared/chat', payment: payment
 
-          .mt-4
-            = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
-               data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
-
-              = f.text_area :text, class: 'form-input w-full h-16'
-              = f.submit 'Отправить', class: 'form-submit mt-4'
 
