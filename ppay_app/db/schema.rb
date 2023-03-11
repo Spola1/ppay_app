@@ -293,12 +293,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-<<<<<<< HEAD
   add_foreign_key "chats", "payments"
   add_foreign_key "chats", "users"
-=======
   add_foreign_key "commissions", "payment_systems"
   add_foreign_key "commissions", "users", column: "merchant_id"
->>>>>>> master
   add_foreign_key "crypto_wallets", "users"
 end
