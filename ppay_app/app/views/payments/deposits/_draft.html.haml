@@ -24,14 +24,15 @@
           = payment.external_order_id
 
     = render 'payments/errors', payment: payment
-
+      
     .simple-form-for-payment-deposit
       = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
         .select-payment-system
           = f.label :payment_system, 'Выберите платежную систему'
 
-        = f.select :payment_system, [["Выбрать", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], {}, class: "grey-drop-down"
-
+        = f.select :payment_system, payment_systems_collection_for_payment(payment),
+                                    { include_blank: 'Выбрать' },
+                                    class: 'grey-drop-down'
 
         = hidden_field_tag :event, 'search'
 

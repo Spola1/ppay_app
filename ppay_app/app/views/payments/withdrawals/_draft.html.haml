@@ -32,7 +32,9 @@
 
   .select-payment-system
     = f.label :payment_system, 'Банк'
-    = f.select :payment_system, [["Выбрать", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], {}, class: "grey-drop-down mb-3"
+    = f.select :payment_system, payment_systems_collection_for_payment(payment),
+                                { include_blank: 'Выбрать' },
+                                class: 'grey-drop-down mb-3'
 
   .select-payment-system
     
