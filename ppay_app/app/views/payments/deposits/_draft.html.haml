@@ -1,5 +1,5 @@
-.show-deposit
-  .show-deposit-block
+.show-payment
+  .show-payment-block
     .proc-head
       .proc-logo
       .proc-text
@@ -45,7 +45,7 @@
 
     = render 'payments/alerts_block'
 
-    - if payment.arbitration
-      = render "/shared/tg_link"
-
     = render 'payments/uuid', payment:
+
+  - if payment.arbitration
+    = render 'shared/chat', payment:

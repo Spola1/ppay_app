@@ -108,7 +108,7 @@
   }
 
   .item-card {
-    @apply p-6 block rounded-lg shadow-xl bg-white border;
+    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
   }
 
   .card-wrap {
@@ -414,19 +414,11 @@
     width: 460px;
     border: 1px solid #dedede;
   }
-  .show-deposit-block {
+  .show-payment-block {
     @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
   }
 
-  .show-withdrawal-block {
-    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
-  }
-
-  .show-deposit {
-    @apply flex justify-center;
-  }
-
-  .show-withdrawal {
+  .show-payment {
     @apply flex justify-center;
   }
 

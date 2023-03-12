@@ -1,5 +1,5 @@
-.show-deposit
-  .show-deposit-block
+.show-payment
+  .show-payment-block
     .proc-head
       .proc-logo
       .proc-text
@@ -11,13 +11,7 @@
       .mt-2
         Ожидайте пожалуйста...
 
-    - if payment.arbitration
-      = render "/shared/tg_link", class: 'text-center'
-
     = render 'payments/uuid', payment:
 
   - if payment.arbitration
-    .show-deposit-block
-      = render 'shared/chat', payment:
-
-
+    = render 'shared/chat', payment:

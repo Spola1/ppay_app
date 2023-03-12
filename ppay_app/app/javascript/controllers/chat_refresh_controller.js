@@ -7,6 +7,7 @@ export default class extends Controller {
     const chatContainer = document.getElementById("chat-container")
     chatContainer.addEventListener("DOMNodeInserted", this.scrollMessages);
     this.scrollMessages(chatContainer)
+    this.bindSubmitOnEnter()
   }
 
   disconnect() {
@@ -35,5 +36,14 @@ export default class extends Controller {
   scrollMessages() {
     const chatContainer = document.getElementById("chat-container")
     chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight
+  }
+
+  bindSubmitOnEnter() {
+    $('textarea#chat_text').keydown(function(event) {
+      if (event.which === 13) {
+        event.preventDefault()
+        $('form#new_chat').trigger('requestSubmit')
+      }
+    })
   }
 }
