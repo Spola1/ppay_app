@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class UserDecorator < PaymentDecorator
-  include Rails.application.routes.url_helpers
-
+class UserDecorator < ApplicationDecorator
   delegate_all
 
   def human_type
@@ -10,19 +8,15 @@ class UserDecorator < PaymentDecorator
   end
 
   def audit_user_info
-    "#{human_type} #{display_name} (#{display_email})"
-  end
-
-  def display_email
-    email.to_s
+    "#{human_type} #{display_name} (#{email})"
   end
 
   def display_name
-    nickname.presence || full_name || display_id
+    nickname.presence || full_name.presence || display_id
   end
 
   def full_name
-    [name, surname].reject(&:blank?).join(' ').presence
+    [name, surname].reject(&:blank?).join(' ')
   end
 
   def display_id

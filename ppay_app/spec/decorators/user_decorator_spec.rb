@@ -3,65 +3,66 @@
 require 'rails_helper'
 
 RSpec.describe UserDecorator do
-  let(:user) { create :merchant, name:, nickname: }
-  let(:name) { 'Artur' }
-  let(:nickname) { 'JustKing' }
+  let(:user) { create :merchant, name:, surname:, nickname:, email: }
+  let(:name) { 'Name' }
+  let(:surname) { 'Surname' }
+  let(:nickname) { 'n1ckn4mE' }
+  let(:email) { 'e@ma.il' }
+
+  subject(:decorated) { user.decorate }
 
   describe '#human_type' do
-    it 'should return Мерчант if type Merchant' do
-      expect(user.decorate.human_type).to eq 'Мерчант'
-    end
+    subject { decorated.human_type }
+    it { is_expected.to eq I18n.t('activerecord.attributes.user/type.merchant') }
   end
 
   describe '#display_name' do
-    context 'When nickname, name annd surname = nil' do
-      let(:name) { nil }
-      let(:nickname) { nil }
-      it 'should return ID if nickname = nil and full_name = nil' do
-        expect(user.decorate.display_name).to eq "ID: #{user.id}"
-      end
-    end
+    subject { decorated.display_name }
+
+    it { is_expected.to eq user.nickname }
 
     context 'When nickname = nil' do
       let(:nickname) { nil }
-      it 'should return full_name if nickname not presence' do
-        expect(user.decorate.display_name).to eq user.decorate.full_name
-      end
+      it { is_expected.to eq decorated.full_name }
     end
 
-    it 'should return nickname' do
-      expect(user.decorate.display_name).to eq user.nickname
+    context 'when nickname, name and surname = nil' do
+      let(:name) { nil }
+      let(:surname) { nil }
+      let(:nickname) { nil }
+      it { is_expected.to eq decorated.display_id }
     end
   end
 
   describe '#full_name' do
-    it 'should return name + surname if one of the two precense' do
-      expect(user.decorate.full_name).to eq 'Artur'
+    subject { decorated.full_name }
+
+    it { is_expected.to eq [name, surname].join(' ') }
+
+    context 'When name = nil' do
+      let(:name) { nil }
+      it { is_expected.to eq surname }
+    end
+
+    context 'When surname = nil' do
+      let(:surname) { nil }
+      it { is_expected.to eq name }
     end
 
     context 'When name and surname = nil' do
       let(:name) { nil }
-      it 'should return false if name and surname not precense' do
-        expect(user.decorate.full_name).to eq nil
-      end
+      let(:surname) { nil }
+      it { is_expected.to be_empty }
     end
   end
 
   describe '#display_id' do
-    it 'should return ID' do
-      expect(user.decorate.display_id).to eq "ID: #{user.id}"
-    end
-  end
-
-  describe '#display_email' do
-    it 'should return email' do
-      expect(user.decorate.email).to eq user.email
-    end
+    subject { decorated.display_id }
+    it { is_expected.to eq "ID: #{user.id}" }
   end
 
   describe '#audit_user_info' do
-    it 'should return human type + name/surname/ID + (email)' do
-      expect(user.decorate.audit_user_info).to eq("Мерчант JustKing (#{user.email})")
-    end
+    subject { decorated.audit_user_info }
+    it { is_expected.to eq "#{decorated.human_type} #{decorated.display_name} (#{email})" }
   end
 end
