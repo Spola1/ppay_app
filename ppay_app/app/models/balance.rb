@@ -31,8 +31,6 @@ class Balance < ApplicationRecord
   end
 
   def transactions
-    to_transaction_ids = to_transactions.pluck(:id)
-    frozen_to_transaction_ids = to_transactions.where(status: 'frozen').pluck(:id)
-    from_transactions.or(Transaction.where(id: to_transaction_ids - frozen_to_transaction_ids)).distinct
+    from_transactions.or(to_transactions.without(to_transactions.frozen))
   end
 end
