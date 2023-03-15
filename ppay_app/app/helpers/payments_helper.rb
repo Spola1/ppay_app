@@ -60,6 +60,19 @@ module PaymentsHelper
            .pluck(:name)
   end
 
+  def render_qr_code
+    qrcode = RQRCode::QRCode.new("#{request.original_url}")
+    svg = qrcode.as_svg(
+      color: "000",
+      shape_rendering: "crispEdges",
+      module_size: 1.5,
+      standalone: true,
+      use_path: true
+    )
+    
+    raw svg
+  end
+  
   private
 
   def state_translation(state)
