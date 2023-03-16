@@ -18,17 +18,5 @@ FactoryBot.define do
     trait :withdrawal do
       direction { 'Withdrawal' }
     end
-
-    trait :max_summ do
-      max_summ { 10_000 }
-    end
-
-    trait :min_summ do
-      min_summ { 10 }
-    end
-
-    trait :payment_system do
-      payment_system { 'AlfaBank' }
-    end
   end
 end
