@@ -269,7 +269,7 @@
   }
 
   .proc-logo {
-    @apply bg-[url('/test_logo.jpg')] bg-cover bg-center w-24 h-12;
+    @apply bg-[url('/logo.svg')] bg-contain bg-no-repeat w-40 h-10 mt-1.5;
   }
 
   .proc-text {
@@ -346,6 +346,10 @@
     @apply proc-card-sceomorph bg-[#ef3124];
   }
 
+  .humo-card {
+    @apply proc-card-sceomorph bg-[#244C5A];
+  }
+
   .proc-card-sceomorph-bank {
     @apply text-xl font-extralight text-white;
   }
@@ -362,6 +366,10 @@
     @apply proc-card-sceomorph-bank;
   }
 
+  .humo-card-bank {
+    @apply proc-card-sceomorph-bank text-[#f3e399];
+  }
+
   .proc-card-sceomorph-number {
     @apply mt-4 text-lg text-white font-medium;
   }
@@ -376,6 +384,10 @@
 
   .alfabank-card-number {
     @apply proc-card-sceomorph-number;
+  }
+
+  .humo-card-number {
+    @apply proc-card-sceomorph-number text-[#f3e399];
   }
 
   .proc-card-sceomorph-name{
