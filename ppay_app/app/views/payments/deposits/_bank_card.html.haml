@@ -26,3 +26,10 @@
         = payment.payment_system.upcase
       .alfabank-card-number
         = payment.advertisement.decorate.formatted_card_number
+
+  - when "HUMO"
+    .humo-card
+      .humo-card-bank
+        = payment.payment_system.upcase
+      .humo-card-number
+        = payment.advertisement.decorate.formatted_card_number
