@@ -49,7 +49,11 @@ Rails.application.routes.draw do
     resources :transactions, only: %i[index show]
     resources :balance_requests
     namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index show]
+      resources :deposits, param: :uuid, only: %i[index show create new] do
+        member do
+          get :display_link
+        end
+      end
       resources :withdrawals, only: :index
     end
     root 'payments#index', as: :merchants_root

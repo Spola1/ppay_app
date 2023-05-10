@@ -26,6 +26,8 @@ navbar:
   merchant:
     - name: Все платежи
       path: payments_path
+    - name: Создать оплату
+      path: new_payments_deposit_path
     - name: Транзакции
       path: transactions_path
     - name: Запросы баланса

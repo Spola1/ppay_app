@@ -72,7 +72,8 @@ class Payment < ApplicationRecord
   validates :national_currency, inclusion: { in: Settings.national_currencies,
                                              valid_values: Settings.national_currencies.join(', ') }
 
-  validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
+  #временно отключено - для работы display_link
+  #validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
 
   validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),
                                          valid_values: unique_amounts.keys.join(', ') }
