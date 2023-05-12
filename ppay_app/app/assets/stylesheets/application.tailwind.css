@@ -350,6 +350,10 @@
     @apply proc-card-sceomorph bg-[#244C5A];
   }
 
+  .default-bank-card {
+    @apply proc-card-sceomorph bg-[#E5ECF4];
+  }
+
   .proc-card-sceomorph-bank {
     @apply text-xl font-extralight text-white;
   }
@@ -370,6 +374,10 @@
     @apply proc-card-sceomorph-bank text-[#f3e399];
   }
 
+  .default-bank-card-bank {
+    @apply proc-card-sceomorph-bank text-black;
+  }
+
   .proc-card-sceomorph-number {
     @apply mt-4 text-lg text-white font-medium;
   }
@@ -388,6 +396,10 @@
 
   .humo-card-number {
     @apply proc-card-sceomorph-number text-[#f3e399];
+  }
+
+  .default-bank-card-number {
+    @apply proc-card-sceomorph-number text-black;
   }
 
   .proc-card-sceomorph-name{
