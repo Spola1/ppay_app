@@ -9,6 +9,7 @@ national_currencies:
   - IDR
   - KZT
   - UAH
+  - TRY
 payment_systems:
   - Sberbank
   - Tinkoff
@@ -24,6 +25,7 @@ payment_systems:
   - PrivatBank
   - MonoBank
   - PUMB
+  - PermataBank
 
 navbar:
   admin:
