@@ -8,6 +8,7 @@ national_currencies:
   - TJS
   - IDR
   - KZT
+  - UAH
 payment_systems:
   - Sberbank
   - Tinkoff
@@ -19,6 +20,11 @@ payment_systems:
   - Jysan Bank
   - Kaspi Bank
   - Другой банк
+  - IBAN
+  - PrivatBank
+  - MonoBank
+  - PUMB
+
 navbar:
   admin:
     - name: Все платежи
