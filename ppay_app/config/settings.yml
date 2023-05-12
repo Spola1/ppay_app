@@ -10,6 +10,7 @@ national_currencies:
   - KZT
   - UAH
   - TRY
+  - KGS
 payment_systems:
   - Sberbank
   - Tinkoff
@@ -26,6 +27,10 @@ payment_systems:
   - MonoBank
   - PUMB
   - PermataBank
+  - Optima24 
+  - Halyk 
+  - Bakai24 
+  - Demir
 
 navbar:
   admin:
