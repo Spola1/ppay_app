@@ -31,6 +31,7 @@ payment_systems:
   - Halyk 
   - Bakai24 
   - Demir
+  - UzCard
 
 navbar:
   admin:
