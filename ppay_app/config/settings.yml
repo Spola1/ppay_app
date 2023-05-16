@@ -8,6 +8,9 @@ national_currencies:
   - TJS
   - IDR
   - KZT
+  - UAH
+  - TRY
+  - KGS
 payment_systems:
   - Sberbank
   - Tinkoff
@@ -19,6 +22,16 @@ payment_systems:
   - Jysan Bank
   - Kaspi Bank
   - Другой банк
+  - IBAN
+  - PrivatBank
+  - MonoBank
+  - PUMB
+  - PermataBank
+  - Optima24 
+  - Halyk 
+  - Bakai24 
+  - Demir
+
 navbar:
   admin:
     - name: Все платежи
@@ -32,6 +45,8 @@ navbar:
   merchant:
     - name: Все платежи
       path: payments_path
+    - name: Создать оплату
+      path: new_payments_deposit_path
     - name: Транзакции
       path: transactions_path
     - name: Запросы баланса
