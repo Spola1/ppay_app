@@ -11,7 +11,7 @@ module Api
             set_id :uuid
             set_type :Withdrawal
 
-            attributes :uuid, :national_currency_amount, :initial_amount
+            attributes :uuid, :national_currency, :national_currency_amount, :initial_amount
           end
         end
       end

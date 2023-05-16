@@ -15,6 +15,7 @@ module Api
           attribute :payment_status
           attribute :national_currency_amount
           attribute :initial_amount
+          attribute :national_currency
         end
       end
     end
