@@ -33,3 +33,10 @@
         = payment.payment_system.upcase
       .humo-card-number
         = payment.advertisement.decorate.formatted_card_number
+
+  - else
+    .default-bank-card
+      .default-bank-card-bank
+        = payment.payment_system.upcase
+      .default-bank-card-number
+        = payment.advertisement.decorate.formatted_card_number
