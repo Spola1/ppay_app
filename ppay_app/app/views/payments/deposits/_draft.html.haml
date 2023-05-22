@@ -1,48 +1,51 @@
-.proc-head
-  .proc-logo
-  .proc-text
-    UID Check
+.show-payment
+  .show-payment-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
 .proc-amount-block
   .proc-amount-content
     = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
 
-.proc-shop-block
-  .proc-shop-title
-    Магазин
-  .proc-shop-content
-    = payment.merchant.name
+    .proc-shop-block
+      .proc-shop-title
+        Магазин
+      .proc-shop-content
+        = payment.merchant.name
 
-.mt-1
-  .proc-order-block
-    .proc-order-title
-      Заказ
-    .proc-order-content
-      = payment.external_order_id
+    .mt-1
+      .proc-order-block
+        .proc-order-title
+          Заказ
+        .proc-order-content
+          = payment.external_order_id
 
-= render 'payments/errors', payment: payment
+    = render 'payments/errors', payment: payment
+      
+    .simple-form-for-payment-deposit
+      = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+        .select-payment-system
+          = f.label :payment_system, 'Выберите платежную систему'
 
-.simple-form-for-payment-deposit
-  = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
-    .select-payment-system
-      = f.label :payment_system, 'Выберите платежную систему'
-    
-    = f.select :payment_system, [["Выбрать", ""], "Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], {}, class: "grey-drop-down"
-              
-    
-    = hidden_field_tag :event, 'search' 
-    
-    = f.submit "Подтвердить", class: "green-button-submit mt-3"
-    
-.please-pay-from-bank 
-  Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
+        = f.select :payment_system, payment_systems_collection_for_payment(payment),
+                                    { include_blank: 'Выбрать' },
+                                    class: 'grey-drop-down'
 
-= render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+        = hidden_field_tag :event, 'search'
 
-= render 'payments/alerts_block'
+        = f.submit "Подтвердить", class: "green-button-submit mt-3"
 
-- if payment.arbitration
-  = render "/shared/tg_link"
+    .please-pay-from-bank
+      Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
 
-= render 'payments/uuid', payment:
+    = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+
+    = render 'payments/alerts_block'
+
+    = render 'payments/uuid', payment:
+
+  - if payment.arbitration
+    = render 'shared/chat', payment:

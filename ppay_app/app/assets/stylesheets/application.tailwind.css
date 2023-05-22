@@ -108,7 +108,7 @@
   }
 
   .item-card {
-    @apply p-6 block rounded-lg shadow-xl bg-white border;
+    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
   }
 
   .card-wrap {
@@ -269,7 +269,7 @@
   }
 
   .proc-logo {
-    @apply bg-[url('/test_logo.jpg')] bg-cover bg-center w-24 h-12;
+    @apply bg-[url('/logo.svg')] bg-contain bg-no-repeat w-40 h-10 mt-1.5;
   }
 
   .proc-text {
@@ -346,6 +346,14 @@
     @apply proc-card-sceomorph bg-[#ef3124];
   }
 
+  .humo-card {
+    @apply proc-card-sceomorph bg-[#244C5A];
+  }
+
+  .default-bank-card {
+    @apply proc-card-sceomorph bg-[#E5ECF4];
+  }
+
   .proc-card-sceomorph-bank {
     @apply text-xl font-extralight text-white;
   }
@@ -362,6 +370,14 @@
     @apply proc-card-sceomorph-bank;
   }
 
+  .humo-card-bank {
+    @apply proc-card-sceomorph-bank text-[#f3e399];
+  }
+
+  .default-bank-card-bank {
+    @apply proc-card-sceomorph-bank text-black;
+  }
+
   .proc-card-sceomorph-number {
     @apply mt-4 text-lg text-white font-medium;
   }
@@ -376,6 +392,14 @@
 
   .alfabank-card-number {
     @apply proc-card-sceomorph-number;
+  }
+
+  .humo-card-number {
+    @apply proc-card-sceomorph-number text-[#f3e399];
+  }
+
+  .default-bank-card-number {
+    @apply proc-card-sceomorph-number text-black;
   }
 
   .proc-card-sceomorph-name{
@@ -414,19 +438,11 @@
     width: 460px;
     border: 1px solid #dedede;
   }
-  .show-deposit-block {
+  .show-payment-block {
     @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
   }
 
-  .show-withdrawal-block {
-    @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
-  }
-
-  .show-deposit {
-    @apply flex justify-center;
-  }
-
-  .show-withdrawal {
+  .show-payment {
     @apply flex justify-center;
   }
 
