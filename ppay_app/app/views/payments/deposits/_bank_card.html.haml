@@ -43,17 +43,25 @@
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
 
-
   - when "HUMO"
-    .humo-card
+    .humo-card{ 'data-controller': 'clipboard' }
       .humo-card-bank
         = payment.payment_system.upcase
-      .humo-card-number
-        = payment.advertisement.decorate.formatted_card_number
+      .proc-copy-bank-card-content
+        .humo-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
 
   - else
-    .default-bank-card
+    .default-bank-card{ 'data-controller': 'clipboard' }
       .default-bank-card-bank
         = payment.payment_system.upcase
-      .default-bank-card-number
-        = payment.advertisement.decorate.formatted_card_number
+      .proc-copy-bank-card-content
+        .default-bank-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
+
