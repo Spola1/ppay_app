@@ -538,6 +538,18 @@
   .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
     @apply text-red-500;
   }
+
+  .completed-status {
+    color: green;
+  }
+  
+  .cancelled-status {
+    color: red;
+  }
+  
+  .processing-status {
+    color: mediumblue;
+  }
 }
 
 

@@ -60,6 +60,16 @@ module PaymentsHelper
            .pluck(:name)
   end
 
+  def payment_status_class(payment)
+    if payment.payment_status == 'completed'
+      'completed-status'
+    elsif payment.payment_status == 'cancelled'
+      'cancelled-status'
+    else
+      'processing-status'
+    end
+  end
+
   private
 
   def state_translation(state)
