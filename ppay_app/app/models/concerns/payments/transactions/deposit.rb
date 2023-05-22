@@ -34,18 +34,26 @@ module Payments
         return if working_group_commission.zero?
 
         transactions.create(from_balance: advertisement.processer.balance,
-                            to_balance: advertisement.processer.working_group.balance,
+                            to_balance: to_working_group_balance,
                             amount: cryptocurrency_amount * working_group_commission / 100,
                             transaction_type: :working_group_commission)
+      end
+
+      def to_working_group_balance
+        advertisement.processer.working_group&.balance || Ppay.last.balance
       end
 
       def create_agent_transaction
         return if agent_commission.zero?
 
         transactions.create(from_balance: advertisement.processer.balance,
-                            to_balance: merchant.agent.balance,
+                            to_balance: to_agent_balance,
                             amount: cryptocurrency_amount * agent_commission / 100,
                             transaction_type: :agent_commission)
+      end
+
+      def to_agent_balance
+        merchant.agent&.balance || Ppay.last.balance
       end
 
       def create_ppay_transaction

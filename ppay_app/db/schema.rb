@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -130,6 +130,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
     t.string "cvv"
   end
 
+  create_table "chats", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "payment_id", null: false
+    t.string "text", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payment_id"], name: "index_chats_on_payment_id"
+    t.index ["user_id"], name: "index_chats_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -144,6 +154,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
+  create_table "commissions", force: :cascade do |t|
+    t.bigint "payment_system_id", null: false
+    t.string "national_currency"
+    t.string "direction"
+    t.integer "commission_type"
+    t.decimal "commission", precision: 15, scale: 10
+    t.bigint "merchant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_commissions_on_merchant_id"
+    t.index ["payment_system_id", "national_currency", "direction", "commission_type", "merchant_id"], name: "index_unique_commission", unique: true
+    t.index ["payment_system_id"], name: "index_commissions_on_payment_system_id"
+  end
+
   create_table "crypto_wallets", force: :cascade do |t|
     t.string "address"
     t.bigint "user_id"
@@ -152,13 +176,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
     t.index ["user_id"], name: "index_crypto_wallets_on_user_id"
   end
 
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
-  end
-
   create_table "exchange_portals", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+  end
+
+  create_table "payment_systems", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -263,5 +290,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_094834) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "chats", "payments"
+  add_foreign_key "chats", "users"
+  add_foreign_key "commissions", "payment_systems"
+  add_foreign_key "commissions", "users", column: "merchant_id"
   add_foreign_key "crypto_wallets", "users"
 end

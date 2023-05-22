@@ -37,8 +37,23 @@
       .alfabank-card-bank
         = payment.payment_system.upcase
       .proc-copy-bank-card-content
-        .alfabank-card-number{ 'data-clipboard-target': 'source' }
+        .alfabank-card-number{ 'data-clipboard-target': 'source' }          
           = payment.advertisement.decorate.formatted_card_number
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+
+
+  - when "HUMO"
+    .humo-card
+      .humo-card-bank
+        = payment.payment_system.upcase
+      .humo-card-number
+        = payment.advertisement.decorate.formatted_card_number
+
+  - else
+    .default-bank-card
+      .default-bank-card-bank
+        = payment.payment_system.upcase
+      .default-bank-card-number
+        = payment.advertisement.decorate.formatted_card_number
