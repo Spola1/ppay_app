@@ -24,9 +24,9 @@
       .proc-order-content
         = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
-.please-pay-from-bank
-  Пожалуйста, укажите карту, куда Вы хотите вывести средства
-  = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
+    .please-pay-from-bank
+      Пожалуйста, укажите карту, куда Вы хотите вывести средства
+      = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
 
     = render 'payments/errors', payment: payment
 
