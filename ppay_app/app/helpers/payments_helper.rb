@@ -63,16 +63,16 @@ module PaymentsHelper
   def render_qr_code(text)
     qrcode = RQRCode::QRCode.new(text)
     svg = qrcode.as_svg(
-      color: "000",
-      shape_rendering: "crispEdges",
+      color: '000',
+      shape_rendering: 'crispEdges',
       module_size: 1.5,
       standalone: true,
       use_path: true
     )
-    
+
     raw svg
   end
-  
+
   private
 
   def state_translation(state)
