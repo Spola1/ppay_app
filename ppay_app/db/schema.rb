@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_072205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -117,6 +117,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
     t.bigint "balanceable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "in_national_currency", default: false
+    t.string "currency", default: "USDT"
     t.index ["balanceable_type", "balanceable_id"], name: "index_balances_on_balanceable"
   end
 
@@ -176,6 +178,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
     t.index ["user_id"], name: "index_crypto_wallets_on_user_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "exchange_portals", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -215,8 +220,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 12, scale: 2
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 12, scale: 2
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
@@ -243,6 +248,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_09_154902) do
     t.integer "transaction_type", default: 0, null: false
     t.string "transactionable_type"
     t.bigint "transactionable_id"
+    t.decimal "national_currency_amount", precision: 12, scale: 2
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
     t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
