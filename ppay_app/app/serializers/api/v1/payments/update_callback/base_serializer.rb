@@ -13,6 +13,9 @@ module Api
           attribute :external_order_id, if: proc { |record| record.external_order_id.present? }
           attribute :cancellation_reason, if: proc { |record| record.cancellation_reason.present? }
           attribute :payment_status
+          attribute :national_currency_amount
+          attribute :initial_amount
+          attribute :national_currency
         end
       end
     end

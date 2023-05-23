@@ -1,28 +1,67 @@
 - case payment.payment_system
   - when "Sberbank"
-    .proc-card-sceomorph
+    .proc-card-sceomorph{ 'data-controller': 'clipboard' }
       .proc-card-sceomorph-bank
         = payment.payment_system.upcase
-      .proc-card-sceomorph-number
-        = payment.advertisement.decorate.formatted_card_number
+      .proc-copy-bank-card-content
+        .proc-card-sceomorph-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
 
   - when "Tinkoff"
-    .tinkoff-card
+    .tinkoff-card{ 'data-controller': 'clipboard' }
       .tinkoff-card-bank
         = payment.payment_system.upcase
-      .tinkoff-card-number
-        = payment.advertisement.decorate.formatted_card_number
+      .proc-copy-bank-card-content
+        .tinkoff-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
 
   - when "Raiffeisen"
-    .raiffeisen-card
+    .raiffeisen-card{ 'data-controller': 'clipboard' }
       .raiffeisen-card-bank
         = payment.payment_system.upcase
-      .raiffeisen-card-number
-        = payment.advertisement.decorate.formatted_card_number
+      .proc-copy-bank-card-content
+        .raiffeisen-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
 
   - when "AlfaBank"
-    .alfabank-card
+    .alfabank-card{ 'data-controller': 'clipboard' }
       .alfabank-card-bank
         = payment.payment_system.upcase
-      .alfabank-card-number
-        = payment.advertisement.decorate.formatted_card_number
+      .proc-copy-bank-card-content
+        .alfabank-card-number{ 'data-clipboard-target': 'source' }          
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
+
+  - when "HUMO"
+    .humo-card{ 'data-controller': 'clipboard' }
+      .humo-card-bank
+        = payment.payment_system.upcase
+      .proc-copy-bank-card-content
+        .humo-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
+
+  - else
+    .default-bank-card{ 'data-controller': 'clipboard' }
+      .default-bank-card-bank
+        = payment.payment_system.upcase
+      .proc-copy-bank-card-content
+        .default-bank-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.decorate.formatted_card_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
+

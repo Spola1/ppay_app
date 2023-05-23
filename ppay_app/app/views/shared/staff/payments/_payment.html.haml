@@ -28,6 +28,12 @@
               %td.item-card-td.item-card-td-label{ class: 'w-1/4' } UUID
               %td.item-card-td= "#{payment.uuid}"
             %tr.item-card-tr
+              %td.item-card-td.item-card-td-label Ссылка
+              %td.item-card-td{id: "payment_link_with_uuid"}
+                = "#{payment.decorate.url}"
+
+
+            %tr.item-card-tr
               %td.item-card-td.item-card-td-label Создан (MSK)
               %td.item-card-td= "#{payment.formatted_created_at}"
             %tr.item-card-tr

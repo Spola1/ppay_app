@@ -72,7 +72,6 @@ services:
       - 3000:3000
     env_file: ./ppay_app/.env
     entrypoint: ./entrypoint-rails.sh
-    image: cloud.canister.io:5000/ffyy289/ppay_app:latest
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
       - assets:/app/public/assets

@@ -103,12 +103,12 @@ label[for=withdrawal_card_number]{
 }
 
 .modal_amount {
-  margin-top: 95px;
+  margin-top: 93px;
   background-color: white;
   border-radius: 15px;
   width: 360px;
   color: black;
-  padding: 10px 30px
+  padding: 10px 31px
 }
 
 .filepond--credits {
