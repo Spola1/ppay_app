@@ -540,15 +540,11 @@
   }
 
   .completed-status {
-    color: green;
+    @apply text-green-500;
   }
   
   .cancelled-status {
-    color: red;
-  }
-  
-  .processing-status {
-    color: mediumblue;
+    @apply text-red-500;
   }
 }
 

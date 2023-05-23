@@ -65,8 +65,6 @@ module PaymentsHelper
       'completed-status'
     elsif payment.payment_status == 'cancelled'
       'cancelled-status'
-    else
-      'processing-status'
     end
   end
 
