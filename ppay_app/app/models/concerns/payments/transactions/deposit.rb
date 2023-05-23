@@ -18,7 +18,8 @@ module Payments
       def create_main_transaction
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: merchant.balance,
-                            amount: main_transaction_amount)
+                            amount: main_transaction_amount,
+                            national_currency_amount: national_currency_transaction_amount)
       end
 
       def create_processer_transaction
@@ -27,6 +28,7 @@ module Payments
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: advertisement.processer.balance,
                             amount: cryptocurrency_amount * processer_commission / 100,
+                            national_currency_amount: national_currency_amount * processer_commission / 100,
                             transaction_type: :processer_commission)
       end
 
@@ -36,6 +38,7 @@ module Payments
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: to_working_group_balance,
                             amount: cryptocurrency_amount * working_group_commission / 100,
+                            national_currency_amount: national_currency_amount * working_group_commission / 100,
                             transaction_type: :working_group_commission)
       end
 
@@ -49,6 +52,7 @@ module Payments
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: to_agent_balance,
                             amount: cryptocurrency_amount * agent_commission / 100,
+                            national_currency_amount: national_currency_amount * agent_commission / 100,
                             transaction_type: :agent_commission)
       end
 
@@ -62,11 +66,16 @@ module Payments
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: Ppay.last.balance,
                             amount: cryptocurrency_amount * ppay_commission / 100,
+                            national_currency_amount: national_currency_amount * ppay_commission / 100,
                             transaction_type: :ppay_commission)
       end
 
       def main_transaction_amount
         cryptocurrency_amount * main_transaction_percent / 100
+      end
+
+      def national_currency_transaction_amount
+        national_currency_amount * main_transaction_percent / 100
       end
 
       def main_transaction_percent
