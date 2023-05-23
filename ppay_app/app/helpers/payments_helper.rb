@@ -73,6 +73,15 @@ module PaymentsHelper
     raw svg
   end
 
+  def payment_status_class(payment)
+    case payment.payment_status
+    when 'completed'
+      'completed-status'
+    when 'cancelled'
+      'cancelled-status'
+    end
+  end
+
   private
 
   def state_translation(state)

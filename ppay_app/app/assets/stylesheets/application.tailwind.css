@@ -545,6 +545,7 @@
   .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
     @apply text-red-500;
   }
+
   .text-qr-instruction {
     @apply text-sm mt-5 font-medium text-center;
   }
@@ -558,6 +559,14 @@
 
   .show-qr {
     @apply  w-32 h-32 rounded-xl justify-center pxy-15 bg-white;
+  }
+
+  .completed-status {
+    @apply text-green-500;
+  }
+  
+  .cancelled-status {
+    @apply text-red-500;
   }
 }
 
