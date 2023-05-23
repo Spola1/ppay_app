@@ -545,6 +545,14 @@
   .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
     @apply text-red-500;
   }
+
+  .completed-status {
+    @apply text-green-500;
+  }
+  
+  .cancelled-status {
+    @apply text-red-500;
+  }
 }
 
 
