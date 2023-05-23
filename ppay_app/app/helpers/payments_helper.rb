@@ -61,9 +61,10 @@ module PaymentsHelper
   end
 
   def payment_status_class(payment)
-    if payment.payment_status == 'completed'
+    case payment.payment_status
+    when 'completed'
       'completed-status'
-    elsif payment.payment_status == 'cancelled'
+    when 'cancelled'
       'cancelled-status'
     end
   end
