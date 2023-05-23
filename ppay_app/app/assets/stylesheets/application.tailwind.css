@@ -546,6 +546,21 @@
     @apply text-red-500;
   }
 
+  .text-qr-instruction {
+    @apply text-sm mt-5 font-medium text-center;
+  }
+
+  .pxy-15 {
+    padding: 15px 15px 15px 15px
+  }
+  .show-qr-block {
+    @apply font-firs w-44 h-72 rounded-xl py-6 px-6 ml-6 bg-[#DCF1A5];
+  }
+
+  .show-qr {
+    @apply  w-32 h-32 rounded-xl justify-center pxy-15 bg-white;
+  }
+
   .completed-status {
     @apply text-green-500;
   }
