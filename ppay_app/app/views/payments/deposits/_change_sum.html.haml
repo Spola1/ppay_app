@@ -1,4 +1,4 @@
-- unless payment.decorate.initial_formatted == payment.decorate.national_formatted
+- unless payment.initial_amount == payment.national_currency_amount
   #change-sum.modal.show{ 'data-controller': 'modal' }
     %div
       .modal_amount{ 'data-controller': 'clipboard' }
