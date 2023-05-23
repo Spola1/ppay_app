@@ -120,7 +120,7 @@
   }
 
   .filters-wrap {
-    @apply p-2 w-full
+    @apply p-2 w-full;
   }
 
   .icon-button {
