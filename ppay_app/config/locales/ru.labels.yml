@@ -17,4 +17,4 @@ ru:
   buttons:
     submit: Применить
     reset: Сброс
-    export: Экспорт
+    export_to_excel: Экспорт в Excel
