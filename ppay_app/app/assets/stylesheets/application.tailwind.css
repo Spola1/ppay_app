@@ -288,6 +288,9 @@
     @apply text-left text-3xl font-medium flex justify-between;
   }
 
+  .proc-copy-bank-card-content {
+    @apply text-left flex justify-between
+  }
   .proc-shop-block {
     @apply flex justify-between;
   }
@@ -519,6 +522,10 @@
 
   .copy-button {
     @apply pr-20
+  }
+
+  .copy-card-button {
+    @apply pt-3 pr-7; 
   }
 
   .svg-button {
