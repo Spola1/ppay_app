@@ -60,6 +60,28 @@ module PaymentsHelper
            .pluck(:name)
   end
 
+  def render_qr_code(text)
+    qrcode = RQRCode::QRCode.new(text)
+    svg = qrcode.as_svg(
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 1.5,
+      standalone: true,
+      use_path: true
+    )
+
+    raw svg
+  end
+
+  def payment_status_class(payment)
+    case payment.payment_status
+    when 'completed'
+      'completed-status'
+    when 'cancelled'
+      'cancelled-status'
+    end
+  end
+
   private
 
   def state_translation(state)

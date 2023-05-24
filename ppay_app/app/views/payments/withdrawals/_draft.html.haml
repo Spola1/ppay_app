@@ -54,5 +54,7 @@
 
     = render 'payments/uuid', payment:
 
+  = render 'payments/qr_code', payment: payment
+
   - if payment.arbitration
     = render 'shared/chat', payment:

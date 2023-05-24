@@ -11,5 +11,7 @@
 
     = render 'payments/uuid', payment:, class: 'text-center'
 
+  = render 'payments/qr_code', payment: payment
+
   - if payment.arbitration
     = render 'shared/chat', payment:
