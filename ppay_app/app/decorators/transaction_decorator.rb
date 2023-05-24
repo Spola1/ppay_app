@@ -12,7 +12,7 @@ class TransactionDecorator < ApplicationDecorator
   end
 
   def national_formatted
-    formatted_amount(national_currency__amount)
+    formatted_amount(national_currency_amount)
   end
 
   def amount_formatted
