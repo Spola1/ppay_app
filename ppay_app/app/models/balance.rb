@@ -8,16 +8,24 @@ class Balance < ApplicationRecord
 
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
-  def withdraw(amount)
+  def withdraw(amount, national_currency_amount)
     with_lock do
-      self.amount -= amount
+      if in_national_currency
+        self.amount -= national_currency_amount
+      else
+        self.amount -= amount
+      end
       save!
     end
   end
 
-  def deposit(amount)
+  def deposit(amount, national_currency_amount)
     with_lock do
-      self.amount += amount
+      if in_national_currency
+        self.amount += national_currency_amount
+      else
+        self.amount += amount
+      end
       save!
     end
   end
