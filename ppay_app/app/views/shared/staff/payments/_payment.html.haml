@@ -102,7 +102,7 @@
                 %td.item-card-td.item-card-td-label ID объявления
                 %td.item-card-td= "#{payment.advertisement_id}"
 
-            - if payment.merchant_id && current_user.type == 'Support'
+            - if payment.merchant_id && current_user.is_a?(Support)
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
                 %td.item-card-td= payment.merchant.decorate.display_name                          
