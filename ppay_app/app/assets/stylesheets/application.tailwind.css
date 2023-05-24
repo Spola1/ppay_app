@@ -576,6 +576,10 @@
   .cancelled-status {
     @apply text-red-500;
   }
+
+  .image-processer-block {
+    @apply h-96;
+  }
 }
 
 
