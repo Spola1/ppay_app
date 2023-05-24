@@ -15,12 +15,6 @@ class UpdateCompletedPayments < ActiveRecord::Migration[7.0]
   private
 
   def calculate_national_currency_amount(payment)
-    return unless payment.send(:main_transaction_percent) &&
-                  payment.send(:processer_commission) &&
-                  payment.send(:working_group_commission) &&
-                  payment.send(:agent_commission) &&
-                  payment.send(:ppay_commission)
-
     payment.transactions.each do |transaction|
       if transaction.main? && payment.type == 'Deposit'
         transaction.national_currency_amount = payment.national_currency_amount * payment.send(:main_transaction_percent) / 100
