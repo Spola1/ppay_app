@@ -17,7 +17,7 @@
                              value: @today_balance_change,
                              icon: 'line-chart',
                              value_color: number_color(@today_balance_change),
-                             currency: 'USDT'
+                             currency: current_user.balance.currency
 
 .card-wrap{ class: 'basis-1/2' }
   .item-card.h-full

@@ -34,14 +34,14 @@ class Transaction < ApplicationRecord
   private
 
   def freeze_funds
-    from_balance&.withdraw(amount)
+    from_balance&.withdraw(amount, national_currency_amount)
   end
 
   def unfreeze_funds
-    from_balance&.deposit(amount)
+    from_balance&.deposit(amount, national_currency_amount)
   end
 
   def deposit_funds
-    to_balance&.deposit(amount)
+    to_balance&.deposit(amount, national_currency_amount)
   end
 end

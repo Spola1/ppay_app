@@ -27,12 +27,12 @@
           %td.items-list-td= payment.formatted_created_at
           %td.items-list-td= payment.human_type
           %td.items-list-td= payment.national_currency
-          %td.items-list-td= payment.decorate.national_formatted     
+          %td.items-list-td= payment.decorate.national_formatted
           %td.items-list-td= payment.cryptocurrency
           %td.items-list-td
-            = payment.cryptocurrency_amount
+            = payment.decorate.cryptocurrency_formatted
             - if payment.transactions.main.present?
-              = "(#{payment.transactions.main.first.amount})"
+              = "(#{payment.transactions.main.first.decorate.amount_formatted})"
           %td.items-list-td= payment.payment_system
           %td.items-list-td= payment.uuid.truncate(9)
           %td.items-list-td{ class: payment_status_class(payment) }
