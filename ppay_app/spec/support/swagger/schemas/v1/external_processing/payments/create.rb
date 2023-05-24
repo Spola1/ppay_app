@@ -59,9 +59,13 @@ module Swagger
                           properties: {
                             uuid: { type: :string },
                             card_number: { type: :string },
-                            expiration_time: { type: :string }
+                            expiration_time: { type: :string },
+                            national_currency: { type: :string },
+                            national_currency_amount: { type: :string },
+                            initial_amount: { type: :string },
                           },
-                          required: %w[uuid card_number expiration_time]
+                          required: %w[uuid card_number expiration_time national_currency national_currency_amount
+                                       initial_amount]
                         }
                       },
                       required: %w[id type attributes]
@@ -80,9 +84,12 @@ module Swagger
                         attributes: {
                           type: :object,
                           properties: {
-                            uuid: { type: :string }
+                            uuid: { type: :string },
+                            national_currency: { type: :string },
+                            national_currency_amount: { type: :string },
+                            initial_amount: { type: :string },
                           },
-                          required: %w[uuid]
+                          required: %w[uuid national_currency national_currency_amount initial_amount]
                         }
                       },
                       required: %w[id type attributes]

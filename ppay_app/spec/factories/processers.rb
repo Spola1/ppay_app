@@ -7,7 +7,7 @@ FactoryBot.define do
     password { FFaker::Internet.password(10) }
 
     after(:create) do |processer|
-      processer.balance.deposit(1000)
+      processer.balance.deposit(1000, 10000)
     end
   end
 end
