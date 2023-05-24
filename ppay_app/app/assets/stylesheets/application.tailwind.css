@@ -449,8 +449,17 @@
     width: 460px;
     border: 1px solid #dedede;
   }
+
+  .border-qr {
+    border: 1px solid #dedede;
+  }
+  
   .show-payment-block {
     @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
+  }
+
+  .show-second-block {
+    @apply font-firs w-44 min-h-min bg-white;
   }
 
   .show-payment {
@@ -555,18 +564,18 @@
   }
 
   .text-qr-instruction {
-    @apply text-sm mt-5 font-medium text-center;
+    @apply text-sm mt-2.5 font-medium leading-tight text-center;
   }
 
   .pxy-15 {
     padding: 15px 15px 15px 15px
   }
   .show-qr-block {
-    @apply font-firs w-44 h-72 rounded-xl py-6 px-6 ml-6 bg-[#DCF1A5];
+    @apply font-firs w-44 h-64 rounded-xl py-6 px-6 ml-6 border-qr;
   }
 
   .show-qr {
-    @apply  w-32 h-32 rounded-xl justify-center pxy-15 bg-white;
+    @apply  w-32 h-32 rounded-xl justify-center pxy-15 bg-white border-qr;
   }
 
   .completed-status {
