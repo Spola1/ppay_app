@@ -59,17 +59,21 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def national_formatted
-    format('%.2f', national_currency_amount)
+    formatted_amount(national_currency_amount)
   end
 
   def initial_formatted
-    format('%.2f', initial_amount)
+    formatted_amount(initial_amount)
+  end
+
+  def cryptocurrency_formatted
+    formatted_amount(cryptocurrency_amount)
   end
 
   private
 
   def fiat_amount
-    format('%.2f', national_currency_amount)
+    formatted_amount(national_currency_amount)
   end
 
   def countdown_difference

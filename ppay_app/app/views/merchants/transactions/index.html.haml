@@ -16,14 +16,17 @@
               %th.items-list-th
 
             %tbody
-              - @transactions.each do |trans|
+              - TransactionDecorator.decorate_collection(@transactions).each do |trans|
                 %tr.items-list-tr
                   %td.items-list-td-link= link_to trans.id, trans
                   %td.items-list-td= l(trans.created_at, format: :short)
                   %td.items-list-td{ class: transaction_color(trans, current_user.balance) }
                     %span.mr-1
                       = fa_icon transaction_icon(trans, current_user.balance)
-                    = trans.amount
+                    - if current_user.balance.in_national_currency
+                      = trans.national_formatted
+                    - else
+                      = trans.amount_formatted
                   %td.items-list-td= trans.human_status
                   %td.items-list-td= trans.human_transaction_type
               
