@@ -115,6 +115,14 @@
     @apply p-2 flex-1;
   }
 
+  .card-head {
+    @apply flex flex-row items-center mb-4 space-x-10;
+  }
+
+  .card-head h1 {
+    @apply inline-block text-xl;
+  }
+
   .wrap {
     @apply flex flex-wrap;
   }
@@ -521,7 +529,7 @@
   }
 
   .copy-button {
-    @apply pr-20
+    @apply pr-16;
   }
 
   .copy-card-button {
