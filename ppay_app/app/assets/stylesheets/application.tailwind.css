@@ -450,6 +450,10 @@
     @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
   }
 
+  .show-second-block {
+    @apply font-firs w-44 min-h-min bg-white;
+  }
+
   .show-payment {
     @apply flex justify-center;
   }

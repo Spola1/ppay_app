@@ -1,4 +1,5 @@
 .show-payment
+  .show-second-block
   .show-payment-block
     .proc-head
       .proc-logo
@@ -47,7 +48,7 @@
 
     = render 'payments/uuid', payment:
 
-  = render 'payments/qr_code', payment: payment
-
   - if payment.arbitration
     = render 'shared/chat', payment:
+  .show-second-block
+    = render 'payments/qr_code', payment: payment
