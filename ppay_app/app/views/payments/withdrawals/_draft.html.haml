@@ -22,11 +22,11 @@
       .proc-order-title
         Сумма
       .proc-order-content
-        = "#{payment.national_currency_amount} #{payment.national_currency}"
+        = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
     .please-pay-from-bank
       Пожалуйста, укажите карту, куда Вы хотите вывести средства
-      = "(#{ payment.national_currency_amount } #{ payment.national_currency })"
+      = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
 
     = render 'payments/errors', payment: payment
 
@@ -53,6 +53,8 @@
       = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)
 
     = render 'payments/uuid', payment:
+
+  = render 'payments/qr_code', payment: payment
 
   - if payment.arbitration
     = render 'shared/chat', payment:

@@ -7,7 +7,7 @@
 
     .proc-amount-block
       .proc-amount-content
-        = "#{payment.national_currency_amount} #{payment.national_currency}"
+        = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
 
     .proc-shop-block
@@ -46,6 +46,8 @@
     = render 'payments/alerts_block'
 
     = render 'payments/uuid', payment:
+
+  = render 'payments/qr_code', payment: payment
 
   - if payment.arbitration
     = render 'shared/chat', payment:

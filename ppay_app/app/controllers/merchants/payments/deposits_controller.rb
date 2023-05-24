@@ -28,7 +28,7 @@ module Merchants
           render 'new'
         end
       end
-      
+
       def display_link
         @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
         render 'merchants/payments/display_link'
@@ -37,9 +37,9 @@ module Merchants
       private
 
       def payment_params
-        params.require(:deposit).permit(:national_currency_amount, :national_currency, :direction, :redirect_url, :callback_url, :external_order_id).merge(merchant_id: current_user.id)
+        params.require(:deposit).permit(:national_currency_amount, :national_currency, :direction, :redirect_url,
+                                        :callback_url, :external_order_id).merge(merchant_id: current_user.id)
       end
     end
   end
 end
-

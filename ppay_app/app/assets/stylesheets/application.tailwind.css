@@ -115,12 +115,20 @@
     @apply p-2 flex-1;
   }
 
+  .card-head {
+    @apply flex flex-row items-center mb-4 space-x-10;
+  }
+
+  .card-head h1 {
+    @apply inline-block text-xl;
+  }
+
   .wrap {
     @apply flex flex-wrap;
   }
 
   .filters-wrap {
-    @apply p-2 w-full
+    @apply p-2 w-full;
   }
 
   .icon-button {
@@ -288,6 +296,9 @@
     @apply text-left text-3xl font-medium flex justify-between;
   }
 
+  .proc-copy-bank-card-content {
+    @apply text-left flex justify-between
+  }
   .proc-shop-block {
     @apply flex justify-between;
   }
@@ -518,7 +529,11 @@
   }
 
   .copy-button {
-    @apply pr-20
+    @apply pr-16;
+  }
+
+  .copy-card-button {
+    @apply pt-3 pr-7; 
   }
 
   .svg-button {
@@ -536,6 +551,29 @@
   }
 
   .items-list-td.direction-withdrawal, .items-list-td.advertisement-status-false {
+    @apply text-red-500;
+  }
+
+  .text-qr-instruction {
+    @apply text-sm mt-5 font-medium text-center;
+  }
+
+  .pxy-15 {
+    padding: 15px 15px 15px 15px
+  }
+  .show-qr-block {
+    @apply font-firs w-44 h-72 rounded-xl py-6 px-6 ml-6 bg-[#DCF1A5];
+  }
+
+  .show-qr {
+    @apply  w-32 h-32 rounded-xl justify-center pxy-15 bg-white;
+  }
+
+  .completed-status {
+    @apply text-green-500;
+  }
+  
+  .cancelled-status {
     @apply text-red-500;
   }
 }

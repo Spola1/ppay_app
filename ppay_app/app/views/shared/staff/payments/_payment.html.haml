@@ -29,7 +29,7 @@
               %td.item-card-td= "#{payment.uuid}"
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Ссылка
-              %td.item-card-td{id: "payment_link_with_uuid"}
+              %td.item-card-td.whitespace-normal{id: "payment_link_with_uuid"}
                 = "#{payment.decorate.url}"
 
 
@@ -78,7 +78,7 @@
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Кол-во нац. валюты
-              %td.item-card-td= "#{payment.national_currency_amount}"
+              %td.item-card-td= "#{payment.decorate.national_formatted}"
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Платежная система
               %td.item-card-td
