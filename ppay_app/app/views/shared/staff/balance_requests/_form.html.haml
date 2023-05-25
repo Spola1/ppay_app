@@ -5,13 +5,14 @@
                             input_html: { 'data-action': 'balance_requests#toggleCryptoAddress',
                                           'data-balance_requests-target': 'type' }
 
-  - if current_user.is_a?(Merchant) && current_user.balance.in_national_currency?
+  - if national_balance?
     = f.input :amount, hint: "Пожалуйста, введите сумму в #{current_user.balance.currency}", 
                             input_html: { min: 0 }
   - else
     = f.input :amount, input_html: { min: 0 }
 
-  = f.input :crypto_address, hint: 'Кошелёк, на который вам перевести деньги',
+  = f.input :crypto_address, label: crypto_address_label,
+                             hint: crypto_address_hint,
                              wrapper_html: { 'data-balance_requests-target': 'cryptoAddress',
                                               class: 'hidden' }
 

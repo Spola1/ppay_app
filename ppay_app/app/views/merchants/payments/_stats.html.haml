@@ -16,6 +16,7 @@
         = render 'stats_tr', title: 'Изменение баланса',
                              value: @today_balance_change,
                              icon: 'line-chart',
+                             float_number: true,
                              value_color: number_color(@today_balance_change),
                              currency: current_user.balance.currency
 

@@ -12,7 +12,7 @@
               %th.items-list-th ID
               %th.items-list-th создано
               %th.items-list-th тип
-              %th.items-list-th сумма USDT
+              %th.items-list-th сумма
               %th.items-list-th статус
               %th.items-list-th криптоадрес
               %th.items-list-th короткий комментарий
@@ -25,7 +25,7 @@
                 %td.items-list-td-link= link_to br.id, br
                 %td.items-list-td= br.decorate.formatted_created_at
                 %td.items-list-td= br.requests_type
-                %td.items-list-td= "#{br.amount} USDT"
+                %td.items-list-td= "#{br.amount} #{br.user.balance.currency}"
                 %td.items-list-td= br.status
                 %td.items-list-td= br.crypto_address
                 %td.items-list-td= br.short_comment
