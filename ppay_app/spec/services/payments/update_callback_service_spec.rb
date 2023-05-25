@@ -25,7 +25,10 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
                 uuid: payment.uuid,
                 external_order_id:,
                 cancellation_reason: cancellation_reason.to_s,
-                payment_status: 'confirming'
+                payment_status: 'confirming',
+                national_currency_amount: '100.0',
+                initial_amount: '100.0',
+                national_currency: 'RUB',
               }
             }
           }

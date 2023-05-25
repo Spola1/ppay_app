@@ -155,7 +155,10 @@
     "attributes": {
       "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
       "external_order_id": "1234",
-      "payment_status": "confirming"
+      "payment_status": "confirming",
+      "national_currency": "RUB",
+      "national_currency_amount": "2999.99",
+      "initial_amount": "3000.0"
     }
   }
 }

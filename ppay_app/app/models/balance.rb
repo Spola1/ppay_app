@@ -31,10 +31,16 @@ class Balance < ApplicationRecord
   end
 
   def today_change
-    to_transactions.today.sum(:amount) - from_transactions.today.sum(:amount)
+    to_transactions.today.sum(amount_type) - from_transactions.today.sum(amount_type)
   end
 
   def transactions
     from_transactions.or(to_transactions.except(to_transactions.frozen))
+  end
+
+  private
+
+  def amount_type
+    in_national_currency ? :national_currency_amount : :amount
   end
 end
