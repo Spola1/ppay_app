@@ -4,7 +4,7 @@ services:
 
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - sed -i '/\.env\r/d' ppay_app/.gitignore
+  - sed -i '/\.env$/d' ppay_app/.gitignore
   - touch ppay_app/.env
   - echo "POSTGRES_DB=$POSTGRES_DB" >> ppay_app/.env
   - echo "POSTGRES_USER=$POSTGRES_USER" >> ppay_app/.env
