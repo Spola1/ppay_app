@@ -73,6 +73,10 @@ module PaymentsHelper
     raw svg
   end
 
+  def browser
+    @browser = Browser.new(request.user_agent)
+  end
+
   def payment_status_class(payment)
     case payment.payment_status
     when 'completed'

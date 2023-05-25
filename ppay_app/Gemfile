@@ -82,6 +82,7 @@ gem 'after_commit_everywhere', '~> 1.0'
 gem "audited",  "~> 5.0"
 gem 'filepond-rails'
 gem "rqrcode", "~> 2.0"
+gem 'browser'
 
 
 group :development, :test do

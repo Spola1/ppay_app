@@ -1,5 +1,6 @@
 .show-payment
-  .show-second-block
+  -unless browser.device.mobile? || browser.device.tablet?
+    .show-second-block
   .show-payment-block
     .proc-head
       .proc-logo
@@ -15,5 +16,6 @@
   - if payment.arbitration
     = render 'shared/chat', payment:
 
-  .show-second-block
-    = render 'payments/qr_code', payment: payment
+  -unless browser.device.mobile? || browser.device.tablet?
+    .show-second-block
+      = render 'payments/qr_code', payment: payment
