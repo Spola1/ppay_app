@@ -5,7 +5,7 @@ default: &default
 development:
   <<: *default
   channel_prefix: "ppay_app_development"
-  url: "<%= "redis://#{ ENV['REDIS_HOST'] || 'redis' }:6379" %>"
+  url: "<%= "redis://#{ ENV['REDIS_HOST'] || 'localhost' }:6379" %>"
 
 test:
   <<: *default

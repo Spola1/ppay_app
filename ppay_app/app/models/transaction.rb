@@ -4,6 +4,9 @@ class Transaction < ApplicationRecord
   include AASM
   include DateFilterable
 
+  PAYMENT_TYPES = %i[main ppay_commission processer_commission agent_commission working_group_commission].freeze
+  BALANCE_TYPES = %i[deposit withdraw].freeze
+
   belongs_to :from_balance, class_name: 'Balance', optional: true
   belongs_to :to_balance, class_name: 'Balance', optional: true
   belongs_to :transactionable, polymorphic: true, optional: true
@@ -17,6 +20,9 @@ class Transaction < ApplicationRecord
     deposit: 5,
     withdraw: 6
   }
+
+  scope :payment_transactions, -> { where(transaction_type: PAYMENT_TYPES) }
+  scope :balance_transactions, -> { where(transaction_type: BALANCE_TYPES) }
 
   aasm whiny_transitions: false, column: :status do
     state :frozen, initial: true, before_enter: :freeze_funds

@@ -31,7 +31,8 @@ class Balance < ApplicationRecord
   end
 
   def today_change
-    to_transactions.today.completed.sum(amount_type) - from_transactions.today.completed.sum(amount_type)
+    to_transactions.payment_transactions.today.completed.sum(amount_type) -
+      from_transactions.payment_transactions.today.completed.sum(amount_type)
   end
 
   def transactions
