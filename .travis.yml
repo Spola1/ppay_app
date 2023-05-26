@@ -14,7 +14,9 @@ before_install:
   - echo "RAILS_ENV=production" >> ppay_app/.env
   - echo "RAILS_MASTER_KEY=$RAILS_MASTER_KEY" >> ppay_app/.env
   - echo "APP_DOMAIN=test.test.com" >> ppay_app/.env
+  - echo "RAILS_MIN_THREADS=$RAILS_MIN_THREADS" >> ppay_app/.env
   - echo "RAILS_MAX_THREADS=$RAILS_MAX_THREADS" >> ppay_app/.env
+  - echo "PUMA_WORKERS=$PUMA_WORKERS" >> ppay_app/.env
   - cat ppay_app/.env
   - git add -f ppay_app/.env
   - git status
