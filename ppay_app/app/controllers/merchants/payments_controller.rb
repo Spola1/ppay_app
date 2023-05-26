@@ -30,7 +30,6 @@ module Merchants
       @pagy, @filtered_payments = pagy(current_user.payments.filter_by(filtering_params))
       @filtered_payments = @filtered_payments.decorate
       @payments = current_user.payments
-      @payments = @payments.decorate
     end
 
     def filtering_params

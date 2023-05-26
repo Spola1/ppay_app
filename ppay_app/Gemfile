@@ -84,6 +84,9 @@ gem 'filepond-rails'
 gem "rqrcode", "~> 2.0"
 gem 'browser'
 gem 'health_check'
+gem 'memory_profiler'
+gem 'stackprof'
+gem 'rack-mini-profiler', require: false
 
 
 group :development, :test do
