@@ -1,11 +1,11 @@
 default: &default
   adapter: "redis"
-  url: url: "<%= "redis://#{ ENV['REDIS_HOST'] || 'redis' }:6379" %>"
+  url: "<%= "redis://#{ ENV['REDIS_HOST'] || 'redis' }:6379" %>"
 
 development:
   <<: *default
   channel_prefix: "ppay_app_development"
-  url: url: "<%= "redis://#{ ENV['REDIS_HOST'] || 'redis' }:6379" %>"
+  url: "<%= "redis://#{ ENV['REDIS_HOST'] || 'redis' }:6379" %>"
 
 test:
   <<: *default
