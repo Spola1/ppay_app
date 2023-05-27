@@ -4,15 +4,11 @@ module AuditsHelper
   FORMAT_MAPPING = { 'status_changed_at' => :formatted_date_string }.freeze
 
   def formatted_changes(attribute, values)
-    formatted_values(attribute, values).join(' -> ')
+    formatted_values(attribute, [values].flatten).join(' -> ')
   end
 
   def formatted_date_string(date)
     date.to_datetime.strftime('%Y-%m-%d %H:%M')
-  end
-
-  def verify_array(attribute, values)
-    values.is_a?(Array) ? formatted_changes(attribute, values) : values
   end
 
   private
