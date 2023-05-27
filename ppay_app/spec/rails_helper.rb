@@ -71,6 +71,7 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include JsonApiHelper
+  config.include ActionView::Helpers::NumberHelper
 
   config.include_context 'turn off UpdateCallbackJob'
 end
@@ -80,4 +81,8 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+Capybara.configure do |config|
+  config.app_host = 'http://' + Rails.configuration.action_controller.default_url_options[:host]
 end

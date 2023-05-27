@@ -26,14 +26,28 @@ module StateMachines
 
       def valid_payment_system?(params)
         assign_params(params, %i[payment_system])
-        validate_payment_system
+
+        return unless validate_payment_system_presence
+
+        validate_payment_system_availability
       end
 
-      def validate_payment_system
+      def validate_payment_system_presence
         return true if payment_system.present?
 
         errors.add(:payment_system, :blank)
         false
+      end
+
+      def validate_payment_system_availability
+        return true if payment_system.in?(merchant_payment_systems).present?
+
+        errors.add(:payment_system, :invalid)
+        false
+      end
+
+      def merchant_payment_systems
+        merchant.payment_systems.joins(:commissions).where(commissions: { direction: type }).distinct.pluck(:name)
       end
 
       def bind_rate_snapshot

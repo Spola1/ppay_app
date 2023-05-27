@@ -46,9 +46,9 @@ module StateMachines
           event :bind do
             before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount
             after :create_transactions
-          ensure :search_processer
+            ensure :search_processer # rubocop:disable Layout/RescueEnsureAlignment
 
-                 transitions from: :processer_search, to: :transferring, guard: :advertisement?
+            transitions from: :processer_search, to: :transferring, guard: :advertisement? # rubocop:disable Layout/IndentationConsistency
           end
 
           # make_deposit

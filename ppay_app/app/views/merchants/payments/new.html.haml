@@ -1,0 +1,31 @@
+
+- flash.each do |key, message|
+  %p
+    = key
+  %p
+    = message 
+
+
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl Создать новую платёжную ссылку
+
+      = simple_form_for @payment, :url => payments_deposits_path, :method => :post do |f|
+
+        = f.input :external_order_id, label: 'Номер заказа (ваш идентификатор)', hint: 'например: 4728', required: true
+        = f.input :national_currency_amount, label: 'Сумма', input_html: { min: 0 }, hint: 'например: 10000', required: true
+        = f.input :national_currency, label: 'Валюта оплаты', collection: [["RUB", "RUB"], ["USD", "USD"]], include_blank: '-выбрать-', hint: 'например: RUB', required: true
+        = f.input :redirect_url, label: 'Ссылка, которая будет указана для клиента  на странице после оплаты', hint: 'например: https://google.com', required: true
+        
+        = f.hidden_field :callback_url, value: 'https://google.com'
+        = f.hidden_field :direction, value: :deposit
+        = f.submit 'Сохранить', class: 'form-submit'
+
+
+      .back-link
+        = link_to '<- К списку запросов баланса', balance_requests_path
+  
+
+

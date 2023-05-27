@@ -11,7 +11,7 @@ module Staff
     before_action :find_balance_request, except: %i[new create index]
 
     def index
-      @pagy, @balance_requests = pagy(current_user.balance_requests)
+      @pagy, @balance_requests = pagy(current_user.balance_requests.order(created_at: :desc))
     end
 
     def show

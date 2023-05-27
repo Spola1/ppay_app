@@ -1,0 +1,13 @@
+.flex.flex-col.my-2.items-start
+  .text-xs.mb-1
+    - if chat.user_id?
+      #{chat.user.nickname} (#{chat.user.decorate.human_type})
+    - else
+      Client
+  .chat_item.px-4.py-2.rounded-lg.text-sm.border{
+    class: chat.user_id? ? 'bg-blue-100' : 'bg-slate-100'
+  }
+    .chat_item_text
+      = chat.text
+  .text-xs.mt-1.text-gray-500
+    = chat.created_at.strftime('%Y-%m-%d %H:%M')

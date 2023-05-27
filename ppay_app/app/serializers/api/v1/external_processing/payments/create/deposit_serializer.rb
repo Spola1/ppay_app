@@ -11,7 +11,8 @@ module Api
             set_id :uuid
             set_type :Deposit
 
-            attributes :uuid, :card_number, :expiration_time
+            attributes :uuid, :card_number, :expiration_time, :national_currency, :national_currency_amount,
+                       :initial_amount
           end
         end
       end

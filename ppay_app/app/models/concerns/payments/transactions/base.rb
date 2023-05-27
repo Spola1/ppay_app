@@ -5,20 +5,30 @@ module Payments
     module Base
       private
 
+      def merchant_commissions
+        @merchant_commissions ||=
+          merchant.commissions
+                  .where(
+                    direction: type,
+                    payment_system: PaymentSystem.find_by(name: payment_system),
+                    national_currency:
+                  )
+      end
+
       def processer_commission
-        advertisement.processer.deposit_commission || 1
+        merchant_commissions.processer.first.commission
       end
 
       def working_group_commission
-        advertisement.processer.working_group&.deposit_commission || 0
+        merchant_commissions.working_group.first.commission
       end
 
       def agent_commission
-        merchant.agent&.deposit_commission || 0
+        merchant_commissions.agent.first.commission
       end
 
       def ppay_commission
-        Settings.ppay_commission
+        merchant_commissions.ppay.first.commission
       end
 
       def complete_transactions

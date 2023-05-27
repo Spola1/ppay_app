@@ -68,7 +68,7 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
     end
 
     context 'without payment system' do
-      let(:payment_system) { nil }
+      let(:payment_system_name) { nil }
 
       let(:expected_errors) do
         [

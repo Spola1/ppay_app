@@ -10,4 +10,12 @@ class TransactionDecorator < ApplicationDecorator
   def human_transaction_type
     Transaction.human_attribute_name("transaction_type.#{transaction_type}")
   end
+
+  def national_formatted
+    formatted_amount(national_currency_amount)
+  end
+
+  def amount_formatted
+    formatted_amount(amount)
+  end
 end

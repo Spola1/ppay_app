@@ -8,29 +8,36 @@ class Balance < ApplicationRecord
 
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
-  def withdraw(amount)
+  def withdraw(amount, national_currency_amount)
     raise(ArgumentError, 'Amount must be positive') unless amount.positive?
 
     with_lock do
-      self.amount -= amount
+      self.amount -= in_national_currency ? national_currency_amount : amount
       save!
     end
   end
 
-  def deposit(amount)
+  def deposit(amount, national_currency_amount)
     raise(ArgumentError, 'Amount must be positive') unless amount.positive?
 
     with_lock do
-      self.amount += amount
+      self.amount += in_national_currency ? national_currency_amount : amount
       save!
     end
   end
 
   def today_change
-    to_transactions.today.sum(:amount) - from_transactions.today.sum(:amount)
+    to_transactions.payment_transactions.today.completed.sum(amount_type) -
+      from_transactions.payment_transactions.today.completed.sum(amount_type)
   end
 
   def transactions
     from_transactions.or(to_transactions.without(to_transactions.frozen))
+  end
+
+  private
+
+  def amount_type
+    in_national_currency ? :national_currency_amount : :amount
   end
 end

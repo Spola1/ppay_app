@@ -16,7 +16,7 @@
       %th.items-list-th мерчант
 
       %th.items-list-th
-  
+
   %tbody
     - payments.each do |payment|
       %tr.items-list-tr
@@ -28,11 +28,12 @@
         %td.items-list-td= payment.formatted_created_at
         %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
-        %td.items-list-td= payment.national_currency_amount       
+        %td.items-list-td= payment.decorate.national_formatted
         %td.items-list-td= payment.cryptocurrency
-        %td.items-list-td= payment.cryptocurrency_amount
+        %td.items-list-td= payment.decorate.cryptocurrency_formatted
         %td.items-list-td= payment.payment_system
-        %td.items-list-td= payment.human_payment_status
+        %td.items-list-td{ class: payment_status_class(payment) }
+          = payment.human_payment_status
         %td.items-list-td= payment.formatted_status_changed_at
         %td.items-list-td= payment.human_cancellation_reason
         %td.items-list-td= payment.merchant.decorate.display_name

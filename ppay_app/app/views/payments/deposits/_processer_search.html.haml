@@ -1,17 +1,19 @@
-.proc-head
-  .proc-logo
-  .proc-text
-    UID Check
+.show-payment
+  .show-payment-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
-.proc-payment-waiting-block
-  .proc-payment-waiting-img
-  Идёт подготовка платежа
-  .mt-2
-    Ожидайте пожалуйста...
+    .proc-payment-waiting-block
+      .proc-payment-waiting-img
+      Идёт подготовка платежа
+      .mt-2
+        Ожидайте пожалуйста...
 
-= render 'payments/alerts_block'
+    = render 'payments/alerts_block'
 
-- if payment.arbitration
-  = render "/shared/tg_link", class: 'text-center'
+    = render 'payments/uuid', payment:
 
-= render 'payments/uuid', payment:
+  - if payment.arbitration
+    = render 'shared/chat', payment:

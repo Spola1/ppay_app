@@ -16,43 +16,43 @@ RSpec.describe Balance, type: :model do
 
     context 'when the amount is less than the balance' do
       it 'subtracts the amount from the balance' do
-        processer1.balance.withdraw(500)
+        processer1.balance.withdraw(500, 500)
         expect(processer1.balance.amount).to eq(500)
       end
 
       it 'saves the updated balance' do
-        processer1.balance.withdraw(500)
+        processer1.balance.withdraw(500, 500)
         expect(processer1.balance.reload.amount).to eq(500)
       end
     end
 
     context 'when the amount is equal to the balance' do
       it 'subtracts the amount from the balance' do
-        processer1.balance.withdraw(1000)
+        processer1.balance.withdraw(1000, 1000)
         expect(processer1.balance.amount).to eq(0)
       end
 
       it 'saves the updated balance' do
-        processer1.balance.withdraw(1000)
+        processer1.balance.withdraw(1000, 1000)
         expect(processer1.balance.reload.amount).to eq(0)
       end
     end
 
     context 'when the amount is greater than the balance' do
       it 'raises an error and does not update the balance' do
-        expect { processer1.balance.withdraw(1001) }.to raise_error(ActiveRecord::RecordInvalid)
+        expect { processer1.balance.withdraw(1001, 1001) }.to raise_error(ActiveRecord::RecordInvalid)
         expect(processer1.balance.reload.amount).to eq(1000)
       end
     end
 
     context 'when subtracts a negative amount' do
       it 'raises an error and does not change the balance' do
-        expect { processer1.balance.withdraw(-500) }.to raise_error(ArgumentError, 'Amount must be positive')
+        expect { processer1.balance.withdraw(-500, -500) }.to raise_error(ArgumentError, 'Amount must be positive')
         expect(processer1.balance.amount).to eq(1000)
       end
 
       it 'raises an error and does not update the balance' do
-        expect { processer1.balance.withdraw(-500) }.to raise_error(ArgumentError, 'Amount must be positive')
+        expect { processer1.balance.withdraw(-500, -500) }.to raise_error(ArgumentError, 'Amount must be positive')
         expect(processer1.balance.reload.amount).to eq(1000)
       end
     end
@@ -63,36 +63,36 @@ RSpec.describe Balance, type: :model do
 
     context 'when depositing a positive amount' do
       it 'adds the amount to the balance' do
-        processer1.balance.deposit(500)
+        processer1.balance.deposit(500, 500)
         expect(processer1.balance.amount).to eq(1500)
       end
 
       it 'saves the updated balance' do
-        processer1.balance.deposit(500)
+        processer1.balance.deposit(500, 500)
         expect(processer1.balance.reload.amount).to eq(1500)
       end
     end
 
     context 'when depositing a zero amount' do
       it 'does not change the balance' do
-        expect { processer1.balance.deposit(0) }.to raise_error(ArgumentError, 'Amount must be positive')
+        expect { processer1.balance.deposit(0, 0) }.to raise_error(ArgumentError, 'Amount must be positive')
         expect(processer1.balance.amount).to eq(1000)
       end
 
       it 'does not save the balance' do
-        expect { processer1.balance.deposit(0) }.to raise_error(ArgumentError, 'Amount must be positive')
+        expect { processer1.balance.deposit(0, 0) }.to raise_error(ArgumentError, 'Amount must be positive')
         expect(processer1.balance.reload.amount).to eq(1000)
       end
     end
 
     context 'when depositing a negative amount' do
       it 'raises an error and does not change the balance' do
-        expect { processer1.balance.deposit(-500) }.to raise_error(ArgumentError, 'Amount must be positive')
+        expect { processer1.balance.deposit(-500, -500) }.to raise_error(ArgumentError, 'Amount must be positive')
         expect(processer1.balance.amount).to eq(1000)
       end
 
       it 'raises an error and does not update the balance' do
-        expect { processer1.balance.deposit(-500) }.to raise_error(ArgumentError, 'Amount must be positive')
+        expect { processer1.balance.deposit(-500, -500) }.to raise_error(ArgumentError, 'Amount must be positive')
         expect(processer1.balance.reload.amount).to eq(1000)
       end
     end
@@ -122,9 +122,12 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are multiple transactions today' do
-      let!(:transaction1) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today) }
-      let!(:transaction2) { create(:transaction, to_balance: balance, amount: 50, created_at: Date.today) }
-      let!(:transaction3) { create(:transaction, from_balance: balance, amount: 75, created_at: Date.today) }
+      let!(:transaction1) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
+                                                 status: :completed) }
+      let!(:transaction2) { create(:transaction, to_balance: balance, amount: 50, created_at: Date.today,
+                                                 status: :completed) }
+      let!(:transaction3) { create(:transaction, from_balance: balance, amount: 75, created_at: Date.today,
+                                                 status: :completed) }
 
       it 'returns the difference between today to and from transactions' do
         expect(balance.today_change).to eq(75)
@@ -132,9 +135,10 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are negative from transactions and positive to transactions today' do
-      let!(:transaction1) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today) }
+      let!(:transaction1) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
+                                                 status: :completed) }
       let!(:transaction2) do
-        create(:transaction, from_balance: balance, amount: 150, created_at: Date.today)
+        create(:transaction, from_balance: balance, amount: 150, created_at: Date.today, status: :completed)
       end
 
       it 'returns a negative number' do
@@ -143,7 +147,8 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are only negative from transactions today' do
-      let!(:transaction) { create(:transaction, from_balance: balance, amount: 75, created_at: Date.today) }
+      let!(:transaction) { create(:transaction, from_balance: balance, amount: 75, created_at: Date.today,
+                                                status: :completed) }
 
       it 'returns a negative number' do
         expect(balance.today_change).to eq(-75)
@@ -151,7 +156,8 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are only positive to transactions today' do
-      let!(:transaction) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today) }
+      let!(:transaction) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
+                                                status: :completed) }
 
       it 'returns a positive number' do
         expect(balance.today_change).to eq(100)

@@ -8,9 +8,11 @@ FactoryBot.define do
     nickname { 'AvangardBet' }
     name { 'Петр Петрович' }
     check_required { true }
+    crypto_wallet
+    usdt_trc20_address { 'ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUt' }
 
     after(:create) do |merchant|
-      merchant.balance.deposit(1000)
+      merchant.balance.deposit(1000, 10_000)
     end
 
     trait :with_all_kind_of_payments do

@@ -13,11 +13,9 @@ module Api
           def create
             return render_check_required_error if current_bearer.check_required?
 
-            @object = set_object
+            set_object
 
-            if @object.save
-              @object.inline_search!(search_params)
-
+            if @object.save && @object.inline_search!(search_params)
               render json: serialized_object, status: :created
             else
               render_object_errors(@object)
