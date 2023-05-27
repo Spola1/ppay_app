@@ -4,8 +4,9 @@ require 'rails_helper'
 
 feature 'Client can fill out the withdrawal form', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+  let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: payment_system.name) }
   let!(:payment) { create(:payment, :withdrawal, :created, advertisement:) }
+  let(:payment_system) { create :payment_system }
 
   before do
     visit "/payments/withdrawals/#{payment.uuid}?signature=#{payment.signature}"
@@ -24,7 +25,7 @@ feature 'Client can fill out the withdrawal form', type: :feature do
   end
 
   scenario 'client chosen payment system but not fill in card number, and try to confirm withdrawal' do
-    select('Sberbank', from: 'withdrawal_payment_system')
+    select(payment_system.name, from: 'withdrawal_payment_system')
     fill_in 'withdrawal_card_number', with: ''
 
     click_on 'Подтвердить'
@@ -37,7 +38,7 @@ feature 'Client can fill out the withdrawal form', type: :feature do
   end
 
   scenario 'client entered valid attributes' do
-    select('Sberbank', from: 'withdrawal_payment_system')
+    select(payment_system.name, from: 'withdrawal_payment_system')
     fill_in 'withdrawal_card_number', with: '1111111111111111'
 
     click_on 'Подтвердить'
