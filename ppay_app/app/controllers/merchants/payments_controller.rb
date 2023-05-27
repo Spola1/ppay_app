@@ -10,7 +10,7 @@ module Merchants
         end
 
         format.xlsx do
-          render xlsx: "payments", locals: { payments: current_user.payments.filter_by(filtering_params).decorate }
+          render xlsx: 'payments', locals: { payments: current_user.payments.filter_by(filtering_params).decorate }
         end
       end
     end

@@ -28,7 +28,7 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
                 payment_status: 'confirming',
                 national_currency_amount: '100.0',
                 initial_amount: '100.0',
-                national_currency: 'RUB',
+                national_currency: 'RUB'
               }
             }
           }

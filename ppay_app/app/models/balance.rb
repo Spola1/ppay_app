@@ -10,22 +10,22 @@ class Balance < ApplicationRecord
 
   def withdraw(amount, national_currency_amount)
     with_lock do
-      if in_national_currency
-        self.amount -= national_currency_amount
-      else
-        self.amount -= amount
-      end
+      self.amount -= if in_national_currency
+                       national_currency_amount
+                     else
+                       amount
+                     end
       save!
     end
   end
 
   def deposit(amount, national_currency_amount)
     with_lock do
-      if in_national_currency
-        self.amount += national_currency_amount
-      else
-        self.amount += amount
-      end
+      self.amount += if in_national_currency
+                       national_currency_amount
+                     else
+                       amount
+                     end
       save!
     end
   end

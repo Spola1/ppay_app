@@ -10,7 +10,7 @@ FactoryBot.define do
     check_required { true }
 
     after(:create) do |merchant|
-      merchant.balance.deposit(1000, 10000)
+      merchant.balance.deposit(1000, 10_000)
     end
 
     trait :with_all_kind_of_payments do
