@@ -1,87 +1,95 @@
-.proc-head
-  .proc-logo
-  .proc-text
-    UID Check
+.show-payment
+  -unless browser.device.mobile? || browser.device.tablet?
+    .show-second-block
+  .show-payment-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
-.proc-amount-block
-  .proc-amount-content1{ 'data-controller': 'clipboard' }
-    %div{ 'data-clipboard-target': 'source' }
-      #{payment.national_currency_amount}
-    %div.pr-3
-      #{payment.national_currency}
-    .copy-button
-      = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
-        = image_tag 'copy.svg', class: 'h-full'
+    .proc-amount-block
+      .proc-amount-content1{ 'data-controller': 'clipboard' }
+        %div{ 'data-clipboard-target': 'source' }
+          #{payment.decorate.national_formatted}
+        %div.pr-3
+          #{payment.national_currency}
+        .copy-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg', class: 'h-full'
 
-.proc-countdown-block
-  Вы можете оплатить в течение:
-  .text-red.font-medium{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
-    = payment.countdown
+    .proc-countdown-block
+      Вы можете оплатить в течение:
+      .text-red.font-medium{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
+        = payment.countdown
 
-.mt-1
-  .proc-shop-block
-    .proc-shop-title
-      Магазин
-    .proc-shop-content
-      = payment.merchant.name
+    .mt-1
+      .proc-shop-block
+        .proc-shop-title
+          Магазин
+        .proc-shop-content
+          = payment.merchant.name
 
-.proc-order-block
-  .proc-order-title
-    Заказ
-  .proc-order-content
-    = payment.external_order_id
+    .proc-order-block
+      .proc-order-title
+        Заказ
+      .proc-order-content
+        = payment.external_order_id
 
-.text-instruction
-  %span.text-red
-    1.
-  %span
-    Сделайте перевод указанной суммы по номеру карты указанному ниже
-
-= render 'payments/deposits/change_sum', payment: payment
-= render 'payments/deposits/bank_card', payment: payment
-
-
-= simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
-  = hidden_field_tag :event, 'check'
-
-  - if payment.merchant.check_required?
-  
-    .add-img-confirm
-      %span.text-red
-        2.
-      %span
-        Добавьте изображение чека:
-
-    - if payment.image.present?
-      = image_tag payment.image
-
-    = render 'payments/errors', payment: payment
-
-    = f.file_field :image, class: 'filepond',
-                           direct_upload: true,
-                           data: { controller: 'filepond', 'max-file-size': '5MB' }
-
-  - if payment.merchant.check_required?
     .text-instruction
       %span.text-red
-        3.
+        1.
       %span
-        После перевода нажмите кнопку «Оплата завершена»
-  
-  - else
-    .text-instruction
-      %span.text-red
-        2.
-      %span        
-        После перевода нажмите кнопку «Оплата завершена»
+        Сделайте перевод указанной суммы по номеру карты указанному ниже
 
-  
-  = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5'
+    = render 'payments/deposits/change_sum', payment: payment
+    = render 'payments/deposits/bank_card', payment: payment
 
-.block-sending-cancel-on-img-form
-  = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
-- if payment.arbitration
-  = render "/shared/tg_link"
+    = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+      = hidden_field_tag :event, 'check'
 
-= render 'payments/uuid', payment:
+      - if payment.merchant.check_required?
+
+        .add-img-confirm
+          %span.text-red
+            2.
+          %span
+            Добавьте изображение чека:
+
+        - if payment.image.present?
+          = image_tag payment.image
+
+        = render 'payments/errors', payment: payment
+
+        = f.file_field :image, class: 'filepond',
+                               direct_upload: true,
+                               data: { controller: 'filepond', 'max-file-size': '5MB' }
+
+      - if payment.merchant.check_required?
+        .text-instruction
+          %span.text-red
+            3.
+          %span
+            После перевода нажмите кнопку «Оплата завершена»
+
+      - else
+        .text-instruction
+          %span.text-red
+            2.
+          %span
+            После перевода нажмите кнопку «Оплата завершена»
+
+
+      = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5'
+
+    .block-sending-cancel-on-img-form
+      = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
+
+    = render 'payments/uuid', payment:
+    
+  - if payment.arbitration
+    = render 'shared/chat', payment:
+    
+  -unless browser.device.mobile? || browser.device.tablet?
+    .show-second-block
+      = render 'payments/qr_code', payment: payment

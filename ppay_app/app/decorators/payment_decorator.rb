@@ -58,10 +58,22 @@ class PaymentDecorator < ApplicationDecorator
     card_number&.gsub(/(.{4})/, '\1 ')
   end
 
+  def national_formatted
+    formatted_amount(national_currency_amount)
+  end
+
+  def initial_formatted
+    formatted_amount(initial_amount)
+  end
+
+  def cryptocurrency_formatted
+    formatted_amount(cryptocurrency_amount)
+  end
+
   private
 
   def fiat_amount
-    format('%.2f', national_currency_amount)
+    formatted_amount(national_currency_amount)
   end
 
   def countdown_difference

@@ -33,13 +33,15 @@ class BalanceRequest < ApplicationRecord
   def create_deposit_transaction
     create_balance_transaction(to_balance: user.balance,
                                amount:,
-                               transaction_type: :deposit)
+                               transaction_type: :deposit,
+                               national_currency_amount: amount)
   end
 
   def create_withdraw_transaction
     create_balance_transaction(from_balance: user.balance,
                                amount:,
-                               transaction_type: :withdraw)
+                               transaction_type: :withdraw,
+                               national_currency_amount: amount)
   end
 
   def set_crypto_address

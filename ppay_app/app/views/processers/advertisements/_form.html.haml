@@ -5,7 +5,7 @@
 
   = f.input :national_currency, collection: Settings.national_currencies, include_blank: '-выбрать-'
 
-  = f.input :payment_system, collection: ["Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], include_blank: '-выбрать-'
+  = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: '-выбрать-'
 
   = f.input :card_number, input_html: { data: { 'inputmask--card-number-target': 'input' } }
 

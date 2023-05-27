@@ -5,5 +5,5 @@
     = title
   %td.item-card-td.text-base
     %span{ class: local_assigns[:value_color] }
-      = value
+      = local_assigns[:float_number] ? format('%.2f', value) : value
     = local_assigns[:currency]

@@ -1,13 +1,21 @@
-.proc-head
-  .proc-logo
-  .proc-text
-    UID Check
+.show-payment
+  -unless browser.device.mobile? || browser.device.tablet?
+    .show-second-block
+  .show-payment-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
-.proc-payment-waiting-block
-  .proc-payment-waiting-img
-  Переводим деньги...
+    .proc-payment-waiting-block
+      .proc-payment-waiting-img
+      Переводим деньги...
 
-- if payment.arbitration
-  = render "/shared/tg_link", class: 'text-center'
+    = render 'payments/uuid', payment:, class: 'text-center'
 
-= render 'payments/uuid', payment:, class: 'text-center'
+  - if payment.arbitration
+    = render 'shared/chat', payment:
+
+  -unless browser.device.mobile? || browser.device.tablet?
+    .show-second-block
+      = render 'payments/qr_code', payment: payment

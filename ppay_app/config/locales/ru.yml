@@ -14,6 +14,7 @@ ru:
         requests_type: Тип
         amount: Сумма
         crypto_address: Криптоадрес USDT TRC20
+        card_number: Номер карты
         status: Статус
         short_comment: Комментарий
       payment:

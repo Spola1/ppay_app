@@ -1,88 +1,59 @@
+version: '3.8'
 services:
 
-  postgres:
-    image: postgres:14.5-bullseye
-    restart: unless-stopped
-    env_file: ./ppay_app/.env
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:7.0.5-bullseye
-    restart: unless-stopped
-    env_file: ./ppay_app/.env
-    volumes:
-      - redis_data:/data
-
   worker:
-    build:
-      context: ./ppay_app
-      dockerfile: Dockerfile
-      args:
-        RAILS_ENV: production
-        BUNDLE_PATH: /bundle
+    image: "ppay/ppay_prod_app"
+    hostname: worker
     depends_on:
       - app
-      - postgres
-      - redis
     env_file: ./ppay_app/.env
     entrypoint: ./entrypoint-sidekiq.sh
+    environment:
+      - RAILS_ENV=production
+      - BUNDLE_PATH=/bundle
     restart: unless-stopped
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
       - assets:/app/public/assets
 
   cron:
-    build:
-      context: ./ppay_app
-      dockerfile: Dockerfile.cron
-      args:
-        RAILS_ENV: production
-        BUNDLE_PATH: /bundle
+    image: "ppay/ppay_prod_cron"
+    hostname: cron
     depends_on:
       - app
-      - postgres
-      - redis
       - worker
     env_file: ./ppay_app/.env
     entrypoint: ./entrypoint-cron.sh
+    environment:
+      - RAILS_ENV=production
+      - BUNDLE_PATH=/bundle
     restart: unless-stopped
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
 
   app:
-    build:
-      context: ./ppay_app
-      dockerfile: Dockerfile
-      args:
-        RAILS_ENV: production
-        BUNDLE_PATH: /bundle
-    depends_on:
-      - postgres
-      - redis
+    image: "ppay/ppay_prod_app"
+    hostname: app
     ports:
       - 3000:3000
     env_file: ./ppay_app/.env
     entrypoint: ./entrypoint-rails.sh
-    image: cloud.canister.io:5000/ffyy289/ppay_app:latest
+    environment:
+      - RAILS_ENV=production
+      - BUNDLE_PATH=/bundle
     volumes:
       - ./ppay_app/config/database.yml.docker:/app/config/database.yml
       - assets:/app/public/assets
 
   nginx:
-    build:
-      context: .
-      dockerfile: ./nginx/Dockerfile.nginx
+    image: "ppay/ppay_prod_nginx"
+    hostname: nginx
     depends_on:
       - app
-      - postgres
-      - redis
     ports:
       - 80:80
     volumes:
       - assets:/app/public/assets:ro
 
 volumes:
-  db_data:
-  redis_data:
   assets:
