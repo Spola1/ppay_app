@@ -26,7 +26,7 @@ module Staff
       @balance_request = current_user.balance_requests.new(balance_request_params)
 
       if @balance_request.save
-        redirect_to balance_request_path(@balance_request)  # @balance_request
+        redirect_to @balance_request
       else
         render :new, status: :unprocessable_entity
       end
