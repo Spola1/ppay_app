@@ -8,6 +8,8 @@ FactoryBot.define do
     payment_system { 'AlfaBank' }
     card_number { '1111111111111111' }
     status { true }
+    max_summ { 10_000 }
+    min_summ { 10 }
 
     trait :deposit do
       direction { 'Deposit' }
