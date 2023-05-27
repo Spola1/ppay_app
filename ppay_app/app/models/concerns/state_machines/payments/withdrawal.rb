@@ -88,9 +88,9 @@ module StateMachines
       end
 
       def validate_card_number
-        return true if card_number && card_number.size == 16
+        return true if card_number && card_number.size >= 4
 
-        errors.add(:card_number, :wrong_length, count: 16)
+        errors.add(:card_number, :too_short, count: 4)
         false
       end
     end
