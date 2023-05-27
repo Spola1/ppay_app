@@ -15,13 +15,18 @@ describe 'Payments' do
 
       parameter name: :uuid, in: :path, type: :string
 
-      let(:payment) { create :payment, :deposit, :confirming, merchant: }
+      let(:payment) { create :payment, :deposit, :confirming, merchant:, cancellation_reason:, external_order_id: }
       let(:uuid) { payment.uuid }
+      let(:cancellation_reason) { :fraud_attempt }
+      let(:external_order_id) { '1234' }
 
       response '200', 'payment with uuid is present' do
         schema '$ref': '#/components/schemas/payments_show_response_body_schema'
 
-        run_test!
+        run_test! do |_response|
+          expect(response_body['data']['attributes']['cancellation_reason']).to eq(cancellation_reason.to_s)
+          expect(response_body['data']['attributes']['external_order_id']).to eq(external_order_id)
+        end
       end
 
       response '404', 'does not found payment with invalid uuid' do

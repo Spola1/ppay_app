@@ -7,7 +7,7 @@ describe 'External processing withdrawals' do
   let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:adv) { create :advertisement, :withdrawal, payment_system: 'Tinkoff' }
+  let!(:adv) { create :advertisement, :withdrawal, payment_system: payment_system.name }
   let!(:ppay) { create :user, :ppay }
 
   path '/api/v1/external_processing/payments/withdrawals' do
@@ -26,12 +26,12 @@ describe 'External processing withdrawals' do
                 in: :body,
                 schema: { '$ref': '#/components/schemas/external_processing_withdrawals_create_parameter_body_schema' }
 
-      let(:payment_system) { 'Tinkoff' }
+      let(:payment_system_name) { payment_system.name }
       let(:national_currency) { 'RUB' }
       let(:card_number) { '1234 5678 9012 3456' }
       let(:params) do
         {
-          payment_system:,
+          payment_system: payment_system_name,
           card_number:,
           national_currency:,
           national_currency_amount: 3000.0,

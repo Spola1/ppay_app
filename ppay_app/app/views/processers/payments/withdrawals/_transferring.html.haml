@@ -1,4 +1,4 @@
-.item-card.mb-4
+.item-card
   %p
     Вы можете оплатить в течение:
     %span.countdown{
@@ -13,7 +13,7 @@
 
   %p.text-2xl
     Сумма:
-    = payment.national_currency_amount
+    = payment.decorate.national_formatted
     = payment.national_currency
 
   %p.text-2xl

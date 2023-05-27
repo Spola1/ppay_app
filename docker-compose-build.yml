@@ -1,0 +1,75 @@
+version: '3.8'
+services:
+
+  worker:
+    image: "ppay/ppay_prod_app"
+    build:
+      context: ./ppay_app
+      dockerfile: Dockerfile
+      args:
+        RAILS_ENV: production
+        BUNDLE_PATH: /bundle
+    hostname: worker
+    depends_on:
+      - app
+    env_file: ./ppay_app/.env
+    entrypoint: ./entrypoint-sidekiq.sh
+    restart: unless-stopped
+    volumes:
+      - ./ppay_app/config/database.yml.docker:/app/config/database.yml
+      - assets:/app/public/assets
+
+  cron:
+    image: "ppay/ppay_prod_cron"
+    build:
+      context: ./ppay_app
+      dockerfile: Dockerfile.cron
+      args:
+        RAILS_ENV: production
+        BUNDLE_PATH: /bundle
+    hostname: cron
+    depends_on:
+      - app
+      - worker
+    env_file: ./ppay_app/.env
+    entrypoint: ./entrypoint-cron.sh
+    restart: unless-stopped
+    volumes:
+      - ./ppay_app/config/database.yml.docker:/app/config/database.yml
+
+  app:
+    image: "ppay/ppay_prod_app"
+    build:
+      context: ./ppay_app
+      dockerfile: Dockerfile
+      args:
+        RAILS_ENV: production
+        BUNDLE_PATH: /bundle
+    hostname: app
+    ports:
+      - 3000:3000
+    env_file: ./ppay_app/.env
+    entrypoint: ./entrypoint-rails.sh
+    environment:
+      - RAILS_ENV='production'
+      - BUNDLE_PATH='/bundle'
+    volumes:
+      - ./ppay_app/config/database.yml.docker:/app/config/database.yml
+      - assets:/app/public/assets
+
+  nginx:
+    image: "ppay/ppay_prod_nginx"
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile.nginx
+    hostname: nginx
+    depends_on:
+      - app
+    ports:
+      - 80:80
+    volumes:
+      - assets:/app/public/assets:ro
+
+volumes:
+  assets:
+

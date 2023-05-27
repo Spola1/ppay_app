@@ -4,10 +4,12 @@
     .filters-wrap
       .item-card
         %h1.mb-4.text-xl Фильтры
-        = render 'shared/staff/payments/filter', payments: @payments
+        = render 'shared/staff/payments/filter'
     .card-wrap
       .item-card
-        %h1.mb-4.text-xl Все платежи
+        .card-head
+          %h1 Все платежи
+          = link_to t('buttons.export_to_excel'), request.params.merge(format: :xlsx), class: 'form-submit'
         = render 'table', payments: @filtered_payments
 
         .card-wrap

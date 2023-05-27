@@ -11,6 +11,7 @@ class User < ApplicationRecord
 
   has_many :api_keys, as: :bearer
   has_many :comments
+  has_many :chats
   has_many :balance_requests
 
   before_create :set_crypto_wallet

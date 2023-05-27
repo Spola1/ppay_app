@@ -5,11 +5,16 @@ module Supports
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
-      @payments = @payments.decorate
+      respond_to do |format|
+        format.html do
+          set_all_payments
+        end
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(filtered_payments, page_param: :arbitration_page)
-      @arbitration_payments = @arbitration_payments.decorate
+        format.xlsx do
+          render xlsx: 'payments',
+                 locals: { payments: Payment.filter_by(filtering_params).includes(:merchant).decorate }
+        end
+      end
     end
 
     def show; end
@@ -21,6 +26,14 @@ module Supports
     end
 
     private
+
+    def set_all_payments
+      @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
+      @payments = @payments.decorate
+
+      @arbitration_payments_pagy, @arbitration_payments = pagy(filtered_payments, page_param: :arbitration_page)
+      @arbitration_payments = @arbitration_payments.decorate
+    end
 
     def find_payment
       @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate

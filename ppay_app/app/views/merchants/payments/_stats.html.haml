@@ -1,5 +1,5 @@
 .card-wrap{ class: 'basis-1/2' }
-  .item-card
+  .item-card.h-full
     .flex.mb-4.items-center
       .text-xl.flex-1 За сегодня
     %table.item-card-table
@@ -16,8 +16,9 @@
         = render 'stats_tr', title: 'Изменение баланса',
                              value: @today_balance_change,
                              icon: 'line-chart',
+                             float_number: true,
                              value_color: number_color(@today_balance_change),
-                             currency: 'USDT'
+                             currency: current_user.balance.currency
 
 .card-wrap{ class: 'basis-1/2' }
   .item-card.h-full

@@ -1,0 +1,22 @@
+
+
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Данные ссылки на внесение средств
+
+      %table.item-card-table
+        %tbody
+          %tr.item-card-tr
+            %td.item-card-td.item-card-td-label{ class: 'w-1/4' } UUID
+            %td.item-card-td= "#{@payment.uuid}"
+          %tr.item-card-tr
+            %td.item-card-td.item-card-td-label Ссылка
+            %td.item-card-td
+              %div{ 'data-clipboard-target': 'source' }
+                = @payment.decorate.url
+              //.copy-button
+              //  = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+              //    = image_tag 'copy.svg', class: 'h-full'

@@ -4,8 +4,9 @@ require 'rails_helper'
 
 feature 'Client can select payment system', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:advertisement) { create(:advertisement, :deposit, payment_system: 'Tinkoff') }
+  let!(:advertisement) { create(:advertisement, :deposit, payment_system: payment_system.name) }
   let!(:payment) { create(:payment, :deposit, :created, advertisement:) }
+  let(:payment_system) { create :payment_system }
 
   before do
     visit "/payments/deposits/#{payment.uuid}?signature=#{payment.signature}"
@@ -24,7 +25,7 @@ feature 'Client can select payment system', type: :feature do
   end
 
   scenario 'client chosen payment system and try to confirm choise payment system' do
-    select('Tinkoff', from: 'deposit_payment_system')
+    select(payment_system.name, from: 'deposit_payment_system')
 
     click_on 'Подтвердить'
 

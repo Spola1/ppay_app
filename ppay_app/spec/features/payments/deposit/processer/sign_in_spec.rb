@@ -25,6 +25,7 @@ feature 'Processor can log in', type: :feature do
 
     click_on 'Вход'
 
+    expect(page).to have_content('Неправильный Email или пароль.')
     expect(page).to have_content('Email')
     expect(page).to have_content('Пароль')
   end

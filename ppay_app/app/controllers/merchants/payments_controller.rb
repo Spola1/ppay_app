@@ -3,8 +3,16 @@
 module Merchants
   class PaymentsController < Staff::BaseController
     def index
-      set_today_payments
-      set_all_payments
+      respond_to do |format|
+        format.html do
+          set_today_payments
+          set_all_payments
+        end
+
+        format.xlsx do
+          render xlsx: 'payments', locals: { payments: current_user.payments.filter_by(filtering_params).decorate }
+        end
+      end
     end
 
     private
@@ -22,7 +30,6 @@ module Merchants
       @pagy, @filtered_payments = pagy(current_user.payments.filter_by(filtering_params))
       @filtered_payments = @filtered_payments.decorate
       @payments = current_user.payments
-      @payments = @payments.decorate
     end
 
     def filtering_params

@@ -8,8 +8,8 @@
         %td.item-card-td.item-card-td-label Тип
         %td.item-card-td= @balance_request.requests_type
       %tr.items-list-tr
-        %td.item-card-td.item-card-td-label Сумма в USDT
-        %td.item-card-td= @balance_request.amount
+        %td.item-card-td.item-card-td-label Сумма
+        %td.item-card-td= "#{ @balance_request.amount } #{ @balance_request.user.balance.currency }"
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Статус
         %td.item-card-td= @balance_request.status

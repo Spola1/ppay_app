@@ -12,7 +12,7 @@ FactoryBot.define do
     usdt_trc20_address { 'ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUt' }
 
     after(:create) do |merchant|
-      merchant.balance.deposit(1000)
+      merchant.balance.deposit(1000, 10_000)
     end
 
     trait :with_all_kind_of_payments do
