@@ -122,12 +122,18 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are multiple transactions today' do
-      let!(:transaction1) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
-                                                 status: :completed) }
-      let!(:transaction2) { create(:transaction, to_balance: balance, amount: 50, created_at: Date.today,
-                                                 status: :completed) }
-      let!(:transaction3) { create(:transaction, from_balance: balance, amount: 75, created_at: Date.today,
-                                                 status: :completed) }
+      let!(:transaction1) do
+        create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
+                             status: :completed)
+      end
+      let!(:transaction2) do
+        create(:transaction, to_balance: balance, amount: 50, created_at: Date.today,
+                             status: :completed)
+      end
+      let!(:transaction3) do
+        create(:transaction, from_balance: balance, amount: 75, created_at: Date.today,
+                             status: :completed)
+      end
 
       it 'returns the difference between today to and from transactions' do
         expect(balance.today_change).to eq(75)
@@ -135,8 +141,10 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are negative from transactions and positive to transactions today' do
-      let!(:transaction1) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
-                                                 status: :completed) }
+      let!(:transaction1) do
+        create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
+                             status: :completed)
+      end
       let!(:transaction2) do
         create(:transaction, from_balance: balance, amount: 150, created_at: Date.today, status: :completed)
       end
@@ -147,8 +155,10 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are only negative from transactions today' do
-      let!(:transaction) { create(:transaction, from_balance: balance, amount: 75, created_at: Date.today,
-                                                status: :completed) }
+      let!(:transaction) do
+        create(:transaction, from_balance: balance, amount: 75, created_at: Date.today,
+                             status: :completed)
+      end
 
       it 'returns a negative number' do
         expect(balance.today_change).to eq(-75)
@@ -156,8 +166,10 @@ RSpec.describe Balance, type: :model do
     end
 
     context 'when there are only positive to transactions today' do
-      let!(:transaction) { create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
-                                                status: :completed) }
+      let!(:transaction) do
+        create(:transaction, to_balance: balance, amount: 100, created_at: Date.today,
+                             status: :completed)
+      end
 
       it 'returns a positive number' do
         expect(balance.today_change).to eq(100)

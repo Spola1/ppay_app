@@ -260,7 +260,6 @@ RSpec.describe Payment, type: :model do
       end
     end
 
-
     describe 'filter_by_cancellation_reason' do
       context 'when by_client' do
         subject(:payment) { Payment.filter_by_cancellation_reason('by_client') }

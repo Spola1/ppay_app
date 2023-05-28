@@ -18,7 +18,6 @@ RSpec.describe BalanceRequest, type: :model do
     it { is_expected.to define_enum_for(:status).with_values(processing: 0, completed: 1, cancelled: 2) }
   end
 
-
   describe '#set_crypto_address' do
     it 'should return balance request crypto address equal to balance request user crypto wallet address' do
       expect(balance_request.crypto_address).to eq(balance_request.user.crypto_wallet.address)

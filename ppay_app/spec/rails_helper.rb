@@ -84,5 +84,5 @@ Shoulda::Matchers.configure do |config|
 end
 
 Capybara.configure do |config|
-  config.app_host = 'http://' + Rails.configuration.action_controller.default_url_options[:host]
+  config.app_host = "http://#{Rails.configuration.action_controller.default_url_options[:host]}"
 end
