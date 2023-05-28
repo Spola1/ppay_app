@@ -18,5 +18,5 @@ class Advertisement < ApplicationRecord
   scope :by_direction,         ->(direction) { where(direction:) }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
-  validates :card_number, length: { is: 16 }, if: -> { direction == 'Deposit' }
+  validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
 end
