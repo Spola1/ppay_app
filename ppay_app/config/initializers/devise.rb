@@ -312,3 +312,8 @@ Devise.setup do |config|
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
 end
+
+# Rails.application.config.to_prepare do
+#   Devise::RegistrationsController.layout proc { |controller| user_signed_in? ? "application" : "devise" }
+#   # And/or Sessions, Confirmations, Unlocks, Passwords
+# end

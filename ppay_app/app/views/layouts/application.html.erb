@@ -25,7 +25,7 @@
       <%= render 'processers/notifications/index', user: current_user %>
     <%- end %>
     <div class="main_container py-4 px-8">
-      <%= yield %>
+      <%= content_for?(:main_container) ? yield(:main_container) : yield %>
     </div>
   </body>
 </html>

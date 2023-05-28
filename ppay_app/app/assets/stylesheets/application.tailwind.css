@@ -3,11 +3,23 @@
 @tailwind utilities;
 
 @layer components {
-  .devise-links {
-    @apply mt-6;
+  section:has(.devise_container) {
+    @apply w-full;
   }
 
-  .devise-links a {
+  .devise_container {
+    @apply text-xs text-gray-900 font-light py-2 px-4;
+  }
+
+  .devise_container h2 {
+    @apply text-xl mb-4;
+  }
+
+  .devise_container form {
+    @apply mb-6;
+  }
+
+  .devise_container .links a {
     @apply underline;
   }
 
@@ -168,7 +180,7 @@
   }
 
   .simple_form .input input.string, .simple_form .input input.text, .simple_form .input input.numeric,
-  .simple_form .input textarea.text, .simple_form .input input.date {
+  .simple_form .input textarea.text, .simple_form .input input.date, .simple_form .input input.password {
     @apply form-input;
   }
 

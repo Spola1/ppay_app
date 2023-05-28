@@ -1,18 +1,21 @@
-%section.w-full
-  .top_block.text-xs.text-gray-900.font-light.py-2.px-4
-    %h2.text-xl Вход в систему
-    %br
-    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-      .form-inputs
-        = f.input :email,                       |
-          required: false,                      |
-          autofocus: true,                      |
-          input_html: { autocomplete: "email" } |
-        = f.input :password,                               |
-          required: false,                                 |
-          input_html: { autocomplete: "current-password" } |
-        = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
-      .form-actions
-        = f.button :submit, "Вход", class: 'form-submit'
+%h2= t('.system_sign_in')
 
-    = render "devise/shared/links"
+= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :email,
+      required: false,
+      autofocus: true,
+      input_html: { autocomplete: "email" }
+
+    = f.input :password,
+      required: false,
+      input_html: { autocomplete: "current-password" }
+
+    = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+
+  .form-actions
+    = f.button :submit, t('.sign_in'), class: 'form-submit'
+
+= render "devise/shared/links"
