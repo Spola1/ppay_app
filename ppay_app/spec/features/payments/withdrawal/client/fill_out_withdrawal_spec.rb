@@ -30,7 +30,7 @@ feature 'Client can fill out the withdrawal form', type: :feature do
 
     click_on 'Подтвердить'
 
-    expect(page).to have_content('Номер карты неверной длины (может быть длиной ровно 16 символов)')
+    expect(page).to have_content('Номер карты недостаточной длины (не может быть меньше 4 символа)')
 
     payment.reload
 
