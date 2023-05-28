@@ -8,7 +8,7 @@ class Payment < ApplicationRecord
 
   audited
 
-  default_scope { order(created_at: :desc) }
+  default_scope { order(created_at: :desc, id: :desc) }
   scope :filter_by_created_from, ->(created_from) { where('payments.created_at > ?', created_from) }
   scope :filter_by_created_to, ->(created_to) { where('payments.created_at < ?', created_to) }
   scope :filter_by_cancellation_reason, ->(cancellation_reason) { where(cancellation_reason:) }
