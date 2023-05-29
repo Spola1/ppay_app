@@ -12,5 +12,7 @@ ru:
         national_currency_amount_to: 'Кол-во нац. валюты до:'
         cryptocurrency_amount_from: 'Кол-во криптовалюты от:'
         cryptocurrency_amount_to: 'Кол-во криптовалюты до:'
+        uuid: 'UUID:'
+        external_order_id: 'Внешний номер заказа:'
 
 
