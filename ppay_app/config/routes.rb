@@ -25,11 +25,13 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
-    resources :deposits, param: :uuid, only: :show
-    resources :withdrawals, param: :uuid, only: :show
+  scope '(:locale)', locale: /#{I18n.available_locales.join('|')}/ do
+    namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
+      resources :deposits, param: :uuid, only: :show
+      resources :withdrawals, param: :uuid, only: :show
 
-    concerns :statuses_updatable
+      concerns :statuses_updatable
+    end
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do

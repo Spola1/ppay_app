@@ -3,6 +3,23 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include Pagy::Backend
+  include ApplicationHelper
+
+  around_action :set_locale
+
+  def set_locale(&action)
+    locale = I18n.locale = locale_from_url || I18n.default_locale
+    I18n.with_locale locale, &action
+  end
+
+  def locale_from_url
+    locale = params[:locale]
+    locale if I18n.available_locales.include?(locale).to_s
+  end
+
+  def default_url_options
+    { locale: I18n.locale }
+  end
 
   MANAGEMENT_NAMESPACES = %w[admins supports].freeze
 

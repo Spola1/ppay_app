@@ -7,6 +7,12 @@
       .proc-text
         UID Check
 
+    - I18n.available_locales.each do |locale|
+      - if I18n.locale == locale
+        = locale
+      - else
+        = link_to locale, url_for(locale: locale)
+
     .proc-amount-block
       .proc-amount-content
         = "#{payment.decorate.national_formatted} #{payment.national_currency}"

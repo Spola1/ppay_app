@@ -25,6 +25,10 @@ module PpayApp
 
     config.autoload_paths << Rails.root.join('lib')
 
+    config.i18n.available_locales = [:en, :id, :kk, :ky, :ru, :tg, :tr, :uk, :uz]
+  
+    config.i18n.default_locale = :ru
+
     unless Rails.env.production?
       RSpec.configure do |config|
         config.swagger_dry_run = false
