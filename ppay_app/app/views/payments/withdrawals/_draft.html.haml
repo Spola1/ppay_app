@@ -8,24 +8,24 @@
     .mt-4
       .proc-shop-block
         .proc-shop-title
-          Мерчант
+          = t('payments.withdraw.attributes.merchant')
         .proc-shop-content
           = payment.merchant.name
 
     .proc-shop-block
       .proc-order-title
-        Заказ
+        = t('payments.order')
       .proc-order-content
         = payment.external_order_id
 
     .proc-order-block
       .proc-order-title
-        Сумма
+        = t('payments.withdraw.attributes.amount')
       .proc-order-content
         = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
     .please-pay-from-bank
-      Пожалуйста, укажите карту, куда Вы хотите вывести средства
+      = t('payments.withdraw.attributes.choosing_bank_card')
       = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
 
     = render 'payments/errors', payment: payment
@@ -33,21 +33,21 @@
     = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
 
       .select-payment-system
-        = f.label :payment_system, 'Банк'
+        = f.label :payment_system, t('payments.withdraw.attributes.bank')
         = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                                    { include_blank: 'Выбрать' },
+                                    { include_blank: t('payments.choise') },
                                     class: 'grey-drop-down mb-3'
 
       .select-payment-system
         
-        = f.label :card_number, 'Номер карты'
+        = f.label :card_number, t('payments.withdraw.attributes.card_number')
         = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }, class: "grey-cardplace"
                 
 
       = hidden_field_tag :event, 'search' 
 
       .mt-4
-        = f.submit "Подтвердить", class: "green-button"
+        = f.submit t('payments.confirm'), class: "green-button"
 
     .mt-4
       = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)

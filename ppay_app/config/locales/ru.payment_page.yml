@@ -1,16 +1,22 @@
 ru:
   payments:
     payment_preparation: Идёт подготовка платежа
+    payment processing: Идёт обработка
     expectation: Ожидайте пожалуйста...
+    order: Заказ
+    choise: Выбрать
+    confirm: Подтвердить
+    success: Успешно!
+    payment_completed: Платёж выполнен!
+    cancellation_payment: Отменить платёж
+    back_to_shop: вернуться в магазин
+    confirmation_transfer_cancellation: Вы уверены, что хотите отменить платёж?
+    payment_cancelled: Платёж отменён!
     deposit:
       attributes:
         shop: Магазин
-        order: Заказ
         choosing_payment_system: Выберите платежную систему
-        choise: Выбрать
-        confirm: Подтвердить
-        request: Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете оплатить! 
-        cancellation_payment: Отменить платёж
+        request: Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете оплатить!
         attention: Внимание
         paragraph_1: при отправке денежных средств писать сообщения в приложении категорически запрещено.
         paragraph_2: платеж должен быть выполнен в точности на указанную сумму, включая все знаки после запятой.
@@ -22,3 +28,17 @@ ru:
         add_receipt_image: Добавьте изображение чека
         click_payment_completed_button: После перевода нажмите кнопку «Оплата завершена» 
         payment_completed: Оплата завершена
+        copy_deposit_amount: Скопируйте точную сумму депозита
+        changing_amount: Мы изменили сумму, чтобы определить Ваш платеж и обработать его быстрее
+        continue_payment: Продолжить оплату
+    withdraw:
+      attributes:
+        merchant: Мерчант
+        amount: Сумма
+        choosing_bank_card: Пожалуйста, укажите карту, куда Вы хотите вывести средства
+        bank: Банк
+        card_number: Номер карты
+        money_transfer: Переводим деньги...
+        transfer_confirmation: Вы получили деньги?
+        confirmation_receipt_of_money: Вы уверены, что полностью получили платёж и хотите его подтвердить?
+        confirmation_payment_cancellation: Вы уверены, что хотите отменить платёж?

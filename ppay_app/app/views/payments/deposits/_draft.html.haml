@@ -27,7 +27,7 @@
     .mt-1
       .proc-order-block
         .proc-order-title
-          = t('payments.deposit.attributes.order')
+          = t('payments.order')
         .proc-order-content
           = payment.external_order_id
 
@@ -39,12 +39,12 @@
           = f.label :payment_system, t('payments.deposit.attributes.choosing_payment_system')
 
         = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                                    { include_blank: t('payments.deposit.attributes.choise') },
+                                    { include_blank: t('payments.choise') },
                                     class: 'grey-drop-down'
 
         = hidden_field_tag :event, 'search'
 
-        = f.submit t('payments.deposit.attributes.confirm'), class: "green-button-submit mt-3"
+        = f.submit t('payments.confirm'), class: "green-button-submit mt-3"
 
     .please-pay-from-bank
       = t('payments.deposit.attributes.request')

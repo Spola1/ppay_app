@@ -7,10 +7,10 @@
 
     .proc-payment-cancelled-block
       .proc-payment-cancelled-img
-      Платеж отменён !
+      = t('payments.payment_cancelled')
 
     .proc-payment-cancelled-links-block
-      = link_to "вернуться в магазин", payment.redirect_url
+      = link_to t('payments.back_to_shop'), payment.redirect_url
 
     = render 'payments/uuid', payment:, class: 'text-center'
 

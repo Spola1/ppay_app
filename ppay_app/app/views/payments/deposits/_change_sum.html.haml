@@ -12,8 +12,8 @@
               = image_tag 'copy.svg', class: 'h-full'
       .modal_content
         .modal_title
-          Скопируйте точную сумму депозита 
+          = t('payments.deposit.attributes.copy_deposit_amount')
         .modal_text
-          Мы изменили сумму, чтобы определить Ваш платеж и обработать его быстрее
+          = t('payments.deposit.attributes.changing_amount')
 
-        = button_tag "Продолжить оплату", class: 'modal_button', data: { action: "click->modal#hide" }
+        = button_tag t('payments.deposit.attributes.continue_payment'), class: 'modal_button', data: { action: "click->modal#hide" }

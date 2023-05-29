@@ -1,16 +1,22 @@
 id:
   payments:
     payment_preparation:
+    payment processing:
     expectation:
+    order:
+    choise:
+    confirm:
+    success:
+    payment_completed:
+    cancellation_payment:
+    back_to_shop:
+    confirmation_transfer_cancellation:
+    payment_cancelled:
     deposit:
       attributes:
         shop:
-        order:
         choosing_payment_system:
-        choise:
-        confirm:
-        request: 
-        cancellation_payment:
+        request:
         attention:
         paragraph_1:
         paragraph_2:
@@ -22,3 +28,17 @@ id:
         add_receipt_image:
         click_payment_completed_button:
         payment_completed:
+        copy_deposit_amount:
+        changing_amount:
+        continue_payment:
+    withdraw:
+      attributes:
+        merchant:
+        amount:
+        choosing_bank_card:
+        bank:
+        card_number:
+        money_transfer:
+        transfer_confirmation:
+        confirmation_receipt_of_money:
+        confirmation_payment_cancellation:
