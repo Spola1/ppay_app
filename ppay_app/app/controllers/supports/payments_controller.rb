@@ -11,7 +11,8 @@ module Supports
         end
 
         format.xlsx do
-          render xlsx: "payments", locals: { payments: Payment.filter_by(filtering_params).includes(:merchant).decorate }
+          render xlsx: 'payments',
+                 locals: { payments: Payment.filter_by(filtering_params).includes(:merchant).decorate }
         end
       end
     end

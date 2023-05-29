@@ -47,7 +47,6 @@
   }
 
 
-
   .badge {
     @apply text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold
       bg-red-600 text-white rounded;
@@ -239,7 +238,7 @@
 
   .notifications-block {
     @apply fixed flex flex-col max-w-full bg-clip-padding shadow-sm outline-none
-    transition duration-300 ease-in-out text-gray-700 top-2 right-2 w-auto h-auto;
+      transition duration-300 ease-in-out text-gray-700 top-2 right-2 w-auto h-auto;
   }
 
   .notification .toast {
@@ -263,17 +262,17 @@
     @apply text-gray-500 text-sm mt-8;
   }
 
-  
+
   .grey-drop-down {
-    @apply w-full h-12 px-3 py-2.5 mr-3 text-sm font-medium text-left text-black bg-gray-200 rounded md:mb-0; 
+    @apply w-full h-12 px-3 py-2.5 mr-3 text-sm font-medium text-left text-black bg-gray-200 rounded md:mb-0;
   }
 
   .grey-cardplace {
-    @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0; 
+    @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0;
   }
 
   .proc-head {
-    @apply flex justify-between; 
+    @apply flex justify-between;
   }
 
   .proc-logo {
@@ -297,8 +296,9 @@
   }
 
   .proc-copy-bank-card-content {
-    @apply text-left flex justify-between
+    @apply text-left flex;
   }
+
   .proc-shop-block {
     @apply flex justify-between;
   }
@@ -342,7 +342,7 @@
   }
 
   .proc-card-sceomorph {
-    @apply mt-3.5 mb-5 p-6 flex flex-col h-32 rounded-2xl bg-[#21a038] shadow-lg;
+    @apply mt-3.5 mb-5 p-6 flex flex-col rounded-2xl bg-[#21a038] shadow-lg;
   }
 
   .tinkoff-card {
@@ -453,9 +453,13 @@
   .border-qr {
     border: 1px solid #dedede;
   }
-  
+
   .show-payment-block {
     @apply font-firs w-100 min-h-min rounded-xl py-5 px-20 bg-white;
+  }
+
+  .show-payment-chat-block {
+    @apply font-firs w-96 min-w-[320px] min-h-min rounded-xl py-5 px-5 bg-white border-qr;
   }
 
   .show-second-block {
@@ -528,7 +532,7 @@
   .modal_title {
     @apply font-medium text-sm;
   }
-  
+
   .modal_text {
     @apply text-sm text-xs mt-2;
   }
@@ -542,7 +546,7 @@
   }
 
   .copy-card-button {
-    @apply pt-3 pr-7; 
+    @apply pt-3 pl-3;
   }
 
   .svg-button {
@@ -563,6 +567,7 @@
     @apply text-red-500;
   }
 
+
   .text-qr-instruction {
     @apply text-sm mt-2.5 font-medium leading-tight text-center;
   }
@@ -581,7 +586,7 @@
   .completed-status {
     @apply text-green-500;
   }
-  
+
   .cancelled-status {
     @apply text-red-500;
   }
@@ -589,6 +594,8 @@
   .image-processer-block {
     @apply h-96;
   }
+
+  input[name="advertisement[card_number]"] {
+    width: 400px !important;
+  }
 }
-
-

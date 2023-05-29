@@ -56,6 +56,18 @@ FactoryBot.define do
       image { fixture_file_upload('spec/fixtures/test_files/sample.jpeg', 'image/png') }
     end
 
+    trait :by_client do
+      cancellation_reason { 0 }
+    end
+
+    trait :UZS do
+      national_currency { 'UZS' }
+    end
+
+    trait :Tinkoff do
+      payment_system { 'Tinkoff' }
+    end
+
     trait :with_transactions do
       transactions do
         [build(:transaction, transaction_type: :main),

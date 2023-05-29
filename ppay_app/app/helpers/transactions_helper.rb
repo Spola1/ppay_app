@@ -12,13 +12,19 @@ module TransactionsHelper
   end
 
   def crypto_address_label
-    national_balance? ? t('activerecord.attributes.balance_request.card_number') : 
-                        t('activerecord.attributes.balance_request.crypto_address')
+    if national_balance?
+      t('activerecord.attributes.balance_request.card_number')
+    else
+      t('activerecord.attributes.balance_request.crypto_address')
+    end
   end
 
   def crypto_address_hint
-    national_balance? ? 'Номер карты, на которую вам перевести деньги' : 
-                        'Кошелёк, на который вам перевести деньги'
+    if national_balance?
+      'Номер карты, на которую вам перевести деньги'
+    else
+      'Кошелёк, на который вам перевести деньги'
+    end
   end
 
   def national_balance?

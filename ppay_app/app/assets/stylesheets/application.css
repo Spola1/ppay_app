@@ -18,6 +18,18 @@
  *= require filepond-plugin-image-preview.min
  */
 
+@media (min-width:320px), @media (min-width:481px), @media (min-width:641px), @media (min-width:961px) {
+  .show-second-block {
+    display: none;
+  }
+}
+
+@media (min-width:1025px) {
+  .show-second-block {
+    display: block;
+  }
+}
+
 .menu_block{
   /*border: 1px solid grey;*/
 }

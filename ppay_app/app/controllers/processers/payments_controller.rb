@@ -5,7 +5,9 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params).includes(:merchant))
+      @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
+                                                   .includes(:merchant)
+                                                   .order(created_at: :desc))
       @payments = @payments.decorate
     end
 

@@ -14,6 +14,7 @@
               %th.items-list-th статус
               %th.items-list-th криптоадрес
               %th.items-list-th короткий комментарий
+              %th.items-list-th пользователь
 
               %th.items-list-th
 
@@ -27,6 +28,7 @@
                 %td.items-list-td= br.status
                 %td.items-list-td= br.crypto_address
                 %td.items-list-td= br.short_comment
+                %td.items-list-td= br.user.decorate.audit_user_info
 
                 %td.items-list-td.px-1.w-0
                   = link_to br do

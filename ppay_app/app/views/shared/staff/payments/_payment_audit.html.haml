@@ -12,5 +12,5 @@
         %br
       - audit.audited_changes.each do |attribute, values|
         = "#{I18n.t("payments.attributes.#{attribute}")}:"
-        = verify_array(attribute, values)
+        = formatted_changes(attribute, values)
         %br

@@ -12,61 +12,58 @@ RSpec.describe Payment, type: :model do
   it { is_expected.to belong_to(:rate_snapshot).optional(true) }
   it { is_expected.to belong_to(:advertisement).optional(true) }
 
-  context 'validation' do
-    let(:payment1) { create :payment, arbitration: true }
-    let(:payment2) { create :payment, :cancelled }
-    let(:payment3) { create :payment, :with_transactions, payment_status: }
+  describe 'before_save' do
+    describe 'take_off_arbitration' do
+      let(:payment) { create :payment, payment_status: :processer_search, arbitration: true }
 
-    describe 'before_save' do
-      context 'auto take off arbitration' do
-        context 'when status is not cancelled or completed and not changed' do
-          before { payment1.update(payment_status: :transferring) }
+      context 'status does not change' do
+        before { payment.update(national_currency_amount: (rand(1..1_000_000) / 100.0)) }
+        it { expect(payment.arbitration).to eq true }
+      end
 
-          it 'arbitration should be true' do
-            expect(payment1.arbitration).to eq(true)
-          end
-        end
-
-        context 'when status is updating to completed' do
-          before { payment1.update(payment_status: :completed) }
-
-          it 'arbitration should be set to true' do
-            expect(payment1.arbitration).to eq(false)
-          end
-        end
-
-        context 'when status is updating to cancelled' do
-          before { payment1.update(payment_status: :cancelled) }
-
-          it 'arbitration should be set to true' do
-            expect(payment1.arbitration).to eq(false)
-          end
+      context 'status changes not to completed or cancelled' do
+        %i[draft processer_search transferring confirming].each do |new_status|
+          before { payment.update(payment_status: new_status) }
+          it { expect(payment.arbitration).to eq true }
         end
       end
 
-      context 'cancel transaction' do
-        let(:payment_status) { :cancelled }
-        it 'sets transactions to cancelled status' do
-          expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'cancelled')
-        end
-      end
-
-      context 'completed transaction' do
-        let(:payment_status) { :completed }
-        it 'sets transactions to cancelled status' do
-          expect(payment3.transactions.map { |tr| tr['status'] }).to all(eq 'completed')
+      context 'status changes to completed or cancelled' do
+        %i[cancelled completed].each do |new_status|
+          before { payment.update(payment_status: new_status) }
+          it { expect(payment.arbitration).to eq false }
         end
       end
     end
 
-    describe '#transactions_cannot_be_completed_or_cancelled' do
-      subject { payment.errors[:transactions] }
+    describe 'cancel/complete transactions' do
+      let(:payment) { create :payment, :with_transactions, payment_status: :transferring }
 
-      let(:payment) { create(:payment, :with_transactions) }
+      it { expect(payment.transactions.map(&:status)).to all(eq 'frozen') }
 
+      context 'status changes to cancelled' do
+        before { payment.update payment_status: :cancelled }
+        it { expect(payment.transactions.map(&:status)).to all(eq 'cancelled') }
+      end
+
+      context 'status changes to completed' do
+        before { payment.update payment_status: :completed }
+        it { expect(payment.transactions.map(&:status)).to all(eq 'completed') }
+      end
+    end
+  end
+
+  describe '#transactions_cannot_be_completed_or_cancelled' do
+    subject { payment.errors[:transactions] }
+
+    context 'on status changes' do
       before { payment.update(payment_status: :draft) }
 
-      it { is_expected.to be_empty }
+      context 'frozen transactions' do
+        let(:payment) { create(:payment, :with_transactions) }
+
+        it { is_expected.to be_empty }
+      end
 
       context 'completed transactions' do
         let(:payment) { create(:payment, :with_completed_transactions) }
@@ -237,5 +234,94 @@ RSpec.describe Payment, type: :model do
       is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1,
                                                                        fraud_attempt: 2, incorrect_amount: 3)
     }
+  end
+
+  describe 'scope' do
+    let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount: }
+    let!(:payment2) { create :payment, :UZS, created_at: }
+    let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
+    let(:created_at)  { 'Mon, 06 Mar 2023 22:53:42.811063000 MSK +03:00' }
+    let(:national_currency_amount) { 1000 }
+    let(:cryptocurrency_amount) { 111 }
+
+    describe 'filter_by_created_from' do
+      context 'when 03.09.2023' do
+        subject(:payment) { Payment.filter_by_created_from('03.09.2023') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_created_to' do
+      context 'when 03.09.2023' do
+        subject(:payment) { Payment.filter_by_created_to('03.09.2023') }
+        let(:correct_result) { [payment2] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_cancellation_reason' do
+      context 'when by_client' do
+        subject(:payment) { Payment.filter_by_cancellation_reason('by_client') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_payment_status' do
+      context 'when cancelled' do
+        subject(:payment) { Payment.filter_by_payment_status('cancelled') }
+        let(:correct_result) { [payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_national_currency' do
+      context 'when RUB' do
+        subject(:payment) { Payment.filter_by_national_currency('RUB') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_payment_system' do
+      context 'when Tinkoff' do
+        subject(:payment) { Payment.filter_by_payment_system('Tinkoff') }
+        let(:correct_result) { [payment3, payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_national_currency_amount_from' do
+      context 'when 500' do
+        subject(:payment) { Payment.filter_by_national_currency_amount_from('500') }
+        let(:correct_result) { [payment3] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_national_currency_amount_to' do
+      context 'when 500' do
+        subject(:payment) { Payment.filter_by_national_currency_amount_to('500') }
+        let(:correct_result) { [payment1, payment2] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_cryptocurrency_amount_from' do
+      context 'when 50' do
+        subject(:payment) { Payment.filter_by_cryptocurrency_amount_from('50') }
+        let(:correct_result) { [payment1] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
+
+    describe 'filter_by_cryptocurrency_amount_to' do
+      context 'when 50' do
+        subject(:payment) { Payment.filter_by_cryptocurrency_amount_to('50') }
+        let(:correct_result) { [payment3, payment2] }
+        it { expect(payment.to_a).to eq(correct_result) }
+      end
+    end
   end
 end

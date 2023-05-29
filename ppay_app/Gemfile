@@ -82,6 +82,11 @@ gem 'after_commit_everywhere', '~> 1.0'
 gem "audited",  "~> 5.0"
 gem 'filepond-rails'
 gem "rqrcode", "~> 2.0"
+gem 'browser'
+gem 'health_check'
+gem 'memory_profiler'
+gem 'stackprof'
+gem 'rack-mini-profiler', require: false
 
 
 group :development, :test do

@@ -20,3 +20,7 @@
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Криптоадрес
         %td.item-card-td= @balance_request.crypto_address
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Пользователь
+        %td.item-card-td= @balance_request.user.decorate.audit_user_info
+        

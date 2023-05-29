@@ -19,7 +19,7 @@ module Payments
         transactions.create(from_balance: merchant.balance,
                             to_balance: advertisement.processer.balance,
                             amount: cryptocurrency_amount,
-                            national_currency_amount: national_currency_amount)
+                            national_currency_amount:)
       end
 
       def create_processer_transaction
