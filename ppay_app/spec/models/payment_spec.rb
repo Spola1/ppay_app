@@ -237,12 +237,14 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'scope' do
-    let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount: }
-    let!(:payment2) { create :payment, :UZS, created_at: }
+    let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id: }
+    let!(:payment2) { create :payment, :UZS, created_at:, uuid: }
     let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
     let(:created_at)  { 'Mon, 06 Mar 2023 22:53:42.811063000 MSK +03:00' }
     let(:national_currency_amount) { 1000 }
     let(:cryptocurrency_amount) { 111 }
+    let(:uuid) { '06e2f816-3d85-4c0d-b5d7-c1729b3d4ac2' }
+    let(:external_order_id) { '5678' }
 
     describe 'filter_by_created_from' do
       context 'when 03.09.2023' do
@@ -322,6 +324,18 @@ RSpec.describe Payment, type: :model do
         let(:correct_result) { [payment3, payment2] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
+    end
+
+    describe 'filter_by_uuid' do
+      subject(:payment) { Payment.filter_by_uuid('06e2f816-3d85-4c0d-b5d7-c1729b3d4ac2') }
+      let(:correct_result) { [payment2] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    describe 'filter_by_external_order_id' do
+      subject(:payment) { Payment.filter_by_external_order_id('5678') }
+      let(:correct_result) { [payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
     end
   end
 end
