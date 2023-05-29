@@ -2,6 +2,6 @@
   .show-qr
     = render_qr_code(payment.decorate.url)
   .text-qr-instruction
-    Наведите камеру на QR-код, чтобы продолжить
+    = t('payments.deposit.attributes.qr_manual_1')
     .text
-      с телефона
+      = t('payments.deposit.attributes.qr_manual_2')

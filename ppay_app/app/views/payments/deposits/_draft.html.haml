@@ -14,14 +14,14 @@
 
     .proc-shop-block
       .proc-shop-title
-        Магазин
+        = t('payments.deposit.attributes.shop')
       .proc-shop-content
         = payment.merchant.name
 
     .mt-1
       .proc-order-block
         .proc-order-title
-          Заказ
+          = t('payments.deposit.attributes.order')
         .proc-order-content
           = payment.external_order_id
 
@@ -30,18 +30,18 @@
     .simple-form-for-payment-deposit
       = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
         .select-payment-system
-          = f.label :payment_system, 'Выберите платежную систему'
+          = f.label :payment_system, t('payments.deposit.attributes.choosing_payment_system')
 
         = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                                    { include_blank: 'Выбрать' },
+                                    { include_blank: t('payments.deposit.attributes.choise') },
                                     class: 'grey-drop-down'
 
         = hidden_field_tag :event, 'search'
 
-        = f.submit "Подтвердить", class: "green-button-submit mt-3"
+        = f.submit t('payments.deposit.attributes.confirm'), class: "green-button-submit mt-3"
 
     .please-pay-from-bank
-      Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
+      = t('payments.deposit.attributes.request')
 
     = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
