@@ -1,0 +1,24 @@
+ru:
+  payments:
+    payment_preparation:
+    expectation:
+    deposit:
+      attributes:
+        shop:
+        order:
+        choosing_payment_system:
+        choise:
+        confirm:
+        request: 
+        cancellation_payment:
+        attention:
+        paragraph_1:
+        paragraph_2:
+        paragraph_3:
+        qr_manual_1:
+        qr_manual_2:
+        time_for_payment:
+        make_transfer:
+        add_receipt_image:
+        click_payment_completed_button:
+        payment_completed:
