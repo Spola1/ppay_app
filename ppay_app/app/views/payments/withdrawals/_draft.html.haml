@@ -5,6 +5,12 @@
       .proc-text
         UID Check
 
+    - I18n.available_locales.each do |locale|
+      - if I18n.locale == locale
+        = locale
+      - else
+        = link_to locale, url_for(locale: locale, uuid: payment.uuid, signature: payment.signature)
+
     .mt-4
       .proc-shop-block
         .proc-shop-title
