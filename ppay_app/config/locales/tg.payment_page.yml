@@ -1,4 +1,7 @@
 tg:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M:%S"
   payments:
     payment_preparation:
     payment processing:

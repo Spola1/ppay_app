@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     end
   end
 
-  scope '(:locale)', locale: /#{I18n.available_locales.join('|')}/ do
+  scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do  
     namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
       resources :deposits, param: :uuid, only: :show
       resources :withdrawals, param: :uuid, only: :show

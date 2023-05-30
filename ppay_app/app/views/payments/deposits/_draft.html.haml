@@ -11,7 +11,7 @@
       - if I18n.locale == locale
         = locale
       - else
-        = link_to locale, url_for(locale: locale)
+        = link_to locale, url_for(locale: locale, uuid: payment.uuid, signature: payment.signature)
 
     .proc-amount-block
       .proc-amount-content
