@@ -29,7 +29,7 @@ RSpec.describe Advertisement, type: :model do
 
       [
         nil,
-        '123',
+        '123'
       ].each do |number|
         context 'invalid number' do
           let(:card_number) { number }
