@@ -7,9 +7,9 @@ class ApplicationController < ActionController::Base
 
   around_action :set_locale
 
-  def set_locale(&action)
+  def set_locale(&)
     locale = I18n.locale = locale_from_url || I18n.default_locale
-    I18n.with_locale locale, &action
+    I18n.with_locale(locale, &)
   end
 
   def locale_from_url
