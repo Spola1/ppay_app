@@ -32,17 +32,17 @@ module Payments
         transactions.create(
           from_balance: advertisement.processer.balance,
           to_balance: advertisement.processer.balance,
-          amount: calculate_processer_amount,
-          national_currency_amount: calculate_processer_national_currency_amount,
+          amount: processer_amount,
+          national_currency_amount: processer_national_currency_amount,
           transaction_type: :processer_commission
         )
       end
 
-      def calculate_processer_amount
+      def processer_amount
         cryptocurrency_amount * processer_commission / 100
       end
 
-      def calculate_processer_national_currency_amount
+      def processer_national_currency_amount
         national_currency_amount * processer_commission / 100
       end
 
@@ -84,17 +84,17 @@ module Payments
         transactions.create(
           from_balance: advertisement.processer.balance,
           to_balance: Ppay.last.balance,
-          amount: calculate_ppay_amount,
-          national_currency_amount: calculate_ppay_national_currency_amount,
+          amount: ppay_amount,
+          national_currency_amount: ppay_national_currency_amount,
           transaction_type: :ppay_commission
         )
       end
 
-      def calculate_ppay_amount
+      def ppay_amount
         cryptocurrency_amount * ppay_commission / 100
       end
 
-      def calculate_ppay_national_currency_amount
+      def ppay_national_currency_amount
         national_currency_amount * ppay_commission / 100
       end
 
