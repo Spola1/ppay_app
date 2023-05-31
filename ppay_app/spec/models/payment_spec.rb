@@ -332,6 +332,12 @@ RSpec.describe Payment, type: :model do
       it { expect(payment.to_a).to eq(correct_result) }
     end
 
+    describe 'filter_by_part_of_uuid' do
+      subject(:payment) { Payment.filter_by_uuid('c1729b') }
+      let(:correct_result) { [payment2] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
     describe 'filter_by_external_order_id' do
       subject(:payment) { Payment.filter_by_external_order_id('5678') }
       let(:correct_result) { [payment1] }
