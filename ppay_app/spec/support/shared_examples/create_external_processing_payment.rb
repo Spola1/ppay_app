@@ -23,10 +23,39 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
         .to be_external
     end
 
-    it 'sets unique_amount', if: type == :deposit do |example|
-      submit_request(example.metadata)
+    context 'deposit', if: type == :deposit do
+      it 'sets unique_amount' do |example|
+        submit_request(example.metadata)
 
-      expect(merchant.deposits.last).to send("be_unique_amount_#{unique_amount}")
+        expect(merchant.deposits.last).to send("be_unique_amount_#{unique_amount}")
+      end
+
+      context 'without payment_link' do
+        run_test! do
+          case response_body
+          in {data: {attributes:}}
+            expect(attributes).not_to include(payment_link:)
+            expect(attributes).not_to include(payment_link_qr_code_url: be_a(String))
+          else
+            flunk 'unappropriated response'
+          end
+        end
+      end
+
+      context 'with payment_link' do
+        let(:payment_link) { 'https://bank.com/ab/cdefg' }
+
+        run_test! do
+          case response_body
+          in {data: {attributes: {payment_link: _payment_link,
+                                  payment_link_qr_code_url:}}}
+            expect(_payment_link).to eq(payment_link)
+            expect(payment_link_qr_code_url).to be_a(String)
+          else
+            flunk 'unappropriated response'
+          end
+        end
+      end
     end
   end
 

@@ -27,14 +27,14 @@ class Advertisement < ApplicationRecord
   private
 
   def set_payment_link_qr_code
-    if payment_link.present?
+    if payment_link.blank?
+      payment_link_qr_code.purge_later
+    else
       payment_link_qr_code.attach(
         io: StringIO.new(qr_code_svg),
         filename: "#{SecureRandom.hex}.svg",
         content_type: 'image/svg+xml'
       )
-    else
-      payment_link_qr_code.purge_later
     end
   end
 

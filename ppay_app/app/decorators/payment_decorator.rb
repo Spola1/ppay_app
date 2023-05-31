@@ -63,6 +63,8 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def payment_link_qr_code_url
+    return unless advertisement.payment_link
+
     rails_blob_url(advertisement.payment_link_qr_code) if type == 'Deposit'
   end
 
