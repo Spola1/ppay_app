@@ -7,7 +7,7 @@ describe 'External processing deposits' do
   let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:adv) { create :advertisement, :deposit, payment_system: payment_system.name }
+  let!(:adv) { create :advertisement, :deposit, payment_system: payment_system.name, payment_link: }
   let!(:ppay) { create :user, :ppay }
 
   path '/api/v1/external_processing/payments/deposits' do
@@ -29,6 +29,7 @@ describe 'External processing deposits' do
       let(:national_currency) { 'RUB' }
       let(:unique_amount) { :integer }
       let(:payment_system_name) { payment_system.name }
+      let(:payment_link) { nil }
       let(:params) do
         {
           payment_system: payment_system_name,
