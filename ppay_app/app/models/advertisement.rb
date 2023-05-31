@@ -22,7 +22,7 @@ class Advertisement < ApplicationRecord
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
 
-  before_save :set_payment_link_qr_code, if: -> { payment_link_changed? }
+  after_commit :set_payment_link_qr_code, if: -> { payment_link_previously_changed? }
 
   private
 
