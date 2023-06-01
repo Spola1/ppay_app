@@ -62,7 +62,9 @@ module Swagger
                             expiration_time: { type: :string },
                             national_currency: { type: :string },
                             national_currency_amount: { type: :string },
-                            initial_amount: { type: :string }
+                            initial_amount: { type: :string },
+                            payment_link: { type: :string },
+                            payment_link_qr_code_url: { type: :string }
                           },
                           required: %w[uuid card_number expiration_time national_currency national_currency_amount
                                        initial_amount]

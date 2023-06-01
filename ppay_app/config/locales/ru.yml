@@ -8,6 +8,7 @@ ru:
         national_currency: Нац. валюта
         payment_system: Платёжная система
         card_number: Номер карты
+        payment_link: Ссылка для оплаты
         comment: Комментарий
         status: Активно
       balance_request:

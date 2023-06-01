@@ -20,6 +20,7 @@ module Processers
     def create
       @advertisement = current_user.advertisements.new(advertisement_params)
       @advertisement.processer = current_user
+
       if @advertisement.save
         redirect_to @advertisement
       else
@@ -65,9 +66,10 @@ module Processers
 
     def advertisement_params
       params.require(:advertisement).permit(:id, :direction, :national_currency, :cryptocurrency, :payment_system,
-                                            :payment_system_type, :min_summ, :max_summ, :card_number, :autoacceptance,
-                                            :comment, :operator_contact, :exchange_rate_type, :exchange_rate_source,
-                                            :percent, :min_fix_price, :status, :hidden, :account_id)
+                                            :payment_system_type, :min_summ, :max_summ, :card_number, :payment_link,
+                                            :autoacceptance, :comment, :operator_contact, :exchange_rate_type,
+                                            :exchange_rate_source, :percent, :min_fix_price, :status, :hidden,
+                                            :account_id)
     end
   end
 end
