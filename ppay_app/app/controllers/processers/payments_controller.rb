@@ -9,6 +9,10 @@ module Processers
                                                    .includes(:merchant)
                                                    .order(created_at: :desc))
       @payments = @payments.decorate
+
+      @arbitration_payments_pagy, @arbitration_payments = pagy(current_user.payments.arbitration.includes(:merchant),
+                                                               page_param: :arbitration_page)
+      @arbitration_payments = @arbitration_payments.decorate
     end
 
     def show; end
