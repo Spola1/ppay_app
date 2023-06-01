@@ -551,7 +551,7 @@
         "properties": {
           "national_currency": {
             "type": "string",
-            "example": "RUB"
+            "example": "UAH"
           },
           "national_currency_amount": {
             "type": "number",
@@ -580,7 +580,7 @@
         "properties": {
           "national_currency": {
             "type": "string",
-            "example": "RUB"
+            "example": "UAH"
           },
           "national_currency_amount": {
             "type": "number",

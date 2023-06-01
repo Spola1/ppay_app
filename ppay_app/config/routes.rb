@@ -17,17 +17,16 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-
-  concern :statuses_updatable do
-    namespace :statuses do
-      resources :deposits, param: :uuid, only: :update
-      resources :withdrawals, param: :uuid, only: :update
+  scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do 
+    concern :statuses_updatable do
+      namespace :statuses do
+        resources :deposits, param: :uuid, only: :update
+        resources :withdrawals, param: :uuid, only: :update
+      end
     end
-  end
 
-  scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do  
     namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
-      resources :deposits, param: :uuid, only: :show
+      resources :deposits, param: :uuid, only: :show  
       resources :withdrawals, param: :uuid, only: :show
 
       concerns :statuses_updatable
@@ -61,25 +60,27 @@ Rails.application.routes.draw do
     root 'payments#index', as: :merchants_root
   end
 
-  scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
-    resources :advertisements do
-      collection do
-        post :activate_all
-        post :deactivate_all
+  scope "(:locale)", locale: :ru do
+    scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
+      resources :advertisements do
+        collection do
+          post :activate_all
+          post :deactivate_all
+        end
       end
-    end
-    resources :exchange_portals, only: %i[index show]
-    resources :rate_snapshots, only: %i[index show]
-    resources :transactions, only: %i[index show]
-    resources :balance_requests
-    resources :payments, param: :uuid, only: %i[index update show]
-    namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index show update]
-      resources :withdrawals, param: :uuid, only: %i[index show update]
+      resources :exchange_portals, only: %i[index show]
+      resources :rate_snapshots, only: %i[index show]
+      resources :transactions, only: %i[index show]
+      resources :balance_requests
+      resources :payments, param: :uuid, only: %i[index update show]
+      namespace :payments do
+        resources :deposits, param: :uuid, only: %i[index show update]
+        resources :withdrawals, param: :uuid, only: %i[index show update]
 
-      concerns :statuses_updatable
+        concerns :statuses_updatable
+      end
+      root 'payments#index', as: :processers_root
     end
-    root 'payments#index', as: :processers_root
   end
 
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
