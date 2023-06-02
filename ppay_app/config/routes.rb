@@ -35,7 +35,6 @@ Rails.application.routes.draw do
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
     resources :advertisements, except: %i[new create]
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
@@ -47,7 +46,6 @@ Rails.application.routes.draw do
 
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show create new] do
@@ -60,32 +58,29 @@ Rails.application.routes.draw do
     root 'payments#index', as: :merchants_root
   end
 
-  scope "(:locale)", locale: :ru do
-    scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
-      resources :advertisements do
-        collection do
-          post :activate_all
-          post :deactivate_all
-        end
+  scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
+    resources :advertisements do
+      collection do
+        post :activate_all
+        post :deactivate_all
       end
-      resources :exchange_portals, only: %i[index show]
-      resources :rate_snapshots, only: %i[index show]
-      resources :transactions, only: %i[index show]
-      resources :balance_requests
-      resources :payments, param: :uuid, only: %i[index update show]
-      namespace :payments do
-        resources :deposits, param: :uuid, only: %i[index show update]
-        resources :withdrawals, param: :uuid, only: %i[index show update]
-
-        concerns :statuses_updatable
-      end
-      root 'payments#index', as: :processers_root
     end
+    resources :exchange_portals, only: %i[index show]
+    resources :rate_snapshots, only: %i[index show]
+    resources :transactions, only: %i[index show]
+    resources :balance_requests
+    resources :payments, param: :uuid, only: %i[index update show]
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index show update]
+      resources :withdrawals, param: :uuid, only: %i[index show update]
+
+      concerns :statuses_updatable
+    end
+    root 'payments#index', as: :processers_root
   end
 
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
     resources :advertisements, except: %i[new create]
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
