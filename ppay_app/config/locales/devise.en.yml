@@ -3,3 +3,13 @@ en:
     sessions:
       new:
         system_sign_in: Log in
+
+    registrations:
+      edit:
+        title: Edit Account
+
+  user:
+    registrations:
+      new:
+        submit:
+          sign_up: Sign up

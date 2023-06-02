@@ -3,6 +3,39 @@
 @tailwind utilities;
 
 @layer components {
+  .with-sidebar {
+    @apply flex flex-row;
+  }
+
+  .with-sidebar aside {
+    @apply w-1/5 px-2;
+  }
+
+  .with-sidebar section {
+    @apply w-4/5 pt-4 px-2;
+  }
+
+  .with-sidebar aside .sticky-menu {
+    @apply sticky top-0 p-4 w-full;
+  }
+
+  .sticky-menu ul {
+    @apply flex flex-col overflow-hidden;
+  }
+
+  .sticky-menu a > i {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sticky-menu li > a {
+    @apply items-center flex space-x-2 p-3 text-black hover:no-underline;
+  }
+
+  .sticky-menu li > a.active {
+    @apply bg-gray-100;
+  }
+
   section:has(.devise_container) {
     @apply w-full;
   }

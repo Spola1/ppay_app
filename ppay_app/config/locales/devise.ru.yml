@@ -3,6 +3,12 @@ ru:
     sessions:
       new:
         system_sign_in: Вход в систему
+
+    registrations:
+      edit:
+        title: Редактирование учётной записи
+
+  user:
     registrations:
       new:
         submit:

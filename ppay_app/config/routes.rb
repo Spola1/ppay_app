@@ -12,11 +12,9 @@ Rails.application.routes.draw do
       password == Settings.basic_auth.password
   end
 
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :users# , controllers: {
+             #   registrations: 'users/registrations'
+             # }
 
   concern :statuses_updatable do
     namespace :statuses do
@@ -54,6 +52,12 @@ Rails.application.routes.draw do
       end
       resources :withdrawals, only: :index
     end
+
+    # namespace :users do
+    #   get :settings
+    #   patch :settings, to: '/merchants/users#settings_update'
+    # end
+
     root 'payments#index', as: :merchants_root
   end
 

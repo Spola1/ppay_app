@@ -1,0 +1,16 @@
+ru:
+  activerecord:
+    attributes:
+      user:
+        nickname: Отображаемое при оплате имя
+
+  users:
+    sidebar:
+      account: Учётная запись
+      settings: Настройки
+
+  merchants:
+    users:
+      settings:
+        title: Настройки мерчанта
+        update: Обновить
