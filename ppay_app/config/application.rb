@@ -25,6 +25,10 @@ module PpayApp
 
     config.autoload_paths << Rails.root.join('lib')
 
+    config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
+    config.active_storage.content_types_allowed_inline += ['image/svg+xml']
+    config.active_storage.service_urls_expire_in = 1.week
+
     unless Rails.env.production?
       RSpec.configure do |config|
         config.swagger_dry_run = false

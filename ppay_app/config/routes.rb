@@ -34,7 +34,6 @@ Rails.application.routes.draw do
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
     resources :advertisements, except: %i[new create]
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
@@ -46,7 +45,6 @@ Rails.application.routes.draw do
 
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show create new] do
@@ -68,7 +66,6 @@ Rails.application.routes.draw do
     end
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
@@ -82,7 +79,6 @@ Rails.application.routes.draw do
 
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
     resources :advertisements, except: %i[new create]
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
