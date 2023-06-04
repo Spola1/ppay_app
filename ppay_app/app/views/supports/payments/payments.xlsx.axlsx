@@ -8,41 +8,29 @@ date_style = s.add_style format_code: 'YYYY-MM-DD HH:MM'
 align_right_style = s.add_style alignment: { horizontal: :right }
 currency_style = s.add_style format_code: '#,##0.00'
 
+headers = [
+  'Номер заказа',
+  'Создан',
+  'Направление',
+  'Нац.валюта',
+  'Кол-во нац. валюты',
+  'Криптовалюта',
+  'Кол-во криптовалюты',
+  'Платежная система',
+  'Статус',
+  'Статус изменен',
+  'Причина отмены',
+  'Мерчант'
+]
+
 wb.add_worksheet(name: 'payments') do |sheet|
-  sheet.add_row [
-    'Номер заказа',
-    'Создан',
-    'Направление',
-    'Нац.валюта',
-
-    'Кол-во нац. валюты',
-    'Криптовалюта',
-    'Кол-во криптовалюты',
-    'Платежная система',
-
-    'Статус',
-    'Статус изменен',
-    'Причина отмены',
-    'Мерчант'
-  ], style: head_style
+  sheet.add_row headers, style: head_style
 
   payments.each do |p|
-    sheet.add_row [
-      p.external_order_id,
-      p.created_at,
-      p.human_type,
-      p.national_currency,
-
-      p.national_currency_amount,
-      p.cryptocurrency,
-      p.cryptocurrency_amount,
-      p.payment_system,
-
-      p.human_payment_status,
-      p.status_changed_at,
-      p.human_cancellation_reason,
-      p.merchant.decorate.display_name
-    ]
+    sheet.add_row [p.external_order_id, p.created_at, p.human_type, p.national_currency,
+                   p.national_currency_amount, p.cryptocurrency, p.cryptocurrency_amount,
+                   p.payment_system, p.human_payment_status, p.status_changed_at,
+                   p.human_cancellation_reason, p.merchant.decorate.display_name]
   end
 
   sheet.col_style 1, date_style, row_offset: 1

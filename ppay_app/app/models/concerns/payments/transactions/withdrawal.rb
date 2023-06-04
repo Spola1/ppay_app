@@ -25,11 +25,25 @@ module Payments
       def create_processer_transaction
         return if processer_commission.zero?
 
-        transactions.create(from_balance: merchant.balance,
-                            to_balance: advertisement.processer.balance,
-                            amount: cryptocurrency_amount * processer_commission / 100,
-                            national_currency_amount: national_currency_amount * processer_commission / 100,
-                            transaction_type: :processer_commission)
+        prepare_processer_transaction
+      end
+
+      def prepare_processer_transaction
+        transactions.create(
+          from_balance: merchant.balance,
+          to_balance: advertisement.processer.balance,
+          amount: processer_amount,
+          national_currency_amount: processer_national_currency_amount,
+          transaction_type: :processer_commission
+        )
+      end
+
+      def processer_amount
+        cryptocurrency_amount * processer_commission / 100
+      end
+
+      def processer_national_currency_amount
+        national_currency_amount * processer_commission / 100
       end
 
       def create_working_group_transaction
