@@ -17,8 +17,7 @@ describe 'External processing deposits' do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
-                                            'deposits.md'))
+      description_erb 'external_processing/payments/deposits.md.erb'
 
       let(:payment_type) { Deposit }
 
