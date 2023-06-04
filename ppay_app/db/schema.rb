@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_30_161436) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_31_124907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -223,6 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_30_161436) do
     t.integer "unique_amount"
     t.decimal "initial_amount", precision: 12, scale: 2
     t.integer "processing_type", default: 0
+    t.index "((uuid)::text) text_pattern_ops", name: "index_payments_uuid"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 

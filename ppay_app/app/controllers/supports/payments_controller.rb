@@ -47,7 +47,7 @@ module Supports
       params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
                                       :payment_system, :national_currency, :national_currency_amount_from,
                                       :national_currency_amount_to, :cryptocurrency_amount_from,
-                                      :cryptocurrency_amount_to)
+                                      :cryptocurrency_amount_to, :uuid, :external_order_id)
     end
 
     def filtered_payments
