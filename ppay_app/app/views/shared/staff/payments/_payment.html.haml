@@ -102,10 +102,14 @@
                 %td.item-card-td.item-card-td-label ID объявления
                 %td.item-card-td= "#{payment.advertisement_id}"
 
-            - if payment.merchant_id
+            - if payment.merchant_id && current_user.is_a?(Support)
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.items-list-td= payment.merchant.decorate.display_name
+                %td.item-card-td= payment.merchant.decorate.display_name                          
+            - else
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Мерчант
+                %td.item-card-td= payment.merchant.id
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Снимок курса
