@@ -59,11 +59,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def payment_link
-    advertisement.payment_link if type == 'Deposit'
+    advertisement.payment_link.presence if type == 'Deposit'
   end
 
   def payment_link_qr_code_url
-    return unless advertisement.payment_link
+    return unless advertisement.payment_link.present?
 
     rails_blob_url(advertisement.payment_link_qr_code) if type == 'Deposit'
   end
