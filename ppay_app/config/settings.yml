@@ -39,8 +39,6 @@ navbar:
       path: payments_path
     - name: Объявления
       path: advertisements_path
-    - name: Транзакции
-      path: transactions_path
     - name: Запросы баланса
       path: balance_requests_path
   merchant:
@@ -48,8 +46,6 @@ navbar:
       path: payments_path
     - name: Создать оплату
       path: new_payments_deposit_path
-    - name: Транзакции
-      path: transactions_path
     - name: Запросы баланса
       path: balance_requests_path
   processer:
@@ -59,8 +55,6 @@ navbar:
       path: advertisements_path
     - name: Курсы бирж
       path: rate_snapshots_path
-    - name: Транзакции
-      path: transactions_path
     - name: Запросы баланса
       path: balance_requests_path
   support:
@@ -70,7 +64,5 @@ navbar:
       path: advertisements_path
     # - name: Курсы бирж
     #   path: rate_snapshots_path
-    # - name: Транзакции
-    #   path: transactions_path
     - name: Запросы баланса
       path: balance_requests_path

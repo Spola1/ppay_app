@@ -58,6 +58,16 @@ class PaymentDecorator < ApplicationDecorator
     card_number&.gsub(/(.{4})/, '\1 ')
   end
 
+  def payment_link
+    advertisement.payment_link if type == 'Deposit'
+  end
+
+  def payment_link_qr_code_url
+    return unless advertisement.payment_link
+
+    rails_blob_url(advertisement.payment_link_qr_code) if type == 'Deposit'
+  end
+
   def national_formatted
     formatted_amount(national_currency_amount)
   end

@@ -65,6 +65,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_124907) do
     t.boolean "hidden", default: false
     t.integer "account_id"
     t.bigint "processer_id"
+    t.string "payment_link"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
@@ -220,8 +221,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_124907) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 12, scale: 2
+    t.integer "processing_type", default: 0
     t.index "((uuid)::text) text_pattern_ops", name: "index_payments_uuid"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
