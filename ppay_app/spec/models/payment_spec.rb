@@ -350,17 +350,26 @@ RSpec.describe Payment, type: :model do
 
     context 'when locale is blank' do
       it 'sets locale based on currency' do
-        payment.set_locale_from_currency
-        expect(payment.locale).to eq(:ru)
+        payment.send(:set_locale_from_currency)
+        expect(payment.locale).to eq('ru')
       end
     end
 
     context 'when locale is already set' do
       it 'does not change the locale' do
-        payment.locale = :en
-        payment.set_locale_from_currency
-        expect(payment.locale).to eq(:en)
+        payment.locale = 'kk'
+        payment.send(:set_locale_from_currency)
+        expect(payment.locale).to eq('kk')
       end
+    end
+  end
+
+  describe '#currency_to_locale' do
+    let(:payment) { create :payment, payment_status: :created }
+
+    it 'returns locale based on currency' do
+      expect(payment.send(:currency_to_locale, 'RUB')).to eq(:ru)
+      expect(payment.send(:currency_to_locale, 'UZS')).to eq(:uz)
     end
   end
 end
