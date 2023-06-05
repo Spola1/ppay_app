@@ -7,12 +7,6 @@
       .proc-text
         UID Check
 
-    - I18n.available_locales.each do |locale|
-      - if I18n.locale == locale
-        = locale
-      - else
-        = link_to locale, url_for(locale: locale, uuid: payment.uuid, signature: payment.signature)
-
     .proc-amount-block
       .proc-amount-content
         = "#{payment.decorate.national_formatted} #{payment.national_currency}"
@@ -54,6 +48,10 @@
     = render 'payments/alerts_block'
 
     = render 'payments/uuid', payment:
+
+    .show-countries-block
+      - I18n.available_locales.each do |locale|
+        = link_to country_flag_icon(locale), url_for(locale: locale, uuid: payment.uuid, signature: payment.signature)
 
   - if payment.arbitration
     = render 'shared/chat', payment:

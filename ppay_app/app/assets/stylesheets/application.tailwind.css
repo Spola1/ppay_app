@@ -598,4 +598,8 @@
   input[name="advertisement[card_number]"] {
     width: 400px !important;
   }
+
+  .show-countries-block {
+    @apply w-fit font-firs rounded-xl py-3 px-3 ml-3 border-qr;
+  }
 }

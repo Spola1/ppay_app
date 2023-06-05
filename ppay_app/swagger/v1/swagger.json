@@ -604,7 +604,7 @@
           },
           "locale": {
             "type": "string",
-            "example": "ru"
+            "example": "uk"
           },
           "redirect_url": {
             "type": "string",

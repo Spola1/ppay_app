@@ -56,6 +56,8 @@ gem 'haml'
 
 gem 'sidekiq'
 
+gem 'flag-icons-rails'
+
 # гем для запуска задач из CRON:
 gem 'whenever', require: false
 
