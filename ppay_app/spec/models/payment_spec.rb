@@ -344,4 +344,23 @@ RSpec.describe Payment, type: :model do
       it { expect(payment.to_a).to eq(correct_result) }
     end
   end
+
+  describe '#set_locale_from_currency' do
+    let(:payment) { create :payment, payment_status: :created }
+
+    context 'when locale is blank' do
+      it 'sets locale based on currency' do
+        payment.set_locale_from_currency
+        expect(payment.locale).to eq(:ru)
+      end
+    end
+
+    context 'when locale is already set' do
+      it 'does not change the locale' do
+        payment.locale = :en
+        payment.set_locale_from_currency
+        expect(payment.locale).to eq(:en)
+      end
+    end
+  end
 end
