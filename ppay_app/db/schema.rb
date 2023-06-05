@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_31_124907) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_080929) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -222,11 +222,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_124907) do
     t.integer "cancellation_reason"
     t.integer "unique_amount"
     t.integer "processing_type", default: 0
-<<<<<<< HEAD
     t.decimal "initial_amount", precision: 12, scale: 2
-=======
+    t.string "locale"
     t.index "((uuid)::text) text_pattern_ops", name: "index_payments_uuid"
->>>>>>> origin/master
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
