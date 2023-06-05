@@ -10,9 +10,9 @@ feature 'Client can cancel withdrawal', type: :feature do
   end
 
   scenario 'client cancels withdrawal' do
-    click_on 'Отменить платеж'
+    click_on 'Отменить платёж'
 
-    expect(page).to have_content('Платеж отменён !')
+    expect(page).to have_content('Платёж отменён!')
     expect(page).to have_content("uuid: #{payment.uuid}")
     expect(page).to have_link('вернуться в магазин', href: payment.redirect_url.to_s)
 

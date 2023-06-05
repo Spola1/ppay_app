@@ -17,7 +17,7 @@ feature 'Client can confirm withdrawal', type: :feature do
     click_on 'Подтвердить'
 
     expect(page).to have_content('Успешно!')
-    expect(page).to have_content('Платеж выполнен!')
+    expect(page).to have_content('Платёж выполнен!')
 
     payment.reload
 

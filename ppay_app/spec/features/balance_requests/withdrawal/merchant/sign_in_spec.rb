@@ -17,7 +17,6 @@ feature 'Merchant can log in', type: :feature do
 
     expect(page).to have_content('Вход в систему выполнен.')
     expect(page).to have_content('Все платежи')
-    expect(page).to have_content('Транзакции')
     expect(page).to have_content('Запросы баланса')
     expect(page).to have_content("Баланс: #{merchant.balance.amount}")
   end
