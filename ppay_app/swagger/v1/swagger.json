@@ -18,7 +18,7 @@
             }
           }
         ],
-        "description": "## Создание депозита\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>payment_system</code></td>\n      <td>Платёжная система</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Платёжная система для переводов в национальной валюте</td>\n    </tr>\n    <tr>\n      <td><code>national_currency</code></td>\n      <td>Национальная валюта</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Укажите валюту, в которой клиент будет вносить деньги</td>\n    </tr>\n    <tr>\n      <td><code>national_currency_amount</code></td>\n      <td>Сумма</td>\n      <td>Number</td>\n      <td>Обязательно</td>\n      <td>Укажите сумму платежа</td>\n    </tr>\n    <tr>\n      <td><code>external_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>Укажите ID платежа или заявки в Вашей системе, чтобы можно было по нему отследить платёж у нас</td>\n    </tr>\n    <tr>\n      <td><code>unique_amount</code></td>\n      <td>Уникализация суммы</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>\n        Может иметь значения: <strong>none</strong>, <strong>integer</strong>, <strong>decimal</strong>.</br>\n        По умолчанию - none.</br>\n        Если выбрано integer или decimal, то сумма платежа может быть подменена на</br>\n        уникальную в случае, если в обработке у оператора уже находится другой</br>\n        платеж с такой же суммой.</br>\n        Integer — подменяет сумму платежа на уникальную путем уменьшения на 1 единицу валюты</br>\n        (например 1000 -&gt; 999). </br>\n        Decimal — подменяет сумму платежа на уникальную путем уменьшения на 0.01 (например 1000 -&gt; 999.99)</br>\n      </td>\n    </tr>\n    <tr>\n      <td><code>callback_url</code></td>\n      <td>Ссылка обратного вызова</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Укажите Вашу ссылку обратного вызова, для POST запросов об изменениях статуса</td>\n    </tr>\n  </tbody>\n</table>\n\n<br>\n\n## Ссылка обратного вызова (callback_url)\n\nСервис создания депозита будет информировать Вас об изменениях статуса платежа с\nпомощью ссылки callback_url. По ней будет отправляться серия POST запросов (при\nкаждом изменении статуса) со следующей информацией.\n\n### В заголовках (headers):\n\n| Заголовок                              | Описание                                                               |\n|----------------------------------------|------------------------------------------------------------------------|\n| `Content-Type: application/json`       | Тело запроса содержит JSON объект                                      |\n| `Authorization: Bearer {Ваш API-ключ}` | Ваш API ключ, для удостоверения того что запрос пришёл с нашей стороны |\n\n<br>\n\n### В теле запроса в формате JSON:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>uuid</code></td>\n      <td>Идентификатор платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Универсальный уникальный идентификатор платежа</td>\n    </tr>\n    <tr>\n      <td><code>extenal_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>ID платежа в Вашей системе</td>\n    </tr>\n    <tr>\n      <td><code>payment_status</code></td>\n      <td>Статус платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>\n        Статус платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>processer_search</strong> — Поиск оператора</li>\n          <li><strong>transferring</strong> — Перевод денег</li>\n          <li><strong>confirming</strong> — Подтверждение перевода</li>\n          <li><strong>completed</strong> — Успешно завершён</li>\n          <li><strong>cancelled</strong> — Отменён</li>\n        </ul>\n      </td>\n    </tr>\n    <tr>\n      <td><code>cancellation_reason</code></td>\n      <td>Причина отмены</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>\n        Причина отмены платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>by_client</strong> — Отменено клиентом</li>\n          <li><strong>duplicate_payment</strong> — Задублированный платеж</li>\n          <li><strong>fraud_attempt</strong> — Попытка мошенничества</li>\n          <li><strong>incorrect_amount</strong> — Переведённая клиентом сумма не соответствует запрошенной</li>\n        </ul>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Пример приходящего по callback_url запроса:\n\n```\n{\n  \"data\": {\n    \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n    \"type\": \"Deposit\",\n    \"attributes\": {\n      \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n      \"external_order_id\": \"1234\",\n      \"payment_status\": \"confirming\",\n      \"national_currency\": \"RUB\",\n      \"national_currency_amount\": \"2999.99\",\n      \"initial_amount\": \"3000.0\"\n    }\n  }\n}\n```\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "description": "<details>\n<summary><h2>Создание депозита</h2></summary>\n\n<details>\n<summary><h3>Отправка запроса</h3></summary>\n\nДля отправки запроса нужно сформировать тело (Request body, пример ниже) в\nформате JSON со следующими параметрами:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>payment_system</code></td>\n      <td>Платёжная система</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Платёжная система для переводов в национальной валюте</td>\n    </tr>\n    <tr>\n      <td><code>national_currency</code></td>\n      <td>Национальная валюта</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Укажите валюту, в которой клиент будет вносить деньги</td>\n    </tr>\n    <tr>\n      <td><code>national_currency_amount</code></td>\n      <td>Сумма</td>\n      <td>Number</td>\n      <td>Обязательно</td>\n      <td>Укажите сумму платежа</td>\n    </tr>\n    <tr>\n      <td><code>external_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>Укажите ID платежа или заявки в Вашей системе, чтобы можно было по нему отследить платёж у нас</td>\n    </tr>\n    <tr>\n      <td><code>unique_amount</code></td>\n      <td>Уникализация суммы</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>\n        Может иметь значения: <strong>none</strong>, <strong>integer</strong>, <strong>decimal</strong>.</br>\n        По умолчанию - none.</br>\n        Если выбрано integer или decimal, то сумма платежа может быть подменена на</br>\n        уникальную в случае, если в обработке у оператора уже находится другой</br>\n        платеж с такой же суммой.</br>\n        Integer — подменяет сумму платежа на уникальную путем уменьшения на 1 единицу валюты</br>\n        (например 1000 -&gt; 999). </br>\n        Decimal — подменяет сумму платежа на уникальную путем уменьшения на 0.01 (например 1000 -&gt; 999.99)</br>\n      </td>\n    </tr>\n    <tr>\n      <td><code>callback_url</code></td>\n      <td>Ссылка обратного вызова</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Укажите Вашу ссылку обратного вызова, для POST запросов об изменениях статуса</td>\n    </tr>\n  </tbody>\n</table>\n\n</details> <!-- request -->\n\n<details>\n<summary><h3>Ответ на запрос</h3></summary>\n\nВ случае успешного создания депозита вы получите ответ с кодом 201 и JSON-ом в\nтеле ответа со следующими полями:\n\n| Параметр                   | Название                     | Тип    | Наличие     | Описание                                                                    |\n|----------------------------|------------------------------|--------|-------------|-----------------------------------------------------------------------------|\n| `id`, `uuid`               | Идентификатор платежа        | String | Обязательно | Уникальный идентификатор, для возможного дальнейшего обращения              |\n| `type`                     | Тип                          | String | Обязательно | Deposit, Withdrawal                                                         |\n| `card_number`              | Номер карты                  | String | Обязательно | Номер карты в выбранной при запросе платёжной системе                       |\n| `expiration_time`          | Время действия платежа       | String | Обязательно | Время, в течении которого необходимо осуществить перевод                    |\n| `national_currency`        | Национальная валюта          | String | Обязательно | Валюта для перевода                                                         |\n| `national_currency_amount` | Сумма                        | String | Обязательно | Сумма для перевода                                                          |\n| `initial_amount`           | Начальное количество         | String | Обязательно | Изначальная сумма в национальной валюте                                     |\n| `payment_link`             | Платёжная ссылка             | String | Опционально | Ссылка платёжной системы для быстрого перевода                              |\n| `payment_link_qr_code_url` | URL QR-кода платёжной ссылки | String | Опционально | URL адрес SVG изображения QR-кода для быстрого перехода по платёжной ссылке |\n</details> <!-- response -->\n\n</details>\n\n\n<details>\n<summary><h2>Ссылка обратного вызова (callback_url)</h2></summary>\n\nСервис создания депозита будет информировать Вас об изменениях статуса платежа с\nпомощью ссылки callback_url. По ней будет отправляться серия POST запросов (при\nкаждом изменении статуса) со следующей информацией.\n\n### В заголовках (headers):\n\n| Заголовок                              | Описание                                                               |\n|----------------------------------------|------------------------------------------------------------------------|\n| `Content-Type: application/json`       | Тело запроса содержит JSON объект                                      |\n| `Authorization: Bearer {Ваш API-ключ}` | Ваш API ключ, для удостоверения того что запрос пришёл с нашей стороны |\n\n<br>\n\n### В теле запроса в формате JSON:\n\n<table>\n  <thead>\n    <tr>\n      <th>Параметр</th>\n      <th>Название</th>\n      <th>Тип</th>\n      <th>Наличие</th>\n      <th>Описание</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td><code>uuid</code></td>\n      <td>Идентификатор платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>Универсальный уникальный идентификатор платежа</td>\n    </tr>\n    <tr>\n      <td><code>extenal_order_id</code></td>\n      <td>Внешний ID заявки</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>ID платежа в Вашей системе</td>\n    </tr>\n    <tr>\n      <td><code>payment_status</code></td>\n      <td>Статус платежа</td>\n      <td>String</td>\n      <td>Обязательно</td>\n      <td>\n        Статус платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>processer_search</strong> — Поиск оператора</li>\n          <li><strong>transferring</strong> — Перевод денег</li>\n          <li><strong>confirming</strong> — Подтверждение перевода</li>\n          <li><strong>completed</strong> — Успешно завершён</li>\n          <li><strong>cancelled</strong> — Отменён</li>\n        </ul>\n      </td>\n    </tr>\n    <tr>\n      <td><code>cancellation_reason</code></td>\n      <td>Причина отмены</td>\n      <td>String</td>\n      <td>Опционально</td>\n      <td>\n        Причина отмены платежа. Может иметь следующие значения:\n        <ul>\n          <li><strong>by_client</strong> — Отменено клиентом</li>\n          <li><strong>duplicate_payment</strong> — Задублированный платеж</li>\n          <li><strong>fraud_attempt</strong> — Попытка мошенничества</li>\n          <li><strong>incorrect_amount</strong> — Переведённая клиентом сумма не соответствует запрошенной</li>\n        </ul>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Пример приходящего по callback_url запроса:\n\n```\n{\n  \"data\": {\n    \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n    \"type\": \"Deposit\",\n    \"attributes\": {\n      \"uuid\": \"8de5d972-cdbb-48c1-9afe-318c38247fa7\",\n      \"external_order_id\": \"1234\",\n      \"payment_status\": \"confirming\",\n      \"national_currency\": \"RUB\",\n      \"national_currency_amount\": \"2999.99\",\n      \"initial_amount\": \"3000.0\"\n    }\n  }\n}\n```\n</details>\n\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
 
         ],
@@ -29,15 +29,17 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "82df2d3a-9bad-4022-9fb8-a3ef4f050bf9",
+                    "id": "6039f2e9-3db0-41db-9a9d-2f3734f4407c",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "82df2d3a-9bad-4022-9fb8-a3ef4f050bf9",
+                      "uuid": "6039f2e9-3db0-41db-9a9d-2f3734f4407c",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-05-24T20:39:24.170+03:00",
+                      "expiration_time": "2023-06-01T19:03:27.138+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
-                      "initial_amount": "100.0"
+                      "initial_amount": "100.0",
+                      "payment_link": "https://bank.com/ab/cdefg",
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--870cead2d8ce7b0ac74dfe258433ae6e6b0ad66a/e0f6d6ce6c0b11a36005d0dd22a42c37.svg"
                     }
                   }
                 },
@@ -151,10 +153,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "ad7c7fb0-fd6c-4740-a5b3-934772fda017",
+                    "id": "cc9d397c-f9b9-4b80-8330-e44f4a060b80",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "ad7c7fb0-fd6c-4740-a5b3-934772fda017",
+                      "uuid": "cc9d397c-f9b9-4b80-8330-e44f4a060b80",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "initial_amount": "3000.0"
@@ -221,11 +223,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "078f5d1e-6565-49df-9690-47a69f054511",
+                    "id": "a9a4fd3b-4454-454d-a4e8-c90c826c442d",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "078f5d1e-6565-49df-9690-47a69f054511",
-                      "url": "http://example.org/payments/deposits/078f5d1e-6565-49df-9690-47a69f054511?signature=52bd5d070d7b4c3f18adc515ef84045903f633848377afae68c740433cdab75e"
+                      "uuid": "a9a4fd3b-4454-454d-a4e8-c90c826c442d",
+                      "url": "http://example.org/payments/deposits/a9a4fd3b-4454-454d-a4e8-c90c826c442d?signature=cc59c1dee0cd2bd5de85f4d0a8d00c595f2ae0b247c968533e980ae7456026e2"
                     }
                   }
                 },
@@ -289,11 +291,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "4447406d-a1a4-42b6-9084-6d1b272e8802",
+                    "id": "fcb00a7d-6bc5-422e-bc0a-c570d797bfdc",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "4447406d-a1a4-42b6-9084-6d1b272e8802",
-                      "url": "http://example.org/payments/withdrawals/4447406d-a1a4-42b6-9084-6d1b272e8802?signature=31841a055f961099a1834316001c8b85b041e0d951b956ac7e997d5125374fc1"
+                      "uuid": "fcb00a7d-6bc5-422e-bc0a-c570d797bfdc",
+                      "url": "http://example.org/payments/withdrawals/fcb00a7d-6bc5-422e-bc0a-c570d797bfdc?signature=ef6be7fbbafa022e1bad1fb92cf4e011991360d1af566fc6a649364fa2eaf0a7"
                     }
                   }
                 },
@@ -476,6 +478,12 @@
                   },
                   "initial_amount": {
                     "type": "string"
+                  },
+                  "payment_link": {
+                    "type": "string"
+                  },
+                  "payment_link_qr_code_url": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -656,7 +664,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "b410f00e-fa71-4893-9e65-c8bd7a574ed0"
+                    "example": "3fd61e19-7c8f-4637-bbe7-2defed6398c0"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -664,7 +672,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-05-24T20:19:20.579+03:00"
+                    "example": "2023-06-01T18:43:18.664+03:00"
                   },
                   "national_currency": {
                     "type": "string",

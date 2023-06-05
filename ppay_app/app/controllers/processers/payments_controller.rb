@@ -9,6 +9,10 @@ module Processers
                                                    .includes(:merchant)
                                                    .order(created_at: :desc))
       @payments = @payments.decorate
+
+      @arbitration_payments_pagy, @arbitration_payments = pagy(current_user.payments.arbitration.includes(:merchant),
+                                                               page_param: :arbitration_page)
+      @arbitration_payments = @arbitration_payments.decorate
     end
 
     def show; end
@@ -33,7 +37,7 @@ module Processers
       params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
                                       :payment_system, :national_currency, :national_currency_amount_from,
                                       :national_currency_amount_to, :cryptocurrency_amount_from,
-                                      :cryptocurrency_amount_to)
+                                      :cryptocurrency_amount_to, :uuid, :external_order_id)
     end
   end
 end

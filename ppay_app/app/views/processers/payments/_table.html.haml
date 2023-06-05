@@ -35,7 +35,7 @@
           = payment.human_payment_status
         %td.items-list-td= payment.formatted_status_changed_at
         %td.items-list-td= payment.human_cancellation_reason
-        %td.items-list-td= payment.merchant.decorate.display_name
+        %td.items-list-td= payment.merchant.id
 
         %td.items-list-td.px-1.w-0
           = link_to payment_path(payment), data: { turbo_action: :advance } do

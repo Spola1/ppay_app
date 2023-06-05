@@ -9,11 +9,24 @@ align_right_style = s.add_style alignment: { horizontal: :right }
 currency_style = s.add_style format_code: '#,##0.00'
 fractional_currency_style = s.add_style format_code: '#,####0.0000'
 
+headers = [
+  'Номер заказа',
+  'Создан',
+  'Направление',
+  'Нац.валюта',
+  'Кол-во нац. валюты',
+  'Криптовалюта',
+  'Кол-во криптовалюты',
+  'Кол-во в транзакции',
+  'Платежная система',
+  'uuid',
+  'Статус',
+  'Статус изменен',
+  'Причина отмены'
+]
+
 wb.add_worksheet(name: 'payments') do |sheet|
-  sheet.add_row ['Номер заказа', 'Создан', 'Направление', 'Нац.валюта', 'Кол-во нац. валюты',
-                 'Криптовалюта', 'Кол-во криптовалюты', 'Кол-во в транзакции',
-                 'Платежная система', 'uuid', 'Статус', 'Статус изменен', 'Причина отмены'],
-                style: head_style
+  sheet.add_row headers, style: head_style
 
   payments.each do |p|
     sheet.add_row [p.external_order_id, p.created_at, p.human_type, p.national_currency,

@@ -25,11 +25,25 @@ module Payments
       def create_processer_transaction
         return if processer_commission.zero?
 
-        transactions.create(from_balance: advertisement.processer.balance,
-                            to_balance: advertisement.processer.balance,
-                            amount: cryptocurrency_amount * processer_commission / 100,
-                            national_currency_amount: national_currency_amount * processer_commission / 100,
-                            transaction_type: :processer_commission)
+        prepare_processer_transaction
+      end
+
+      def prepare_processer_transaction
+        transactions.create(
+          from_balance: advertisement.processer.balance,
+          to_balance: advertisement.processer.balance,
+          amount: processer_amount,
+          national_currency_amount: processer_national_currency_amount,
+          transaction_type: :processer_commission
+        )
+      end
+
+      def processer_amount
+        cryptocurrency_amount * processer_commission / 100
+      end
+
+      def processer_national_currency_amount
+        national_currency_amount * processer_commission / 100
       end
 
       def create_working_group_transaction
@@ -63,11 +77,25 @@ module Payments
       def create_ppay_transaction
         return if ppay_commission.zero?
 
-        transactions.create(from_balance: advertisement.processer.balance,
-                            to_balance: Ppay.last.balance,
-                            amount: cryptocurrency_amount * ppay_commission / 100,
-                            national_currency_amount: national_currency_amount * ppay_commission / 100,
-                            transaction_type: :ppay_commission)
+        prepare_ppay_transaction
+      end
+
+      def prepare_ppay_transaction
+        transactions.create(
+          from_balance: advertisement.processer.balance,
+          to_balance: Ppay.last.balance,
+          amount: ppay_amount,
+          national_currency_amount: ppay_national_currency_amount,
+          transaction_type: :ppay_commission
+        )
+      end
+
+      def ppay_amount
+        cryptocurrency_amount * ppay_commission / 100
+      end
+
+      def ppay_national_currency_amount
+        national_currency_amount * ppay_commission / 100
       end
 
       def main_transaction_amount

@@ -15,6 +15,8 @@ class Payment < ApplicationRecord
   scope :filter_by_payment_status, ->(payment_status) { where(payment_status:) }
   scope :filter_by_payment_system, ->(payment_system) { where(payment_system:) }
   scope :filter_by_national_currency, ->(national_currency) { where(national_currency:) }
+  scope :filter_by_uuid, ->(uuid) { where('uuid::text LIKE ?', "%#{uuid}%") }
+  scope :filter_by_external_order_id, ->(external_order_id) { where(external_order_id:) }
   scope :filter_by_national_currency_amount_from,
         ->(national_currency_amount) { where 'national_currency_amount > ?', national_currency_amount }
   scope :filter_by_national_currency_amount_to,
