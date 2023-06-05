@@ -12,30 +12,15 @@ class PaymentsController < ApplicationController
   private
 
   def set_locale
-    if params[:locale]
+    if params[:locale].present?
       I18n.locale = params[:locale]
       session[:locale] = params[:locale]
-    else
-      params[:locale] = locale_from_currency
-      I18n.locale = params[:locale]
+    elsif @payment.locale.present?
+      I18n.locale = @payment.locale.to_sym
+      session[:locale] = @payment.locale.to_sym
     end
   rescue I18n::InvalidLocale
     I18n.locale = I18n.default_locale
-  end
-
-  def locale_from_currency
-    locales = {
-      'RUB' => :ru,
-      'UZS' => :uz,
-      'TJS' => :tg,
-      'IDR' => :id,
-      'KZT' => :kk,
-      'UAH' => :uk,
-      'TRY' => :tr,
-      'KGS' => :ky
-    }
-
-    locales[@payment.national_currency]
   end
 
   def find_payment

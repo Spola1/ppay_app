@@ -573,6 +573,10 @@
             "type": "string",
             "example": "integer"
           },
+          "locale": {
+            "type": "string",
+            "example": "ru"
+          },
           "redirect_url": {
             "type": "string",
             "example": "https://example.com/redirect_url"
@@ -597,6 +601,10 @@
           "external_order_id": {
             "type": "string",
             "example": "1234"
+          },
+          "locale": {
+            "type": "string",
+            "example": "ru"
           },
           "redirect_url": {
             "type": "string",

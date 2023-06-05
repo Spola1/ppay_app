@@ -59,6 +59,7 @@ class Payment < ApplicationRecord
 
   before_create :set_default_unique_amount, unless: :unique_amount
   before_create :set_initial_amount
+  before_create :set_locale_from_currency
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
@@ -115,6 +116,25 @@ class Payment < ApplicationRecord
   end
 
   private
+
+  def set_locale_from_currency
+    self.locale = currency_to_locale(national_currency) if locale.blank?
+  end
+
+  def currency_to_locale(national_currency)
+    currency_to_locale_map = {
+      'RUB' => :ru,
+      'UZS' => :uz,
+      'TJS' => :tg,
+      'IDR' => :id,
+      'KZT' => :kk,
+      'UAH' => :uk,
+      'TRY' => :tr,
+      'KGS' => :ky
+    }
+
+    currency_to_locale_map[national_currency] || I18n.default_locale.to_s
+  end
 
   def set_support
     self.support = Support.all.sample
