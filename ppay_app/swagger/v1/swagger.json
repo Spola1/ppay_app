@@ -559,7 +559,7 @@
         "properties": {
           "national_currency": {
             "type": "string",
-            "example": "UAH"
+            "example": "RUB"
           },
           "national_currency_amount": {
             "type": "number",
@@ -575,7 +575,7 @@
           },
           "locale": {
             "type": "string",
-            "example": ""
+            "example": "ru"
           },
           "redirect_url": {
             "type": "string",
