@@ -1,0 +1,35 @@
+= turbo_frame_tag 'content' do
+  = turbo_stream_from "supports_merchant_#{@merchant.id}"
+
+  .show_content
+    %section.wrap
+      .card-wrap
+        .item-card
+          .card-head
+            %h1
+              Настройки мерчанта
+              = "#{@merchant.display_name} (#{@merchant.email})"
+
+          .card-body
+            = turbo_frame_tag "supports_merchant_#{@merchant.id}" do
+              .supports_merchant_content
+                .with-sidebar
+                  %aside
+                    .sticky-menu
+                      %ul.bg-gray-100
+                        %li
+                          = link_to merchants_path, class: active?('edit') do
+                            = fa_icon 'key'
+                            %span= t('users.sidebar.account')
+                        %li
+                          = link_to merchants_path, class: active?('settings') do
+                            = fa_icon 'user'
+                            %span= t('users.sidebar.settings')
+                  %section
+                    .devise_container
+                      .form
+
+
+          .back-link
+            = link_to '<- К списку мерчантов', merchants_path
+

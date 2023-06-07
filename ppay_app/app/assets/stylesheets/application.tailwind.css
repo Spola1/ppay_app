@@ -159,12 +159,12 @@
     @apply bg-red-100;
   }
 
-  .item-card {
-    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
-  }
-
   .card-wrap {
     @apply p-2 flex-1;
+  }
+
+  .item-card {
+    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
   }
 
   .card-head {
@@ -173,6 +173,10 @@
 
   .card-head h1 {
     @apply inline-block text-xl;
+  }
+
+  .card-body {
+    @apply my-4;
   }
 
   .wrap {
@@ -539,6 +543,10 @@
     @apply text-xs text-gray-600 mt-6;
   }
 
+  .alert-block {
+    @apply text-gray-900 font-light inline-block rounded-lg shadow-md shadow-slate-100 bg-white border;
+  }
+
   .payment_img {
     width: 300px;
     height: 180px;
@@ -672,7 +680,7 @@
   }
 
   .image-processer-block {
-    @apply h-96;
+    @apply max-h-96;
   }
 
   input[name="advertisement[card_number]"] {

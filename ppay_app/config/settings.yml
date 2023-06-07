@@ -68,3 +68,5 @@ navbar:
     #   path: rate_snapshots_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Мерчанты
+      path: merchants_path
