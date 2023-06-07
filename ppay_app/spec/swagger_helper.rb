@@ -60,14 +60,18 @@ RSpec.configure do |config|
   end
 end
 
-module Rswag::Specs::ExampleGroupHelpers
-  def description_erb(template = nil)
-    return unless template
+module Rswag
+  module Specs
+    module ExampleGroupHelpers
+      def description_erb(template = nil)
+        return unless template
 
-    metadata[:operation][:description] = render('layout.md.erb') { render(template) }
-  end
+        metadata[:operation][:description] = render('layout.md.erb') { render(template) }
+      end
 
-  def render(template)
-    ERB.new(File.read("spec/support/swagger/markdown/v1/#{template}")).result(binding)
+      def render(template)
+        ERB.new(File.read("spec/support/swagger/markdown/v1/#{template}")).result(binding)
+      end
+    end
   end
 end

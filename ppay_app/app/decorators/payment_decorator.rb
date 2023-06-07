@@ -80,7 +80,23 @@ class PaymentDecorator < ApplicationDecorator
     formatted_amount(cryptocurrency_amount)
   end
 
+  def cryptocurrency_commission_amount
+    commission_amount&.to_f
+  end
+
+  def national_currency_commission_amount
+    return unless commission_amount && rate_snapshot
+
+    (cryptocurrency_commission_amount * rate_snapshot.value).to_f
+  end
+
   private
+
+  def commission_amount
+    return unless transactions.any?
+
+    transactions.commission_transactions.sum(:amount)
+  end
 
   def fiat_amount
     formatted_amount(national_currency_amount)

@@ -102,7 +102,7 @@
                 %td.item-card-td.item-card-td-label ID объявления
                 %td.item-card-td= "#{payment.advertisement_id}"
 
-            - if payment.merchant_id && current_user.is_a?(Support)
+            - if payment.merchant_id && role_namespace == 'supports'
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
                 %td.item-card-td= payment.merchant.decorate.display_name                          
@@ -146,7 +146,7 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
-            - if local_assigns[:can_manage_payment?]
+            - if role_namespace == 'supports'
               = render 'shared/staff/payments/payment_audit', payment:
 
   - if local_assigns[:can_manage_payment?]

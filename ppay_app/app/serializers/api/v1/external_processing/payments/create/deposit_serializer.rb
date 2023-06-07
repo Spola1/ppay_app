@@ -12,7 +12,7 @@ module Api
             set_type :Deposit
 
             attributes :uuid, :card_number, :expiration_time, :national_currency, :national_currency_amount,
-                       :initial_amount
+                       :initial_amount, :cryptocurrency_commission_amount, :national_currency_commission_amount
             attribute :payment_link, if: proc { _1.payment_link.present? }
             attribute :payment_link_qr_code_url, if: proc { _1.payment_link_qr_code_url.present? }
           end

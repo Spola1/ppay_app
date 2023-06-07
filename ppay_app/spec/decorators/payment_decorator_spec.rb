@@ -68,4 +68,33 @@ RSpec.describe PaymentDecorator do
       expect(payment.decorate.type_icon).to eq 'arrow-down'
     end
   end
+
+  describe '#cryptocurrency_commission_amount' do
+    subject { payment.decorate.cryptocurrency_commission_amount }
+
+    let(:payment) { create(:payment, :with_transactions) }
+
+    it 'calculates amount of all commissions' do
+      is_expected.to eq(20)
+    end
+  end
+
+  describe '#national_currency_commission_amount' do
+    subject { payment.decorate.national_currency_commission_amount }
+
+    let(:payment) { create(:payment, :with_transactions) }
+
+    it 'calculates amount of all commissions and converts it to national currency' do
+      is_expected.to eq(nil)
+    end
+
+    context 'when rate snapshot is associated' do
+      let(:payment) { create(:payment, :with_transactions, rate_snapshot:) }
+      let(:rate_snapshot) { create(:rate_snapshot, value: 10) }
+
+      it 'calculates amount of all commissions and converts it to national currency' do
+        is_expected.to eq(200)
+      end
+    end
+  end
 end

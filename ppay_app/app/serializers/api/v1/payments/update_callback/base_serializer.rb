@@ -16,6 +16,8 @@ module Api
           attribute :national_currency_amount
           attribute :initial_amount
           attribute :national_currency
+          attribute :cryptocurrency_commission_amount
+          attribute :national_currency_commission_amount
         end
       end
     end

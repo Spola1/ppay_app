@@ -7,7 +7,7 @@ module Payments
     attr_reader :payment
 
     def initialize(payment)
-      @payment = payment
+      @payment = payment.decorate
     end
 
     def call
