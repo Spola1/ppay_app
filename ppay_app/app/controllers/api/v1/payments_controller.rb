@@ -19,7 +19,7 @@ module Api
       private
 
       def payment
-        @payment ||= current_bearer.becomes(Merchant).payments.find_by! uuid: params[:uuid]
+        @payment ||= current_bearer.becomes(Merchant).payments.find_by!(uuid: params[:uuid]).decorate
       end
 
       def serializer
