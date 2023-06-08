@@ -34,7 +34,9 @@ module Swagger
                           cryptocurrency: { type: :string, example: 'USDT' },
                           payment_system: { type: :string, example: 'Sberbank' },
                           payment_status: { type: :string, example: 'cancelled' },
-                          cancellation_reason: { type: :string, example: 'fraud_attempt' }
+                          cancellation_reason: { type: :string, example: 'fraud_attempt' },
+                          cryptocurrency_commission_amount: { type: %i[number null], example: 9.99 },
+                          national_currency_commission_amount: { type: %i[number null], example: 99.99 }
                         },
                         required: %w[uuid created_at national_currency national_currency_amount
                                      cryptocurrency payment_system payment_status]

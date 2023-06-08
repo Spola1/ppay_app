@@ -64,7 +64,9 @@ module Swagger
                             national_currency_amount: { type: :string },
                             initial_amount: { type: :string },
                             payment_link: { type: :string },
-                            payment_link_qr_code_url: { type: :string }
+                            payment_link_qr_code_url: { type: :string },
+                            cryptocurrency_commission_amount: { type: :number, example: 10.0 },
+                            national_currency_commission_amount: { type: :number, example: 100.0 }
                           },
                           required: %w[uuid card_number expiration_time national_currency national_currency_amount
                                        initial_amount]
@@ -89,7 +91,9 @@ module Swagger
                             uuid: { type: :string },
                             national_currency: { type: :string },
                             national_currency_amount: { type: :string },
-                            initial_amount: { type: :string }
+                            initial_amount: { type: :string },
+                            cryptocurrency_commission_amount: { type: :number, example: 10.0 },
+                            national_currency_commission_amount: { type: :number, example: 100.0 }
                           },
                           required: %w[uuid national_currency national_currency_amount initial_amount]
                         }

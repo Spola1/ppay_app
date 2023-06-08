@@ -6,6 +6,7 @@ class Transaction < ApplicationRecord
 
   PAYMENT_TYPES = %i[main ppay_commission processer_commission agent_commission working_group_commission].freeze
   BALANCE_TYPES = %i[deposit withdraw].freeze
+  COMMISSION_TYPES = %i[ppay_commission processer_commission agent_commission working_group_commission].freeze
 
   belongs_to :from_balance, class_name: 'Balance', optional: true
   belongs_to :to_balance, class_name: 'Balance', optional: true
@@ -21,8 +22,9 @@ class Transaction < ApplicationRecord
     withdraw: 6
   }
 
-  scope :payment_transactions, -> { where(transaction_type: PAYMENT_TYPES) }
-  scope :balance_transactions, -> { where(transaction_type: BALANCE_TYPES) }
+  scope :payment_transactions, ->    { where(transaction_type: PAYMENT_TYPES) }
+  scope :commission_transactions, -> { where(transaction_type: COMMISSION_TYPES) }
+  scope :balance_transactions, ->    { where(transaction_type: BALANCE_TYPES) }
 
   aasm whiny_transitions: false, column: :status do
     state :frozen, initial: true, before_enter: :freeze_funds

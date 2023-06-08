@@ -3,13 +3,8 @@
   %td.item-card-td.max-w-0.overflow-hidden.text-xs
 
     - payment.audits.find_each do |audit|
-      - if current_user.is_a?(Processer) && audit.user.present? && audit.user.is_a?(Merchant)
-        %b Мерчант
-        %b= audit.user.id
-        %br
-      - elsif audit.user.present?
-        %b= audit.user.decorate.audit_user_info
-        %br
+      %b= audit.user.decorate.audit_user_info
+      %br
       - audit.audited_changes.each do |attribute, values|
         = "#{I18n.t("payments.attributes.#{attribute}")}:"
         = formatted_changes(attribute, values)
