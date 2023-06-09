@@ -2,6 +2,7 @@
 
 module PaymentsHelper
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
+  AVAILABLE_CANCELLATION_REASONS_COLLECTION = %i[by_client duplicate_payment fraud_attempt incorrect_amount not_paid].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
 
   def edit_payment_path(payment)
@@ -30,6 +31,10 @@ module PaymentsHelper
 
   def support_payment_statuses_collection
     AVAILABLE_STATUSES_COLLECTION.map { |status| [state_translation(status), status] }
+  end
+
+  def support_payment_cancellation_reasons_collection
+    AVAILABLE_CANCELLATION_REASONS_COLLECTION.map { |reason| [cancellation_reason_translation(reason), reason] }
   end
 
   def can_manage_payment?
