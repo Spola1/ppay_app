@@ -11,27 +11,6 @@ national_currencies:
   - UAH
   - TRY
   - KGS
-payment_systems:
-  - Sberbank
-  - Tinkoff
-  - Raiffeisen
-  - AlfaBank
-  - HUMO
-  - Банк ЦентрКредит
-  - Halyk Bank
-  - Jusan Bank
-  - Kaspi Bank
-  - Другой банк
-  - IBAN
-  - PrivatBank
-  - MonoBank
-  - PUMB
-  - PermataBank
-  - Optima24
-  - Halyk
-  - Bakai24
-  - Demir
-  - UzCard
 
 navbar:
   admin:
