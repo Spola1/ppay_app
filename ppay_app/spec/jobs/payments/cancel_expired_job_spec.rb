@@ -11,8 +11,6 @@ RSpec.describe Payments::CancelExpiredJob, type: :job do
     end
 
     it 'cancels expired payments and setup cancellation reason to time expired' do
-      payment.cancel!
-
       described_class.new.perform
 
       payment.reload
