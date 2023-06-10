@@ -62,7 +62,7 @@ module StateMachines
       end
 
       def set_cancellation_reason
-        self.cancellation_reason = 0
+        self.cancellation_reason = 0 unless cancellation_reason
       end
 
       def advertisement?
