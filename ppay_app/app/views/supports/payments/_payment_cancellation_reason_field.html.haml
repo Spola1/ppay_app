@@ -1,3 +1,3 @@
 .flex
-  = f.select :cancellation_reason, cancellation_reasons_collection, {include_blank: true}, class: 'form-input-select w-full text-xs'
+  = f.select :cancellation_reason, support_payment_cancellation_reasons_collection, {include_blank: true}, class: 'form-input-select w-full text-xs'
   %button.form-submit.px-4.ml-2= fa_icon 'check'
