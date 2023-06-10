@@ -121,6 +121,10 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
+  constraints(->(request) { request.env['warden'].user.blank? }) do
+    match '*path', to: 'users/sign_in#index', via: :all
+  end
+
   scope module: :processers do
     root 'payments#index'
   end
