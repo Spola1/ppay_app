@@ -11,7 +11,7 @@ module StateMachines
       included do
         include AASM
 
-        aasm whiny_transitions: false, column: :payment_status do
+        aasm whiny_transitions: false, column: :payment_status, requires_lock: true do
           state :created, initial: true
           state :draft, :processer_search, :transferring, :confirming, :completed, :cancelled
 

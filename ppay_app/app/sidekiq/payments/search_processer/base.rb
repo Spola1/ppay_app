@@ -21,7 +21,7 @@ module Payments
       def search_advertisment(payment)
         while payment.reload.advertisement.blank? && payment.reload.processer_search?
           puts 'не найден'
-          payment.advertisement = selected_advertisement(payment)
+          payment.update(advertisement: selected_advertisement(payment))
           payment.bind! if payment.advertisement
           sleep 0.5
         end

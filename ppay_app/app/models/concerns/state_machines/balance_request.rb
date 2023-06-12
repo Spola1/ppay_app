@@ -7,7 +7,7 @@ module StateMachines
     included do
       include AASM
 
-      aasm whiny_transitions: false, column: :status do
+      aasm whiny_transitions: false, column: :status, requires_lock: true do
         state :processing, initial: true
         state :completed, :cancelled
 

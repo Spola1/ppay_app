@@ -232,7 +232,8 @@ RSpec.describe Payment, type: :model do
   describe 'cancellation_reason' do
     it {
       is_expected.to define_enum_for(:cancellation_reason).with_values(by_client: 0, duplicate_payment: 1,
-                                                                       fraud_attempt: 2, incorrect_amount: 3)
+                                                                       fraud_attempt: 2, incorrect_amount: 3,
+                                                                       not_paid: 4, time_expired: 5)
     }
   end
 

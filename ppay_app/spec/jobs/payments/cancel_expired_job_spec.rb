@@ -16,7 +16,7 @@ RSpec.describe Payments::CancelExpiredJob, type: :job do
       payment.reload
 
       expect(payment.payment_status).to eq('cancelled')
-      expect(payment.cancellation_reason).to eq("time_expired")
+      expect(payment.cancellation_reason).to eq('time_expired')
     end
 
     it 'logs the cancelled payment' do
