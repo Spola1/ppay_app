@@ -93,3 +93,6 @@
   -unless browser.device.mobile? || browser.device.tablet?
     .show-second-block
       = render 'payments/qr_code', payment: payment
+
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";

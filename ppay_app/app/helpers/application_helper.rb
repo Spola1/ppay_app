@@ -20,7 +20,6 @@ module ApplicationHelper
 
   def locale_to_country_code(locale)
     locale_to_country_code_map = {
-      en: 'gb',
       id: 'id',
       kk: 'kz',
       ky: 'kg',
