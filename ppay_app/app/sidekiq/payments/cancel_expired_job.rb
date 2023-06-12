@@ -7,6 +7,7 @@ module Payments
 
     def perform
       Payment.transferring.expired.find_each do |payment|
+        payment.update(cancellation_reason: :time_expired)
         payment.cancel!
         puts "Платёж #{payment.uuid} отменён"
       end

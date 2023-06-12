@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Balance < ApplicationRecord
+  audited
+
   has_many :from_transactions, class_name: 'Transaction', foreign_key: :from_balance_id
   has_many :to_transactions, class_name: 'Transaction', foreign_key: :to_balance_id
 
@@ -12,6 +14,7 @@ class Balance < ApplicationRecord
     raise(ArgumentError, 'Amount must be positive') unless amount.positive?
 
     with_lock do
+      reload
       self.amount -= in_national_currency ? national_currency_amount : amount
       save!
     end
@@ -21,6 +24,7 @@ class Balance < ApplicationRecord
     raise(ArgumentError, 'Amount must be positive') unless amount.positive?
 
     with_lock do
+      reload
       self.amount += in_national_currency ? national_currency_amount : amount
       save!
     end

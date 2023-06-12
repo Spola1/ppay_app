@@ -26,7 +26,7 @@ RSpec.describe BalanceRequest, type: :model do
 
   describe ':complete event' do
     it 'transitions to completed state' do
-      balance_request.complete
+      balance_request.complete!
       expect(balance_request.status).to eq('completed')
       expect(balance_request.user.balance.amount.to_i).to eq(1001)
     end
@@ -34,7 +34,7 @@ RSpec.describe BalanceRequest, type: :model do
 
   describe ':cancel event' do
     it 'transitions to cancelled state' do
-      balance_request.cancel
+      balance_request.cancel!
       expect(balance_request.status).to eq('cancelled')
       expect(balance_request.user.balance.amount.to_i).to eq(1000)
     end
