@@ -12,9 +12,9 @@ Rails.application.routes.draw do
       password == Settings.basic_auth.password
   end
 
-  devise_for :users# , controllers: {
-             #   registrations: 'users/registrations'
-             # }
+  devise_for :users # , controllers: {
+  #   registrations: 'users/registrations'
+  # }
 
   concern :statuses_updatable do
     namespace :statuses do
@@ -121,7 +121,14 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
-  constraints(->(request) { request.env['warden'].user.blank? }) do
+  constraints(
+    lambda do |request|
+      request.env['warden'].user.blank? &&
+        request.path[
+          %r{/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal)}
+        ].present?
+    end
+  ) do
     match '*path', to: 'users/sign_in#index', via: :all
   end
 

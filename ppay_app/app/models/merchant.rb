@@ -28,7 +28,7 @@ class Merchant < User
     [{ commission: 1 }]
       .product(
         PaymentSystem.all.map { { payment_system: _1 } },
-        Settings.national_currencies.map { { national_currency: _1 } },
+        NationalCurrency.pluck(:name).map { { national_currency: _1 } },
         %w[Deposit Withdrawal].map { { direction: _1 } },
         %i[ppay processer working_group agent].map { { commission_type: _1 } }
       )

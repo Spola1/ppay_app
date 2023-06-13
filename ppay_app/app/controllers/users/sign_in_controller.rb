@@ -1,7 +1,9 @@
-class Users::SignInController < ApplicationController
-  before_action :authenticate_user!
+# frozen_string_literal: true
 
-  def index
-    redirect_back(fallback_location: root_path)
+module Users
+  class SignInController < Staff::BaseController
+    def index
+      redirect_back(fallback_location: root_path)
+    end
   end
 end

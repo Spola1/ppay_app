@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Supports
-  class MerchantsController < ApplicationController
+  class MerchantsController < Staff::BaseController
     before_action :find_merchant, only: %i[update show]
 
     def index
