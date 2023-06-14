@@ -87,6 +87,7 @@ gem 'health_check'
 gem 'memory_profiler'
 gem 'stackprof'
 gem 'rack-mini-profiler', require: false
+gem 'telegram-bot-ruby', '~> 1.0'
 
 
 group :development, :test do

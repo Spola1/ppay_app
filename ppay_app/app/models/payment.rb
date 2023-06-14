@@ -164,6 +164,8 @@ class Payment < ApplicationRecord
       locals: { payment: decorate, role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_notifications"
     )
+
+    TelegramNotificationService.new(uuid, national_currency_amount, card_number).send_notification_to_user()
   end
 
   def broadcast_replace_payment_to_support
