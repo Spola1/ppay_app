@@ -165,7 +165,9 @@ class Payment < ApplicationRecord
       target: "processer_#{processer.id}_notifications"
     )
 
-    TelegramNotificationService.new(uuid, national_currency_amount, card_number).send_notification_to_user()
+    notify_service = TelegramNotificationService.new(uuid, national_currency_amount, card_number)
+
+    notify_service.send_notification_to_user(processer.telegram) if processer.telegram.present?
   end
 
   def broadcast_replace_payment_to_support
