@@ -158,16 +158,21 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
+    notify_service = TelegramNotificationService.new(uuid, national_currency_amount, card_number)
+
+    unless processer.telegram_id.present?
+      telegram_id = notify_service.get_user_id(processer.telegram)
+      processer.update(telegram_id: telegram_id) if telegram_id.present?
+    end
+
+    notify_service.send_notification_to_user(processer.telegram_id)
+
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
       partial: 'processers/notifications/notification',
       locals: { payment: decorate, role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_notifications"
     )
-
-    notify_service = TelegramNotificationService.new(uuid, national_currency_amount, card_number)
-
-    notify_service.send_notification_to_user(processer.telegram)
   end
 
   def broadcast_replace_payment_to_support

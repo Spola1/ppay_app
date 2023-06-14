@@ -12,11 +12,14 @@ class TelegramNotificationService
     @card_number = card_number
   end
 
-  def get_user_id(username)
+  def get_response
     response = Net::HTTP.get(URI(API_URL))
     json = JSON.parse(response)
-
     @updates = json['result']
+  end
+
+  def get_user_id(username)
+    get_response
     user_id = nil
 
     @updates.each do |update|
@@ -26,28 +29,28 @@ class TelegramNotificationService
       user_id = message['chat']['id']
       break
     end
+    debugger
 
     user_id
   end
 
-  def send_notification_to_user(username)
+  def send_notification_to_user(user_id)
     message = "Уведомление о платеже:\n\n"
     message += "UUID: #{@uuid}\n"
     message += "Сумма: #{@national_currency_amount}\n"
     @card_number == nil ? message : message += "Номер карты оператора: #{@card_number}\n"
 
-    chat_id = get_user_id(username)
-    send_message_to_user(chat_id, message) unless chat_id.nil?
-    # unless chat_id.nil? защита на случай если пользователь
-    # еще не написал ни одного сообщения/не отправил ни одной команды в бот
+    send_message_to_user(user_id, message) unless user_id.nil?
   end
 
   private
 
-  def send_message_to_user(chat_id, message)
-    if @updates.last['my_chat_member'] == nil # проверка на случай если пользователь заблокировал или отключил бота
+  def send_message_to_user(user_id, message)
+    get_response
+
+    if @updates.last['my_chat_member'] == nil
       Telegram::Bot::Client.run("#{TELEGRAM_BOT_TOKEN}") do |bot|
-        bot.api.send_message(chat_id: chat_id, text: message)
+        bot.api.send_message(chat_id: user_id, text: message)
       end
     end
   end
