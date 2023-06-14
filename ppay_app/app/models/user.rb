@@ -16,6 +16,9 @@ class User < ApplicationRecord
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key
+  before_save :extract_username_from_telegram
+
+  validates :telegram, format: { with: /\Ahttps?:\/\/t\.me\/\w+\z/ }, allow_blank: true
 
   # validates_presence_of :crypto_wallet
 
@@ -30,6 +33,12 @@ class User < ApplicationRecord
   end
 
   private
+
+  def extract_username_from_telegram
+    if telegram.present?
+      self.telegram = telegram.split('/').last
+    end
+  end
 
   def create_api_key
     api_keys.create
