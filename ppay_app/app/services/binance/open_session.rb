@@ -9,7 +9,7 @@ module Binance
     PAY_TYPES = {
       'RUB' => %w[RosBankNew TinkoffNew RaiffeisenBank],
       'UZS' => %w[Humo Uzcard],
-      'KZT' => %w[HalykBank CenterCreditBank JysanBank ForteBank AltynBank],
+      'KZT' => %w[CenterCreditBank],
       'UAH' => %w[PUMBBank],
       'TJS' => %w[DCbank AlifBank SpitamenBank],
       'TRY' => %w[VakifBank],
