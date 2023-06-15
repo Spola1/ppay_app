@@ -29,7 +29,6 @@ class TelegramNotificationService
       user_id = message['chat']['id']
       break
     end
-    debugger
 
     user_id
   end
