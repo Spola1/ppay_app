@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe Payment, type: :model do
   let!(:ppay_user) { create(:user, :ppay) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
+  let!(:rate_snapshot_sell) { create(:rate_snapshot, :sell) }
   let!(:payment_system) { create :payment_system }
 
   it { is_expected.to have_many(:transactions) }
