@@ -27,13 +27,13 @@ describe 'External processing withdrawals' do
                 schema: { '$ref': '#/components/schemas/external_processing_withdrawals_create_parameter_body_schema' }
 
       let(:payment_system_name) { payment_system.name }
-      let(:national_currency) { 'RUB' }
+      let(:national_currency_name) { national_currency.name }
       let(:card_number) { '1234 5678 9012 3456' }
       let(:params) do
         {
           payment_system: payment_system_name,
           card_number:,
-          national_currency:,
+          national_currency: national_currency_name,
           national_currency_amount: 3000.0,
           external_order_id: '1234',
           callback_url: FFaker::Internet.http_url

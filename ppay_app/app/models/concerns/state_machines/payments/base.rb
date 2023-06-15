@@ -40,7 +40,7 @@ module StateMachines
       end
 
       def validate_payment_system_availability
-        return true if payment_system.in?(merchant_payment_systems).present?
+        return true if payment_system.in?(merchant_payment_systems)
 
         errors.add(:payment_system, :invalid)
         false

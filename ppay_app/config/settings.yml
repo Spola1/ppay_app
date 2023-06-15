@@ -2,15 +2,6 @@ basic_auth:
   username: ppay
   password: password
 ppay_commission: 4
-national_currencies:
-  - RUB
-  - UZS
-  - TJS
-  - IDR
-  - KZT
-  - UAH
-  - TRY
-  - KGS
 
 navbar:
   admin:

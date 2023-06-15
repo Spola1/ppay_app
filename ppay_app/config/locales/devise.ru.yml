@@ -3,6 +3,7 @@ ru:
     sessions:
       new:
         system_sign_in: Вход в систему
+        sign_in: Вход
 
     registrations:
       edit:

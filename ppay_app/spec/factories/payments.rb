@@ -60,8 +60,8 @@ FactoryBot.define do
       cancellation_reason { 0 }
     end
 
-    trait :UZS do
-      national_currency { 'UZS' }
+    trait :IDR do
+      national_currency { 'IDR' }
     end
 
     trait :Tinkoff do

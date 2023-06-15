@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :national_currency do
-    name { 'RUB' }
+    name { 'UZS' }
   end
 end
