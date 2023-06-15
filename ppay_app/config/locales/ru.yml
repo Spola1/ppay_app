@@ -11,6 +11,9 @@ ru:
         payment_link: Ссылка для оплаты
         comment: Комментарий
         status: Активно
+      type:
+        deposit: Депозит
+        withdrawal: Вывод
       balance_request:
         requests_type: Тип
         amount: Сумма

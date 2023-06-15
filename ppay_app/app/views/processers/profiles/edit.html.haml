@@ -1,6 +1,6 @@
 = simple_form_for @user, url: processers_profile_path, method: :patch do |f|
 
-  = f.input :telegram, label: 'Телеграм', hint: 'ссылка на телеграм в формате «https://t.me/username»', input_html: { value: '' }
+  = f.input :telegram, label: 'Телеграм', hint: 'введите свое имя пользователя', input_html: { value: '' }
 
   = f.submit 'Сохранить', class: 'form-submit'
 

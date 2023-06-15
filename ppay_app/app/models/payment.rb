@@ -158,18 +158,24 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    notify_service = TelegramNotificationService.new(uuid,
-                                                     national_currency_amount,
-                                                     card_number)
+    advertisement_card_number = advertisement.card_number
 
     unless processer.telegram_id.present?
+      notify_service = TelegramNotificationService.new(national_currency_amount, card_number,
+                                                       national_currency, external_order_id,
+                                                       payment_status, payment_system,
+                                                       advertisement_card_number, type, status_changed_at,
+                                                       processer.telegram)
+
       telegram_id = notify_service.get_user_id(processer.telegram)
-      processer.update(telegram_id: telegram_id) if telegram_id.present?
+      processer.update(telegram_id:) if telegram_id.present?
     end
 
-    Payments::TelegramNotificationJob.perform_async(uuid,
-                                                    national_currency_amount,
-                                                    card_number,
+    Payments::TelegramNotificationJob.perform_async(national_currency_amount, card_number,
+                                                    national_currency, external_order_id,
+                                                    payment_status, payment_system,
+                                                    advertisement_card_number, type,
+                                                    status_changed_at, processer.telegram,
                                                     processer.telegram_id)
 
     broadcast_append_later_to(
