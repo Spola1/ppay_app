@@ -16,7 +16,6 @@ class User < ApplicationRecord
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key
-  before_save :remove_at_symbol_from_telegram, if: :telegram_present?
 
   # validates_presence_of :crypto_wallet
 
@@ -34,10 +33,6 @@ class User < ApplicationRecord
 
   def telegram_present?
     telegram.present?
-  end
-
-  def remove_at_symbol_from_telegram
-    telegram.gsub!(/^@/, '')
   end
 
   def create_api_key
