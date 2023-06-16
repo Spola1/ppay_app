@@ -31,10 +31,6 @@ class User < ApplicationRecord
 
   private
 
-  def telegram_present?
-    telegram.present?
-  end
-
   def create_api_key
     api_keys.create
   end
