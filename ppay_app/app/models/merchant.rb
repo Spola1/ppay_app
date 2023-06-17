@@ -6,8 +6,10 @@ class Merchant < User
   has_many :withdrawals, foreign_key: :merchant_id
   has_many :cards
   has_many :commissions, foreign_key: :merchant_id
+  has_many :methods,     foreign_key: :merchant_id, class_name: 'MerchantMethod'
   has_many :payment_systems, through: :commissions
   has_one :form_customization
+
   belongs_to :agent, optional: true
 
   enum unique_amount: {
