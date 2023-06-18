@@ -5,7 +5,7 @@ RSpec.configure do |config|
     PaymentSystem.delete_all
     NationalCurrency.delete_all
 
-    PaymentSystem.create([{name: 'Sberbank'}, {name: 'Tinkoff'}])
-    NationalCurrency.create([{name: 'RUB'}, {name: 'IDR'}])
+    PaymentSystem.create([{ name: 'Sberbank' }, { name: 'Tinkoff' }])
+    NationalCurrency.create([{ name: 'RUB' }, { name: 'IDR' }])
   end
 end
