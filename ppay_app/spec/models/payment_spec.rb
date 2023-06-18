@@ -238,7 +238,7 @@ RSpec.describe Payment, type: :model do
     }
   end
 
-  describe 'scope' do
+  describe 'filter scope' do
     let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id: }
     let!(:payment2) { create :payment, :UZS, created_at:, uuid: }
     let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
@@ -344,6 +344,88 @@ RSpec.describe Payment, type: :model do
       subject(:payment) { Payment.filter_by_external_order_id('5678') }
       let(:correct_result) { [payment1] }
       it { expect(payment.to_a).to eq(correct_result) }
+    end
+  end
+
+  describe 'scope' do
+    let!(:payment1) { create :payment, :deposit, status_changed_at: }
+    let!(:payment2) { create :payment, :withdrawal, :arbitration }
+    let!(:payment3) { create :payment, :deposit, :arbitration }
+    let(:arbitration) { true }
+    let(:status_changed_at) { Time.now - 21.minutes }
+
+    context 'when deposits' do
+      subject(:payment) { Payment.deposits }
+      let(:correct_result) { [payment3, payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only deposits' do
+      subject(:payment) { Payment.deposits }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when withdrawals' do
+      subject(:payment) { Payment.withdrawals }
+      let(:correct_result) { [payment2] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only withdrawals' do
+      subject(:payment) { Payment.withdrawals }
+      let(:correct_result) { [payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when arbitarrion' do
+      subject(:payment) { Payment.arbitration }
+      let(:correct_result) { [payment3, payment2] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only arbitration' do
+      subject(:payment) { Payment.arbitration }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when expired' do
+      subject(:payment) { Payment.expired }
+      let(:correct_result) { [payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only expired' do
+      subject(:payment) { Payment.expired }
+      let(:correct_result) { [payment1, payment3] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+  end
+
+  describe 'active scope' do
+    let!(:payment1) { create :payment, :created }
+    let!(:payment2) { create :payment, :transferring }
+    let!(:payment3) { create :payment, :confirming }
+    let!(:payment4) { create :payment, :cancelled }
+    let!(:payment5) { create :payment, :completed }
+
+    context 'when active' do
+      subject(:payment) { Payment.active }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only active' do
+      subject(:payment) { Payment.active }
+      let(:correct_result) { [payment5, payment4, payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when not active' do
+      subject(:payment) { Payment.active }
+      let(:correct_result) { [payment5, payment4] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
     end
   end
 end
