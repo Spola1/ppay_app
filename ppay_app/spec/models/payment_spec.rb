@@ -428,4 +428,51 @@ RSpec.describe Payment, type: :model do
       it { expect(payment.to_a).not_to eq(correct_result) }
     end
   end
+
+  describe 'in_hotlist scope' do
+    let!(:payment1) { create :payment, :deposit, :confirming }
+    let!(:payment2) { create :payment, :withdrawal, :transferring }
+    let!(:payment3) { create :payment, :deposit, :transferring }
+    let!(:payment4) { create :payment, :withdrawal, :confirming }
+
+    context 'when in hotlist' do
+      subject(:payment) { Payment.in_hotlist }
+      let(:correct_result) { [payment2, payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not all payments in hotlist' do
+      subject(:payment) { Payment.in_hotlist }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when not in hotlist' do
+      subject(:payment) { Payment.in_hotlist }
+      let(:correct_result) { [payment4, payment3] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+  end
+
+  describe 'initial_amount' do
+    let!(:payment1) { create :payment, national_currency_amount: }
+    let(:national_currency_amount) { 1000 }
+
+    subject { payment1.initial_amount }
+
+    it { is_expected.to eq(payment1.national_currency_amount) }
+  end
+
+  describe 'unique_amount' do
+    let!(:merchant1) { create :merchant, unique_amount: unique_amount1 }
+    let!(:merchant2) { create :merchant, unique_amount: unique_amount2 }
+    let!(:payment1) { create :payment, merchant: merchant1 }
+    let(:unique_amount1) { :integer }
+    let(:unique_amount2) { :decimal }
+
+    subject { payment1.unique_amount }
+
+    it { is_expected.to eq(merchant1.unique_amount) }
+    it { is_expected.not_to eq(merchant2.unique_amount) }
+  end
 end
