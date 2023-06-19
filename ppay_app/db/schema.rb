@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_19_122512) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -284,6 +284,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
     t.string "usdt_trc20_address"
     t.boolean "check_required", default: true
     t.integer "unique_amount", default: 0
+    t.string "telegram"
+    t.integer "telegram_id"
+    t.integer "ftd_payment_exec_time_in_sec", default: 480
+    t.integer "regular_payment_exec_time_in_sec", default: 1200
+    t.decimal "ftd_payment_default_summ", precision: 12, scale: 2
+    t.boolean "differ_ftd_and_other_payments", default: false
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
