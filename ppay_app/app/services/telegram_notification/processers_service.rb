@@ -6,7 +6,7 @@ require 'date'
 module TelegramNotification
   class ProcessersService < BaseService
     attr_reader :national_currency_amount, :card_number, :national_currency, :external_order_id, :payment_status,
-                :payment_system, :advertisement_card_number, :type, :status_changed_at, :image
+                :payment_system, :advertisement_card_number, :type, :status_changed_at
 
     def initialize(payment)
       @national_currency_amount = payment.national_currency_amount
