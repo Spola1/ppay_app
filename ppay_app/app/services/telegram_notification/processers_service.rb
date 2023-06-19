@@ -49,9 +49,18 @@ module TelegramNotification
 
       get_response
 
+      keyboard = Telegram::Bot::Types::InlineKeyboardMarkup.new(
+        inline_keyboard: [
+          [
+            Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Подтвердить', callback_data: 'button1'),
+            Telegram::Bot::Types::InlineKeyboardButton.new(text: 'На арбитраж', callback_data: 'button2')
+          ]
+        ]
+      )
+
       if @updates.last['my_chat_member'].nil?
         Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-          bot.api.send_photo(chat_id: user_id, photo: image, caption: message)
+          bot.api.send_photo(chat_id: user_id, photo: image, caption: message, reply_markup: keyboard)
         end
       end
     end
@@ -59,9 +68,17 @@ module TelegramNotification
     def send_message_to_user(user_id, message)
       get_response
 
+      keyboard = Telegram::Bot::Types::InlineKeyboardMarkup.new(
+        inline_keyboard: [
+          [
+            Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Отправить файл', switch_inline_query_current_chat: '')
+          ]
+        ]
+      )
+
       if @updates.last['my_chat_member'].nil?
         Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-          bot.api.send_message(chat_id: user_id, text: message)
+          bot.api.send_message(chat_id: user_id, text: message, reply_markup: keyboard)
         end
       end
     end
