@@ -18,7 +18,6 @@ module TelegramNotification
       @advertisement_card_number = payment.advertisement.card_number
       @type = payment.type
       @status_changed_at = payment.status_changed_at
-      @image = payment.image
     end
 
     def send_notification_to_user(user)
@@ -32,7 +31,7 @@ module TelegramNotification
       message += "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{@payment_status}")}\n"
       message += "Платёж будет отменён: #{time_of_payment_cancellation}"
 
-      @type == 'Deposit' ? send_photo_with_message_to_user(user, @image, message) : send_message_to_user(user, message)
+      send_message_to_user(user, message) unless user.nil?
     end
 
     private
@@ -44,41 +43,12 @@ module TelegramNotification
       formatted_datetime = new_datetime.strftime('%d-%m-%Y %H:%M:%S')
     end
 
-    def send_photo_with_message_to_user(user_id, image, message)
-      ActiveStorage::Current.url_options = Rails.application.routes.default_url_options
-
-      get_response
-
-      keyboard = Telegram::Bot::Types::InlineKeyboardMarkup.new(
-        inline_keyboard: [
-          [
-            Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Подтвердить', callback_data: 'button1'),
-            Telegram::Bot::Types::InlineKeyboardButton.new(text: 'На арбитраж', callback_data: 'button2')
-          ]
-        ]
-      )
-
-      if @updates.last['my_chat_member'].nil?
-        Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-          bot.api.send_photo(chat_id: user_id, photo: image, caption: message, reply_markup: keyboard)
-        end
-      end
-    end
-
     def send_message_to_user(user_id, message)
       get_response
 
-      keyboard = Telegram::Bot::Types::InlineKeyboardMarkup.new(
-        inline_keyboard: [
-          [
-            Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Отправить файл', switch_inline_query_current_chat: '')
-          ]
-        ]
-      )
-
       if @updates.last['my_chat_member'].nil?
         Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-          bot.api.send_message(chat_id: user_id, text: message, reply_markup: keyboard)
+          bot.api.send_message(chat_id: user_id, text: message)
         end
       end
     end
