@@ -3,6 +3,7 @@
 class Commission < ApplicationRecord
   belongs_to :payment_system
   belongs_to :merchant
+  belongs_to :merchant_method
 
   validates_presence_of :merchant, :payment_system, :national_currency, :direction, :commission_type
 

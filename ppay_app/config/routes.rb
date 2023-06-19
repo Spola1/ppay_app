@@ -121,19 +121,16 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
-  constraints(
+  constraints (
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
-          %r{/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal)}
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|$)}
         ].present?
     end
   ) do
     match '*path', to: 'users/sign_in#index', via: :all
-  end
-
-  scope module: :processers do
-    root 'payments#index'
+    root 'users/sign_in#index'
   end
 
   # временно для тестов добавляю таблицу

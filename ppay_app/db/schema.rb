@@ -159,17 +159,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
   end
 
   create_table "commissions", force: :cascade do |t|
-    t.bigint "payment_system_id", null: false
-    t.string "national_currency"
-    t.string "direction"
     t.integer "commission_type"
     t.decimal "commission", precision: 15, scale: 10
-    t.bigint "merchant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["merchant_id"], name: "index_commissions_on_merchant_id"
-    t.index ["payment_system_id", "national_currency", "direction", "commission_type", "merchant_id"], name: "index_unique_commission", unique: true
-    t.index ["payment_system_id"], name: "index_commissions_on_payment_system_id"
+    t.bigint "merchant_method_id", null: false
+    t.index ["merchant_method_id"], name: "index_commissions_on_merchant_method_id"
   end
 
   create_table "crypto_wallets", force: :cascade do |t|
@@ -337,8 +332,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "payments"
   add_foreign_key "chats", "users"
-  add_foreign_key "commissions", "payment_systems"
-  add_foreign_key "commissions", "users", column: "merchant_id"
+  add_foreign_key "commissions", "merchant_methods"
   add_foreign_key "crypto_wallets", "users"
   add_foreign_key "merchant_methods", "payment_ways"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
