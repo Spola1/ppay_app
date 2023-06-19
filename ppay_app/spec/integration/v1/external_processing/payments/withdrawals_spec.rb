@@ -6,7 +6,7 @@ describe 'External processing withdrawals' do
   include_context 'authorization'
   let(:check_required) { false }
 
-  let!(:rate_snapshot) { create(:rate_snapshot) }
+  let!(:rate_snapshot) { create(:rate_snapshot, :sell) }
   let!(:adv) { create :advertisement, :withdrawal, payment_system: payment_system.name }
   let!(:ppay) { create :user, :ppay }
 

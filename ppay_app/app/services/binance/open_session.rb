@@ -6,6 +6,16 @@ module Binance
   class OpenSession
     attr_reader :advs_params
 
+    PAY_TYPES = {
+      'RUB' => %w[RosBankNew TinkoffNew RaiffeisenBank],
+      'UZS' => %w[Humo Uzcard],
+      'KZT' => %w[CenterCreditBank],
+      'UAH' => %w[PUMBBank],
+      'TJS' => %w[DCbank AlifBank SpitamenBank],
+      'TRY' => %w[VakifBank],
+      'KGS' => %w[OPTIMABANK mBank HalykBank BAKAIBANK DEMIRBANK]
+    }.freeze
+
     def initialize(advs_params)
       @advs_params = advs_params
       @otc_advs_data_hash = nil
@@ -136,23 +146,7 @@ module Binance
       # ниже учитываем, что названия наши и техн. названия
       # платежного метода на бирже Бинанс отличаются
       # p_method = ''
-      case advs_params[:pay_types]
-      when 'sberbank'
-        form_data_hash[:pay_types] = ['RosBankNew']
-      when 'tinkoff'
-        form_data_hash[:pay_types] = ['TinkoffNew']
-      when 'RaiffeisenBank'
-        form_data_hash[:pay_types] = ['RaiffeisenBankNew']
-      when 'ABank'
-        # p_method = ['ABankNew']
-        # RaiffeisenBankRussia
-        # QIWI
-        # ABank
-        # HomeCreditBank
-      else
-        # p_method = ''
-        puts "любой или неизвестный платежный метод (#{advs_params[:pay_types]})"
-      end
+      form_data_hash[:payTypes] = PAY_TYPES[advs_params[:fiat]] || []
     end
   end
 end

@@ -51,10 +51,15 @@ module StateMachines
       end
 
       def bind_rate_snapshot
-        self.rate_snapshot = RateSnapshot.sell.by_national_currency(national_currency)
-                                         .by_cryptocurrency(cryptocurrency)
-                                         .order(created_at: :asc)
-                                         .last
+        self.rate_snapshot = rate_snapshots_scope
+                             .by_national_currency(national_currency)
+                             .by_cryptocurrency(cryptocurrency)
+                             .order(created_at: :asc)
+                             .last
+      end
+
+      def rate_snapshots_scope
+        type == 'Deposit' ? RateSnapshot.buy : RateSnapshot.sell
       end
 
       def set_cryptocurrency_amount
