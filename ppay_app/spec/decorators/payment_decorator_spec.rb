@@ -12,6 +12,44 @@ RSpec.describe PaymentDecorator do
     allow(Time).to receive(:now).and_return(time_now)
   end
 
+  describe '#countdown_end_time' do
+    context 'when differ_ftd_and_other_payments is true' do
+      before do
+        payment.merchant.update(differ_ftd_and_other_payments: true)
+        payment.merchant.update(ftd_payment_default_summ: 1)
+      end
+
+      context 'when cryptocurrency_amount equals ftd_payment_default_summ' do
+        it 'returns the correct countdown end time' do
+          expected_countdown_end_time = status_changed_at + payment.merchant.ftd_payment_exec_time_in_sec.seconds
+          expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+        end
+      end
+
+      context 'when cryptocurrency_amount is not equal to ftd_payment_default_summ' do
+        before do
+          payment.merchant.update(ftd_payment_default_summ: 50)
+        end
+
+        it 'returns the correct countdown end time' do
+          expected_countdown_end_time = status_changed_at + payment.merchant.regular_payment_exec_time_in_sec.seconds
+          expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+        end
+      end
+    end
+
+    context 'when differ_ftd_and_other_payments is false' do
+      before do
+        payment.merchant.update(differ_ftd_and_other_payments: false)
+      end
+
+      it 'returns the correct countdown end time' do
+        expected_countdown_end_time = status_changed_at + payment.merchant.regular_payment_exec_time_in_sec.seconds
+        expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+      end
+    end
+  end
+
   describe '#countdown' do
     it 'should return countdown' do
       expect(payment.decorate.countdown).to eq('00:10:00')
@@ -22,12 +60,6 @@ RSpec.describe PaymentDecorator do
       it 'should return 00:00:00' do
         expect(payment.decorate.countdown).to eq '00:00:00'
       end
-    end
-  end
-
-  describe '#countdown_end_time' do
-    it 'Should return status_changed_at + 20' do
-      expect(payment.decorate.countdown_end_time).to eq(payment.status_changed_at + 20.minutes)
     end
   end
 
