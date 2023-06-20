@@ -4,6 +4,8 @@
     = ENV['TELEGRAM_BOT_LINK']
   и нажмите Start
 
+= render 'processers/errors'
+
 = simple_form_for @user, url: processers_profile_path, method: :patch do |f|
   = f.input :telegram, label: 'Телеграм', hint: 'Введите свое имя пользователя'
   

@@ -14,8 +14,8 @@ module Processers
         redirect_to processers_profile_path, notice: 'Профиль успешно обновлен'
       else
         error_message = @user.errors.full_messages_for(:telegram).first || 'Профиль с таким никнеймом не найден'
-
-        redirect_to processers_profile_path, notice: error_message
+        flash[:error] = error_message
+        redirect_to processers_profile_path
       end
     end
 
