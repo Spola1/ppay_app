@@ -598,4 +598,8 @@
   input[name="advertisement[card_number]"] {
     width: 400px !important;
   }
+
+  .success-notice {
+    @apply text-sm text-green-600;
+  }
 }

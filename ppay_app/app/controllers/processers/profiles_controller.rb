@@ -11,11 +11,9 @@ module Processers
       @user.telegram_id = nil
 
       if @user.update(user_params)
-        redirect_to processers_profile_path, notice: 'Профиль успешно обновлен'
+        redirect_to edit_processers_profile_path, notice: 'Профиль успешно обновлен'
       else
-        error_message = @user.errors.full_messages_for(:telegram).first || 'Профиль с таким никнеймом не найден'
-        flash[:error] = error_message
-        redirect_to processers_profile_path
+        render :edit, status: :unprocessable_entity
       end
     end
 

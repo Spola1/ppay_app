@@ -58,6 +58,8 @@ ru:
         merchant: Мерчант
         processer: Оператор
         support: Поддержка
+      user:
+        telegram: Имя пользователя Telegram
   time:
     formats:
       short: '%F %H:%M'

@@ -11,8 +11,7 @@ class Processer < User
   before_validation :process_telegram
 
   validates :telegram, format: { with: /\A@?\w+\z/ }, allow_blank: true
-
-  validates_presence_of :telegram_id, if: -> { telegram.present? }
+  validate :telegram_id_presence, if: -> { telegram.present? }
 
   private
 
@@ -22,5 +21,9 @@ class Processer < User
     telegram.gsub!(/^@/, '')
     notify_service = TelegramNotification::GetUserIdService.new(telegram)
     self.telegram_id = notify_service.get_user_id(telegram)
+  end
+
+  def telegram_id_presence
+    errors.add(:telegram, :not_found) unless telegram_id.present?
   end
 end
