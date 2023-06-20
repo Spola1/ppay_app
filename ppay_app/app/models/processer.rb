@@ -7,4 +7,20 @@ class Processer < User
   has_many :withdrawals, through: :advertisements
 
   belongs_to :working_group, optional: true
+
+  before_validation :process_telegram
+
+  validates :telegram, presence: true, format: { with: /\A@?\w+\z/ }
+
+  validates_presence_of :telegram_id, if: -> { telegram.present? }
+
+  private
+
+  def process_telegram
+    if telegram.present?
+      telegram.gsub!(/^@/, '')
+      notify_service = TelegramNotification::GetUserIdService.new(telegram)
+      self.telegram_id = notify_service.get_user_id(telegram)
+    end
+  end
 end

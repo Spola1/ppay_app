@@ -1,9 +1,10 @@
+%p
+  Перед тем как вписать сюда своё имя пользователя, перейдите по ссылке 
+  %a{ href: ENV['TELEGRAM_BOT_LINK'], style: "color: blue;" }
+    = ENV['TELEGRAM_BOT_LINK']
+  и нажмите Start
+
 = simple_form_for @user, url: processers_profile_path, method: :patch do |f|
-
-  = f.input :telegram, label: 'Телеграм', hint: 'введите свое имя пользователя', input_html: { value: '' }
-
+  = f.input :telegram, label: 'Телеграм', hint: 'Введите свое имя пользователя'
+  
   = f.submit 'Сохранить', class: 'form-submit'
-
-.mt-3
-  = link_to 'https://t.me/bot_ppay_bot', target: '_blank', class: 'red-button' do
-    = 'Ppay Bot'

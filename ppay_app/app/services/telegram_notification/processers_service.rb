@@ -46,10 +46,8 @@ module TelegramNotification
     def send_message_to_user(user_id, message)
       get_response
 
-      if @updates.last['my_chat_member'].nil?
-        Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-          bot.api.send_message(chat_id: user_id, text: message)
-        end
+      Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
+        bot.api.send_message(chat_id: user_id, text: message)
       end
     end
   end
