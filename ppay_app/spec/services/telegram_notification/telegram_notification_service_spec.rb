@@ -10,7 +10,7 @@ RSpec.describe TelegramNotification::ProcessersService do
 
       before do
         payment.advertisement = ad
-        payment.processer.telegram_id = 123123123
+        payment.processer.telegram_id = 123_123_123
       end
 
       it 'sends a notification message to the user' do
@@ -36,7 +36,7 @@ RSpec.describe TelegramNotification::ProcessersService do
 
       before do
         payment.advertisement = ad
-        payment.processer.telegram_id = 456456456
+        payment.processer.telegram_id = 123_123_123
         payment.card_number = '2222222222222222'
       end
 

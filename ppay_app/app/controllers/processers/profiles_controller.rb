@@ -8,6 +8,7 @@ module Processers
 
     def update
       @user = current_user
+      @user.telegram_id = nil
 
       if @user.update(user_params)
         redirect_to processers_profile_path, notice: 'Профиль успешно обновлен'

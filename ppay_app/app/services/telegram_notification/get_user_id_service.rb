@@ -5,11 +5,12 @@ module TelegramNotification
     attr_reader :telegram
 
     def initialize(telegram)
+      super()
       @telegram = telegram
     end
 
     def get_user_id(telegram)
-      get_response
+      response
       user_id = nil
 
       @updates.each do |update|
