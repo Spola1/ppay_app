@@ -1,0 +1,20 @@
+require 'rails_helper'
+
+RSpec.describe Payments::SearchProcesser::DepositJob, type: :job do
+  subject(:call) { described_class.new.perform(payment.id) }
+
+  let(:payment) { create(:payment, :deposit, :processer_search) }
+
+  let!(:advertisement_1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+  let!(:rate_snapshot) { create(:rate_snapshot) }
+  let!(:payment_system) { create(:payment_system, name: 'Sberbank') }
+  let!(:ppay) { create(:user, :ppay) }
+
+  before { payment.merchant.fill_in_commissions }
+
+  it 'finds an advertisement' do
+    call
+
+    expect(payment.reload.advertisement).to eq(advertisement_1)
+  end
+end

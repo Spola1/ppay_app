@@ -5,12 +5,11 @@ module Payments
     class DepositJob < Base
       private
 
-      def selected_advertisement(payment)
-        Advertisement.active
-                     .by_payment_system(payment.payment_system)
+      def selected_advertisement
+        Advertisement.for_payment(payment)
                      .by_processer_balance(payment.cryptocurrency_amount)
                      .by_direction('Deposit')
-                     .sample
+                     .first
       end
     end
   end
