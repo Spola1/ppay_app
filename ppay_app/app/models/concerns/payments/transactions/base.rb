@@ -7,12 +7,18 @@ module Payments
 
       def merchant_commissions
         @merchant_commissions ||=
-          merchant.commissions
-                  .where(
-                    direction: type,
+          merchant.commissions.where(
+            merchant_methods:
+              {
+                direction: type,
+                payment_way: PaymentWay.find_by(
+                  {
                     payment_system: PaymentSystem.find_by(name: payment_system),
-                    national_currency:
-                  )
+                    national_currency: NationalCurrency.find_by(name: national_currency)
+                  }
+                )
+              }
+          )
       end
 
       def processer_commission

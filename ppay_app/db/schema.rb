@@ -164,6 +164,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "merchant_method_id", null: false
+    t.index ["commission_type", "merchant_method_id"], name: "index_commissions_uniqueness", unique: true
     t.index ["merchant_method_id"], name: "index_commissions_on_merchant_method_id"
   end
 
@@ -199,6 +200,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
     t.string "direction"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["merchant_id", "payment_way_id", "direction"], name: "index_merchant_methods_uniqueness", unique: true
     t.index ["merchant_id"], name: "index_merchant_methods_on_merchant_id"
     t.index ["payment_way_id"], name: "index_merchant_methods_on_payment_way_id"
   end
@@ -221,6 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["national_currency_id"], name: "index_payment_ways_on_national_currency_id"
+    t.index ["payment_system_id", "national_currency_id"], name: "index_payment_ways_uniqueness", unique: true
     t.index ["payment_system_id"], name: "index_payment_ways_on_payment_system_id"
   end
 

@@ -2,7 +2,7 @@ class UpdateCommissions < ActiveRecord::Migration[7.0]
   def up
     add_reference :commissions, :merchant_method, null: true, foreign_key: true
 
-    payment_ways = PaymentWay.all.map { { [_1.payment_system.id, _1.national_currency.id] => _1.id } }.inject(&:merge)
+    payment_ways = PaymentWay.all.map { { [_1.payment_system.id, _1.national_currency.id] => _1.id } }.inject(:merge)
 
     Commission.all.each do |commission|
       commission_payment_way = [

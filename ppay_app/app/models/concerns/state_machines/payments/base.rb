@@ -47,7 +47,7 @@ module StateMachines
       end
 
       def merchant_payment_systems
-        merchant.payment_systems.joins(:commissions).where(commissions: { direction: type }).distinct.pluck(:name)
+        merchant.payment_systems.where(merchant_methods: { direction: type }).pluck(:name)
       end
 
       def bind_rate_snapshot

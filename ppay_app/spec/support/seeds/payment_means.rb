@@ -1,11 +1,24 @@
 # frozen_string_literal: true
 
+require 'rake'
+
+def silence_stream(stream)
+  old_stream = stream.dup
+  stream.reopen(File::NULL)
+  stream.sync = true
+
+  yield
+ensure
+  stream.reopen(old_stream)
+  old_stream.close
+end
+
 RSpec.configure do |config|
   config.before(:suite) do
-    PaymentSystem.delete_all
-    NationalCurrency.delete_all
+    unless PaymentWay.count.positive?
+      Rails.application.load_tasks
 
-    PaymentSystem.create([{ name: 'Sberbank' }, { name: 'Tinkoff' }])
-    NationalCurrency.create([{ name: 'RUB' }, { name: 'IDR' }])
+      silence_stream(STDOUT) { Rake::Task['data:migrate'].invoke }
+    end
   end
 end

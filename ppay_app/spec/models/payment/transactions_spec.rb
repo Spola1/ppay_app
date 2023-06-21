@@ -19,11 +19,19 @@ RSpec.describe 'Payment transactions commissions' do
     %w[Deposit Withdrawal].each_with_index do |direction, di|
       %i[ppay processer agent working_group].each_with_index do |commission_type, ci|
         Commission.find_by(
-          payment_system:,
-          national_currency: national_currency.name,
-          direction:,
           commission_type:,
-          merchant:
+          merchant_method: MerchantMethod.find_by(
+            {
+              merchant:,
+              direction:,
+              payment_way: PaymentWay.find_by(
+                {
+                  payment_system:,
+                  national_currency:,
+                }
+              )
+            }
+          )
         ).update(commission: commissions_values[(di * 4) + ci])
       end
     end
