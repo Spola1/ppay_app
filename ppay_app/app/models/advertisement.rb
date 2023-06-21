@@ -18,6 +18,9 @@ class Advertisement < ApplicationRecord
   scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
   scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
   scope :by_direction,         ->(direction) { where(direction:) }
+  scope :with_arbitration_or_confirming_payment, -> {
+    where(id: Payment.where('arbitration = ? OR payment_status = ?', true, 'confirming').select(:advertisement_id))
+  }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }

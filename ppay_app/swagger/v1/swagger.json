@@ -583,7 +583,7 @@
           },
           "national_currency_amount": {
             "type": "number",
-            "example": 3000.0
+            "example": 100000.0
           },
           "external_order_id": {
             "type": "string",
