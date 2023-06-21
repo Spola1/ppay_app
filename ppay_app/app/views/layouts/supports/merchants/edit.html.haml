@@ -1,0 +1,32 @@
+- content_for :main_container do
+  = turbo_frame_tag 'content' do
+    .card-wrap
+      .item-card
+        .card-head
+          %h1
+            Настройки мерчанта
+            = "#{@merchant.display_name} (#{@merchant.email})"
+
+        .card-body
+          .supports_merchant_content
+            .with-sidebar
+              %aside
+                .sticky-menu
+                  %ul
+                    %li
+                      = link_to settings_merchant_path(@merchant), class: active?('settings') do
+                        = fa_icon 'user'
+                        %span= t('users.sidebar.settings')
+                    %li
+                      = link_to account_merchant_path(@merchant), class: active?('account') do
+                        = fa_icon 'key'
+                        %span= t('users.sidebar.account')
+              %section
+                .edit_content
+                  .form
+                    = yield
+
+        .back-link
+          = link_to '<- К списку мерчантов', merchants_path
+
+= render template: 'layouts/application'

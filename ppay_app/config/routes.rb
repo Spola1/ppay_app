@@ -93,7 +93,15 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
-    resources :merchants, only: %i[index new create update show]
+    resources :merchants, only: %i[index new create update] do
+      member do
+        get :settings
+        patch :settings, to: '/supports/merchants#update_settings'
+        get :account
+      end
+    end
+    get '/merchants/:id', to: '/supports/merchants#settings'
+
     root 'payments#index', as: :supports_root
   end
 

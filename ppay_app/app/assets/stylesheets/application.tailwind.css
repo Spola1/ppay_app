@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply text-2xl mb-4;
+  }
+
+  h2 {
+    @apply text-xl mb-4;
+  }
+}
+
 @layer components {
   .with-sidebar {
     @apply flex flex-row;
@@ -12,7 +22,7 @@
   }
 
   .with-sidebar section {
-    @apply w-4/5 pt-4 px-2;
+    @apply w-4/5 px-2;
   }
 
   .with-sidebar aside .sticky-menu {
@@ -172,7 +182,7 @@
   }
 
   .card-head h1 {
-    @apply inline-block text-xl;
+    @apply inline-block text-xl mb-0;
   }
 
   .card-body {
@@ -261,6 +271,10 @@
   .simple_form.filters .filters-grid .input input, .simple_form.filters .filters-grid .input select,
   .simple_form.filters .filters-grid .input textarea {
     @apply w-full max-w-full;
+  }
+
+  .error_notification {
+    @apply text-xs;
   }
 
   .toast {

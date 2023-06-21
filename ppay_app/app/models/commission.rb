@@ -3,6 +3,10 @@
 class Commission < ApplicationRecord
   belongs_to :merchant_method
 
+  delegate :payment_way, to: :merchant_method
+  delegate :payment_system, to: :payment_way
+  delegate :national_currency, to: :payment_way
+
   validates_presence_of :merchant_method, :commission_type
 
   validates_uniqueness_of :merchant_method,

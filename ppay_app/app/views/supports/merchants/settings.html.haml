@@ -1,0 +1,32 @@
+= simple_form_for(@merchant, as: :merchant, url: settings_merchant_path(@merchant), action: :update) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :nickname, autofocus: true
+
+  .py-4
+    %table.items-list-table
+      %thead.items-list-thead
+        %tr
+          %th.items-list-th merchant_method
+          %th.items-list-th ppay
+          %th.items-list-th processer
+          %th.items-list-th working_group
+          %th.items-list-th agent
+
+          %th.items-list-th
+
+      %tbody
+        - @commissions.each do |merchant_method_id, commissions|
+          %tr.items-list-tr
+            %td.items-list-td= "#{commissions.first.payment_system_name} #{commissions.first.national_currency_name} #{commissions.first.direction}"
+            - commissions.each do |commission|
+              %td.items-list-td
+                = text_field_tag "merchant[commissions][#{commission.id}]", commission.commission, size: 5
+            %td.items-list-td.px-1.w-0
+              = link_to root_path, data: { turbo_action: :advance } do
+                = fa_icon 'toggle-on'
+
+
+  .form-actions
+    = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
