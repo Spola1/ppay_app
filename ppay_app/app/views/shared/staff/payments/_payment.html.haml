@@ -102,6 +102,11 @@
                 %td.item-card-td.item-card-td-label ID объявления
                 %td.item-card-td= "#{payment.advertisement_id}"
 
+            - if payment.advertisement
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Количество активных платежей в объявлении
+                %td.item-card-td= payment.advertisement.payments.active.count
+
             - if payment.merchant_id && role_namespace == 'supports'
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
