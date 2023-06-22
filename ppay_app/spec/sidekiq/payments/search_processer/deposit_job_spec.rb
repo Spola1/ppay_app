@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Payments::SearchProcesser::DepositJob, type: :job do
@@ -5,7 +7,7 @@ RSpec.describe Payments::SearchProcesser::DepositJob, type: :job do
 
   let(:payment) { create(:payment, :deposit, :processer_search) }
 
-  let!(:advertisement_1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+  let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:payment_system) { create(:payment_system, name: 'Sberbank') }
   let!(:ppay) { create(:user, :ppay) }
@@ -15,6 +17,6 @@ RSpec.describe Payments::SearchProcesser::DepositJob, type: :job do
   it 'finds an advertisement' do
     call
 
-    expect(payment.reload.advertisement).to eq(advertisement_1)
+    expect(payment.reload.advertisement).to eq(advertisement1)
   end
 end
