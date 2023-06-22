@@ -23,17 +23,27 @@ class Merchant < User
 
   after_create :fill_in_commissions
 
-  def fill_in_commissions
-    merchant_methods.insert_all(all_possible_methods)
+  def fill_in_commissions(keywords = nil)
+    merchant_methods.insert_all(all_possible_methods(keywords))
     Commission.insert_all(all_possible_commissions)
+  end
+
+  def destroy_merchant_methods(keywords = nil)
+    all_possible_methods(keywords).each do |method|
+      merchant_methods.find_by(method)&.destroy
+    end
   end
 
   private
 
-  def all_possible_methods
-    PaymentWay.all.map { { payment_way_id: _1.id } }
+  def all_possible_methods(keywords)
+    PaymentWay.includes(:payment_system, :national_currency).all.decorate
+      .map { { payment_way_id: _1.id, pw_name: _1.name } }
       .product(%w[Deposit Withdrawal].map { { direction: _1 } })
       .map { _1.inject(:merge) }
+      .select { keywords ? (_1.values.join(' ').downcase.split(' ') &
+                            keywords.downcase.split(' ')).any? : true }
+      .map { _1.except(:pw_name) }
   end
 
   def all_possible_commissions

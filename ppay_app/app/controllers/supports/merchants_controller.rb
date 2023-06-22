@@ -28,9 +28,9 @@ module Supports
     end
 
     def update_settings
-      @merchant.update(settings_params)
+      @merchant.update(settings_params.except(:commissions))
 
-      grouped_commission = commissions_params[:commissions]
+      grouped_commission = settings_params[:commissions]
                            .to_h.map { { id: _1, commission: _2 } }
                            .index_by { _1[:id] }
 
@@ -82,11 +82,7 @@ module Supports
     end
 
     def settings_params
-      params.require(:merchant).permit(:nickname)
-    end
-
-    def commissions_params
-      params.require(:merchant).permit(commissions: {})
+      params.require(:merchant).permit(:nickname, commissions: {})
     end
   end
 end

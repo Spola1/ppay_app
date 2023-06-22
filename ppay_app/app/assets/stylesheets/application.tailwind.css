@@ -83,6 +83,10 @@
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
+  .form-submit-red {
+    @apply form-submit bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
+  }
+
   .default-nav {
     @apply relative flex items-center bg-slate-50 text-gray-900 shadow-lg shadow-slate-200;
   }
@@ -231,7 +235,7 @@
     @apply form-input;
   }
 
-  .simple_form .hint {
+  .simple_form .hint, .form_with .hint {
     @apply my-1 text-xs text-gray-500;
   }
 

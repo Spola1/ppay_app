@@ -5,6 +5,8 @@
     = f.input :nickname, autofocus: true
 
   .py-4
+    %h2 Комиссии
+
     %table.items-list-table
       %thead.items-list-thead
         %tr
@@ -24,9 +26,19 @@
               %td.items-list-td
                 = text_field_tag "merchant[commissions][#{commission.id}]", commission.commission, size: 5
             %td.items-list-td.px-1.w-0
-              = link_to root_path, data: { turbo_action: :advance } do
-                = fa_icon 'toggle-on'
+              = link_to merchant_merchant_method_path(@merchant, merchant_method_id),
+                        data: { turbo_confirm: 'Вы уверены что хотите удалить метод?', turbo_method: :delete }  do
+                .icon-button-red
+                  = fa_icon 'trash'
 
 
   .form-actions
     = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
+
+= form_with url: merchant_merchant_methods_path(@merchant), class: 'form_with mt-5', data: {turbo_confirm: 'Вы уверены?'} do |f|
+  .flex.flex-row.items-start.space-x-2
+    .flex.flex-col.items-start
+      = f.text_field :keywords, placeholder: 'Ключевые слова', class: 'form-input w-full'
+      %span.hint Пустое поле соответствует всем возможным значениям
+    = f.submit 'Добавить методы', name: :add_methods, class: 'form-submit'
+    = f.submit 'Удалить методы', name: :delete_methods, class: 'form-submit-red'
