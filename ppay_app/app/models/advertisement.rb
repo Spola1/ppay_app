@@ -19,15 +19,20 @@ class Advertisement < ApplicationRecord
   scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
   scope :by_direction,         ->(direction) { where(direction:) }
 
-  scope :for_payment,          ->(payment) do
+  scope :join_active_payments, -> do
+    joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
+          "(payments.payment_status NOT IN ('completed', 'cancelled') OR " \
+          'payments.arbitration = TRUE))')
+  end
+
+  scope :for_payment, ->(payment) do
     order = Arel.sql('SUM(CASE WHEN ' \
-                       "payments.initial_amount = #{ payment.initial_amount } AND " \
-                       "payments.payment_status NOT IN ('completed', 'cancelled')" \
+                       "payments.initial_amount = #{ payment.initial_amount }" \
                        'THEN 1 ELSE 0 END) ASC,' \
                      'COUNT(payments.id) ASC,' \
                      'RANDOM()')
 
-    left_joins(:payments)
+    join_active_payments
       .active
       .by_payment_system(payment.payment_system)
       .group('advertisements.id')
