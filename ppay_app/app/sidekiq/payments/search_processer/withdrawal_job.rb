@@ -5,11 +5,10 @@ module Payments
     class WithdrawalJob < Base
       private
 
-      def selected_advertisement(payment)
-        Advertisement.active
-                     .by_payment_system(payment.payment_system)
+      def selected_advertisement
+        Advertisement.for_payment(payment)
                      .by_direction('Withdrawal')
-                     .sample
+                     .first
       end
     end
   end

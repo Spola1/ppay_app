@@ -22,6 +22,21 @@ class Advertisement < ApplicationRecord
     where(id: Payment.where('arbitration = ? OR payment_status = ?', true, 'confirming').select(:advertisement_id))
   }
 
+  scope :for_payment,          ->(payment) do
+    order = Arel.sql('SUM(CASE WHEN ' \
+                       "payments.initial_amount = #{ payment.initial_amount } AND " \
+                       "payments.payment_status NOT IN ('completed', 'cancelled')" \
+                       'THEN 1 ELSE 0 END) ASC,' \
+                     'COUNT(payments.id) ASC,' \
+                     'RANDOM()')
+
+    left_joins(:payments)
+      .active
+      .by_payment_system(payment.payment_system)
+      .group('advertisements.id')
+      .order(order)
+  end
+
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
 

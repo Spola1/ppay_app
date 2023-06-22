@@ -13,8 +13,8 @@ module Api
 
           def permitted_params
             params.require(:deposit).permit(
-              :payment_system, :national_currency_amount, :national_currency,
-              :external_order_id, :unique_amount, :callback_url
+              :payment_system, :national_currency_amount, :national_currency, :external_order_id, :unique_amount,
+              :callback_url, :advertisement_id
             )
           end
         end
