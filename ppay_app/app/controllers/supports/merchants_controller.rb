@@ -87,7 +87,8 @@ module Supports
     end
 
     def settings_params
-      params.require(:merchant).permit(:nickname, commissions: {})
+      params.require(:merchant)
+            .permit(:nickname, :check_required, :unique_amount, commissions: {})
     end
   end
 end
