@@ -57,6 +57,10 @@ Rails.application.routes.draw do
     root 'payments#index', as: :merchants_root
   end
 
+  namespace :processers do
+    resource :profile, only: [:edit, :update]
+  end
+
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
     resources :advertisements do
       collection do

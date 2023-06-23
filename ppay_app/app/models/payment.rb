@@ -158,6 +158,8 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
+    Payments::TelegramNotificationJob.perform_async(id)
+
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
       partial: 'processers/notifications/notification',

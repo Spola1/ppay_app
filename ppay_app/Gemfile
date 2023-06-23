@@ -87,6 +87,7 @@ gem 'health_check'
 gem 'memory_profiler'
 gem 'stackprof'
 gem 'rack-mini-profiler', require: false
+gem 'telegram-bot-ruby', '~> 1.0'
 
 
 group :development, :test do
@@ -128,4 +129,4 @@ gem 'pundit', '~> 2.2'
 gem 'tailwindcss-rails', '~> 2.0'
 gem 'caxlsx'
 gem 'caxlsx_rails'
-
+gem 'dotenv-rails', groups: [:development, :test]
