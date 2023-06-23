@@ -18,7 +18,7 @@ RSpec.configure do |config|
     unless PaymentWay.count.positive?
       Rails.application.load_tasks
 
-      silence_stream(STDOUT) { Rake::Task['data:migrate'].invoke }
+      silence_stream($stdout) { Rake::Task['data:migrate'].invoke }
     end
   end
 end

@@ -53,10 +53,10 @@ Rails.application.routes.draw do
       resources :withdrawals, only: :index
     end
 
-    # namespace :users do
-    #   get :settings
-    #   patch :settings, to: '/merchants/users#settings_update'
-    # end
+    namespace :users do
+      get :settings
+      patch :settings, to: '/merchants/users#settings_update'
+    end
 
     root 'payments#index', as: :merchants_root
   end

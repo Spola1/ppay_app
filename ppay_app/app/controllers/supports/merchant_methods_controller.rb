@@ -30,6 +30,7 @@ module Supports
 
     def keywords
       return if params[:keywords].empty?
+
       params[:keywords]
     end
   end

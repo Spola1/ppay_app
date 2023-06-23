@@ -27,7 +27,7 @@ RSpec.describe 'Payment transactions commissions' do
               payment_way: PaymentWay.find_by(
                 {
                   payment_system:,
-                  national_currency:,
+                  national_currency:
                 }
               )
             }

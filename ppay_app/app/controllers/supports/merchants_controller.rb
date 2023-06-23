@@ -71,8 +71,8 @@ module Supports
                  .joins(merchant_method: { payment_way: :payment_system })
                  .joins(merchant_method: { payment_way: :national_currency })
                  .select(
-                   'commissions.id, commissions.commission_type, commissions.commission, ' +
-                   'commissions.merchant_method_id AS merchant_method_id, merchant_methods.direction, ' +
+                   'commissions.id, commissions.commission_type, commissions.commission, ' \
+                   'commissions.merchant_method_id AS merchant_method_id, merchant_methods.direction, ' \
                    'payment_systems.name AS payment_system_name, national_currencies.name AS national_currency_name'
                  )
                  .order(commission_type: :asc, 'payment_ways.payment_system_id': :asc,

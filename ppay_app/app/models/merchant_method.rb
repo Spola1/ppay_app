@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MerchantMethod < ApplicationRecord
   belongs_to :merchant
   belongs_to :payment_way
