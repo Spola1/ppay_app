@@ -13,8 +13,9 @@
         = "(#{current_user.decorate.human_type})"
         %span.block
           = "(#{current_user.email})"
-    .p-2.text-xl
-      = link_to fa_icon('user'), users_settings_path
+    - if current_user.is_a? Merchant
+      .p-2.text-xl
+        = link_to fa_icon('user'), users_settings_path
     .p-2.text-xl
       = button_to destroy_session_path(current_user), method: :delete, data: { turbo: false } do
         = fa_icon('sign-out')
