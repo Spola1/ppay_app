@@ -98,6 +98,7 @@ Rails.application.routes.draw do
         get :settings
         patch :settings, to: '/supports/merchants#update_settings'
         get :account
+        patch :account, to: '/supports/merchants#update_account'
       end
       resources :merchant_methods, only: %i[create destroy]
     end

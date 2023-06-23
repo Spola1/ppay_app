@@ -38,12 +38,11 @@ class Merchant < User
 
   def all_possible_methods(keywords)
     PaymentWay.includes(:payment_system, :national_currency).all.decorate
-      .map { { payment_way_id: _1.id, pw_name: _1.name } }
-      .product(%w[Deposit Withdrawal].map { { direction: _1 } })
-      .map { _1.inject(:merge) }
-      .select { keywords ? (_1.values.join(' ').downcase.split(' ') &
-                            keywords.downcase.split(' ')).any? : true }
-      .map { _1.except(:pw_name) }
+              .map { { payment_way_id: _1.id, pw_name: _1.name } }
+              .product(%w[Deposit Withdrawal].map { { direction: _1 } })
+              .map { _1.inject(:merge) }
+              .select { keywords ? (_1.values.join(' ').downcase.split.intersect? keywords.downcase.split) : true }
+              .map { _1.except(:pw_name) }
   end
 
   def all_possible_commissions

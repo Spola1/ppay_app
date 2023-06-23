@@ -2,7 +2,7 @@
 
 module Supports
   class MerchantsController < Staff::BaseController
-    before_action :find_merchant, only: %i[update settings update_settings account]
+    before_action :find_merchant, only: %i[settings update_settings account update_account]
     layout 'supports/merchants/edit', only: %i[settings account]
 
     def index
@@ -41,10 +41,15 @@ module Supports
 
     def account; end
 
-    def update
-      @merchant.update(merchant_params)
+    def update_account
+      @merchant.email = merchant_params[:email]
+      @merchant.password = merchant_params[:password] if merchant_params[:password].present?
 
-      render :account
+      if @merchant.save
+        redirect_to account_merchant_path(@merchant), notice: 'Запись успешно обновлена'
+      else
+        redirect_to account_merchant_path(@merchant), alert: 'Ошибка обновления'
+      end
     end
 
     private

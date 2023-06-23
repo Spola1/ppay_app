@@ -1,4 +1,4 @@
-= simple_form_for(@merchant, url: merchant_path(@merchant), action: :update) do |f|
+= simple_form_for(@merchant, as: :merchant, url: account_merchant_path(@merchant), action: :update) do |f|
   = f.error_notification
 
   .form-inputs
@@ -9,15 +9,11 @@
       required: false,
       input_html: { autocomplete: "new-password" }
 
-    = f.input :password_confirmation,
-      required: false,
-      input_html: { autocomplete: "new-password" }
-
-    = f.input :current_password,
-      hint: t('devise.registrations.edit.we_need_your_current_password_to_confirm_your_changes'),
-      required: true,
-      input_html: { autocomplete: "current-password" }
-
   .form-actions
     = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
 
+%h2.mt-4 Api ключи
+
+- @merchant.api_keys.each do |api_key|
+  %pre.api_key.mb-2
+    = api_key.token

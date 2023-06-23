@@ -3,6 +3,8 @@ ru:
     attributes:
       user:
         nickname: Отображаемое при оплате имя
+        check_required: Требуется проверка оплаты
+        unique_amount: Тип идентификации платежа
 
   users:
     sidebar:
