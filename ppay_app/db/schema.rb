@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_14_151335) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_23_101111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -285,7 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_14_151335) do
     t.boolean "check_required", default: true
     t.integer "unique_amount", default: 0
     t.string "telegram"
-    t.integer "telegram_id"
+    t.string "telegram_id"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
