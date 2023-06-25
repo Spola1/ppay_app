@@ -3,10 +3,7 @@
     .show-second-block{style: payment.background_color_style}
   .show-payment-block
     .proc-head
-      - if payment.logo_image_tag.present?
-        = payment.logo_image_tag
-      - else
-        .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
         UID Check
 

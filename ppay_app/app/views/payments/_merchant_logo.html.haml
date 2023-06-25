@@ -1,1 +1,4 @@
-= payment.logo_image_tag
+- if payment.logo_image_tag.present?
+  = payment.logo_image_tag
+- else
+  .proc-logo
