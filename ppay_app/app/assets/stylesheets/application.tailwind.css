@@ -580,6 +580,12 @@
     padding: 7px 7px 7px 7px
   }
 
+  .logo_img img {
+    width: 140px;
+    max-height: 50px;
+    object-fit: fill;
+  }
+
   .show-qr-block {
     @apply w-fit font-firs rounded-xl py-6 px-6 ml-6 border-qr bg-white;
   }
