@@ -8,6 +8,7 @@ RSpec.describe PaymentDecorator do
   let(:status_changed_at) { time_now - 10.minutes }
   let(:type) { 'Withdrawal' }
   let(:decorator) { payment.decorate }
+  let(:form_customization) { create(:form_customization, merchant: payment.merchant) }
 
   before do
     allow(Time).to receive(:now).and_return(time_now)
@@ -99,46 +100,69 @@ RSpec.describe PaymentDecorator do
     end
   end
 
-  describe '#background_color_style' do
-    context 'when merchant has a background color' do
+  describe "#logo_image_tag" do
+    context "when merchant has a logo" do
       before do
-        allow(payment.merchant.form_customization).to receive(:background_color).and_return('#ffffff')
+        allow(form_customization.logo).to receive(:present?).and_return(true)
+        allow(decorator).to receive_message_chain("h.content_tag").and_return("<div class='show-logo'><div class='logo_img'><img src='logo_url' /></div></div>")
       end
 
-      it 'returns the style with the background color' do
-        expect(decorator.background_color_style).to eq('background-color: #ffffff;')
+      it "returns the image tag with the logo" do
+        expect(decorator.logo_image_tag).to eq("<div class='show-logo'><div class='logo_img'><img src='logo_url' /></div></div>")
       end
     end
 
-    context 'when merchant does not have a background color' do
+    context "when merchant does not have a logo" do
       before do
-        allow(payment.merchant.form_customization).to receive(:background_color).and_return(nil)
+        allow(form_customization.logo).to receive(:present?).and_return(false)
       end
 
-      it 'returns the style with the default background color' do
-        expect(decorator.background_color_style).to eq('background-color: white;')
+      it "returns nil" do
+        expect(decorator.logo_image_tag).to be_nil
       end
     end
   end
 
-  describe '#button_color_style' do
-    context 'when merchant has a button color' do
+  describe "#background_color_style" do
+    context "when merchant has a background color" do
       before do
-        allow(payment.merchant.form_customization).to receive(:button_color).and_return('#00ff00')
+        allow(form_customization).to receive(:background_color).and_return("red")
       end
 
-      it 'returns the style with the button color' do
-        expect(decorator.button_color_style).to eq('background-color: #00ff00;')
+      it "returns the background color style" do
+        expect(decorator.background_color_style).to eq("background-color: red;")
       end
     end
 
-    context 'when merchant does not have a button color' do
+    context "when merchant does not have a background color" do
       before do
-        allow(payment.merchant.form_customization).to receive(:button_color).and_return(nil)
+        allow(form_customization).to receive(:background_color).and_return(nil)
       end
 
-      it 'returns the style with the default button color' do
-        expect(decorator.button_color_style).to eq('background-color: green;')
+      it "returns nil" do
+        expect(decorator.background_color_style).to be_nil
+      end
+    end
+  end
+
+  describe "#button_color_style" do
+    context "when merchant has a button color" do
+      before do
+        allow(form_customization).to receive(:button_color).and_return("blue")
+      end
+
+      it "returns the button color style" do
+        expect(decorator.button_color_style).to eq("background-color: blue;")
+      end
+    end
+
+    context "when merchant does not have a button color" do
+      before do
+        allow(form_customization).to receive(:button_color).and_return(nil)
+      end
+
+      it "returns nil" do
+        expect(decorator.button_color_style).to be_nil
       end
     end
   end
