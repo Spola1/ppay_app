@@ -1,20 +1,18 @@
-%body{style: payment.background_color_style}
-  .show-payment
-    .show-payment-block
-      .proc-head
-        = render 'payments/merchant_logo', payment: payment
-        .proc-logo
-        .proc-text
-          UID Check
+.show-payment
+  .show-payment-block
+    .proc-head
+      .proc-logo
+      .proc-text
+        UID Check
 
-      .proc-payment-cancelled-block
-        .proc-payment-cancelled-img
-        Платеж отменён !
+    .proc-payment-cancelled-block
+      .proc-payment-cancelled-img
+      Платеж отменён !
 
-      .proc-payment-cancelled-links-block
-        = link_to "вернуться в магазин", payment.redirect_url
+    .proc-payment-cancelled-links-block
+      = link_to "вернуться в магазин", payment.redirect_url
 
-      = render 'payments/uuid', payment:, class: 'text-center'
+    = render 'payments/uuid', payment:, class: 'text-center'
 
-    - if payment.arbitration
-      = render 'shared/chat', payment:
+  - if payment.arbitration
+    = render 'shared/chat', payment:

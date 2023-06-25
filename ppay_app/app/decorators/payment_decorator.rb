@@ -45,7 +45,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def logo_image_tag
-    if payment.merchant.form_customization.logo.present?
+    if payment.merchant.form_customization&.logo.present?
       h.content_tag(:div, class: 'show-logo') do
         h.content_tag(:div, class: 'logo_img') do
           h.image_tag(payment.merchant.form_customization.logo)
@@ -55,11 +55,15 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def background_color_style
-    "background-color: #{payment.merchant.form_customization.background_color || 'white'};"
+    return unless payment.merchant.form_customization&.background_color
+
+    "background-color: #{payment.merchant.form_customization.background_color};"
   end
 
   def button_color_style
-    "background-color: #{payment.merchant.form_customization.button_color || 'green'};"
+    return unless payment.merchant.form_customization&.button_color
+
+    "background-color: #{payment.merchant.form_customization.button_color};"
   end
 
   def human_type
