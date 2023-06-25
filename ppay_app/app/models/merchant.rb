@@ -24,7 +24,11 @@ class Merchant < User
   after_create :fill_in_commissions
 
   def fill_in_commissions(keywords = nil)
-    merchant_methods.insert_all(all_possible_methods(keywords))
+    all_methods = all_possible_methods(keywords)
+
+    return unless all_methods.present?
+
+    merchant_methods.insert_all(all_methods)
     Commission.insert_all(all_possible_commissions)
   end
 

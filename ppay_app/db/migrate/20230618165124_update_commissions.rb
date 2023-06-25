@@ -1,4 +1,11 @@
 class UpdateCommissions < ActiveRecord::Migration[7.0]
+
+  class Commission < ApplicationRecord
+    belongs_to :payment_system
+    belongs_to :merchant
+    belongs_to :merchant_method
+  end
+
   def up
     add_reference :commissions, :merchant_method, null: true, foreign_key: true
 
