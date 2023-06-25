@@ -98,7 +98,7 @@ class Payment < ApplicationRecord
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
   scope :in_hotlist, lambda {
-    deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
+    deposits.confirming.or(withdrawals.transferring).order(created_at: :desc)
   }
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }

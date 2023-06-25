@@ -61,7 +61,7 @@ module StateMachines
           event :confirm do
             after :complete_transactions
 
-            transitions from: :confirming, to: :completed
+            transitions from: %i[transferring confirming], to: :completed
           end
 
           event :cancel do

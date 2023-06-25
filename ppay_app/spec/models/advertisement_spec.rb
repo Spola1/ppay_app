@@ -146,26 +146,26 @@ RSpec.describe Advertisement, type: :model do
     describe '.for_payment' do
       subject { Advertisement.for_payment(payment) }
 
-      let!(:advertisement_1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
 
       let(:payment) { create(:payment, :deposit, :processer_search) }
 
       before do
         # advertisement 1 - много активный платежей в процессе с такой же суммой
-        create_list(:payment, 10, :transferring, advertisement: advertisement_1)
+        create_list(:payment, 10, :transferring, advertisement: advertisement1)
 
         # advertisement 2 - много активных платежей с разными суммами, в том числе с такой же
-        create_list(:payment, 6, :transferring, advertisement: advertisement_2)
-        create_list(:payment, 6, :transferring, advertisement: advertisement_2, national_currency_amount: 200)
+        create_list(:payment, 6, :transferring, advertisement: advertisement2)
+        create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 200)
 
         # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
-        create_list(:payment, 20, :completed, advertisement: advertisement_3)
-        create_list(:payment, 5, :transferring, advertisement: advertisement_3)
+        create_list(:payment, 20, :completed, advertisement: advertisement3)
+        create_list(:payment, 5, :transferring, advertisement: advertisement3)
       end
 
-      it { debugger; is_expected.to eq([advertisement_3, advertisement_2, advertisement_1]) }
+      it { is_expected.to eq([advertisement3, advertisement2, advertisement1]) }
     end
   end
 end
