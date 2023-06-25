@@ -165,7 +165,10 @@ RSpec.describe Advertisement, type: :model do
         create_list(:payment, 5, :transferring, advertisement: advertisement_3)
       end
 
-      it { debugger; is_expected.to eq([advertisement_3, advertisement_2, advertisement_1]) }
+      it {
+        debugger
+        is_expected.to eq([advertisement_3, advertisement_2, advertisement_1])
+      }
     end
   end
 end
