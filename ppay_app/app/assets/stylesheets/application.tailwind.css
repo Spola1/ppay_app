@@ -580,11 +580,6 @@
     padding: 7px 7px 7px 7px
   }
 
-  .logo_img {
-    max-width: 140px;
-    max-height: 90px;
-  }
-
   .show-qr-block {
     @apply w-fit font-firs rounded-xl py-6 px-6 ml-6 border-qr bg-white;
   }
@@ -598,7 +593,7 @@
   }
 
   .show-logo {
-    @apply w-fit rounded-xl justify-center pxy-7 bg-white border-qr flex items-center;
+    @apply w-fit rounded-xl justify-center pxy-7 bg-white border-qr flex;
   }
 
   .completed-status {
