@@ -1,58 +1,60 @@
-.show-payment
-  .show-payment-block
-    .proc-head
-      .proc-logo
-      .proc-text
-        UID Check
-
-    .mt-4
-      .proc-shop-block
-        .proc-shop-title
-          Мерчант
-        .proc-shop-content
-          = payment.merchant.name
-
-    .proc-shop-block
-      .proc-order-title
-        Заказ
-      .proc-order-content
-        = payment.external_order_id
-
-    .proc-order-block
-      .proc-order-title
-        Сумма
-      .proc-order-content
-        = "#{payment.decorate.national_formatted} #{payment.national_currency}"
-
-    .please-pay-from-bank
-      Пожалуйста, укажите карту, куда Вы хотите вывести средства
-      = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
-
-    = render 'payments/errors', payment: payment
-
-    = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
-
-      .select-payment-system
-        = f.label :payment_system, 'Банк'
-        = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                                    { include_blank: 'Выбрать' },
-                                    class: 'grey-drop-down mb-3'
-
-      .select-payment-system
-        
-        = f.label :card_number, 'Номер карты'
-        = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }, class: "grey-cardplace"
-                
-
-      = hidden_field_tag :event, 'search' 
+%body{style: payment.background_color_style}
+  .show-payment
+    .show-payment-block
+      .proc-head
+        = render 'payments/merchant_logo', payment: payment
+        .proc-logo
+        .proc-text
+          UID Check
 
       .mt-4
-        = f.submit "Подтвердить", class: "green-button"
+        .proc-shop-block
+          .proc-shop-title
+            Мерчант
+          .proc-shop-content
+            = payment.merchant.name
 
-    .mt-4
-      = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)
+      .proc-shop-block
+        .proc-order-title
+          Заказ
+        .proc-order-content
+          = payment.external_order_id
 
-    = render 'payments/uuid', payment:
+      .proc-order-block
+        .proc-order-title
+          Сумма
+        .proc-order-content
+          = "#{payment.decorate.national_formatted} #{payment.national_currency}"
 
-  - if payment.arbitration
-    = render 'shared/chat', payment:
+      .please-pay-from-bank
+        Пожалуйста, укажите карту, куда Вы хотите вывести средства
+        = "(#{ payment.decorate.national_formatted } #{ payment.national_currency })"
+
+      = render 'payments/errors', payment: payment
+
+      = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
+
+        .select-payment-system
+          = f.label :payment_system, 'Банк'
+          = f.select :payment_system, payment_systems_collection_for_payment(payment),
+                                      { include_blank: 'Выбрать' },
+                                      class: 'grey-drop-down mb-3'
+
+        .select-payment-system
+          
+          = f.label :card_number, 'Номер карты'
+          = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }, class: "grey-cardplace"
+                  
+
+        = hidden_field_tag :event, 'search' 
+
+        .mt-4
+          = f.submit "Подтвердить", class: "green-button", style: payment.button_color_style
+
+      .mt-4
+        = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)
+
+      = render 'payments/uuid', payment:
+
+    - if payment.arbitration
+      = render 'shared/chat', payment:

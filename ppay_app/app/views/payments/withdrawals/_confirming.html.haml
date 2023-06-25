@@ -1,21 +1,23 @@
-.show-payment
-  .show-payment-block
-    .proc-head
-      .proc-logo
-      .proc-text
-        UID Check
+%body{style: payment.background_color_style}
+  .show-payment
+    .show-payment-block
+      .proc-head
+        = render 'payments/merchant_logo', payment: payment
+        .proc-logo
+        .proc-text
+          UID Check
 
-    .mt-10
-      .select-payment-system
-        Вы получили деньги?
-        = form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update,
-          data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
-          = hidden_field_tag :event, 'confirm'
-          .mt-4
-            = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',
-            class: 'green-button'
+      .mt-10
+        .select-payment-system
+          Вы получили деньги?
+          = form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update,
+            data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
+            = hidden_field_tag :event, 'confirm'
+            .mt-4
+              = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',
+              class: "green-button", style: payment.button_color_style
 
-    = render 'payments/uuid', payment:
+      = render 'payments/uuid', payment:
 
-  - if payment.arbitration
-    = render 'shared/chat', payment:
+    - if payment.arbitration
+      = render 'shared/chat', payment:
