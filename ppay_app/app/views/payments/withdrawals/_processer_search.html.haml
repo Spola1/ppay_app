@@ -1,7 +1,10 @@
 .show-payment
   .show-payment-block
     .proc-head
-      .proc-logo
+      - if payment.logo_image_tag.present?
+        = payment.logo_image_tag
+      - else
+        .proc-logo
       .proc-text
         UID Check
 
