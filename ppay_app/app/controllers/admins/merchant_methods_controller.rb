@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Supports
+module Admins
   class MerchantMethodsController < Staff::BaseController
     before_action :find_merchant
 

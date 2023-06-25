@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module Supports
+module Admins
   class MerchantsController < Staff::BaseController
     before_action :find_merchant, only: %i[settings update_settings account update_account]
-    layout 'supports/merchants/edit', only: %i[settings account]
+    layout 'admins/merchants/edit', only: %i[settings account]
 
     def index
       set_all_merchants
