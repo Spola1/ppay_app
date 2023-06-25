@@ -7,6 +7,7 @@ RSpec.describe PaymentDecorator do
   let(:time_now) { FFaker::Time.datetime }
   let(:status_changed_at) { time_now - 10.minutes }
   let(:type) { 'Withdrawal' }
+  let(:decorator) { payment.decorate }
 
   before do
     allow(Time).to receive(:now).and_return(time_now)
@@ -94,6 +95,50 @@ RSpec.describe PaymentDecorator do
 
       it 'calculates amount of all commissions and converts it to national currency' do
         is_expected.to eq(200)
+      end
+    end
+  end
+
+  describe '#background_color_style' do
+    context 'when merchant has a background color' do
+      before do
+        allow(payment.merchant.form_customization).to receive(:background_color).and_return('#ffffff')
+      end
+
+      it 'returns the style with the background color' do
+        expect(decorator.background_color_style).to eq("background-color: #ffffff;")
+      end
+    end
+
+    context 'when merchant does not have a background color' do
+      before do
+        allow(payment.merchant.form_customization).to receive(:background_color).and_return(nil)
+      end
+
+      it 'returns the style with the default background color' do
+        expect(decorator.background_color_style).to eq("background-color: white;")
+      end
+    end
+  end
+
+  describe '#button_color_style' do
+    context 'when merchant has a button color' do
+      before do
+        allow(payment.merchant.form_customization).to receive(:button_color).and_return('#00ff00')
+      end
+
+      it 'returns the style with the button color' do
+        expect(decorator.button_color_style).to eq("background-color: #00ff00;")
+      end
+    end
+
+    context 'when merchant does not have a button color' do
+      before do
+        allow(payment.merchant.form_customization).to receive(:button_color).and_return(nil)
+      end
+
+      it 'returns the style with the default button color' do
+        expect(decorator.button_color_style).to eq("background-color: green;")
       end
     end
   end
