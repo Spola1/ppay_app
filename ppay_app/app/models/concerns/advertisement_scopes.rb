@@ -10,10 +10,10 @@ module AdvertisementScopes
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_direction,         ->(direction) { where(direction:) }
 
-    scope :order_by_arbitration_and_confirming_payments, lambda {
+    scope :order_by_transferring_and_confirming_payments, lambda {
       order_sql = <<-SQL.squish
         SUM(
-          CASE WHEN payments.arbitration = TRUE OR payments.payment_status = 'confirming' THEN 1 ELSE 0 END
+          CASE WHEN payments.payment_status IN ('confirming', 'transferring') THEN 1 ELSE 0 END
         ) ASC
       SQL
 
@@ -27,8 +27,10 @@ module AdvertisementScopes
     scope :order_by_similar_payments, lambda { |national_currency_amount|
       order_sql = <<-SQL.squish
         SUM(
-          CASE WHEN payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
-            AND #{national_currency_amount * 1.05} AND payments.payment_status NOT IN ('completed', 'cancelled')
+          CASE WHEN (payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
+            AND #{national_currency_amount * 1.05} AND payments.payment_status IN ('transferring', 'confirming'))
+            OR (payments.payment_status = 'confirming' AND payments.arbitration = TRUE
+            AND payments.payment_status NOT IN ('completed', 'cancelled'))
             THEN 1 ELSE 0 END
         ) ASC
       SQL
@@ -43,7 +45,8 @@ module AdvertisementScopes
     scope :order_by_similar_payments_count, lambda { |national_currency_amount|
       order_sql = <<-SQL.squish
         SUM(
-          CASE WHEN ABS(payments.national_currency_amount - #{national_currency_amount}) / #{national_currency_amount} <= 0.05
+          CASE WHEN (payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
+            AND #{national_currency_amount * 1.05})
             THEN 1 ELSE 0 END
         ) ASC
       SQL
@@ -54,6 +57,25 @@ module AdvertisementScopes
         .group('advertisements.id')
         .order(arel)
     }
+
+    scope :order_by_remaining_confirmation_time, -> do
+      max_time_difference_minutes = 20
+
+      order_sql = <<-SQL.squish
+        (CASE
+          WHEN payments.payment_status = 'confirming'
+            AND EXTRACT(MINUTE FROM NOW() - payments.status_changed_at) <= #{max_time_difference_minutes}
+            THEN EXTRACT(MINUTE FROM NOW() - payments.status_changed_at)
+          ELSE 0
+        END) ASC
+      SQL
+
+      arel = Arel.sql(order_sql)
+
+      joins(:payments)
+        .group('advertisements.id, payments.payment_status, payments.status_changed_at')
+        .order(arel)
+    end
 
     scope :for_deposit, lambda { |payment|
       active
