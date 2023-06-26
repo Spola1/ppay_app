@@ -22,9 +22,12 @@ RSpec.describe TelegramNotification::ProcessersService do
                   "Сумма: 100.0 RUB\n" \
                   "Номер карты: 1111111111111111\n" \
                   "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{payment.payment_status}")}\n" \
-                  "Платёж будет отменён: #{service.send(:time_of_payment_cancellation)}"
+                  "Платёж будет отменён: #{service.send(:time_of_payment_cancellation)}\n" \
+                  "Ссылка на платёж: \n" \
+                  "http://localhost:3000/payments/deposits/#{payment.uuid}\n"
 
-        expect(service).to receive(:send_message_to_user).with(payment.processer.telegram_id, message)
+        expect(service).to receive(:send_message_to_user)
+          .with(payment.processer.telegram_id, message, 'MarkdownV2')
 
         service.send_notification_to_user(payment.processer.telegram_id)
       end
@@ -49,9 +52,12 @@ RSpec.describe TelegramNotification::ProcessersService do
                   "Сумма: 100.0 RUB\n" \
                   "Номер карты: 2222222222222222\n" \
                   "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{payment.payment_status}")}\n" \
-                  "Платёж будет отменён: #{service.send(:time_of_payment_cancellation)}"
+                  "Платёж будет отменён: #{service.send(:time_of_payment_cancellation)}\n" \
+                  "Ссылка на платёж: \n" \
+                  "http://localhost:3000/payments/withdrawals/#{payment.uuid}\n"
 
-        expect(service).to receive(:send_message_to_user).with(payment.processer.telegram_id, message)
+        expect(service).to receive(:send_message_to_user)
+          .with(payment.processer.telegram_id, message, 'MarkdownV2')
 
         service.send_notification_to_user(payment.processer.telegram_id)
       end

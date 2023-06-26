@@ -5,8 +5,11 @@ require 'date'
 
 module TelegramNotification
   class ProcessersService < BaseService
+    PROTOCOL = ENV.fetch('PROTOCOL', nil)
+    ADDRESS = ENV.fetch('ADDRESS', nil)
+
     attr_reader :national_currency_amount, :card_number, :national_currency, :external_order_id, :payment_status,
-                :payment_system, :advertisement_card_number, :type, :status_changed_at
+                :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid
 
     def initialize(payment)
       super()
@@ -19,6 +22,7 @@ module TelegramNotification
       @advertisement_card_number = payment.advertisement.card_number
       @type = payment.type
       @status_changed_at = payment.status_changed_at
+      @uuid = payment.uuid
     end
 
     def send_notification_to_user(user)
@@ -30,12 +34,18 @@ module TelegramNotification
       message += "Сумма: #{@national_currency_amount} #{@national_currency}\n"
       message += "Номер карты: #{@type == 'Deposit' ? @advertisement_card_number : @card_number}\n"
       message += "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{@payment_status}")}\n"
-      message += "Платёж будет отменён: #{time_of_payment_cancellation}"
+      message += "Платёж будет отменён: #{time_of_payment_cancellation}\n"
+      message += "Ссылка на платёж: \n"
+      message += "#{PROTOCOL}://#{ADDRESS}/payments/#{payment_type}/#{uuid}\n"
 
-      send_message_to_user(user, message) unless user.nil?
+      send_message_to_user(user, message, 'MarkdownV2') unless user.nil?
     end
 
     private
+
+    def payment_type
+      @type == 'Deposit' ? 'deposits' : 'withdrawals'
+    end
 
     def time_of_payment_cancellation
       datetime = DateTime.parse(@status_changed_at.to_s)
@@ -44,7 +54,7 @@ module TelegramNotification
       new_datetime.strftime('%d-%m-%Y %H:%M:%S')
     end
 
-    def send_message_to_user(user_id, message)
+    def send_message_to_user(user_id, message, _parse_mode)
       response
 
       Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
