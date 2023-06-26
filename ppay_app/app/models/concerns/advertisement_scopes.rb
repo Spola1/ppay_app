@@ -58,7 +58,7 @@ module AdvertisementScopes
         .order(arel)
     }
 
-    scope :order_by_remaining_confirmation_time, -> do
+    scope :order_by_remaining_confirmation_time, lambda {
       max_time_difference_minutes = 20
 
       order_sql = <<-SQL.squish
@@ -75,7 +75,7 @@ module AdvertisementScopes
       joins(:payments)
         .group('advertisements.id, payments.payment_status, payments.status_changed_at')
         .order(arel)
-    end
+    }
 
     scope :for_deposit, lambda { |payment|
       active

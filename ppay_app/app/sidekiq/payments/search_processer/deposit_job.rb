@@ -7,9 +7,9 @@ module Payments
 
       def selected_advertisement
         advertisements = Advertisement.for_deposit(payment)
-                                    .order_by_transferring_and_confirming_payments
-                                    .order_by_similar_payments(payment.national_currency_amount)
-                                    .order_by_similar_payments_count(payment.national_currency_amount)
+                                      .order_by_transferring_and_confirming_payments
+                                      .order_by_similar_payments(payment.national_currency_amount)
+                                      .order_by_similar_payments_count(payment.national_currency_amount)
 
         if advertisements.distinct.count == 1
           # Все объявления имеют одинаковое количество одинаковых платежей
