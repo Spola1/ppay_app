@@ -53,11 +53,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def logo_image_tag
-    if payment.merchant.form_customization&.logo.present?
-      h.content_tag(:div, class: 'show-logo') do
-        h.content_tag(:div, class: 'logo_img') do
-          h.image_tag(payment.merchant.form_customization.logo)
-        end
+    return unless payment.merchant.form_customization&.logo.present?
+
+    h.content_tag(:div, class: 'show-logo') do
+      h.content_tag(:div, class: 'logo_img') do
+        h.image_tag(payment.merchant.form_customization.logo)
       end
     end
   end

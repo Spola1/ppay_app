@@ -145,7 +145,8 @@ RSpec.describe PaymentDecorator do
     context 'when merchant has a logo' do
       before do
         allow(form_customization.logo).to receive(:present?).and_return(true)
-        allow(decorator).to receive_message_chain('h.content_tag')
+        allow(decorator)
+          .to receive_message_chain('h.content_tag')
           .and_return("<div class='show-logo'><div class='logo_img'><img src='logo_url' /></div></div>")
       end
 
