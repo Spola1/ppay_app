@@ -2,17 +2,6 @@
 
 class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
   def up
-    tjs = NationalCurrency.find_by(name: 'TJS')
-    PaymentSystem.create!(
-      [
-        { name: 'Dushanbe City - КортиМилли', national_currency: tjs },
-        { name: 'Alif - VISA', national_currency: tjs },
-        { name: 'Alif - КортиМилли', national_currency: tjs },
-        { name: 'Спитамен - VISA', national_currency: tjs },
-        { name: 'Спитамен - КортиМилли', national_currency: tjs }
-      ]
-    )
-
     [
       { national_currency: 'RUB', payment_system: 'Sberbank' },
       { national_currency: 'RUB', payment_system: 'Tinkoff' },
@@ -41,8 +30,8 @@ class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
       { national_currency: 'TJS', payment_system: 'Спитамен - КортиМилли' }
     ].each do |payment_system_currency|
       ps = PaymentSystem.find_by(name: payment_system_currency[:payment_system])
-      ps.national_currency = NationalCurrency.find_by(name: payment_system_currency[:national_currency])
-      ps.save!
+      nc = NationalCurrency.find_by(name: payment_system_currency[:national_currency])
+      PaymentSystem.connection.execute("UPDATE payment_systems SET national_currency_id = '#{nc.id}' WHERE id='#{ps.id}'")
     end
   end
 end
