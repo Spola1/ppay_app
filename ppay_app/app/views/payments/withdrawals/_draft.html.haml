@@ -1,7 +1,7 @@
 .show-payment
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
         UID Check
 
@@ -47,7 +47,7 @@
       = hidden_field_tag :event, 'search' 
 
       .mt-4
-        = f.submit "Подтвердить", class: "green-button"
+        = f.submit "Подтвердить", class: "green-button", style: payment.button_color_style
 
     .mt-4
       = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:)

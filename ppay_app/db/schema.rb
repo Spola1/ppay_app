@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_23_101111) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -187,6 +187,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_101111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+  end
+
+  create_table "form_customizations", force: :cascade do |t|
+    t.string "button_color"
+    t.string "background_color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "merchant_id"
+    t.index ["merchant_id"], name: "index_form_customizations_on_merchant_id"
   end
 
   create_table "payment_systems", force: :cascade do |t|
