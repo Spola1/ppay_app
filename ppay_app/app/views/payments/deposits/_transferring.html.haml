@@ -19,7 +19,7 @@
 
     .proc-countdown-block
       Вы можете оплатить в течение:
-      .text-red.font-medium{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
+      .text-red.font-medium{ data: { end_time: payment.countdown_end_time_for_clients, 'countdown-target': 'countdown' } }
         = payment.countdown
 
     .mt-1
