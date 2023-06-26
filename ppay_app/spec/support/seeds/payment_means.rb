@@ -15,7 +15,7 @@ end
 
 RSpec.configure do |config|
   config.before(:suite) do
-    unless PaymentWay.count.positive?
+    unless PaymentSystem.count.positive?
       Rails.application.load_tasks
 
       silence_stream($stdout) { Rake::Task['data:migrate'].invoke }

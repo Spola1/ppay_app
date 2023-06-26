@@ -8,9 +8,8 @@ class Merchant < User
 
   has_many :merchant_methods, foreign_key: :merchant_id
   has_many :commissions, through: :merchant_methods
-  has_many :payment_ways, -> { distinct }, through: :merchant_methods
-  has_many :payment_systems, -> { distinct }, through: :payment_ways
-  has_many :national_currencies, -> { distinct }, through: :payment_ways
+  has_many :payment_systems, -> { distinct }, through: :merchant_methods
+  has_many :national_currencies, -> { distinct }, through: :payment_systems
   has_one :form_customization
 
   belongs_to :agent, optional: true
@@ -41,12 +40,12 @@ class Merchant < User
   private
 
   def all_possible_methods(keywords)
-    PaymentWay.includes(:payment_system, :national_currency).all.decorate
-              .map { { payment_way_id: _1.id, pw_name: _1.name } }
-              .product(%w[Deposit Withdrawal].map { { direction: _1 } })
-              .map { _1.inject(:merge) }
-              .select { keywords ? (_1.values.join(' ').downcase.split.intersect? keywords.downcase.split) : true }
-              .map { _1.except(:pw_name) }
+    PaymentSystem.includes(:national_currency).all.decorate
+                 .map { { payment_system_id: _1.id, ps_full_name: _1.full_name } }
+                 .product(%w[Deposit Withdrawal].map { { direction: _1 } })
+                 .map { _1.inject(:merge) }
+                 .select { keywords ? (_1.values.join(' ').downcase.split.intersect? keywords.downcase.split) : true }
+                 .map { _1.except(:ps_full_name) }
   end
 
   def all_possible_commissions

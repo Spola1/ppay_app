@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :merchant_method do
     merchant { nil }
-    payment_way { nil }
+    payment_system { nil }
     direction { 'Deposit' }
   end
 end

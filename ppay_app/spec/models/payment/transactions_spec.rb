@@ -24,12 +24,7 @@ RSpec.describe 'Payment transactions commissions' do
             {
               merchant:,
               direction:,
-              payment_way: PaymentWay.find_by(
-                {
-                  payment_system:,
-                  national_currency:
-                }
-              )
+              payment_system:
             }
           )
         ).update(commission: commissions_values[(di * 4) + ci])

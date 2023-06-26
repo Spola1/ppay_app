@@ -11,9 +11,9 @@ module Payments
             merchant_methods:
               {
                 direction: type,
-                payment_way: PaymentWay.find_by(
+                payment_system: PaymentSystem.find_by(
                   {
-                    payment_system: PaymentSystem.find_by(name: payment_system),
+                    payment_system:,
                     national_currency: NationalCurrency.find_by(name: national_currency)
                   }
                 )
