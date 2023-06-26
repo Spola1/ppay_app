@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_06_19_122512) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_06_25_072832) do
+>>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -189,6 +193,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_19_122512) do
     t.string "name"
   end
 
+  create_table "form_customizations", force: :cascade do |t|
+    t.string "button_color"
+    t.string "background_color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "merchant_id"
+    t.index ["merchant_id"], name: "index_form_customizations_on_merchant_id"
+  end
+
   create_table "payment_systems", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -288,6 +301,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_19_122512) do
     t.integer "regular_payment_exec_time_in_sec", default: 1200
     t.decimal "ftd_payment_default_summ", precision: 12, scale: 2
     t.boolean "differ_ftd_and_other_payments", default: false
+    t.string "telegram"
+    t.string "telegram_id"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

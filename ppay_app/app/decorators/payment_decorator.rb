@@ -42,6 +42,34 @@ class PaymentDecorator < ApplicationDecorator
     "#{fiat_amount} #{national_currency}"
   end
 
+  def show_merchant_logo
+    return unless merchant.form_customization.logo.present
+
+    merchant.form_customization.logo
+  end
+
+  def logo_image_tag
+    if payment.merchant.form_customization&.logo.present?
+      h.content_tag(:div, class: 'show-logo') do
+        h.content_tag(:div, class: 'logo_img') do
+          h.image_tag(payment.merchant.form_customization.logo)
+        end
+      end
+    end
+  end
+
+  def background_color_style
+    return unless payment.merchant.form_customization&.background_color
+
+    "background-color: #{payment.merchant.form_customization.background_color};"
+  end
+
+  def button_color_style
+    return unless payment.merchant.form_customization&.button_color
+
+    "background-color: #{payment.merchant.form_customization.button_color};"
+  end
+
   def human_type
     type == 'Deposit' ? 'Депозит' : 'Вывод'
   end

@@ -104,7 +104,10 @@
 
             - if payment.advertisement
               %tr.item-card-tr
-                %td.item-card-td.item-card-td-label Количество активных платежей в объявлении
+                %td.item-card-td.item-card-td-label
+                  Количество активных
+                  %br
+                  платежей в объявлении
                 %td.item-card-td= payment.advertisement.payments.active.count
 
             - if payment.merchant_id && role_namespace == 'supports'

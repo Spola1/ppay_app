@@ -1,7 +1,7 @@
 .show-payment
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
         UID Check
 
@@ -13,7 +13,7 @@
           = hidden_field_tag :event, 'confirm'
           .mt-4
             = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите отменить платёж?',
-            class: 'green-button'
+            class: "green-button", style: payment.button_color_style
 
     = render 'payments/uuid', payment:
 
