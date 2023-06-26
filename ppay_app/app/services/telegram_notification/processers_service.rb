@@ -38,7 +38,7 @@ module TelegramNotification
       message += "Ссылка на платёж: \n"
       message += "#{PROTOCOL}://#{ADDRESS}/payments/#{payment_type}/#{uuid}\n"
 
-      send_message_to_user(user, message, 'MarkdownV2') unless user.nil?
+      send_message_to_user(user, message) unless user.nil?
     end
 
     private
@@ -54,7 +54,7 @@ module TelegramNotification
       new_datetime.strftime('%d-%m-%Y %H:%M:%S')
     end
 
-    def send_message_to_user(user_id, message, _parse_mode)
+    def send_message_to_user(user_id, message)
       response
 
       Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|

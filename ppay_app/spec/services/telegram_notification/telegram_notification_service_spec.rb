@@ -27,7 +27,7 @@ RSpec.describe TelegramNotification::ProcessersService do
                   "http://localhost:3000/payments/deposits/#{payment.uuid}\n"
 
         expect(service).to receive(:send_message_to_user)
-          .with(payment.processer.telegram_id, message, 'MarkdownV2')
+          .with(payment.processer.telegram_id, message)
 
         service.send_notification_to_user(payment.processer.telegram_id)
       end
@@ -57,7 +57,7 @@ RSpec.describe TelegramNotification::ProcessersService do
                   "http://localhost:3000/payments/withdrawals/#{payment.uuid}\n"
 
         expect(service).to receive(:send_message_to_user)
-          .with(payment.processer.telegram_id, message, 'MarkdownV2')
+          .with(payment.processer.telegram_id, message)
 
         service.send_notification_to_user(payment.processer.telegram_id)
       end
