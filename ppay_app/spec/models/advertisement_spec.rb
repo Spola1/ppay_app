@@ -172,20 +172,23 @@ RSpec.describe Advertisement, type: :model do
         # завершенных платежей, поэтому между 3 и 4 должен быть рандомный результат
         create_list(:payment, 4, :transferring, advertisement: advertisement_4)
 
-        # advertisement 5 - нет активных платежей с такой же суммой, но много завершенных
-        # с такой же суммой на арбитраже
-        create_list(:payment, 5, :completed, advertisement: advertisement_5)
-        advertisement_5.payments.update_all(arbitration: true)
+        # advertisement 5 - мало активных платежей с такой же суммой
+        # и мало платежей transferring с такой же суммой на арбитраже,
+        # но много платежей confirming с такой же суммой на арбитраже
+
+        create_list(:payment, 1, :transferring, advertisement: advertisement_5)
+        create_list(:payment, 1, :transferring, advertisement: advertisement_5, arbitration: true)
+        create_list(:payment, 10, :confirming, advertisement: advertisement_5, arbitration: true)
 
         # advertisement 6 - без платежей вообще
       end
 
       10.times do
         it 'returns sorted list of advertisements' do
-          is_expected.to(eq([advertisement_6, advertisement_4, advertisement_3,
-                             advertisement_5, advertisement_2, advertisement_1])
-                     .or(eq([advertisement_6, advertisement_3, advertisement_4,
-                             advertisement_5, advertisement_2, advertisement_1])))
+          is_expected.to(eq([advertisement_6, advertisement_5, advertisement_4,
+                             advertisement_3, advertisement_2, advertisement_1])
+                     .or(eq([advertisement_6, advertisement_5, advertisement_3,
+                             advertisement_4, advertisement_2, advertisement_1])))
         end
       end
     end

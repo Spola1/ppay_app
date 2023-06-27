@@ -21,8 +21,8 @@ class Advertisement < ApplicationRecord
 
   scope :join_active_payments, -> do
     joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
-          "(payments.payment_status NOT IN ('completed', 'cancelled') OR " \
-          'payments.arbitration = TRUE))')
+          "(payments.payment_status IN ('confirming', 'transferring') AND " \
+          "NOT (payments.payment_status = 'confirming' AND payments.arbitration = TRUE)))")
   end
 
   scope :for_payment, ->(payment) do
