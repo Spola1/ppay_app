@@ -38,6 +38,13 @@ class PaymentDecorator < ApplicationDecorator
     "#{fiat_amount} #{national_currency}"
   end
 
+  def toast_class
+    classes = ['toast']
+    classes << 'arbitration' if arbitration
+    classes << 'deposit' if type == 'Deposit' && !arbitration
+    classes.join(' ')
+  end
+
   def show_merchant_logo
     return unless merchant.form_customization.logo.present
 
