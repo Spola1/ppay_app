@@ -67,11 +67,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def human_type
-    type == 'Deposit' ? 'Депозит' : 'Вывод'
-  end
-
-  def type_icon
-    type == 'Deposit' ? 'arrow-up' : 'arrow-down'
+    type == 'Deposit' ? 'ДЕПОЗИТ' : 'ВЫВОД'
   end
 
   def formatted_status_changed_at

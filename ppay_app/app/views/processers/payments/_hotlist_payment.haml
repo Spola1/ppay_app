@@ -1,8 +1,6 @@
 .toast{ 'data-controller': 'countdown', class: ('arbitration' if payment.arbitration) }
   .toast-header
     .toast-header-text
-      .mr-2.text-xs
-        = fa_icon payment.type_icon
       = payment.human_type
       - if payment.arbitration
         (арбитраж)

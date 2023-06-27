@@ -58,19 +58,6 @@ RSpec.describe PaymentDecorator do
     end
   end
 
-  describe '#type_icon' do
-    context 'when payment.type == Deposit' do
-      let(:type) { 'Deposit' }
-      it 'If type == deposit then return arrow-up' do
-        expect(payment.decorate.type_icon).to eq 'arrow-up'
-      end
-    end
-
-    it 'If type == deposit then return arrow-down' do
-      expect(payment.decorate.type_icon).to eq 'arrow-down'
-    end
-  end
-
   describe '#cryptocurrency_commission_amount' do
     subject { payment.decorate.cryptocurrency_commission_amount }
 
