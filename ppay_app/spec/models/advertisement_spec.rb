@@ -146,49 +146,49 @@ RSpec.describe Advertisement, type: :model do
     describe '.for_payment' do
       subject { Advertisement.for_payment(payment) }
 
-      let!(:advertisement_1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement_6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
 
       let(:payment) { create(:payment, :deposit, :processer_search) }
 
       before do
         # advertisement 1 - много активный платежей в процессе с такой же суммой
-        create_list(:payment, 10, :transferring, advertisement: advertisement_1)
+        create_list(:payment, 10, :transferring, advertisement: advertisement1)
 
         # advertisement 2 - много активных платежей с разными суммами, в том числе с такой же
-        create_list(:payment, 6, :transferring, advertisement: advertisement_2)
-        create_list(:payment, 6, :transferring, advertisement: advertisement_2, national_currency_amount: 200)
+        create_list(:payment, 6, :transferring, advertisement: advertisement2)
+        create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 200)
 
         # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
-        create_list(:payment, 20, :completed, advertisement: advertisement_3)
-        create_list(:payment, 4, :transferring, advertisement: advertisement_3)
+        create_list(:payment, 20, :completed, advertisement: advertisement3)
+        create_list(:payment, 4, :transferring, advertisement: advertisement3)
 
         # advertisement 4 - мало активных платежей с такой же суммой,
         # должно иметь такой же приоритет как и advertisement_3, так как не должно зависеть от
         # завершенных платежей, поэтому между 3 и 4 должен быть рандомный результат
-        create_list(:payment, 4, :transferring, advertisement: advertisement_4)
+        create_list(:payment, 4, :transferring, advertisement: advertisement4)
 
         # advertisement 5 - мало активных платежей с такой же суммой
         # и мало платежей transferring с такой же суммой на арбитраже,
         # но много платежей confirming с такой же суммой на арбитраже
 
-        create_list(:payment, 1, :transferring, advertisement: advertisement_5)
-        create_list(:payment, 1, :transferring, advertisement: advertisement_5, arbitration: true)
-        create_list(:payment, 10, :confirming, advertisement: advertisement_5, arbitration: true)
+        create_list(:payment, 1, :transferring, advertisement: advertisement5)
+        create_list(:payment, 1, :transferring, advertisement: advertisement5, arbitration: true)
+        create_list(:payment, 10, :confirming, advertisement: advertisement5, arbitration: true)
 
         # advertisement 6 - без платежей вообще
       end
 
       10.times do
         it 'returns sorted list of advertisements' do
-          is_expected.to(eq([advertisement_6, advertisement_5, advertisement_4,
-                             advertisement_3, advertisement_2, advertisement_1])
-                     .or(eq([advertisement_6, advertisement_5, advertisement_3,
-                             advertisement_4, advertisement_2, advertisement_1])))
+          is_expected.to(eq([advertisement6, advertisement5, advertisement4,
+                             advertisement3, advertisement2, advertisement1])
+                     .or(eq([advertisement6, advertisement5, advertisement3,
+                             advertisement4, advertisement2, advertisement1])))
         end
       end
     end

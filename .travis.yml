@@ -17,6 +17,8 @@ before_install:
   - echo "RAILS_MIN_THREADS=$RAILS_MIN_THREADS" >> ppay_app/.env
   - echo "RAILS_MAX_THREADS=$RAILS_MAX_THREADS" >> ppay_app/.env
   - echo "PUMA_WORKERS=$PUMA_WORKERS" >> ppay_app/.env
+  - echo "TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN" >> ppay_app/.env
+  - echo "TELEGRAM_BOT_LINK=$TELEGRAM_BOT_LINK" >> ppay_app/.env
   - cat ppay_app/.env
   - git add -f ppay_app/.env
   - git status

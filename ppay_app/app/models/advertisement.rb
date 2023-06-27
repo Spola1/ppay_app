@@ -19,16 +19,16 @@ class Advertisement < ApplicationRecord
   scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
   scope :by_direction,         ->(direction) { where(direction:) }
 
-  scope :join_active_payments, -> do
+  scope :join_active_payments, lambda {
     joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
           "(payments.payment_status IN ('confirming', 'transferring') AND " \
           "NOT (payments.payment_status = 'confirming' AND payments.arbitration = TRUE)))")
-  end
+  }
 
-  scope :for_payment, ->(payment) do
+  scope :for_payment, lambda { |payment|
     order = Arel.sql('SUM(CASE WHEN ' \
-                       "payments.initial_amount = #{ payment.initial_amount }" \
-                       'THEN 1 ELSE 0 END) ASC,' \
+                     "payments.initial_amount = #{payment.initial_amount}" \
+                     'THEN 1 ELSE 0 END) ASC,' \
                      'COUNT(payments.id) ASC,' \
                      'RANDOM()')
 
@@ -37,7 +37,7 @@ class Advertisement < ApplicationRecord
       .by_payment_system(payment.payment_system)
       .group('advertisements.id')
       .order(order)
-  end
+  }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
