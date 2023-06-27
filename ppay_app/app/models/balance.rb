@@ -10,8 +10,11 @@ class Balance < ApplicationRecord
 
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
-  def withdraw(amount, national_currency_amount)
+  def withdraw(amount, national_currency_amount = nil)
     raise(ArgumentError, 'Amount must be positive') unless amount.positive?
+    if in_national_currency && !national_currency_amount&.positive?
+      raise(ArgumentError, 'National currency amount must be positive')
+    end
 
     with_lock do
       reload
@@ -20,8 +23,11 @@ class Balance < ApplicationRecord
     end
   end
 
-  def deposit(amount, national_currency_amount)
+  def deposit(amount, national_currency_amount = nil)
     raise(ArgumentError, 'Amount must be positive') unless amount.positive?
+    if in_national_currency && !national_currency_amount&.positive?
+      raise(ArgumentError, 'National currency amount must be positive')
+    end
 
     with_lock do
       reload

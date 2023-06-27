@@ -101,6 +101,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
       concerns :payments_creatable
