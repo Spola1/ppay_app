@@ -27,59 +27,6 @@ RSpec.describe Advertisement, type: :model do
     end
   end
 
-  describe '.order_by_similar_payments' do
-    context 'when < 5%' do
-      let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:payment1) { create(:payment, :transferring, advertisement: advertisement1, national_currency_amount: 400) }
-      let!(:payment2) { create(:payment, :transferring, advertisement: advertisement2, national_currency_amount: 600) }
-
-      it 'orders advertisements by similar payments' do
-        expect(Advertisement.order_by_similar_payments(599)).to eq([advertisement1, advertisement2])
-      end
-    end
-
-    context 'when < 5% && arbitration: true' do
-      let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-      let!(:payment1) do
-        create(:payment, :confirming, advertisement: advertisement1, national_currency_amount: 400, arbitration: true)
-      end
-      let!(:payment2) { create(:payment, :transferring, advertisement: advertisement2, national_currency_amount: 600) }
-
-      it 'orders advertisements by similar payments' do
-        expect(Advertisement.order_by_similar_payments(401)).to eq([advertisement2, advertisement1])
-      end
-    end
-  end
-
-  describe '.order_by_similar_payments_count' do
-    let(:national_currency_amount) { 100 }
-
-    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-
-    before do
-      # Создаем платежи, которые должны подходить под условиe (больше чем у такого же второго объявления)
-      create_list(:payment, 3, national_currency_amount: 99, advertisement: advertisement3)
-      create_list(:payment, 5, national_currency_amount: 101, advertisement: advertisement3)
-
-      # Создаем платежи, которые должны подходить под условие
-      create_list(:payment, 1, national_currency_amount: 99, advertisement: advertisement2)
-      create_list(:payment, 4, national_currency_amount: 101, advertisement: advertisement2)
-
-      # Создаем платежи, которые не подходят под условие
-      create_list(:payment, 3, national_currency_amount: 70, advertisement: advertisement1)
-      create_list(:payment, 1, national_currency_amount: 130, advertisement: advertisement1)
-    end
-
-    it 'orders advertisements by the count of similar payments' do
-      advertisements = Advertisement.order_by_similar_payments_count(national_currency_amount)
-      expect(advertisements).to eq([advertisement1, advertisement2, advertisement3])
-    end
-  end
-
   describe '.order_by_remaining_confirmation_time' do
     subject { Advertisement.order_by_remaining_confirmation_time }
 
@@ -96,6 +43,56 @@ RSpec.describe Advertisement, type: :model do
 
     it 'orders advertisements by the remaining confirmation time' do
       expect(subject).to eq([advertisement1, advertisement2, advertisement3])
+    end
+  end
+
+  describe '.for_payment' do
+    subject { Advertisement.for_payment(payment) }
+
+    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+
+    let(:payment) { create(:payment, :deposit, :processer_search) }
+
+    before do
+      # advertisement 1 - много активный платежей в процессе с такой же суммой
+      create_list(:payment, 10, :transferring, advertisement: advertisement1)
+
+      # advertisement 2 - много активных платежей с разными суммами, в том числе с такой же
+      create_list(:payment, 6, :transferring, advertisement: advertisement2)
+      create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 200)
+
+      # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
+      create_list(:payment, 20, :completed, advertisement: advertisement3)
+      create_list(:payment, 4, :transferring, advertisement: advertisement3)
+
+      # advertisement 4 - мало активных платежей с такой же суммой,
+      # должно иметь такой же приоритет как и advertisement_3, так как не должно зависеть от
+      # завершенных платежей, поэтому между 3 и 4 должен быть рандомный результат
+      create_list(:payment, 4, :transferring, advertisement: advertisement4)
+
+      # advertisement 5 - мало активных платежей с такой же суммой
+      # и мало платежей transferring с такой же суммой на арбитраже,
+      # но много платежей confirming с такой же суммой на арбитраже
+
+      create_list(:payment, 1, :transferring, advertisement: advertisement5)
+      create_list(:payment, 1, :transferring, advertisement: advertisement5, arbitration: true)
+      create_list(:payment, 10, :confirming, advertisement: advertisement5, arbitration: true)
+
+      # advertisement 6 - без платежей вообще
+    end
+
+    10.times do
+      it 'returns sorted list of advertisements' do
+        is_expected.to(eq([advertisement6, advertisement5, advertisement4,
+                           advertisement3, advertisement2, advertisement1])
+                   .or(eq([advertisement6, advertisement5, advertisement3,
+                           advertisement4, advertisement2, advertisement1])))
+      end
     end
   end
 end

@@ -10,50 +10,58 @@ module AdvertisementScopes
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_direction,         ->(direction) { where(direction:) }
 
-    scope :order_by_transferring_and_confirming_payments, lambda {
-      order_sql = <<-SQL.squish
-        SUM(
-          CASE WHEN payments.payment_status IN ('confirming', 'transferring') THEN 1 ELSE 0 END
-        ) ASC
-      SQL
+    scope :join_active_payments, lambda {
+      joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
+            "(payments.payment_status IN ('confirming', 'transferring') AND " \
+            "NOT (payments.payment_status = 'confirming' AND payments.arbitration = TRUE)))")
+    }
 
-      arel = Arel.sql(order_sql)
+    scope :for_payment, lambda { |payment|
+      order = Arel.sql('SUM(CASE WHEN ' \
+                       "payments.initial_amount = #{payment.initial_amount}" \
+                       'THEN 1 ELSE 0 END) ASC,' \
+                       'COUNT(payments.id) ASC,' \
+                       'RANDOM()')
 
-      left_joins(:payments)
+      join_active_payments
+        .active
+        .by_payment_system(payment.payment_system)
         .group('advertisements.id')
-        .order(arel)
+        .order(order)
+    }
+
+    scope :for_deposit, lambda { |cryptocurrency_amount|
+      by_processer_balance(cryptocurrency_amount)
+        .by_direction('Deposit')
+    }
+
+    scope :for_withdrawal, lambda {
+      by_direction('Withdrawal')
+    }
+
+    scope :order_by_algorithm, lambda { |national_currency_amount|
+      order_by_transferring_and_confirming_payments
+        .order_by_similar_payments(national_currency_amount)
+    }
+
+    scope :order_by_transferring_and_confirming_payments, lambda {
+      join_active_payments
+        .group('advertisements.id')
+        .order('COUNT(payments.id) ASC')
     }
 
     scope :order_by_similar_payments, lambda { |national_currency_amount|
       order_sql = <<-SQL.squish
         SUM(
-          CASE WHEN (payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
-            AND #{national_currency_amount * 1.05} AND payments.payment_status IN ('transferring', 'confirming'))
-            OR (payments.payment_status = 'confirming' AND payments.arbitration = TRUE
-            AND payments.payment_status NOT IN ('completed', 'cancelled'))
+          CASE WHEN payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
+            AND #{national_currency_amount * 1.05}
             THEN 1 ELSE 0 END
         ) ASC
       SQL
 
       arel = Arel.sql(order_sql)
 
-      left_joins(:payments)
-        .group('advertisements.id')
-        .order(arel)
-    }
-
-    scope :order_by_similar_payments_count, lambda { |national_currency_amount|
-      order_sql = <<-SQL.squish
-        SUM(
-          CASE WHEN (payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
-            AND #{national_currency_amount * 1.05})
-            THEN 1 ELSE 0 END
-        ) ASC
-      SQL
-
-      arel = Arel.sql(order_sql)
-
-      left_joins(:payments)
+      join_active_payments
         .group('advertisements.id')
         .order(arel)
     }
@@ -62,33 +70,15 @@ module AdvertisementScopes
       max_time_difference_minutes = 20
 
       order_sql = <<-SQL.squish
-        (CASE
-          WHEN payments.payment_status = 'confirming'
-            AND EXTRACT(MINUTE FROM NOW() - payments.status_changed_at) <= #{max_time_difference_minutes}
-            THEN EXTRACT(MINUTE FROM NOW() - payments.status_changed_at)
-          ELSE 0
-        END) ASC
+        SUM(EXTRACT(MINUTE FROM NOW() - payments.status_changed_at)) ASC
       SQL
 
       arel = Arel.sql(order_sql)
 
-      joins(:payments)
-        .group('advertisements.id, payments.payment_status, payments.status_changed_at')
+      join_active_payments
+        .where("payments.payment_status = 'confirming'")
+        .group('advertisements.id')
         .order(arel)
-    }
-
-    scope :for_deposit, lambda { |payment|
-      active
-        .by_payment_system(payment.payment_system)
-        .by_processer_balance(payment.cryptocurrency_amount)
-        .by_direction('Deposit')
-    }
-
-    scope :for_withdrawal, lambda { |payment|
-      active
-        .by_payment_system(payment.payment_system)
-        .by_processer_balance(payment.cryptocurrency_amount)
-        .by_direction('Withdrawal')
     }
   end
 end

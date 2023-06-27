@@ -23,6 +23,10 @@
             %th.items-list-th источник курса
             %th.items-list-th статус
             %th.items-list-th id аккаунта
+            %th.items-list-th
+              кол-во активных
+              %br
+              платежей
 
 
             %th.items-list-th
@@ -44,6 +48,7 @@
               %td.items-list-td{ class: "advertisement-status-#{ ad.status }" }
                 = ad.status ? 'Активно' : 'Неактивно'
               %td.items-list-td= ad.processer_id
+              %td.items-list-td= ad.payments.active.count
 
               %td.items-list-td.px-1.w-0
                 = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
