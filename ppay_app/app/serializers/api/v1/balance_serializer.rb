@@ -6,7 +6,7 @@ module Api
       include JSONAPI::Serializer
 
       set_id :id
-      set_type :Balance
+      set_type :balance
 
       attribute :id, -> { _1.id.to_s }
       attributes :amount, :currency

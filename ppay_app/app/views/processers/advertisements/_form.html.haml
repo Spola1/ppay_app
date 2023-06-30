@@ -3,7 +3,7 @@
   = f.input :direction, collection: [["продажа (sell) / ввод (deposit)", "Deposit"], ["покупка (buy) / вывод (withdrawal)", "Withdrawal"]],
                         include_blank: '-выбрать-'
 
-  = f.input :national_currency, collection: Settings.national_currencies, include_blank: '-выбрать-'
+  = f.input :national_currency, collection: NationalCurrency.pluck(:name), include_blank: '-выбрать-'
 
   = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: '-выбрать-'
 

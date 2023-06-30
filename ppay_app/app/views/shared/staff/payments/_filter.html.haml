@@ -10,9 +10,9 @@
                                                                 selected: payment_filters_params(:cancellation_reason)
     = f.input :payment_status, collection: payment_statuses_collection, include_blank: 'Все',
                                                                 selected: payment_filters_params(:payment_status)
-    = f.input :payment_system, collection: Settings.payment_systems, include_blank: 'Все',
+    = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: 'Все',
                                                                 selected: payment_filters_params(:payment_system)
-    = f.input :national_currency, collection: Settings.national_currencies, include_blank: 'Все',
+    = f.input :national_currency, collection: NationalCurrency.pluck(:name), include_blank: 'Все',
                                                                 selected: payment_filters_params(:national_currency)
     = f.input :national_currency_amount_from, as: :numeric,
                                           input_html:{ value: payment_filters_params(:national_currency_amount_from) }

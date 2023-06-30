@@ -1,0 +1,17 @@
+= simple_form_for(@merchant, as: :merchant, url: account_merchant_path(@merchant), action: :update) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :email, required: true, autofocus: true
+
+    = f.input :password,
+      hint: t('devise.registrations.edit.leave_blank_if_you_don_t_want_to_change_it'),
+      required: false,
+      input_html: { autocomplete: "new-password" }
+
+  .form-actions
+    = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
+
+%h2.mt-4 Api ключ
+
+= @merchant.api_keys.last&.token

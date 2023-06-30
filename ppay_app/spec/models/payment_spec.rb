@@ -6,7 +6,6 @@ RSpec.describe Payment, type: :model do
   let!(:ppay_user) { create(:user, :ppay) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:rate_snapshot_sell) { create(:rate_snapshot, :sell) }
-  let!(:payment_system) { create :payment_system }
 
   it { is_expected.to have_many(:transactions) }
 
@@ -92,16 +91,20 @@ RSpec.describe Payment, type: :model do
     describe '#ensure_unique_amount for deposits' do
       let(:advertisement) { create(:advertisement, :deposit) }
       let(:unique_amount) { nil }
+      let(:merchant) { create :merchant }
       let(:payment1) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      merchant:,
                                                       payment_system: payment_system.name)
       end
       let(:payment2) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      merchant:,
                                                       payment_system: payment_system.name)
       end
       let(:payment3) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      merchant:,
                                                       payment_system: payment_system.name)
       end
 
@@ -127,6 +130,7 @@ RSpec.describe Payment, type: :model do
         context 'when different types' do
           let(:payment1) do
             create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:,
+                                                             merchant:,
                                                              payment_system: payment_system.name)
           end
 
@@ -152,6 +156,7 @@ RSpec.describe Payment, type: :model do
         context 'when different types' do
           let(:payment1) do
             create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:,
+                                                             merchant:,
                                                              payment_system: payment_system.name)
           end
 
@@ -240,7 +245,7 @@ RSpec.describe Payment, type: :model do
 
   describe 'scope' do
     let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id: }
-    let!(:payment2) { create :payment, :UZS, created_at:, uuid: }
+    let!(:payment2) { create :payment, :IDR, created_at:, uuid: }
     let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
     let(:created_at)  { 'Mon, 06 Mar 2023 22:53:42.811063000 MSK +03:00' }
     let(:national_currency_amount) { 1000 }

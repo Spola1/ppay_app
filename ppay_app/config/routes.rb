@@ -12,11 +12,9 @@ Rails.application.routes.draw do
       password == Settings.basic_auth.password
   end
 
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :users # , controllers: {
+  #   registrations: 'users/registrations'
+  # }
 
   concern :statuses_updatable do
     namespace :statuses do
@@ -40,6 +38,18 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
+
+    resources :merchants, only: %i[index new create update] do
+      member do
+        get :settings
+        patch :settings, to: '/admins/merchants#update_settings'
+        get :account
+        patch :account, to: '/admins/merchants#update_account'
+      end
+      resources :merchant_methods, only: %i[create destroy]
+    end
+    get '/merchants/:id', to: '/admins/merchants#settings'
+
     root 'payments#index', as: :admins_root
   end
 
@@ -54,6 +64,12 @@ Rails.application.routes.draw do
       end
       resources :withdrawals, only: :index
     end
+
+    namespace :users do
+      get :settings
+      patch :settings, to: '/merchants/users#settings_update'
+    end
+
     root 'payments#index', as: :merchants_root
   end
 
@@ -89,6 +105,7 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
+
     root 'payments#index', as: :supports_root
   end
 
@@ -117,8 +134,16 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
-  scope module: :processers do
-    root 'payments#index'
+  constraints (
+    lambda do |request|
+      request.env['warden'].user.blank? &&
+        request.path[
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|$)}
+        ].present?
+    end
+  ) do
+    match '*path', to: 'users/sign_in#index', via: :all
+    root 'users/sign_in#index'
   end
 
   # временно для тестов добавляю таблицу

@@ -4,5 +4,5 @@ class PaymentSystem < ApplicationRecord
   has_many :commissions
   has_many :merchants, through: :commissions
 
-  validates :name, uniqueness: true
+  belongs_to :national_currency
 end

@@ -149,6 +149,9 @@ RSpec.describe Advertisement, type: :model do
       let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
       let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
       let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+      let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
 
       let(:payment) { create(:payment, :deposit, :processer_search) }
 
@@ -162,10 +165,32 @@ RSpec.describe Advertisement, type: :model do
 
         # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
         create_list(:payment, 20, :completed, advertisement: advertisement3)
-        create_list(:payment, 5, :transferring, advertisement: advertisement3)
+        create_list(:payment, 4, :transferring, advertisement: advertisement3)
+
+        # advertisement 4 - мало активных платежей с такой же суммой,
+        # должно иметь такой же приоритет как и advertisement_3, так как не должно зависеть от
+        # завершенных платежей, поэтому между 3 и 4 должен быть рандомный результат
+        create_list(:payment, 4, :transferring, advertisement: advertisement4)
+
+        # advertisement 5 - мало активных платежей с такой же суммой
+        # и мало платежей transferring с такой же суммой на арбитраже,
+        # но много платежей confirming с такой же суммой на арбитраже
+
+        create_list(:payment, 1, :transferring, advertisement: advertisement5)
+        create_list(:payment, 1, :transferring, advertisement: advertisement5, arbitration: true)
+        create_list(:payment, 10, :confirming, advertisement: advertisement5, arbitration: true)
+
+        # advertisement 6 - без платежей вообще
       end
 
-      it { is_expected.to eq([advertisement3, advertisement2, advertisement1]) }
+      10.times do
+        it 'returns sorted list of advertisements' do
+          is_expected.to(eq([advertisement6, advertisement5, advertisement4,
+                             advertisement3, advertisement2, advertisement1])
+                     .or(eq([advertisement6, advertisement5, advertisement3,
+                             advertisement4, advertisement2, advertisement1])))
+        end
+      end
     end
   end
 end

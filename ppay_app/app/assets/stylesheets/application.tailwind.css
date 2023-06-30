@@ -2,7 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply text-2xl mb-4;
+  }
+
+  h2 {
+    @apply text-xl mb-4;
+  }
+}
+
 @layer components {
+  .with-sidebar {
+    @apply flex flex-row;
+  }
+
+  .with-sidebar aside {
+    @apply w-1/5 px-2;
+  }
+
+  .with-sidebar section {
+    @apply w-4/5 px-2;
+  }
+
+  .with-sidebar aside .sticky-menu {
+    @apply sticky top-0 p-4 w-full;
+  }
+
+  .sticky-menu ul {
+    @apply flex flex-col overflow-hidden;
+  }
+
+  .sticky-menu a > i {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sticky-menu li > a {
+    @apply items-center flex space-x-2 p-3 text-black hover:no-underline;
+  }
+
+  .sticky-menu li > a.active {
+    @apply bg-gray-100;
+  }
+
+  section:has(.devise_container) {
+    @apply w-full;
+  }
+
+  .devise_container {
+    @apply text-xs text-gray-900 font-light py-2 px-4;
+  }
+
+  .devise_container h2 {
+    @apply text-xl mb-4;
+  }
+
+  .devise_container form {
+    @apply mb-6;
+  }
+
+  .devise_container .links a {
+    @apply underline;
+  }
+
   .form-input {
     @apply block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border
       border-solid border-gray-300 rounded transition ease-in-out m-0 w-auto;
@@ -18,6 +81,10 @@
     @apply px-6 py-2.5 flex bg-green-600 text-white font-medium text-sm leading-tight rounded shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .form-submit-red {
+    @apply form-submit bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
   }
 
   .default-nav {
@@ -106,12 +173,12 @@
     @apply bg-red-100;
   }
 
-  .item-card {
-    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
-  }
-
   .card-wrap {
     @apply p-2 flex-1;
+  }
+
+  .item-card {
+    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
   }
 
   .card-head {
@@ -119,7 +186,11 @@
   }
 
   .card-head h1 {
-    @apply inline-block text-xl;
+    @apply inline-block text-xl mb-0;
+  }
+
+  .card-body {
+    @apply my-4;
   }
 
   .wrap {
@@ -160,11 +231,11 @@
   }
 
   .simple_form .input input.string, .simple_form .input input.text, .simple_form .input input.numeric,
-  .simple_form .input textarea.text, .simple_form .input input.date {
+  .simple_form .input textarea.text, .simple_form .input input.date, .simple_form .input input.password {
     @apply form-input;
   }
 
-  .simple_form .hint {
+  .simple_form .hint, .form_with .hint {
     @apply my-1 text-xs text-gray-500;
   }
 
@@ -204,6 +275,10 @@
   .simple_form.filters .filters-grid .input input, .simple_form.filters .filters-grid .input select,
   .simple_form.filters .filters-grid .input textarea {
     @apply w-full max-w-full;
+  }
+
+  .error_notification {
+    @apply text-xs;
   }
 
   .toast {
@@ -486,6 +561,10 @@
     @apply text-xs text-gray-600 mt-6;
   }
 
+  .alert-block {
+    @apply text-gray-900 font-light inline-block rounded-lg shadow-md shadow-slate-100 bg-white border;
+  }
+
   .payment_img {
     width: 300px;
     height: 180px;
@@ -589,8 +668,8 @@
   }
 
   .logo_img img {
-    max-height: 50px;
-    object-fit: fill;
+    width: 100px;
+    max-height: 100px;
   }
 
   .show-qr-block {
@@ -618,7 +697,7 @@
   }
 
   .image-processer-block {
-    @apply h-96;
+    @apply max-h-96;
   }
 
   input[name="advertisement[card_number]"] {
