@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 shared_context 'payment means' do
-  let(:payment_system) { PaymentSystem.first }
-  let(:national_currency) { NationalCurrency.first }
+  let!(:national_currency) { create(:national_currency, name: 'RUB') }
+  let!(:payment_system) { create(:payment_system) }
 end
