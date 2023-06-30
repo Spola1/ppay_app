@@ -32,3 +32,29 @@ u3.save
 u4 = User.find_by(email: 'processer2@test.com')
 u4.usdt_trc20_address = 'SguJGZoEtevoAJq3NwXX1LyJDfjs99Pe2v'
 u4.save
+
+PaymentSystem.create!(
+  [
+    { name: 'Банк ЦентрКредит' },
+    { name: 'Halyk Bank' },
+    { name: 'Jysan Bank' },
+    { name: 'Jusan Bank' },
+    { name: 'Kaspi Bank' },
+    { name: 'Другой банк' },
+    { name: 'IBAN' },
+    { name: 'PrivatBank' },
+    { name: 'MonoBank' },
+    { name: 'PUMB' },
+    { name: 'PermataBank' },
+    { name: 'Optima24' },
+    { name: 'Halyk' },
+    { name: 'Bakai24' },
+    { name: 'Demir' },
+    { name: 'UzCard' },
+    { name: 'Dushanbe City - КортиМилли' },
+    { name: 'Alif - VISA' },
+    { name: 'Alif - КортиМилли' },
+    { name: 'Спитамен - VISA' },
+    { name: 'Спитамен - КортиМилли' }
+  ]
+)

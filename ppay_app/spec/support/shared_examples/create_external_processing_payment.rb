@@ -63,7 +63,7 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
     include_context 'generate_examples'
 
     context 'unsupported national currency' do
-      let(:national_currency) { 'USD' }
+      let(:national_currency_name) { 'USD' }
 
       let(:expected_errors) do
         [
@@ -71,7 +71,7 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
         ]
       end
 
-      let(:national_currency_error) { "Доступные значения #{Settings.national_currencies.join(', ')}" }
+      let(:national_currency_error) { "Доступные значения #{NationalCurrency.pluck(:name).join(', ')}" }
 
       run_test! do |_response|
         expect(response_body['errors']).to eq(expected_errors)

@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :payment_system do
-    name { FFaker::InternetSE.company_name_single_word }
+    name { 'AlfaBank' }
   end
 end

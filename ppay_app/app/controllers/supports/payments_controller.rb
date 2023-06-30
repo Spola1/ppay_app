@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Supports
-  class PaymentsController < ApplicationController
+  class PaymentsController < Staff::BaseController
     before_action :find_payment, only: %i[update show]
 
     def index
