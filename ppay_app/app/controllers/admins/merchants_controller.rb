@@ -66,8 +66,6 @@ module Admins
     def set_commissions
       @commissions =
         @merchant.commissions
-                 .joins(:merchant_method)
-                 .joins(merchant_method: :payment_system)
                  .joins(merchant_method: { payment_system: :national_currency })
                  .select(
                    'commissions.id, commissions.commission_type, commissions.commission, ' \

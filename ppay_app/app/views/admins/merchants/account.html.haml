@@ -12,8 +12,6 @@
   .form-actions
     = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
 
-%h2.mt-4 Api ключи
+%h2.mt-4 Api ключ
 
-- @merchant.api_keys.each do |api_key|
-  %pre.api_key.mb-2
-    = api_key.token
+= @merchant.api_keys.last&.token

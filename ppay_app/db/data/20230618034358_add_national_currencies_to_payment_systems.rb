@@ -7,7 +7,6 @@ class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
       { national_currency: 'RUB', payment_system: 'Tinkoff' },
       { national_currency: 'RUB', payment_system: 'Raiffeisen' },
       { national_currency: 'RUB', payment_system: 'AlfaBank' },
-      { national_currency: 'RUB', payment_system: 'Другой банк' },
       { national_currency: 'UZS', payment_system: 'HUMO' },
       { national_currency: 'KZT', payment_system: 'Банк ЦентрКредит' },
       { national_currency: 'KZT', payment_system: 'Halyk Bank' },
@@ -31,7 +30,12 @@ class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
     ].each do |payment_system_currency|
       ps = PaymentSystem.find_by(name: payment_system_currency[:payment_system])
       nc = NationalCurrency.find_by(name: payment_system_currency[:national_currency])
-      PaymentSystem.connection.execute("UPDATE payment_systems SET national_currency_id = '#{nc.id}' WHERE id='#{ps.id}'")
+
+      next unless ps && nc
+
+      ps.update(national_currency: nc)
     end
+
+    PaymentSystem.where(national_currency: nil).update(national_currency: NationalCurrency.find_by(name: 'RUB'))
   end
 end

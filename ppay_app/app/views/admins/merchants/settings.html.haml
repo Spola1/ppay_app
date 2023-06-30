@@ -13,20 +13,26 @@
       %thead.items-list-thead
         %tr
           %th.items-list-th Метод платежа
+          %th.items-list-th Валюта
+          %th.items-list-th Тип платежа
           %th.items-list-th Сервис
           %th.items-list-th Оператор
           %th.items-list-th Рабочая группа
           %th.items-list-th Агент
+          %th.items-list-th Общий процент
 
           %th.items-list-th
 
       %tbody
         - @commissions.each do |merchant_method_id, commissions|
           %tr.items-list-tr
-            %td.items-list-td= "#{commissions.first.payment_system_name} #{commissions.first.national_currency_name} #{commissions.first.direction}"
+            %td.items-list-td= commissions.first.payment_system_name
+            %td.items-list-td= commissions.first.national_currency_name
+            %td.items-list-td= commissions.first.direction
             - commissions.each do |commission|
               %td.items-list-td
                 = text_field_tag "merchant[commissions][#{commission.id}]", commission.commission, size: 5
+            %td.items-list-td= commissions.sum(&:commission)
             %td.items-list-td.px-1.w-0
               = link_to merchant_merchant_method_path(@merchant, merchant_method_id),
                         data: { turbo_confirm: 'Вы уверены что хотите удалить метод?', turbo_method: :delete }  do
