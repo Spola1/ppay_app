@@ -6,6 +6,7 @@ RSpec.describe Payment, type: :model do
   let!(:ppay_user) { create(:user, :ppay) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:rate_snapshot_sell) { create(:rate_snapshot, :sell) }
+  let!(:national_currency_idr) { create(:national_currency, name: 'IDR') }
 
   it { is_expected.to have_many(:transactions) }
 

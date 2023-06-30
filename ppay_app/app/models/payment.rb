@@ -74,8 +74,8 @@ class Payment < ApplicationRecord
   validates_presence_of :redirect_url, if: :internal?
 
   # rubocop:disable Style/RescueModifier
-  validates :national_currency, inclusion: { in: (NationalCurrency.pluck(:name) rescue []),
-                                             valid_values: (NationalCurrency.pluck(:name).join(', ') rescue '') }
+  validates :national_currency, inclusion: { in: proc { NationalCurrency.pluck(:name) },
+                                             valid_values: proc { NationalCurrency.pluck(:name).join(', ') } }
   # rubocop:enable Style/RescueModifier
 
   validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }

@@ -6,7 +6,7 @@ RSpec.describe 'Payment transactions commissions' do
   let!(:ppay_user) { create(:user, :ppay) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
 
-  let(:merchant) { create :merchant }
+  let!(:merchant) { create(:merchant) }
 
   let(:commissions_values) do
     [ # ppay processer agent working_group

@@ -13,7 +13,7 @@ module Payments
                 direction: type,
                 payment_system: PaymentSystem.find_by(
                   {
-                    payment_system:,
+                    name: payment_system,
                     national_currency: NationalCurrency.find_by(name: national_currency)
                   }
                 )
