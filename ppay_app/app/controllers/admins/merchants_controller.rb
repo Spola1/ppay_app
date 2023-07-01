@@ -56,7 +56,7 @@ module Admins
 
     def set_all_merchants
       @pagy, @merchants = pagy(Merchant.all)
-      @merchants = @merchants.decorate
+      @merchants = @merchants.order(created_at: :desc).decorate
     end
 
     def find_merchant
@@ -85,7 +85,7 @@ module Admins
 
     def settings_params
       params.require(:merchant)
-            .permit(:nickname, :check_required, :unique_amount, commissions: {})
+            .permit(:nickname, :name, :check_required, :unique_amount, commissions: {})
     end
   end
 end

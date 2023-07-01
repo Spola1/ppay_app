@@ -2,7 +2,8 @@ ru:
   activerecord:
     attributes:
       user:
-        nickname: Отображаемое при оплате имя
+        nickname: Техническое название мерчанта
+        name: Отображаемое при оплате название
         check_required: Требуется загрузка чека
         unique_amount: Тип идентификации платежа
 
