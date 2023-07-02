@@ -696,10 +696,6 @@
     @apply text-red-500;
   }
 
-  .image-processer-block {
-    @apply max-h-96;
-  }
-
   input[name="advertisement[card_number]"] {
     width: 400px !important;
   }
