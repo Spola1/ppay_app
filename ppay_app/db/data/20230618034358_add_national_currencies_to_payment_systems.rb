@@ -2,6 +2,9 @@
 
 class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
   def up
+    PaymentSystem.connection.schema_cache.clear!
+    PaymentSystem.reset_column_information
+
     [
       { national_currency: 'RUB', payment_system: 'Sberbank' },
       { national_currency: 'RUB', payment_system: 'Tinkoff' },
@@ -28,7 +31,7 @@ class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
       { national_currency: 'TJS', payment_system: 'Спитамен - VISA' },
       { national_currency: 'TJS', payment_system: 'Спитамен - КортиМилли' }
     ].each do |payment_system_currency|
-      ps = PaymentSystem.find_by(name: payment_system_currency[:payment_system])
+      ps = PaymentSystem.find_or_create_by(name: payment_system_currency[:payment_system])
       nc = NationalCurrency.find_by(name: payment_system_currency[:national_currency])
 
       next unless ps && nc
