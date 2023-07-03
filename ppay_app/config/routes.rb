@@ -21,13 +21,13 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: :update
       resources :withdrawals, param: :uuid, only: :update
     end
+  end
 
-    namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
-      resources :deposits, param: :uuid, only: :show  
-      resources :withdrawals, param: :uuid, only: :show
+  namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
+    resources :deposits, param: :uuid, only: :show  
+    resources :withdrawals, param: :uuid, only: :show
 
-      concerns :statuses_updatable
-    end
+    concerns :statuses_updatable
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
@@ -86,7 +86,6 @@ Rails.application.routes.draw do
     end
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
-    resources :transactions, only: %i[index show]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
     namespace :payments do
