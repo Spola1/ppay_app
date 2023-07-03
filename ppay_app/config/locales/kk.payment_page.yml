@@ -15,6 +15,7 @@ kk:
     back_to_shop: Дүкенге оралу
     confirmation_transfer_cancellation: Сіз төлемді қайтарғыңыз келетініне сенімдісіз бе?
     payment_cancelled: Төлем тоқтатылды!
+    choise_language: Тілді таңдаңыз
     deposit:
       attributes:
         shop: Дүкен
@@ -44,4 +45,12 @@ kk:
         money_transfer: Біз ақша аударамыз...
         transfer_confirmation: Сіз ақша алдыңыз ба?
         confirmation_receipt_of_money: Сіз төлемді толығымен алғаныңызға сенімдісіз бе және оны растағыңыз келе ме?
-        confirmation_payment_cancellation: Сіз төлемді қайтарғыңыз келетініне сенімдісіз бе?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

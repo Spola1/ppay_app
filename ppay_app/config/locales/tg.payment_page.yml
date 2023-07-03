@@ -15,6 +15,7 @@ tg:
     back_to_shop: Бозгашт ба мағоза
     confirmation_transfer_cancellation: Шумо мутмаин ҳастед, ки мехоҳед пардохтро бекор кунед?
     payment_cancelled: Пардохт бекор карда шуд!
+    choise_language: Забонро интихоб кунед
     deposit:
       attributes:
         shop: Мағоза
@@ -44,4 +45,12 @@ tg:
         money_transfer: Интиқоли пул...
         transfer_confirmation: Шумо пул гирифтед?
         confirmation_receipt_of_money: Ое шумо мутмаин ҳастед, ки шумо пардохтро пурра гирифтаед ва мехоҳед онро тасдиқ кунед?
-        confirmation_payment_cancellation: Шумо мутмаин ҳастед, ки мехоҳед пардохтро бекор кунед?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

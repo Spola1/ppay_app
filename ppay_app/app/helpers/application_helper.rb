@@ -13,19 +13,17 @@ module ApplicationHelper
 
   private
 
-  def locale_to_country_code(locale)
-    locale_to_country_code_map = {
-      id: 'id',
-      kk: 'kz',
-      ky: 'kg',
-      ru: 'ru',
-      tg: 'tj',
-      tr: 'tr',
-      uk: 'ua',
-      uz: 'uz'
+  def language_options
+    {
+      I18n.t('payments.locale.ru') => :ru,
+      I18n.t('payments.locale.uz') => :uz,
+      I18n.t('payments.locale.tg') => :tg,
+      I18n.t('payments.locale.id') => :id,
+      I18n.t('payments.locale.kk') => :kk,
+      I18n.t('payments.locale.uk') => :uk,
+      I18n.t('payments.locale.tr') => :tr,
+      I18n.t('payments.locale.ky') => :ky
     }
-
-    locale_to_country_code_map[locale.to_sym]
   end
 
   def active?(name)

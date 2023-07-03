@@ -15,6 +15,7 @@ tr:
     back_to_shop: Mağazaya geri dön
     confirmation_transfer_cancellation: Ödemeyi iptal etmek istediğinize emin misiniz?
     payment_cancelled: Ödeme iptal edildi!
+    choise_language: Dil seç
     deposit:
       attributes:
         shop: Mağaza
@@ -44,4 +45,12 @@ tr:
         money_transfer: Parayı transfer ediyoruz...
         transfer_confirmation: Parayı aldınız mı?
         confirmation_receipt_of_money: Ödemeyi tamamen aldığınızdan ve onaylamak istediğinizden emin misiniz?
-        confirmation_payment_cancellation: Ödemeyi iptal etmek istediğinize emin misiniz?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

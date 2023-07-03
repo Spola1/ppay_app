@@ -116,6 +116,21 @@ class Payment < ApplicationRecord
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), merchant.api_keys.last.token, data)
   end
 
+  def language_from_locale
+    language_mapping = {
+      'ru' => 'ru-ru',
+      'uk' => 'uk-ua',
+      'uz' => 'uz-uz',
+      'tg' => 'tg-tg',
+      'id' => 'id-id',
+      'kk' => 'kk-kk',
+      'tr' => 'tr-tr',
+      'ky' => 'ky-ky'
+    }
+
+    language_mapping[locale] || 'ru-ru'
+  end
+
   private
 
   def set_locale_from_currency

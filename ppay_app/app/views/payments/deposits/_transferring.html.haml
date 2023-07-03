@@ -79,8 +79,7 @@
           %span
             = t('payments.deposit.attributes.click_payment_completed_button')
 
-
-      = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5', style: payment.button_color_style
+      = f.submit t('payments.deposit.attributes.payment_completed'), class: 'green-button mt-2 mb-5', style: payment.button_color_style
 
     .block-sending-cancel-on-img-form
       = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
@@ -91,9 +90,9 @@
     = render 'shared/chat', payment:
     
   -unless browser.device.mobile? || browser.device.tablet?
-    .show-second-block
+    .show-second-block{style: payment.background_color_style}
       = render 'payments/qr_code', payment: payment
 
   :javascript
     window.paymentLanguage = "#{j payment.language_from_locale}";
-    .show-second-block{style: payment.background_color_style}
+

@@ -15,6 +15,7 @@ id:
     back_to_shop:
     confirmation_transfer_cancellation:
     payment_cancelled:
+    choise_language: Pilih bahasa
     deposit:
       attributes:
         shop:
@@ -44,4 +45,12 @@ id:
         money_transfer:
         transfer_confirmation:
         confirmation_receipt_of_money:
-        confirmation_payment_cancellation:
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

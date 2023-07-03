@@ -3,6 +3,16 @@
     .show-second-block{style: payment.background_color_style}
 
   .show-payment-block
+
+    .simple-form-for-payment-deposit
+      = simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+        .select-language
+          = f.label :language, t('payments.choise_language')
+        .select-submit-container
+          = f.select :locale, language_options, {}, { class: 'form-input-select' }
+
+          = f.submit t('payments.choise'), class: "button-submit", style: payment.button_color_style
+        
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
@@ -39,7 +49,7 @@
 
         = hidden_field_tag :event, 'search'
 
-        = f.submit "Подтвердить", class: "green-button-submit mt-3", style: payment.button_color_style
+        = f.submit t('payments.confirm'), class: "green-button-submit mt-3", style: payment.button_color_style
 
     .please-pay-from-bank
       = t('payments.deposit.attributes.request')

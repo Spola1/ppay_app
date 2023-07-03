@@ -12,14 +12,12 @@ class PaymentsController < ApplicationController
   private
 
   def set_locale
-    if params[:locale].present?
-      I18n.locale = params[:locale]
-      session[:locale] = params[:locale]
-    elsif @payment.locale.present?
+    if @payment.locale.present?
       I18n.locale = @payment.locale.to_sym
-      session[:locale] = @payment.locale.to_sym
     end
-  rescue I18n::InvalidLocale
+
+    rescue I18n::InvalidLocale
+
     I18n.locale = I18n.default_locale
   end
 
@@ -35,5 +33,9 @@ class PaymentsController < ApplicationController
 
   def valid_signature?
     params[:signature] == @payment.signature
+  end
+
+  def payment_params
+    required_params.permit(:locale)
   end
 end

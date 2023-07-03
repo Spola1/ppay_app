@@ -15,6 +15,7 @@ ky:
     back_to_shop: Дүкөнгө кайтуу
     confirmation_transfer_cancellation: Төлөмдү жокко чыгаргыңыз келеби?
     payment_cancelled: Төлөм жокко чыгарылды!
+    choise_language: Тил тандоо
     deposit:
       attributes:
         shop: Дүкөн
@@ -44,4 +45,12 @@ ky:
         money_transfer: Акча которуу...
         transfer_confirmation: Акча алдыңызбы?
         confirmation_receipt_of_money: Төлөмдү толугу менен алганыңызга жана аны ырастагыңыз келгенине ишенесизби?
-        confirmation_payment_cancellation: Төлөмдү жокко чыгаргыңыз келеби?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

@@ -17,3 +17,6 @@
 
   - if payment.arbitration
     = render 'shared/chat', payment:
+
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";

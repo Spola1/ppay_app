@@ -15,6 +15,7 @@ uz:
     back_to_shop: Do'konga qaytish
     confirmation_transfer_cancellation: To'lovni bekor qilishni xohlayotganingizga aminmisiz?
     payment_cancelled: To'lov bekor qilindi!
+    choise_language: Tilni tanlang
     deposit:
       attributes:
         shop: Do'kon
@@ -44,4 +45,12 @@ uz:
         money_transfer: Biz pul o'tkazamiz...
         transfer_confirmation: Siz pul oldingizmi?
         confirmation_receipt_of_money: To'lovni to'liq olganingizga ishonchingiz komilmi va uni tasdiqlamoqchimisiz?
-        confirmation_payment_cancellation: To'lovni bekor qilishni xohlayotganingizga aminmisiz?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

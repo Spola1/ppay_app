@@ -15,6 +15,7 @@ uk:
     back_to_shop: Повернутися в магазин
     confirmation_transfer_cancellation: Ви впевнені, що хочете скасувати платіж?
     payment_cancelled: Платіж скасовано!
+    choise_language: Вибрати мову
     deposit:
       attributes:
         shop: Магазин
@@ -29,7 +30,7 @@ uk:
         time_for_payment: Ви можете оплатити протягом
         make_transfer: Зробіть переказ зазначеної суми за номером картки вказаним нижче
         add_receipt_image: Додайте зображення чека
-        click_payment_completed_button: Після переказу натисніть кнопку " Оплата завершена»
+        click_payment_completed_button: Після переказу натисніть кнопку "Оплата завершена»
         payment_completed: Оплата завершена
         copy_deposit_amount: Скопіюйте точну суму депозиту
         changing_amount: Ми змінили суму, щоб визначити ваш платіж і обробити його швидше
@@ -44,4 +45,12 @@ uk:
         money_transfer: Переводимо гроші...
         transfer_confirmation: Ви отримали гроші?
         confirmation_receipt_of_money: Ви впевнені, що повністю отримали платіж і хочете його підтвердити?
-        confirmation_payment_cancellation: Ви впевнені, що хочете скасувати платіж?
+    locale:
+      ru: Російський
+      uz: Узбецький
+      tg: Таджицький
+      id: Індонезійський
+      kk: Казахський
+      uk: Український
+      tr: Турецький
+      ky: Киргизький

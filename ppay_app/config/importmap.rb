@@ -2,6 +2,7 @@
 
 # Pin npm packages by running ./bin/importmap
 
+pin 'filepond', to: 'https://ga.jspm.io/npm:filepond@4.30.4/dist/filepond.js', preload: true
 pin 'application', preload: true
 pin '@hotwired/turbo-rails', to: 'turbo.min.js', preload: true
 pin '@hotwired/stimulus', to: 'stimulus.min.js', preload: true
@@ -11,7 +12,6 @@ pin 'jquery-countdown', to: 'https://ga.jspm.io/npm:jquery-countdown@2.2.0/dist/
 pin 'inputmask', to: 'https://ga.jspm.io/npm:inputmask@5.0.7/dist/inputmask.js'
 pin 'jquery', to: 'https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js'
 pin 'jquery-ui', to: 'https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js'
-pin 'filepond', to: 'https://ga.jspm.io/npm:filepond@4.30.4/dist/filepond.js', preload: true
 pin 'filepond-ru', to: 'filepond/locale/ru-ru.js', preload: true
 pin 'filepond-uk', to: 'filepond/locale/uk-ua.js', preload: true
 pin 'filepond-uz', to: 'filepond/locale/uz-uz.js', preload: true

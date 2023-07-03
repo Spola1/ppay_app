@@ -15,6 +15,7 @@ ru:
     back_to_shop: вернуться в магазин
     confirmation_transfer_cancellation: Вы уверены, что хотите отменить платёж?
     payment_cancelled: Платёж отменён!
+    choise_language: Выбрать язык
     deposit:
       attributes:
         shop: Магазин
@@ -44,4 +45,12 @@ ru:
         money_transfer: Переводим деньги...
         transfer_confirmation: Вы получили деньги?
         confirmation_receipt_of_money: Вы уверены, что полностью получили платёж и хотите его подтвердить?
-        confirmation_payment_cancellation: Вы уверены, что хотите отменить платёж?
+    locale:
+      ru: Русский
+      uz: Узбекский
+      tg: Таджикский
+      id: Индонезийский
+      kk: Казахский
+      uk: Украинский
+      tr: Турецкий
+      ky: Киргизский

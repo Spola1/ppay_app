@@ -19,6 +19,7 @@ module StateMachines
 
           # show_selection_page
           event :show do
+            before :bind_rate_snapshot
             transitions from: :created, to: :draft
           end
 
@@ -44,7 +45,7 @@ module StateMachines
 
           # bind_operator
           event :bind do
-            before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount
+            before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount, :set_locale
             after :create_transactions
             ensure :search_processer # rubocop:disable Layout/RescueEnsureAlignment
 
@@ -59,6 +60,7 @@ module StateMachines
 
           # show_confirmation
           event :confirm do
+            before :set_locale
             after :complete_transactions
 
             transitions from: %i[transferring confirming], to: :completed
