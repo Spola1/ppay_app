@@ -50,10 +50,6 @@
 
     = render 'payments/uuid', payment:
 
-    .show-countries-block
-      - I18n.available_locales.each do |locale|
-        = link_to country_flag_icon(locale), url_for(locale: locale, uuid: payment.uuid, signature: payment.signature)
-
   - if payment.arbitration
     = render 'shared/chat', payment:
     

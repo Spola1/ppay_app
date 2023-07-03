@@ -11,11 +11,6 @@ module ApplicationHelper
     user.payments.in_hotlist.decorate
   end
 
-  def country_flag_icon(locale)
-    country_code = locale_to_country_code(locale)
-    flag_icon(country_code)
-  end
-
   private
 
   def locale_to_country_code(locale)
