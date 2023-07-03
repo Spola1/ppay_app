@@ -19,7 +19,6 @@ module StateMachines
 
           # show_selection_page
           event :show do
-            before :bind_rate_snapshot
             transitions from: :created, to: :draft
           end
 
