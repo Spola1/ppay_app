@@ -3,45 +3,45 @@ kk:
     formats:
       short: "%Y-%m-%d %H:%M:%S"
   payments:
-    payment_preparation:
-    payment processing:
-    expectation:
-    order:
-    choise:
-    confirm:
-    success:
-    payment_completed:
-    cancellation_payment:
-    back_to_shop:
-    confirmation_transfer_cancellation:
-    payment_cancelled:
+    payment_preparation: Төлемді дайындау жүріп жатыр
+    payment processing: Өңдеу жүріп жатыр
+    expectation: Күте тұрыңыз...
+    order: Тапсырыс
+    choise: Таңдау
+    confirm: Растау
+    success: Сәтті!
+    payment_completed: Төлем орындалды!
+    cancellation_payment: Төлемді болдырмау
+    back_to_shop: Дүкенге оралу
+    confirmation_transfer_cancellation: Сіз төлемді қайтарғыңыз келетініне сенімдісіз бе?
+    payment_cancelled: Төлем тоқтатылды!
     deposit:
       attributes:
-        shop:
-        choosing_payment_system:
-        request:
-        attention:
-        paragraph_1:
-        paragraph_2:
-        paragraph_3:
-        qr_manual_1:
-        qr_manual_2:
-        time_for_payment:
-        make_transfer:
-        add_receipt_image:
-        click_payment_completed_button:
-        payment_completed:
-        copy_deposit_amount:
-        changing_amount:
-        continue_payment:
+        shop: Дүкен
+        choosing_payment_system: Төлем жүйесін таңдаңыз
+        request: Тізімнен тек картаңыз бар және төлеуді жоспарлап отырған банкті таңдаңыз
+        attention: Назар аударыңыз
+        paragraph_1: Қолма-қол ақша жіберген кезде қосымшаға хабарлама жазуға қатаң тыйым салынады.
+        paragraph_2: Төлем үтірден кейінгі барлық белгілерді қоса алғанда, көрсетілген сомаға дәл орындалуы керек.
+        paragraph_3: Қаражатты банкішілік аударым арқылы қатаң түрде жіберу керек, жөнелтуші банк пен алушы банк бірдей болуы керек. Әйтпесе, төлемді есепке алуға кепілдік берілмейді.
+        qr_manual_1: Жалғастыру үшін камераны QR кодына бағыттаңыз
+        qr_manual_2: телефоннан
+        time_for_payment: Сіз төлей аласыз
+        make_transfer: Көрсетілген соманы төменде көрсетілген карта нөмірі бойынша аударыңыз
+        add_receipt_image: Чек суретін қосыңыз
+        click_payment_completed_button: Аударғаннан кейін "төлем аяқталды" түймесін басыңыз
+        payment_completed: Төлем аяқталды
+        copy_deposit_amount: Депозиттің нақты сомасын көшіріңіз
+        changing_amount: Төлеміңізді анықтау және оны тезірек өңдеу үшін соманы өзгерттік
+        continue_payment: Төлемді жалғастыру
     withdraw:
       attributes:
-        merchant:
-        amount:
-        choosing_bank_card:
-        bank:
-        card_number:
-        money_transfer:
-        transfer_confirmation:
-        confirmation_receipt_of_money:
-        confirmation_payment_cancellation:
+        merchant: Саудагер
+        amount: Сомасы
+        choosing_bank_card: Қаражатты қайда алғыңыз келетінін картаны көрсетіңіз
+        bank: Банк
+        card_number: Карта нөмірі
+        money_transfer: Біз ақша аударамыз...
+        transfer_confirmation: Сіз ақша алдыңыз ба?
+        confirmation_receipt_of_money: Сіз төлемді толығымен алғаныңызға сенімдісіз бе және оны растағыңыз келе ме?
+        confirmation_payment_cancellation: Сіз төлемді қайтарғыңыз келетініне сенімдісіз бе?

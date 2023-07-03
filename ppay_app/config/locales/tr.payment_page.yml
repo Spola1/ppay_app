@@ -3,45 +3,45 @@ tr:
     formats:
       short: "%Y-%m-%d %H:%M:%S"
   payments:
-    payment_preparation:
-    payment processing:
-    expectation:
-    order:
-    choise:
-    confirm:
-    success:
-    payment_completed:
-    cancellation_payment:
-    back_to_shop:
-    confirmation_transfer_cancellation:
-    payment_cancelled:
+    payment_preparation: Ödemenin hazırlanması devam ediyor
+    payment processing: İşleme devam ediyor
+    expectation: Lütfen bekleyin...
+    order: Sipariş
+    choise: Seçmek
+    confirm: Doğrulamak
+    success: Başarılıydı!
+    payment_completed: Ödeme tamamlandı!
+    cancellation_payment: Ödeme tamamlandı!
+    back_to_shop: Mağazaya geri dön
+    confirmation_transfer_cancellation: Ödemeyi iptal etmek istediğinize emin misiniz?
+    payment_cancelled: Ödeme iptal edildi!
     deposit:
       attributes:
-        shop:
-        choosing_payment_system:
-        request:
-        attention:
-        paragraph_1:
-        paragraph_2:
-        paragraph_3:
-        qr_manual_1:
-        qr_manual_2:
-        time_for_payment:
-        make_transfer:
-        add_receipt_image:
-        click_payment_completed_button:
-        payment_completed:
-        copy_deposit_amount:
-        changing_amount:
-        continue_payment:
+        shop: Mağaza
+        choosing_payment_system: Ödeme sisteminizi seçin
+        request: Lütfen listeden yalnızca kartınız olan ve ödemeyi planladığınız bankayı seçin!
+        attention: Dikkat
+        paragraph_1: Nakit gönderirken, uygulamada mesaj yazmak kesinlikle yasaktır.
+        paragraph_2: Ödemenin, tüm ondalık basamaklar da dahil olmak üzere, belirtilen tutar için tam olarak yapılması gerekir.
+        paragraph_3: Fonlar kesinlikle banka içi havale ile gönderilmeli, gönderen banka ve alıcı banka aynı olmalıdır. Aksi takdirde ödemenin yatırılması garanti edilmez.
+        qr_manual_1: Devam etmek için kamerayı QR koduna yönlendirin
+        qr_manual_2: telefondan
+        time_for_payment: İçinde ödeme yapabilirsiniz
+        make_transfer: Belirtilen tutarın aşağıda belirtilen kart numarasına göre transferini yapın
+        add_receipt_image: Çekin resmini ekleyin
+        click_payment_completed_button: Transferden sonra "Ödeme tamamlandı» düğmesine tıklayın
+        payment_completed: Ödeme tamamlandı
+        copy_deposit_amount: Depozitonun tam miktarını kopyalayın
+        changing_amount: Ödemenizi belirlemek ve daha hızlı işlemek için tutarı değiştirdik
+        continue_payment: Ödemeye devam et
     withdraw:
       attributes:
-        merchant:
-        amount:
-        choosing_bank_card:
-        bank:
-        card_number:
-        money_transfer:
-        transfer_confirmation:
-        confirmation_receipt_of_money:
-        confirmation_payment_cancellation:
+        merchant: Tüccar
+        amount: Tutar
+        choosing_bank_card: Lütfen parayı çekmek istediğiniz kartı belirtin
+        bank: Банк
+        card_number: Kart numarası
+        money_transfer: Parayı transfer ediyoruz...
+        transfer_confirmation: Parayı aldınız mı?
+        confirmation_receipt_of_money: Ödemeyi tamamen aldığınızdan ve onaylamak istediğinizden emin misiniz?
+        confirmation_payment_cancellation: Ödemeyi iptal etmek istediğinize emin misiniz?

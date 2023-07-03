@@ -3,45 +3,45 @@ uk:
     formats:
       short: "%Y-%m-%d %H:%M:%S"
   payments:
-    payment_preparation:
-    payment processing:
-    expectation:
-    order:
-    choise:
-    confirm:
-    success:
-    payment_completed:
-    cancellation_payment:
-    back_to_shop:
-    confirmation_transfer_cancellation:
-    payment_cancelled:
+    payment_preparation: Йде підготовка платежу
+    payment processing: Йде обробка
+    expectation: Чекайте будь ласка...
+    order: Замовлення
+    choise: Вибрати
+    confirm: Підтвердивши
+    success: Успішно!
+    payment_completed: Платіж виконано!
+    cancellation_payment: Скасувати платіж
+    back_to_shop: Повернутися в магазин
+    confirmation_transfer_cancellation: Ви впевнені, що хочете скасувати платіж?
+    payment_cancelled: Платіж скасовано!
     deposit:
       attributes:
-        shop:
-        choosing_payment_system:
-        request:
-        attention:
-        paragraph_1:
-        paragraph_2:
-        paragraph_3:
-        qr_manual_1:
-        qr_manual_2:
-        time_for_payment:
-        make_transfer:
-        add_receipt_image:
-        click_payment_completed_button:
-        payment_completed:
-        copy_deposit_amount:
-        changing_amount:
-        continue_payment:
+        shop: Магазин
+        choosing_payment_system: Виберіть платіжну систему
+        request: Будь ласка, вибирайте зі списку тільки той банк, карта якого у вас є і з якої ви плануєте оплатити!
+        attention: Увага
+        paragraph_1: При відправці грошових коштів писати повідомлення в додатку категорично заборонено.
+        paragraph_2: Платіж повинен бути виконаний в точності на зазначену суму, включаючи всі знаки після коми.
+        paragraph_3: Кошти необхідно відправляти строго внутрішньобанківським переказом, банк відправник і банк одержувач повинні бути однаковими. В іншому випадку зарахування оплати не гарантується.
+        qr_manual_1: Наведіть камеру на QR-код, щоб продовжити
+        qr_manual_2: з телефону
+        time_for_payment: Ви можете оплатити протягом
+        make_transfer: Зробіть переказ зазначеної суми за номером картки вказаним нижче
+        add_receipt_image: Додайте зображення чека
+        click_payment_completed_button: Після переказу натисніть кнопку " Оплата завершена»
+        payment_completed: Оплата завершена
+        copy_deposit_amount: Скопіюйте точну суму депозиту
+        changing_amount: Ми змінили суму, щоб визначити ваш платіж і обробити його швидше
+        continue_payment: Продовжити оплату
     withdraw:
       attributes:
-        merchant:
-        amount:
-        choosing_bank_card:
-        bank:
-        card_number:
-        money_transfer:
-        transfer_confirmation:
-        confirmation_receipt_of_money:
-        confirmation_payment_cancellation:
+        merchant: Мерчант
+        amount: Сума
+        choosing_bank_card: Будь ласка, вкажіть карту, куди ви хочете вивести кошти
+        bank: Банк
+        card_number: Номер картки
+        money_transfer: Переводимо гроші...
+        transfer_confirmation: Ви отримали гроші?
+        confirmation_receipt_of_money: Ви впевнені, що повністю отримали платіж і хочете його підтвердити?
+        confirmation_payment_cancellation: Ви впевнені, що хочете скасувати платіж?
