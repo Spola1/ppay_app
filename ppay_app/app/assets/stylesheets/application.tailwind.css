@@ -717,16 +717,14 @@
   .select-submit-container {
     display: flex;
     align-items: center;
-    margin: 0 auto; /* Центрирование контейнера по горизонтали */
+    margin: 0 auto;
   }
   
   .select-submit-container select {
-    flex: 1; /* Растянуть select на всю доступную ширину */
-    /* Дополнительные стили для select элемента */
+    flex: 1;
   }
   
   .select-submit-container input[type="submit"] {
-    margin-left: 10px; /* Добавить отступ слева для кнопки submit */
-    /* Дополнительные стили для кнопки submit */
+    margin-left: 10px;
   }
 }
