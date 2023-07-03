@@ -32,4 +32,8 @@ module ApplicationHelper
 
     locale_to_country_code_map[locale.to_sym]
   end
+
+  def active?(name)
+    name == action_name ? :active : nil
+  end
 end

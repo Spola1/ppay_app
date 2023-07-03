@@ -11,6 +11,11 @@ ru:
             image:
               blank: не загружен
           inclusion: Доступные значения %{valid_values}
+        user:
+          attributes:
+            telegram:
+              not_found: Пользователь не найден
+                         (перейдите по ссылке и напишите боту с указанного телеграм аккаунта, затем попробуйте еще раз)
 
   errors:
     format: "%{attribute} %{message}"

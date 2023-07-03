@@ -1,9 +1,10 @@
 .show-payment
   -unless browser.device.mobile? || browser.device.tablet?
-    .show-second-block
+    .show-second-block{style: payment.background_color_style}
+
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
         UID Check
 
@@ -38,7 +39,7 @@
 
         = hidden_field_tag :event, 'search'
 
-        = f.submit t('payments.confirm'), class: "green-button-submit mt-3"
+        = f.submit "Подтвердить", class: "green-button-submit mt-3", style: payment.button_color_style
 
     .please-pay-from-bank
       = t('payments.deposit.attributes.request')
@@ -57,7 +58,7 @@
     = render 'shared/chat', payment:
     
   -unless browser.device.mobile? || browser.device.tablet?
-    .show-second-block
+    .show-second-block{style: payment.background_color_style}
       = render 'payments/qr_code', payment: payment
 
   :javascript

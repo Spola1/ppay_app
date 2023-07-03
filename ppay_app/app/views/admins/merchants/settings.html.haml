@@ -1,0 +1,53 @@
+= simple_form_for(@merchant, as: :merchant, url: settings_merchant_path(@merchant), action: :update) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :nickname, autofocus: true
+    = f.input :name
+    = f.input :check_required, as: :boolean
+    = f.input :unique_amount, collection: [['Чек', 'none'], ['Целая уникализация суммы', 'integer'], ['Дробная уникализация суммы', 'decimal']], include_blank: false
+
+  .py-4
+    %h2 Комиссии
+
+    %table.items-list-table
+      %thead.items-list-thead
+        %tr
+          %th.items-list-th Метод платежа
+          %th.items-list-th Валюта
+          %th.items-list-th Тип платежа
+          %th.items-list-th Сервис
+          %th.items-list-th Оператор
+          %th.items-list-th Рабочая группа
+          %th.items-list-th Агент
+          %th.items-list-th Общий процент
+
+          %th.items-list-th
+
+      %tbody
+        - @commissions.each do |merchant_method_id, commissions|
+          %tr.items-list-tr
+            %td.items-list-td= commissions.first.payment_system_name
+            %td.items-list-td= commissions.first.national_currency_name
+            %td.items-list-td= commissions.first.direction
+            - commissions.each do |commission|
+              %td.items-list-td
+                = text_field_tag "merchant[commissions][#{commission.id}]", commission.commission, size: 5
+            %td.items-list-td= commissions.sum(&:commission)
+            %td.items-list-td.px-1.w-0
+              = link_to merchant_merchant_method_path(@merchant, merchant_method_id),
+                        data: { turbo_confirm: 'Вы уверены что хотите удалить метод?', turbo_method: :delete }  do
+                .icon-button-red
+                  = fa_icon 'trash'
+
+
+  .form-actions
+    = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
+
+= form_with url: merchant_merchant_methods_path(@merchant), class: 'form_with mt-5', data: {turbo_confirm: 'Вы уверены?'} do |f|
+  .flex.flex-row.items-start.space-x-2
+    .flex.flex-col.items-start
+      = f.text_field :keywords, placeholder: 'Ключевые слова', class: 'form-input w-full'
+      %span.hint Пустое поле соответствует всем возможным значениям
+    = f.submit 'Добавить методы', name: :add_methods, class: 'form-submit'
+    = f.submit 'Удалить методы', name: :delete_methods, class: 'form-submit-red'

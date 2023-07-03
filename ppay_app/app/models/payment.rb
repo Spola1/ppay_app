@@ -74,9 +74,8 @@ class Payment < ApplicationRecord
   validates_presence_of :national_currency, :national_currency_amount, :callback_url
   validates_presence_of :redirect_url, if: :internal?
 
-  validates :national_currency, inclusion: { in: Settings.national_currencies,
-                                             valid_values: Settings.national_currencies.join(', ') }
-
+  validates :national_currency, inclusion: { in: proc { NationalCurrency.pluck(:name) },
+                                             valid_values: proc { NationalCurrency.pluck(:name).join(', ') } }
   validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
 
   validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),
@@ -99,7 +98,7 @@ class Payment < ApplicationRecord
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
   scope :in_hotlist, lambda {
-    deposits.confirming.or(withdrawals.transferring).order(status_changed_at: :desc)
+    deposits.confirming.or(withdrawals.transferring).order(created_at: :desc)
   }
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }
@@ -172,6 +171,8 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
+    Payments::TelegramNotificationJob.perform_async(id)
+
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
       partial: 'processers/notifications/notification',

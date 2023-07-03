@@ -3,10 +3,9 @@
 require 'rails_helper'
 
 feature 'Client can fill out the withdrawal form', type: :feature do
-  let!(:rate_snapshot) { create(:rate_snapshot) }
+  let!(:rate_snapshot) { create(:rate_snapshot, :sell) }
   let!(:advertisement) { create(:advertisement, :withdrawal, payment_system: payment_system.name) }
   let!(:payment) { create(:payment, :withdrawal, :created, advertisement:) }
-  let(:payment_system) { create :payment_system }
 
   before do
     visit "/payments/withdrawals/#{payment.uuid}?signature=#{payment.signature}"

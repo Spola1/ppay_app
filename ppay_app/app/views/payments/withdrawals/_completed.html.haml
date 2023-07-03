@@ -1,10 +1,9 @@
 .show-payment
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
         UID Check
-
     .proc-payment-done-block
       .proc-payment-done-img
       = t('payments.success')

@@ -43,7 +43,7 @@ module Binance
       binance_session.otc_advs_array
     end
 
-    def choose_4_advs_from_array
+    def choose_10_advs_from_array
       advs_array = suitable_advs_array
       results = []
       advs_array.each do |adv_arr_item|
@@ -54,7 +54,7 @@ module Binance
 
         # puts ".can_change?(adv): #{self.can_change?(adv)}"
         # puts "results.size: #{results.size}"
-        next unless ((fiat_amount == false) || can_change?(adv)) && results.size < 4
+        next unless ((fiat_amount == false) || can_change?(adv)) && results.size < 10
 
         results << adv_arr_item
         # else

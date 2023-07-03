@@ -74,6 +74,7 @@ RSpec.configure do |config|
   config.include ActionView::Helpers::NumberHelper
 
   config.include_context 'turn off UpdateCallbackJob'
+  config.include_context 'payment means'
 end
 
 Shoulda::Matchers.configure do |config|

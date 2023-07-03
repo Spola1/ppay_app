@@ -1,0 +1,16 @@
+ru:
+  devise:
+    sessions:
+      new:
+        system_sign_in: Вход в систему
+        sign_in: Вход
+
+    registrations:
+      edit:
+        title: Редактирование учётной записи
+
+  user:
+    registrations:
+      new:
+        submit:
+          sign_up: Зарегистрироваться
