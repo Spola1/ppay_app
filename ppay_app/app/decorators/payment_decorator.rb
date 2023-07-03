@@ -133,17 +133,4 @@ class PaymentDecorator < ApplicationDecorator
   def countdown_difference
     countdown_end_time - Time.now
   end
-
-  def language_options
-    {
-      "Русский" => :ru,
-      "Узбекский" => :uz,
-      "Таджикский" => :tg,
-      "Индонезийский" => :id,
-      "Казахский" => :kk,
-      "Украинский" => :uk,
-      "Турецкий" => :tr,
-      "Киргизский" => :ky
-    }
-  end
 end
