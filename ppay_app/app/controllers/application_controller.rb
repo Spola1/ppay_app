@@ -6,16 +6,14 @@ class ApplicationController < ActionController::Base
 
   MANAGEMENT_NAMESPACES = %w[admins supports].freeze
 
-  before_action :set_user_locale
+  before_action :set_application_locale
 
   helper_method :role_namespace, :management_namespace?
 
   private
 
-  def set_user_locale
-    if user_signed_in?
-      I18n.locale = :ru
-    end
+  def set_application_locale
+    I18n.locale = :ru
   end
 
   def role_namespace
