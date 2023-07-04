@@ -28,12 +28,6 @@ const languagePacks = {
 //  'ky-ky': ky_KY
 }
 
-const defaultLanguage = ru_RU
-
-let languagePack = languagePacks[window.paymentLanguage] || defaultLanguage
-
-FilePond.setOptions(languagePack)
-
 window.FilePond = FilePond
 window.FilePondRails = FilePondRails
 
@@ -41,7 +35,9 @@ export default class extends Controller {
   static targets = ['input'];
 
   connect() {
-    const input = document.querySelector('.filepond')
-    FilePondRails.create(input)
+    const input = document.querySelector('.filepond');
+    const languagePack = languagePacks[window.paymentLanguage] || ru_RU;
+    FilePond.setOptions(languagePack);
+    FilePondRails.create(input);
   }
 }

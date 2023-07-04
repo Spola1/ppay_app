@@ -16,7 +16,6 @@
  *= require font
  *= require filepond.min
  *= require filepond-plugin-image-preview.min
- *= require flag-icon
  */
 
 @media (min-width:320px), @media (min-width:481px), @media (min-width:641px), @media (min-width:961px) {
