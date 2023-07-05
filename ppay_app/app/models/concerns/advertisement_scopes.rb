@@ -52,19 +52,8 @@ module AdvertisementScopes
     }
 
     scope :order_by_similar_payments, lambda { |national_currency_amount|
-      order_sql = <<-SQL.squish
-        SUM(
-          CASE WHEN payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95}
-            AND #{national_currency_amount * 1.05}
-            THEN 1 ELSE 0 END
-        ) ASC
-      SQL
-
-      arel = Arel.sql(order_sql)
-
-      join_active_payments
-        .group('advertisements.id')
-        .order(arel)
+      order(Arel::Nodes::SqlLiteral.new("SUM(CASE WHEN payments.national_currency_amount BETWEEN 
+        #{national_currency_amount * 0.95} AND #{national_currency_amount * 1.05} THEN 1 ELSE 0 END) ASC"))
     }
 
     scope :order_by_remaining_confirmation_time, lambda {
