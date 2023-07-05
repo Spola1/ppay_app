@@ -9,6 +9,7 @@ module Payments
         Advertisement.for_payment(payment)
                      .for_deposit(payment.cryptocurrency_amount)
                      .order_by_algorithm(payment.national_currency_amount)
+                     .first
       end
     end
   end
