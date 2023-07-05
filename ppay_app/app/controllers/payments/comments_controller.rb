@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Payments
-  class CommentsController < ApplicationController
-    before_action :authenticate_user!, :find_payment
+  class CommentsController < Staff::BaseController
+    before_action :find_payment
 
     def create
       @comment = @payment.comments.create(**comment_params, user: current_user)

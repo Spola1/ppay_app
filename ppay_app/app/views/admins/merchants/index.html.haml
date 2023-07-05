@@ -1,0 +1,12 @@
+= turbo_frame_tag 'content' do
+  %section.wrap
+    .card-wrap
+      .item-card
+        .card-head
+          %h1 Мерчанты
+          = link_to '+ Добавить мерчанта', new_merchant_path, class: 'form-submit'
+
+        = render 'table', merchants: @merchants
+
+        .card-wrap
+          = render 'shared/pagination', pagy: @pagy

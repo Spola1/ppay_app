@@ -13,7 +13,7 @@ FactoryBot.define do
     national_currency_amount { 100 }
     cryptocurrency_amount { 1 }
     cryptocurrency { 'USDT' }
-    payment_system { Settings.payment_systems.first }
+    payment_system { 'Sberbank' }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
     uuid { SecureRandom.uuid }
@@ -60,8 +60,8 @@ FactoryBot.define do
       cancellation_reason { 0 }
     end
 
-    trait :UZS do
-      national_currency { 'UZS' }
+    trait :IDR do
+      national_currency { 'IDR' }
     end
 
     trait :Tinkoff do

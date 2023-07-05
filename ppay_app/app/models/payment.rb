@@ -73,9 +73,8 @@ class Payment < ApplicationRecord
   validates_presence_of :national_currency, :national_currency_amount, :callback_url
   validates_presence_of :redirect_url, if: :internal?
 
-  validates :national_currency, inclusion: { in: Settings.national_currencies,
-                                             valid_values: Settings.national_currencies.join(', ') }
-
+  validates :national_currency, inclusion: { in: proc { NationalCurrency.pluck(:name) },
+                                             valid_values: proc { NationalCurrency.pluck(:name).join(', ') } }
   validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
 
   validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),

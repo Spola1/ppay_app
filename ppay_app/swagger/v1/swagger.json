@@ -6,6 +6,36 @@
     "version": "v1"
   },
   "paths": {
+    "/api/v1/balance": {
+      "get": {
+        "summary": "Запрос текущего баланса",
+        "tags": [
+          "Общие"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "description": "## Запрос баланса\n\nДля получения текущего баланса нужно отправить GET-запрос `/api/v1/balance`.\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "responses": {
+          "200": {
+            "description": "user sets up a valid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/balance_show_response_body_schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized on invalid token"
+          }
+        }
+      }
+    },
     "/api/v1/external_processing/payments/deposits": {
       "post": {
         "summary": "Создание депозита с внешним процессингом",
@@ -29,19 +59,19 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "4aab1bbd-4e90-484b-9c43-640f12dfcac6",
+                    "id": "90710c96-e429-4fb0-9750-14361ccff4ee",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "4aab1bbd-4e90-484b-9c43-640f12dfcac6",
+                      "uuid": "90710c96-e429-4fb0-9750-14361ccff4ee",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-06-07T15:12:55.984+03:00",
+                      "expiration_time": "2023-06-27T19:09:53.146+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "initial_amount": "100.0",
                       "cryptocurrency_commission_amount": 0.0652,
                       "national_currency_commission_amount": 3.996108,
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBEdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--8e719cf64ca5e2c3d0ddf166a90f364ee3533c81/c35436c03e6898910cd70309a850dce6.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--b83debac83418f4d260ba4cd68e9a0cafd29667c/fc3d94f8d089c679a43ff73b1cffcf98.svg"
                     }
                   }
                 },
@@ -155,10 +185,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "806e372e-e486-4ac8-b08b-a79ef49b473c",
+                    "id": "9c31b39d-f270-4387-a339-cb0cd2b79dcc",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "806e372e-e486-4ac8-b08b-a79ef49b473c",
+                      "uuid": "9c31b39d-f270-4387-a339-cb0cd2b79dcc",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "initial_amount": "3000.0",
@@ -227,11 +257,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "33f3b097-5208-4406-9307-a8f07cc4b5e1",
+                    "id": "b9fce379-6929-4822-bc75-befc0788d99c",
                     "type": "Deposit",
                     "attributes": {
-                      "uuid": "33f3b097-5208-4406-9307-a8f07cc4b5e1",
-                      "url": "http://example.org/payments/deposits/33f3b097-5208-4406-9307-a8f07cc4b5e1?signature=3abde0b6902f9b7f92e9e6e7acb4181b9eaf6e265c7c7630e8d27737e6a285f7"
+                      "uuid": "b9fce379-6929-4822-bc75-befc0788d99c",
+                      "url": "http://example.org/payments/deposits/b9fce379-6929-4822-bc75-befc0788d99c?signature=219331bcc0503530487195355657a635f7c205076cd43323ff7abf57ad3fb2c7"
                     }
                   }
                 },
@@ -295,11 +325,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "57334794-d68d-4571-9604-57d55f47a647",
+                    "id": "5d63c6b1-bbaf-4f0a-aefc-92c874e9bf67",
                     "type": "Withdrawal",
                     "attributes": {
-                      "uuid": "57334794-d68d-4571-9604-57d55f47a647",
-                      "url": "http://example.org/payments/withdrawals/57334794-d68d-4571-9604-57d55f47a647?signature=a4be16e938a65e87db42619101e81fc53f03c307ac71f53624b5a1d1dfb78242"
+                      "uuid": "5d63c6b1-bbaf-4f0a-aefc-92c874e9bf67",
+                      "url": "http://example.org/payments/withdrawals/5d63c6b1-bbaf-4f0a-aefc-92c874e9bf67?signature=830cd719a7f8a293a9929ada0edf5ea7075dde210c6d7a0692b50d978df91f13"
                     }
                   }
                 },
@@ -392,6 +422,54 @@
       }
     },
     "schemas": {
+      "balance_show_response_body_schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "123"
+              },
+              "type": {
+                "type": "string",
+                "example": "Balance"
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "123"
+                  },
+                  "amount": {
+                    "type": "string",
+                    "example": "99.99"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "example": "USDT"
+                  }
+                },
+                "required": [
+                  "id",
+                  "amount",
+                  "currency"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "external_processing_deposits_create_parameter_body_schema": {
         "type": "object",
         "properties": {
@@ -684,7 +762,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "f1bf4f9b-8d70-4a9e-a2bb-3e32ac0f51b7"
+                    "example": "75379733-405b-490f-9577-b6b96389c6ec"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -692,7 +770,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-06-07T14:52:51.694+03:00"
+                    "example": "2023-06-27T18:49:42.684+03:00"
                   },
                   "national_currency": {
                     "type": "string",

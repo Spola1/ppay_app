@@ -10,4 +10,8 @@ module ApplicationHelper
   def hotlist_payments(user)
     user.payments.in_hotlist.decorate
   end
+
+  def active?(name)
+    name == action_name ? :active : nil
+  end
 end

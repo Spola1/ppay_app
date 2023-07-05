@@ -40,14 +40,14 @@ module StateMachines
       end
 
       def validate_payment_system_availability
-        return true if payment_system.in?(merchant_payment_systems).present?
+        return true if payment_system.in?(merchant_payment_systems)
 
         errors.add(:payment_system, :invalid)
         false
       end
 
       def merchant_payment_systems
-        merchant.payment_systems.joins(:commissions).where(commissions: { direction: type }).distinct.pluck(:name)
+        merchant.payment_systems.where(merchant_methods: { direction: type }).pluck(:name)
       end
 
       def bind_rate_snapshot

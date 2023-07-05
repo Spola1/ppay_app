@@ -1,5 +1,16 @@
 ru:
   simple_form:
+    "yes": 'Да'
+    "no": 'Нет'
+    required:
+      text: 'обязательно'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Пожалуйста, просмотрите приведенные ниже проблемы:"
+
     labels:
       payment_filters:
         created_from: 'Дата от:'

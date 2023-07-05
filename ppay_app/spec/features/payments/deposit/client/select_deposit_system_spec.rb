@@ -6,7 +6,6 @@ feature 'Client can select payment system', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:advertisement) { create(:advertisement, :deposit, payment_system: payment_system.name) }
   let!(:payment) { create(:payment, :deposit, :created, advertisement:) }
-  let(:payment_system) { create :payment_system }
 
   before do
     visit "/payments/deposits/#{payment.uuid}?signature=#{payment.signature}"
