@@ -62,6 +62,20 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
   response '422', 'invalid' do
     include_context 'generate_examples'
 
+    context 'advertisement not found' do
+      let(:adv) { nil }
+
+      let(:expected_errors) do
+        [
+          { 'title' => 'advertisement', 'detail' => 'не найден', 'code' => 422 }
+        ]
+      end
+
+      run_test! do |_response|
+        expect(response_body['errors']).to eq(expected_errors)
+      end
+    end
+
     context 'unsupported national currency' do
       let(:national_currency_name) { 'USD' }
 

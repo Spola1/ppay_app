@@ -15,7 +15,7 @@ module Api
 
             set_object
 
-            if @object.save && @object.inline_search!(search_params)
+            if @object.save && @object.inline_search!(search_params) && @object.advertisement.present?
               render json: serialized_object, status: :created
             else
               render_object_errors(@object)
