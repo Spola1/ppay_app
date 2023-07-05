@@ -27,38 +27,19 @@ RSpec.describe Advertisement, type: :model do
     end
   end
 
-  describe '.order_by_remaining_confirmation_time' do
-    subject { Advertisement.order_by_remaining_confirmation_time }
-
-    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-
-    before do
-      # Создаем платежи, которые должны учитываться в скоупе
-      create(:payment, :confirming, status_changed_at: Time.current - 10.minutes, advertisement: advertisement1)
-      create(:payment, :confirming, status_changed_at: Time.current - 15.minutes, advertisement: advertisement2)
-      create(:payment, :confirming, status_changed_at: Time.current - 19.minutes, advertisement: advertisement3)
-    end
-
-    it 'orders advertisements by the remaining confirmation time' do
-      expect(subject).to eq([advertisement1, advertisement2, advertisement3])
-    end
-  end
-
   describe '.algorithm' do
-    subject { Advertisement.for_payment(payment).for_deposit(payment.cryptocurrency_amount).order_by_algorithm(payment.national_currency_amount) }
+    subject { Advertisement.for_payment(payment).for_withdrawal.order_by_algorithm(payment.national_currency_amount) }
 
-    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement7) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement8) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement1) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement2) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement3) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement4) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement5) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement6) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement7) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
+    let!(:advertisement8) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
 
-    let(:payment) { create(:payment, :deposit, :processer_search) }
+    let(:payment) { create(:payment, :withdrawal, :processer_search) }
 
     before do
       # advertisement 1 - много активный платежей в процессе с такой же суммой
@@ -66,7 +47,7 @@ RSpec.describe Advertisement, type: :model do
 
       # advertisement 2 - много активных платежей с разными суммами, в том числе с такой же
       create_list(:payment, 6, :transferring, advertisement: advertisement2)
-      create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 200)
+      create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 100)
 
       # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
       create_list(:payment, 20, :completed, advertisement: advertisement3)
@@ -87,17 +68,17 @@ RSpec.describe Advertisement, type: :model do
 
       # advertisement 6 - без платежей вообще
 
-      create_list(:payment, 5, :confirming, advertisement: advertisement7, status_changed_at: Time.now - 15.minutes)
+      create_list(:payment, 6, :transferring, advertisement: advertisement7, status_changed_at: payment.status_changed_at + 5.minutes)
 
-      create_list(:payment, 6, :confirming, advertisement: advertisement8, status_changed_at: Time.now - 6.minutes)
+      create_list(:payment, 7, :transferring, advertisement: advertisement8, status_changed_at: payment.status_changed_at + 6.minutes)
     end
 
     10.times do
       it 'returns sorted list of advertisements' do
         is_expected.to(eq([advertisement6, advertisement5, advertisement4,
-                           advertisement3, advertisement7, advertisement8, advertisement2, advertisement1])
+                           advertisement3, advertisement7, advertisement8, advertisement1, advertisement2])
                    .or(eq([advertisement6, advertisement5, advertisement3,
-                           advertisement4, advertisement7, advertisement8, advertisement2, advertisement1])))
+                           advertisement4, advertisement7, advertisement8, advertisement1, advertisement2])))
       end
     end
   end

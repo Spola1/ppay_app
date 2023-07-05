@@ -68,15 +68,7 @@ module AdvertisementScopes
     }
 
     scope :order_by_remaining_confirmation_time, lambda {
-      order_sql = <<-SQL.squish
-        SUM(EXTRACT(MINUTE FROM NOW() - payments.status_changed_at)) ASC
-      SQL
-
-      arel = Arel.sql(order_sql)
-
-      join_active_payments
-        .group('advertisements.id')
-        .order(arel)
+      order(Arel.sql("SUM('#{Time.now.to_fs(:db)}' - payments.status_changed_at)"))
     }
   end
 end
