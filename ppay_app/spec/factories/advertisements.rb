@@ -5,7 +5,7 @@ FactoryBot.define do
     processer
 
     national_currency { 'RUB' }
-    payment_system { 'AlfaBank' }
+    payment_system { 'Sberbank' }
     card_number { '1111111111111111' }
     status { true }
     max_summ { 10_000 }
