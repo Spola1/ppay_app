@@ -24,31 +24,29 @@ module StateMachines
 
           # search_operator
           event :search do
-            before :bind_rate_snapshot
+            before :bind_rate_snapshot, :set_cryptocurrency_amount
             after_commit :search_processer
 
             transitions from: :draft, to: :processer_search,
-                        guard: proc { |params| available_processer_search?(params) },
-                        after: :set_cryptocurrency_amount
+                        guard: proc { |params| available_processer_search?(params) }
           end
 
           # search_operator
           event :inline_search do
-            before :bind_rate_snapshot
+            before :bind_rate_snapshot, :set_cryptocurrency_amount
             after_commit :inline_search_processer
 
             transitions from: :created, to: :processer_search,
-                        guard: proc { |params| available_processer_search?(params) },
-                        after: :set_cryptocurrency_amount
+                        guard: proc { |params| available_processer_search?(params) }
           end
 
           # bind_operator
           event :bind do
             before :bind_rate_snapshot, :set_cryptocurrency_amount
             after :create_transactions
-          ensure :search_processer
+            ensure :search_processer # rubocop:disable Layout/RescueEnsureAlignment
 
-                 transitions from: :processer_search, to: :transferring, guard: :advertisement?
+            transitions from: :processer_search, to: :transferring, guard: :advertisement? # rubocop:disable Layout/IndentationConsistency
           end
 
           # make_deposit
@@ -75,6 +73,7 @@ module StateMachines
       private
 
       def available_processer_search?(params)
+        return unless insufficient_merchant_balance?
         return unless valid_payment_system?(params)
         return unless valid_card_number?(params)
         return unless rate_snapshot.present?
@@ -91,6 +90,13 @@ module StateMachines
         return true if card_number && card_number.size >= 4
 
         errors.add(:card_number, :too_short, count: 4)
+        false
+      end
+
+      def insufficient_merchant_balance?
+        return true if merchant.balance.withdrawable?(full_cryptocurrency_amount, full_national_currency_amount)
+
+        errors.add(:national_currency_amount, :insufficient_balance)
         false
       end
     end

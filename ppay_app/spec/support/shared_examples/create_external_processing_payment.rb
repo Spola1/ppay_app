@@ -10,6 +10,12 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
       run_test!
     end
 
+    context 'withdraw almost everything', if: type == :withdrawal do
+      let(:national_currency_amount) { rate_snapshot.to_national_currency(merchant.balance.amount) / 1.04001 }
+
+      run_test!
+    end
+
     it 'creates a payment for the merchant' do |example|
       expect { submit_request(example.metadata) }.to change {
         merchant.reload.public_send(payment_type.to_s.underscore.pluralize).count
@@ -136,6 +142,24 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
           {
             title: 'card_number',
             detail: I18n.t('activerecord.errors.models.payment.attributes.card_number.blank'),
+            code: 422
+          }.stringify_keys
+        ]
+      end
+
+      run_test! do |_response|
+        expect(response_body['errors']).to eq(expected_errors)
+      end
+    end
+
+    context 'insufficient merchant balance', if: type == :withdrawal do
+      let(:national_currency_amount) { rate_snapshot.to_national_currency(merchant.balance.amount) / 1.04 }
+
+      let(:expected_errors) do
+        [
+          {
+            title: 'national_currency_amount',
+            detail: I18n.t('activerecord.errors.models.payment.attributes.national_currency_amount.insufficient_balance'),
             code: 422
           }.stringify_keys
         ]
