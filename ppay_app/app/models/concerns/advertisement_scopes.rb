@@ -46,9 +46,7 @@ module AdvertisementScopes
     }
 
     scope :order_by_transferring_and_confirming_payments, lambda {
-      join_active_payments
-        .group('advertisements.id')
-        .order('COUNT(payments.id) ASC')
+      order(Arel.sql('COUNT(payments.id) ASC'))
     }
 
     scope :order_by_similar_payments, lambda { |national_currency_amount|
