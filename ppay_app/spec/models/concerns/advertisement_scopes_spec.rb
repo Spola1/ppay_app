@@ -47,7 +47,7 @@ RSpec.describe Advertisement, type: :model do
 
       # advertisement 2 - много активных платежей с разными суммами, в том числе с такой же
       create_list(:payment, 6, :transferring, advertisement: advertisement2)
-      create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 100)
+      create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 200)
 
       # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
       create_list(:payment, 20, :completed, advertisement: advertisement3)
@@ -70,15 +70,15 @@ RSpec.describe Advertisement, type: :model do
 
       create_list(:payment, 6, :transferring, advertisement: advertisement7, status_changed_at: payment.status_changed_at + 5.minutes)
 
-      create_list(:payment, 7, :transferring, advertisement: advertisement8, status_changed_at: payment.status_changed_at + 6.minutes)
+      create_list(:payment, 5, :transferring, advertisement: advertisement8, status_changed_at: payment.status_changed_at + 6.minutes)
     end
 
     10.times do
       it 'returns sorted list of advertisements' do
         is_expected.to(eq([advertisement6, advertisement5, advertisement4,
-                           advertisement3, advertisement7, advertisement8, advertisement1, advertisement2])
+                           advertisement3, advertisement8, advertisement7, advertisement2, advertisement1])
                    .or(eq([advertisement6, advertisement5, advertisement3,
-                           advertisement4, advertisement7, advertisement8, advertisement1, advertisement2])))
+                           advertisement4, advertisement8, advertisement7, advertisement2, advertisement1])))
       end
     end
   end
