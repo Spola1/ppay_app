@@ -25,7 +25,7 @@ RSpec.describe PaymentDecorator do
     context 'when differ_ftd_and_other_payments is true' do
       before do
         payment.merchant.update(differ_ftd_and_other_payments: true)
-        payment.merchant.update(ftd_payment_default_summ: 1)
+        payment.merchant.update(ftd_payment_default_summ: 100.0)
       end
 
       describe '#countdown_end_time_for_clients' do

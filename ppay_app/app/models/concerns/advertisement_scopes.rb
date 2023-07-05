@@ -41,6 +41,7 @@ module AdvertisementScopes
 
     scope :order_by_algorithm, lambda { |national_currency_amount|
       order_by_transferring_and_confirming_payments
+        .order_by_remaining_confirmation_time
         .order_by_similar_payments(national_currency_amount)
     }
 
@@ -67,8 +68,6 @@ module AdvertisementScopes
     }
 
     scope :order_by_remaining_confirmation_time, lambda {
-      max_time_difference_minutes = 20
-
       order_sql = <<-SQL.squish
         SUM(EXTRACT(MINUTE FROM NOW() - payments.status_changed_at)) ASC
       SQL
@@ -76,7 +75,6 @@ module AdvertisementScopes
       arel = Arel.sql(order_sql)
 
       join_active_payments
-        .where("payments.payment_status = 'confirming'")
         .group('advertisements.id')
         .order(arel)
     }

@@ -46,8 +46,8 @@ RSpec.describe Advertisement, type: :model do
     end
   end
 
-  describe '.for_payment' do
-    subject { Advertisement.for_payment(payment) }
+  describe '.algorithm' do
+    subject { Advertisement.for_payment(payment).for_deposit(payment.cryptocurrency_amount).order_by_algorithm(payment.national_currency_amount) }
 
     let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
     let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
@@ -55,6 +55,8 @@ RSpec.describe Advertisement, type: :model do
     let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
     let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
     let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement7) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement8) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
 
     let(:payment) { create(:payment, :deposit, :processer_search) }
 
@@ -84,14 +86,18 @@ RSpec.describe Advertisement, type: :model do
       create_list(:payment, 10, :confirming, advertisement: advertisement5, arbitration: true)
 
       # advertisement 6 - без платежей вообще
+
+      create_list(:payment, 5, :confirming, advertisement: advertisement7, status_changed_at: Time.now - 15.minutes)
+
+      create_list(:payment, 6, :confirming, advertisement: advertisement8, status_changed_at: Time.now - 6.minutes)
     end
 
     10.times do
       it 'returns sorted list of advertisements' do
         is_expected.to(eq([advertisement6, advertisement5, advertisement4,
-                           advertisement3, advertisement2, advertisement1])
+                           advertisement3, advertisement7, advertisement8, advertisement2, advertisement1])
                    .or(eq([advertisement6, advertisement5, advertisement3,
-                           advertisement4, advertisement2, advertisement1])))
+                           advertisement4, advertisement7, advertisement8, advertisement2, advertisement1])))
       end
     end
   end
