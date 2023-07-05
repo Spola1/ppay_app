@@ -284,19 +284,23 @@
   .toast {
     @apply shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block
       w-full bg-blue-600 hover:bg-blue-700 hover:shadow-xl focus:bg-blue-700 focus:shadow-xl focus:outline-none
-      focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 ease-in-out;
+      focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 p-1 ease-in-out;
   }
 
   .toast.arbitration {
     @apply bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
   }
 
+  .toast.deposit {
+    @apply bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
+  }
+
   .toast-header {
-    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-b border-blue-500 rounded-t-lg;
+    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-blue-500 rounded-t-lg;
   }
 
   .arbitration .toast-header {
-    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-b border-red-500 rounded-t-lg;
+    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-red-500 rounded-t-lg;
   }
 
   .toast-header-text {
