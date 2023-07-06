@@ -5,7 +5,7 @@
 require 'rails_helper'
 
 RSpec.describe Advertisement, type: :model do
-  describe '.algorithm' do
+  describe '.algorithm withdrawal' do
     subject { Advertisement.for_payment(payment).for_withdrawal.order_by_algorithm(payment.national_currency_amount) }
 
     let!(:advertisement1) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
@@ -20,6 +20,72 @@ RSpec.describe Advertisement, type: :model do
     let!(:advertisement10) { create(:advertisement, :withdrawal, payment_system: 'Sberbank') }
 
     let(:payment) { create(:payment, :withdrawal, :processer_search) }
+
+    before do
+      # advertisement 1 - много активный платежей в процессе с такой же суммой
+      create_list(:payment, 10, :transferring, advertisement: advertisement1)
+
+      # advertisement 2 - много активных платежей с разными суммами, в том числе с такой же
+      create_list(:payment, 6, :transferring, advertisement: advertisement2)
+      create_list(:payment, 6, :transferring, advertisement: advertisement2, national_currency_amount: 200)
+
+      # advertisement 3 - много неактивных завершенных платежей с такой же суммой, но мало активных
+      create_list(:payment, 20, :completed, advertisement: advertisement3)
+      create_list(:payment, 4, :transferring, advertisement: advertisement3)
+
+      # advertisement 4 - мало активных платежей с такой же суммой,
+      # должно иметь такой же приоритет как и advertisement_3, так как не должно зависеть от
+      # завершенных платежей, поэтому между 3 и 4 должен быть рандомный результат
+      create_list(:payment, 4, :transferring, advertisement: advertisement4)
+
+      # advertisement 5 - мало активных платежей с такой же суммой
+      # и мало платежей transferring с такой же суммой на арбитраже,
+      # но много платежей confirming с такой же суммой на арбитраже
+
+      create_list(:payment, 1, :transferring, advertisement: advertisement5)
+      create_list(:payment, 1, :transferring, advertisement: advertisement5, arbitration: true)
+      create_list(:payment, 10, :confirming, advertisement: advertisement5, arbitration: true)
+
+      # advertisement 6 - без платежей вообще
+
+      # avertisement 7 - с большим количеством одинаковых активных платежей в пределах 5%
+      create_list(:payment, 10, :transferring, advertisement: advertisement7, national_currency_amount: 101)
+
+      # advertisement 8 - с большим количеством платежей с суммой, отличной от входящего платежа более чем на 5%
+      create_list(:payment, 10, :transferring, advertisement: advertisement8, national_currency_amount: 400)
+
+      # advertisement 9 - меньше времени на подтверждение
+      create_list(:payment, 8, :transferring, advertisement: advertisement9, status_changed_at: 1.day.ago)
+
+      # advertisement 10 - больше времени на подтверждение
+      create_list(:payment, 8, :transferring, advertisement: advertisement10, status_changed_at: 2.days.ago)
+    end
+
+    10.times do
+      it 'returns sorted list of advertisements' do
+        is_expected.to(eq([advertisement6, advertisement8, advertisement7, advertisement5, advertisement4,
+                           advertisement3, advertisement2, advertisement9, advertisement10, advertisement1])
+                   .or(eq([advertisement6, advertisement8, advertisement7, advertisement5, advertisement3,
+                           advertisement4, advertisement2, advertisement9, advertisement10, advertisement1])))
+      end
+    end
+  end
+
+  describe '.algorithm deposit' do
+    subject { Advertisement.for_payment(payment).for_deposit(payment.cryptocurrency_amount).order_by_algorithm(payment.national_currency_amount) }
+
+    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement7) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement8) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement9) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement10) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+
+    let(:payment) { create(:payment, :deposit, :processer_search) }
 
     before do
       # advertisement 1 - много активный платежей в процессе с такой же суммой
