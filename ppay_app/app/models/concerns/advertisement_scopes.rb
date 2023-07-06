@@ -20,8 +20,9 @@ module AdvertisementScopes
       order = Arel.sql('SUM(CASE WHEN ' \
                        "payments.initial_amount = #{payment.initial_amount}" \
                        'THEN 1 ELSE 0 END) ASC,' \
-                       'COUNT(payments.id) ASC,' \
-                       'RANDOM()')
+                       'COUNT(payments.id) ASC')
+                      #                        ,' \
+                      #'RANDOM()')'
 
       join_active_payments
         .active
@@ -50,7 +51,7 @@ module AdvertisementScopes
     }
 
     scope :order_by_similar_payments, lambda { |national_currency_amount|
-      order(Arel::Nodes::SqlLiteral.new("SUM(CASE WHEN payments.national_currency_amount BETWEEN 
+      order(Arel.sql("SUM(CASE WHEN payments.national_currency_amount BETWEEN 
         #{national_currency_amount * 0.95} AND #{national_currency_amount * 1.05} THEN 1 ELSE 0 END) ASC"))
     }
 
