@@ -51,7 +51,7 @@ RSpec.describe Advertisement, type: :model do
       # avertisement 7 - с большим количеством одинаковых активных платежей в пределах 5%
       create_list(:payment, 10, :transferring, advertisement: advertisement7, national_currency_amount: 101)
 
-      #advertisement 8 - с большим количеством платежей с суммой, отличной от входящего платежа более чем на 5%
+      # advertisement 8 - с большим количеством платежей с суммой, отличной от входящего платежа более чем на 5%
       create_list(:payment, 10, :transferring, advertisement: advertisement8, national_currency_amount: 400)
 
       # advertisement 9 - меньше времени на подтверждение
@@ -132,10 +132,10 @@ RSpec.describe Advertisement, type: :model do
       create(:payment, :transferring, advertisement: advertisement3, national_currency_amount: 220)
       create(:payment, :transferring, advertisement: advertisement3, national_currency_amount: 115)
 
-      #добавляем объявление в котором просто больше платежей(и все они с одинаковой суммой)
+      # добавляем объявление в котором просто больше платежей(и все они с одинаковой суммой)
       create_list(:payment, 6, :transferring, advertisement: advertisement4)
 
-      #добавляем объявление в котором меньше платежей(и все они с одинаковой суммой)
+      # добавляем объявление в котором меньше платежей(и все они с одинаковой суммой)
       create_list(:payment, 2, :transferring, advertisement: advertisement5)
     end
 
