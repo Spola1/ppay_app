@@ -48,11 +48,15 @@ RSpec.describe Advertisement, type: :model do
 
       # advertisement 6 - без платежей вообще
 
-      # avertisement 7 - с большим количеством одинаковых активных платежей в пределах 5%
-      create_list(:payment, 10, :transferring, advertisement: advertisement7, national_currency_amount: 101)
+      # avertisement 7 - с большим количеством активных платежей и с суммами в пределах 5% от суммы входящего платежа
+      create_list(:payment, 2, :transferring, advertisement: advertisement7, national_currency_amount: 101)
+      create_list(:payment, 2, :transferring, advertisement: advertisement7, national_currency_amount: 102)
+      create_list(:payment, 2, :transferring, advertisement: advertisement7, national_currency_amount: 99)
 
-      # advertisement 8 - с большим количеством платежей с суммой, отличной от входящего платежа более чем на 5%
-      create_list(:payment, 10, :transferring, advertisement: advertisement8, national_currency_amount: 400)
+      # advertisement 8 - с большим количеством активных платежей и с отличием более 5% от суммы входящего платежа
+      create_list(:payment, 2, :transferring, advertisement: advertisement8, national_currency_amount: 400)
+      create_list(:payment, 2, :transferring, advertisement: advertisement8, national_currency_amount: 250)
+      create_list(:payment, 2, :transferring, advertisement: advertisement8, national_currency_amount: 10)
 
       # advertisement 9 - меньше времени на подтверждение
       create_list(:payment, 8, :transferring, advertisement: advertisement9, status_changed_at: 1.day.ago)
@@ -114,11 +118,15 @@ RSpec.describe Advertisement, type: :model do
 
       # advertisement 6 - без платежей вообще
 
-      # avertisement 7 - с большим количеством одинаковых активных платежей в пределах 5%
-      create_list(:payment, 10, :transferring, advertisement: advertisement7, national_currency_amount: 101)
+      # avertisement 7 - с большим количеством активных платежей и с суммами в пределах 5% от суммы входящего платежа
+      create_list(:payment, 2, :transferring, advertisement: advertisement7, national_currency_amount: 101)
+      create_list(:payment, 2, :transferring, advertisement: advertisement7, national_currency_amount: 102)
+      create_list(:payment, 2, :transferring, advertisement: advertisement7, national_currency_amount: 99)
 
-      # advertisement 8 - с большим количеством платежей с суммой, отличной от входящего платежа более чем на 5%
-      create_list(:payment, 10, :transferring, advertisement: advertisement8, national_currency_amount: 400)
+      # advertisement 8 - с большим количеством активных платежей и с отличием более 5% от суммы входящего платежа
+      create_list(:payment, 2, :transferring, advertisement: advertisement8, national_currency_amount: 400)
+      create_list(:payment, 2, :transferring, advertisement: advertisement8, national_currency_amount: 250)
+      create_list(:payment, 2, :transferring, advertisement: advertisement8, national_currency_amount: 10)
 
       # advertisement 9 - меньше времени на подтверждение
       create_list(:payment, 8, :transferring, advertisement: advertisement9, status_changed_at: 1.day.ago)
