@@ -54,6 +54,11 @@ module AdvertisementScopes
         #{national_currency_amount * 0.95} AND #{national_currency_amount * 1.05} THEN 1 ELSE 0 END) ASC"))
     }
 
+  #   scope :order_by_similar_payments, lambda { |national_currency_amount|
+  #    where('payments.national_currency_amount BETWEEN ? AND ?', national_currency_amount * 0.95, national_currency_amount * 1.05)
+  #     .order(Arel.sql("SUM(CASE WHEN payments.national_currency_amount BETWEEN #{national_currency_amount * 0.95} AND #{national_currency_amount * 1.05} THEN 1 ELSE 0 END) ASC"))
+  # }
+
     scope :order_by_remaining_confirmation_time, lambda {
       order(Arel.sql("SUM('#{Time.now.to_fs(:db)}' - payments.status_changed_at)"))
     }
