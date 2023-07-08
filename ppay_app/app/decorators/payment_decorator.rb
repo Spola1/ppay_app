@@ -38,6 +38,13 @@ class PaymentDecorator < ApplicationDecorator
     "#{fiat_amount} #{national_currency}"
   end
 
+  def toast_class
+    classes = ['toast']
+    classes << 'arbitration' if arbitration
+    classes << 'deposit' if type == 'Deposit' && !arbitration
+    classes.join(' ')
+  end
+
   def show_merchant_logo
     return unless merchant.form_customization.logo.present
 
@@ -67,11 +74,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def human_type
-    type == 'Deposit' ? 'Депозит' : 'Вывод'
-  end
-
-  def type_icon
-    type == 'Deposit' ? 'arrow-up' : 'arrow-down'
+    type == 'Deposit' ? 'ДЕПОЗИТ' : 'ВЫВОД'
   end
 
   def formatted_status_changed_at
