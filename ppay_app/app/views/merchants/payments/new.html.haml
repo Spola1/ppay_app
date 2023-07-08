@@ -16,14 +16,15 @@
 
         = f.input :external_order_id, label: 'Номер заказа (ваш идентификатор)', hint: 'например: 4728', required: true
         = f.input :national_currency_amount, label: 'Сумма', input_html: { min: 0 }, hint: 'например: 10000', required: true
-        = f.input :national_currency, label: 'Валюта оплаты', collection: [["RUB", "RUB"], ["UZS", "UZS"]], include_blank: '-выбрать-', hint: 'например: RUB', required: true
+        = f.input :national_currency, label: 'Валюта оплаты', collection: [["RUB", "RUB"], ["UZS", "UZS"], ["KZT", "KZT"], ["TRY", "TRY"], ["UAH", "UAH"], ["KGS", "KGS"], ["TJS", "TJS"]],
+          include_blank: '-выбрать-', hint: 'например: RUB', required: true
         = f.input :locale, label: 'Язык оплаты', collection: [["Русский", "ru"],
                                                               ["Узбекский", "uz"],
                                                               ["Таджикский", "tg"],
                                                               ["Казахский", "kk"],
                                                               ["Украинский", "uk"],
                                                               ["Турецкий", "tr"],
-                                                              ["Киргизский", "ky"]], include_blank: '-выбрать-', hint: 'например: RUB', required: false
+                                                              ["Киргизский", "ky"]], include_blank: '-выбрать-', hint: 'например: Русский', required: false
         = f.input :redirect_url, label: 'Ссылка, которая будет указана для клиента  на странице после оплаты', hint: 'например: https://google.com', required: true
         
         = f.hidden_field :callback_url, value: 'https://google.com'
