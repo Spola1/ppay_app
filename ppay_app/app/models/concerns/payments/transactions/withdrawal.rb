@@ -5,6 +5,14 @@ module Payments
     module Withdrawal
       include Base
 
+      def full_cryptocurrency_amount
+        cryptocurrency_amount * full_percent / 100
+      end
+
+      def full_national_currency_amount
+        national_currency_amount * full_percent / 100
+      end
+
       private
 
       def create_transactions
@@ -86,14 +94,6 @@ module Payments
 
       def full_percent
         100 + processer_commission + working_group_commission + agent_commission + ppay_commission
-      end
-
-      def full_cryptocurrency_amount
-        cryptocurrency_amount * full_percent / 100
-      end
-
-      def full_national_currency_amount
-        national_currency_amount * full_percent / 100
       end
     end
   end

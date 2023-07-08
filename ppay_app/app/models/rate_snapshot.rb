@@ -16,4 +16,8 @@ class RateSnapshot < ApplicationRecord
   def to_crypto(amount)
     amount / value
   end
+
+  def to_national_currency(amount)
+    amount * value
+  end
 end

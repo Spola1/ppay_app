@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :payment_system do
-    name { 'AlfaBank' }
+    name { 'Sberbank' }
     national_currency { create(:national_currency, name: 'RUB') }
   end
 end

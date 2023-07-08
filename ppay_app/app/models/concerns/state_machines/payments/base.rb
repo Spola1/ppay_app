@@ -21,7 +21,11 @@ module StateMachines
       end
 
       def inline_search_processer
-        "::Payments::SearchProcesser::#{type}Job".constantize.new.perform(id)
+        "::Payments::SearchProcesser::#{type}Interactor".constantize.call(payment_id: id)
+
+        reload
+
+        advertisement?
       end
 
       def set_locale
@@ -81,7 +85,10 @@ module StateMachines
       end
 
       def advertisement?
-        advertisement.present?
+        return true if advertisement.present?
+
+        errors.add(:advertisement, :not_found)
+        false
       end
 
       def valid_image?(params)
