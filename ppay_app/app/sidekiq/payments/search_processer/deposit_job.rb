@@ -6,10 +6,7 @@ module Payments
       private
 
       def selected_advertisement
-        Advertisement.for_payment(payment)
-                     .for_deposit(payment.cryptocurrency_amount)
-                     .order_by_algorithm(payment.national_currency_amount)
-                     .first
+        Advertisement.for_deposit(payment).first
       end
     end
   end

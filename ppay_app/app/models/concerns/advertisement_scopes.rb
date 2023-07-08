@@ -9,6 +9,7 @@ module AdvertisementScopes
     scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_direction,         ->(direction) { where(direction:) }
+    scope :order_random,               -> { order('RANDOM()') }
 
     scope :join_active_payments, lambda {
       joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
@@ -21,8 +22,6 @@ module AdvertisementScopes
                        "payments.initial_amount = #{payment.initial_amount}" \
                        'THEN 1 ELSE 0 END) ASC,' \
                        'COUNT(payments.id) ASC')
-                      #                        ,' \
-                      #'RANDOM()')'
 
       join_active_payments
         .active
@@ -31,19 +30,24 @@ module AdvertisementScopes
         .order(order)
     }
 
-    scope :for_deposit, lambda { |cryptocurrency_amount|
-      by_processer_balance(cryptocurrency_amount)
+    scope :for_deposit, lambda { |payment|
+      for_payment(payment)
+        .order_by_algorithm(payment.national_currency_amount)
+        .by_processer_balance(cryptocurrency_amount)
         .by_direction('Deposit')
     }
 
-    scope :for_withdrawal, lambda {
-      by_direction('Withdrawal')
+    scope :for_withdrawal, lambda { |payment|
+      for_payment(payment)
+        .order_by_algorithm(payment.national_currency_amount)
+        .by_direction('Withdrawal')
     }
 
     scope :order_by_algorithm, lambda { |national_currency_amount|
       order_by_transferring_and_confirming_payments
         .order_by_remaining_confirmation_time
         .order_by_similar_payments(national_currency_amount)
+        .order_random
     }
 
     scope :order_by_transferring_and_confirming_payments, lambda {
