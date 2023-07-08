@@ -7,11 +7,14 @@
 
     .proc-payment-waiting-block
       .proc-payment-waiting-img
-      Идёт подготовка платежа
+      = t('payments.payment_preparation')
       .mt-2
-        Ожидайте пожалуйста...
+        = t('payments.expectation')
 
     = render 'payments/uuid', payment:, class: 'text-center'
 
   - if payment.arbitration
     = render 'shared/chat', payment:
+
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";

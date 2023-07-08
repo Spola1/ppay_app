@@ -6,14 +6,17 @@
         UID Check
     .proc-payment-done-block
       .proc-payment-done-img
-      Успешно!
+      = t('payments.success')
       .mt-4
-        Платеж выполнен!
+        = t('payments.payment_completed')
 
     .proc-payment-done-links-block
-      = link_to "вернуться в магазин", payment.redirect_url
+      = link_to t('payments.back_to_shop'), payment.redirect_url
 
     = render 'payments/uuid', payment:, class: 'text-center'
 
   - if payment.arbitration
     = render 'shared/chat', payment:
+
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";

@@ -7,9 +7,9 @@
 
     .proc-payment-waiting-block
       .proc-payment-waiting-img
-      Идёт обработка
+      = t('payments.payment processing')
       .mt-2
-        Ожидайте пожалуйста...
+        = t('payments.expectation')
 
     = render 'payments/uuid', payment:
 
