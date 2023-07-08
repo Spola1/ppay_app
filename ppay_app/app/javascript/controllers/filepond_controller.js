@@ -36,7 +36,7 @@ export default class extends Controller {
 
   connect() {
     const input = document.querySelector('.filepond');
-    const languagePack = languagePacks[window.paymentLanguage] || ru_RU;
+    const languagePack = ru_RU // languagePacks[window.paymentLanguage] || ru_RU;
     FilePond.setOptions(languagePack);
     FilePondRails.create(input);
   }

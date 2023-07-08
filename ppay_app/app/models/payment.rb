@@ -139,7 +139,7 @@ class Payment < ApplicationRecord
 
   def currency_to_locale(national_currency)
     currency_to_locale_map = {
-      'RUB' => :ru, 'UZS' => :uz, 'TJS' => :tg, 'IDR' => :id,
+      'RUB' => :ru, 'UZS' => :uz, 'TJS' => :tg, 'IDR' => :ru,
       'KZT' => :kk, 'UAH' => :uk, 'TRY' => :tr, 'KGS' => :ky
     }
 
