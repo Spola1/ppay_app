@@ -113,6 +113,12 @@
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
+  .button-submit {
+    @apply px-6 h-8 bg-[#21a038] text-white text-sm rounded-xl shadow-md
+      hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
 
   .badge {
     @apply text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold
@@ -704,7 +710,25 @@
     width: 400px !important;
   }
 
+  .show-countries-block {
+    @apply w-fit font-firs rounded-xl py-3 px-3 ml-3 border-qr;
+  }
+
   .success-notice {
     @apply text-sm text-green-600;
+  }
+
+  .select-submit-container {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .select-submit-container select {
+    flex: 1;
+  }
+  
+  .select-submit-container input[type="submit"] {
+    margin-left: 10px;
   }
 }

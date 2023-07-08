@@ -24,6 +24,16 @@ module StateMachines
         "::Payments::SearchProcesser::#{type}Job".constantize.new.perform(id)
       end
 
+      def set_locale
+        if locale.present?
+          I18n.locale = locale.to_sym
+        end
+
+        rescue I18n::InvalidLocale
+
+        I18n.locale = I18n.default_locale
+      end
+
       def valid_payment_system?(params)
         assign_params(params, %i[payment_system])
 

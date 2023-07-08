@@ -44,7 +44,7 @@ module StateMachines
 
           # bind_operator
           event :bind do
-            before :bind_rate_snapshot, :set_cryptocurrency_amount
+            before :bind_rate_snapshot, :set_cryptocurrency_amount, :set_locale
             after :create_transactions
           ensure :search_processer
 
@@ -53,12 +53,14 @@ module StateMachines
 
           # make_deposit
           event :check do
+            before :set_locale
             transitions from: :transferring, to: :confirming,
                         guard: proc { |params| valid_image?(params) }
           end
 
           # show_confirmation
           event :confirm do
+            before :set_locale
             after :complete_transactions
 
             transitions from: :confirming, to: :completed
