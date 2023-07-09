@@ -9,7 +9,7 @@ module Api
             include JSONAPI::Serializer
 
             set_id :uuid
-            set_type :Deposit
+            set_type :deposit
 
             attributes :uuid, :card_number, :expiration_time, :national_currency, :national_currency_amount,
                        :initial_amount, :cryptocurrency_commission_amount, :national_currency_commission_amount

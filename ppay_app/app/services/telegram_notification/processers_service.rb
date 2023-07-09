@@ -5,8 +5,8 @@ require 'date'
 
 module TelegramNotification
   class ProcessersService < BaseService
-    attr_reader :national_currency_amount, :card_number, :national_currency, :external_order_id, :payment_status,
-                :payment_system, :advertisement_card_number, :type, :status_changed_at
+    attr_reader :payment, :national_currency_amount, :card_number, :national_currency, :external_order_id,
+                :payment_status, :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid
 
     def initialize(payment)
       super()
@@ -19,6 +19,8 @@ module TelegramNotification
       @advertisement_card_number = payment.advertisement.card_number
       @type = payment.type
       @status_changed_at = payment.status_changed_at
+      @uuid = payment.uuid
+      @payment = payment
     end
 
     def send_notification_to_user(user)
@@ -30,12 +32,18 @@ module TelegramNotification
       message += "Сумма: #{@national_currency_amount} #{@national_currency}\n"
       message += "Номер карты: #{@type == 'Deposit' ? @advertisement_card_number : @card_number}\n"
       message += "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{@payment_status}")}\n"
-      message += "Платёж будет отменён: #{time_of_payment_cancellation}"
+      message += "Платёж будет отменён: #{time_of_payment_cancellation}\n"
+      message += "Ссылка на платёж: \n"
+      message += "#{PaymentUrlUtility.new(payment).url}\n"
 
       send_message_to_user(user, message) unless user.nil?
     end
 
     private
+
+    def payment_type
+      @type == 'Deposit' ? 'deposits' : 'withdrawals'
+    end
 
     def time_of_payment_cancellation
       datetime = DateTime.parse(@status_changed_at.to_s)

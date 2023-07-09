@@ -89,26 +89,13 @@ RSpec.describe PaymentDecorator do
   describe '#human_type' do
     context 'when payment.type == Deposit' do
       let(:type) { 'Deposit' }
-      it 'If type == deposit then return Депозит' do
-        expect(payment.decorate.human_type).to eq 'Депозит'
+      it 'If type == deposit then return ДЕПОЗИТ' do
+        expect(payment.decorate.human_type).to eq 'ДЕПОЗИТ'
       end
     end
 
-    it 'If type != deposit then return Вывод' do
-      expect(payment.decorate.human_type).to eq 'Вывод'
-    end
-  end
-
-  describe '#type_icon' do
-    context 'when payment.type == Deposit' do
-      let(:type) { 'Deposit' }
-      it 'If type == deposit then return arrow-up' do
-        expect(payment.decorate.type_icon).to eq 'arrow-up'
-      end
-    end
-
-    it 'If type == deposit then return arrow-down' do
-      expect(payment.decorate.type_icon).to eq 'arrow-down'
+    it 'If type != deposit then return ВЫВОД' do
+      expect(payment.decorate.human_type).to eq 'ВЫВОД'
     end
   end
 

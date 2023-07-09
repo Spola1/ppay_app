@@ -1,0 +1,56 @@
+tg:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M:%S"
+  payments:
+    payment_preparation: Омодасозии пардохт идома дорад
+    payment processing: Коркард идома дорад
+    expectation: Лутфан интизор шавед...
+    order: Фармоиш
+    choise: Интихоб кунед
+    confirm: Тасдиқ кунед
+    success: Муваффақ!
+    payment_completed: Пардохт анҷом ефт!
+    cancellation_payment: Пардохтро бекор кунед
+    back_to_shop: Бозгашт ба мағоза
+    confirmation_transfer_cancellation: Шумо мутмаин ҳастед, ки мехоҳед пардохтро бекор кунед?
+    payment_cancelled: Пардохт бекор карда шуд!
+    choise_language: Забонро интихоб кунед
+    deposit:
+      attributes:
+        shop: Мағоза
+        choosing_payment_system: Системаи пардохтро интихоб кунед
+        request: Лутфан аз рӯйхат танҳо бонкеро интихоб кунед, ки корти шумо дорад ва бо он пардохт кардан мехоҳед!
+        attention: Диққат
+        paragraph_1: Ҳангоми фиристодани пули нақд навиштани паемҳо дар барнома қатъиян манъ аст.
+        paragraph_2: Пардохт бояд ба маблағи муайяншуда, аз ҷумла ҳамаи аломатҳои пас аз вергул анҷом дода шавад.
+        paragraph_3: Маблағҳо бояд ба таври қатъӣ тавассути интиқоли бонкӣ фиристода шаванд, бонк фиристанда ва бонк қабулкунанда бояд якхела бошанд. Дар акси ҳол, бақайдгирии пардохт кафолат дода намешавад.
+        qr_manual_1: Барои идома додан камераро БА QR-code равона кунед
+        qr_manual_2: аз телефон
+        time_for_payment: Шумо метавонед дар давоми пардохт
+        make_transfer: Маблағи зикршударо аз рӯи рақами корти дар поен овардашуда интиқол диҳед
+        add_receipt_image: Тасвири чекро илова кунед
+        click_payment_completed_button: Пас аз интиқол, тугмаи "пардохт ба итмом расид" - ро клик кунед
+        payment_completed: Пардохт ба итмом расид
+        copy_deposit_amount: Маблағи дақиқи амонатро нусхабардорӣ кунед
+        changing_amount: Мо маблағро тағир додем, то пардохти шуморо муайян кунем ва онро зудтар коркард Кунем
+        continue_payment: Пардохтро идома диҳед
+    withdraw:
+      attributes:
+        merchant: Мерчант
+        amount: Маблағ
+        choosing_bank_card: Лутфан кортро муайян Кунед, ки шумо мехоҳед маблағро бозпас гиред
+        bank: Бонк
+        card_number: Рақами корт
+        money_transfer: Интиқоли пул...
+        transfer_confirmation: Шумо пул гирифтед?
+        confirmation_receipt_of_money: Ое шумо мутмаин ҳастед, ки шумо пардохтро пурра гирифтаед ва мехоҳед онро тасдиқ кунед?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

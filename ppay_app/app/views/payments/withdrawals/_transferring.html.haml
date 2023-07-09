@@ -7,9 +7,12 @@
 
     .proc-payment-waiting-block
       .proc-payment-waiting-img
-      Переводим деньги...
+      = t('payments.withdraw.attributes.money_transfer')
 
     = render 'payments/uuid', payment:, class: 'text-center'
 
   - if payment.arbitration
     = render 'shared/chat', payment:
+  
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";

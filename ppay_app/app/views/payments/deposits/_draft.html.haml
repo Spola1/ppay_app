@@ -3,6 +3,16 @@
     .show-second-block{style: payment.background_color_style}
 
   .show-payment-block
+
+    .simple-form-for-payment-deposit
+      = simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+        .select-language
+          = f.label :language, t('payments.choise_language')
+        .select-submit-container
+          = f.select :locale, language_options, {}, { class: 'form-input-select' }
+
+          = f.submit t('payments.choise'), class: "button-submit", style: payment.button_color_style
+        
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
@@ -15,14 +25,14 @@
 
     .proc-shop-block
       .proc-shop-title
-        Магазин
+        = t('payments.deposit.attributes.shop')
       .proc-shop-content
         = payment.merchant.name
 
     .mt-1
       .proc-order-block
         .proc-order-title
-          Заказ
+          = t('payments.order')
         .proc-order-content
           = payment.external_order_id
 
@@ -31,18 +41,18 @@
     .simple-form-for-payment-deposit
       = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
         .select-payment-system
-          = f.label :payment_system, 'Выберите платежную систему'
+          = f.label :payment_system, t('payments.deposit.attributes.choosing_payment_system')
 
         = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                                    { include_blank: 'Выбрать' },
+                                    { include_blank: t('payments.choise') },
                                     class: 'grey-drop-down'
 
         = hidden_field_tag :event, 'search'
 
-        = f.submit "Подтвердить", class: "green-button-submit mt-3", style: payment.button_color_style
+        = f.submit t('payments.confirm'), class: "green-button-submit mt-3", style: payment.button_color_style
 
     .please-pay-from-bank
-      Пожалуйста, выбирайте из списка только тот банк, карта которого у Вас есть и с которой Вы планируете  оплатить!
+      = t('payments.deposit.attributes.request')
 
     = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
@@ -57,3 +67,5 @@
     .show-second-block{style: payment.background_color_style}
       = render 'payments/qr_code', payment: payment
 
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";

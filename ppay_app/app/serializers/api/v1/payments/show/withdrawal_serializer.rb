@@ -5,7 +5,7 @@ module Api
     module Payments
       module Show
         class WithdrawalSerializer < BaseSerializer
-          set_type :Withdrawal
+          set_type :withdrawal
         end
       end
     end

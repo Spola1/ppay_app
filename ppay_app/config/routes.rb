@@ -24,8 +24,8 @@ Rails.application.routes.draw do
   end
 
   namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
-    resources :deposits, param: :uuid, only: :show
-    resources :withdrawals, param: :uuid, only: :show
+    resources :deposits, param: :uuid, only: %i[show update]
+    resources :withdrawals, param: :uuid, only: %i[show update]
 
     concerns :statuses_updatable
   end

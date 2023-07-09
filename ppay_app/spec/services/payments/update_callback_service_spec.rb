@@ -20,7 +20,7 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
           body: {
             data: {
               id: payment.uuid,
-              type: 'Deposit',
+              type: 'deposit',
               attributes: {
                 uuid: payment.uuid,
                 external_order_id:,

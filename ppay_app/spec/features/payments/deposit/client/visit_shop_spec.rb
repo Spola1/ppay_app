@@ -12,7 +12,7 @@ feature 'Client can come back to shop after deposit or after cancelled deposit',
 
     scenario 'client try to come back to shop' do
       expect(page).to have_content('Успешно!')
-      expect(page).to have_content('Платеж выполнен!')
+      expect(page).to have_content('Платёж выполнен!')
       expect(page).to have_content("uuid: #{payment.uuid}")
       expect(page).to have_link('вернуться в магазин', href: payment.redirect_url.to_s)
 
@@ -28,7 +28,7 @@ feature 'Client can come back to shop after deposit or after cancelled deposit',
     let!(:payment) { create(:payment, :deposit, :cancelled) }
 
     scenario 'client try to come back to shop' do
-      expect(page).to have_content('Платеж отменён !')
+      expect(page).to have_content('Платёж отменён!')
       expect(page).to have_content("uuid: #{payment.uuid}")
       expect(page).to have_link('вернуться в магазин', href: payment.redirect_url.to_s)
 

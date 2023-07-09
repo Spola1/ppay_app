@@ -9,7 +9,7 @@ module AdvertisementScopes
     scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_direction,         ->(direction) { where(direction:) }
-    scope :order_random,               -> { order('RANDOM()') }
+    scope :order_random,         -> { order('RANDOM()') }
 
     scope :join_active_payments, lambda {
       joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
@@ -18,22 +18,16 @@ module AdvertisementScopes
     }
 
     scope :for_payment, lambda { |payment|
-      order = Arel.sql('SUM(CASE WHEN ' \
-                       "payments.initial_amount = #{payment.initial_amount}" \
-                       'THEN 1 ELSE 0 END) ASC,' \
-                       'COUNT(payments.id) ASC')
-
       join_active_payments
         .active
         .by_payment_system(payment.payment_system)
         .group('advertisements.id')
-        .order(order)
     }
 
     scope :for_deposit, lambda { |payment|
       for_payment(payment)
         .order_by_algorithm(payment.national_currency_amount)
-        .by_processer_balance(cryptocurrency_amount)
+        .by_processer_balance(payment.cryptocurrency_amount)
         .by_direction('Deposit')
     }
 
@@ -44,9 +38,9 @@ module AdvertisementScopes
     }
 
     scope :order_by_algorithm, lambda { |national_currency_amount|
-      order_by_transferring_and_confirming_payments
+      order_by_similar_payments(national_currency_amount)
+        .order_by_transferring_and_confirming_payments
         .order_by_remaining_confirmation_time
-        .order_by_similar_payments(national_currency_amount)
         .order_random
     }
 
@@ -55,7 +49,7 @@ module AdvertisementScopes
     }
 
     scope :order_by_similar_payments, lambda { |national_currency_amount|
-      order(Arel.sql("SUM(CASE WHEN payments.national_currency_amount BETWEEN 
+      order(Arel.sql("SUM(CASE WHEN payments.national_currency_amount BETWEEN
         #{national_currency_amount * 0.95} AND #{national_currency_amount * 1.05} THEN 1 ELSE 0 END) ASC"))
     }
 

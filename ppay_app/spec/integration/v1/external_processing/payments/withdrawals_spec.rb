@@ -28,13 +28,14 @@ describe 'External processing withdrawals' do
 
       let(:payment_system_name) { payment_system.name }
       let(:national_currency_name) { national_currency.name }
+      let(:national_currency_amount) { 3000.0 }
       let(:card_number) { '1234 5678 9012 3456' }
       let(:params) do
         {
           payment_system: payment_system_name,
           card_number:,
           national_currency: national_currency_name,
-          national_currency_amount: 3000.0,
+          national_currency_amount:,
           external_order_id: '1234',
           callback_url: FFaker::Internet.http_url
         }

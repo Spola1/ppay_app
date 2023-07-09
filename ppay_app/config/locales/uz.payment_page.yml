@@ -1,0 +1,56 @@
+uz:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M:%S"
+  payments:
+    payment_preparation: To'lov tayyorlanmoqda
+    payment processing: Qayta ishlash davom etmoqda
+    expectation: Iltimos kuting...
+    order: Buyurtma
+    choise: Tanlang
+    confirm: Tasdiqlash
+    success: Muvaffaqiyatli!
+    payment_completed: To'lov amalga oshirildi!
+    cancellation_payment: To'lovni bekor qilish
+    back_to_shop: Do'konga qaytish
+    confirmation_transfer_cancellation: To'lovni bekor qilishni xohlayotganingizga aminmisiz?
+    payment_cancelled: To'lov bekor qilindi!
+    choise_language: Tilni tanlang
+    deposit:
+      attributes:
+        shop: Do'kon
+        choosing_payment_system: To'lov tizimini tanlang
+        request: Iltimos, ro'yxatdan faqat kartangiz bo'lgan va to'lashni rejalashtirgan bankni tanlang
+        attention: Diqqat
+        paragraph_1: Naqd pul yuborishda ilovada xabarlar yozish qat'iyan man etiladi.
+        paragraph_2: To'lov aniq belgilangan miqdorga, shu jumladan barcha kasrlarga to'g'ri kelishi kerak.
+        paragraph_3: Mablag'lar qat'iy ravishda bank ichidagi pul o'tkazmasi orqali yuborilishi kerak, jo'natuvchi bank va qabul qiluvchi bank bir xil bo'lishi kerak. Aks holda, to'lovni hisobga olish kafolatlanmaydi.
+        qr_manual_1: Davom etish uchun kamerani QR kodiga yo'naltiring
+        qr_manual_2: telefondan
+        time_for_payment: Siz to'lashingiz mumkin
+        make_transfer: Ko'rsatilgan summani quyidagi karta raqamiga o'tkazing
+        add_receipt_image: Chek rasmini qo'shing
+        click_payment_completed_button: O'tkazilgandan so'ng"to'lov tugadi" tugmasini bosing
+        payment_completed: To'lov tugallandi
+        copy_deposit_amount: Depozitning aniq miqdorini nusxalash
+        changing_amount: To'lovingizni aniqlash va uni tezroq qayta ishlash uchun miqdorni o'zgartirdik
+        continue_payment: To'lovni davom ettiring
+    withdraw:
+      attributes:
+        merchant: Savdogar
+        amount: Miqdori
+        choosing_bank_card: Iltimos, pulni qaytarib olmoqchi bo'lgan kartani ko'rsating
+        bank: Bank
+        card_number: Karta raqami
+        money_transfer: Biz pul o'tkazamiz...
+        transfer_confirmation: Siz pul oldingizmi?
+        confirmation_receipt_of_money: To'lovni to'liq olganingizga ishonchingiz komilmi va uni tasdiqlamoqchimisiz?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

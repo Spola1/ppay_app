@@ -10,6 +10,8 @@ ru:
               blank: не указан
             image:
               blank: не загружен
+            national_currency_amount:
+              insufficient_balance: недостаточный баланс
           inclusion: Доступные значения %{valid_values}
         user:
           attributes:

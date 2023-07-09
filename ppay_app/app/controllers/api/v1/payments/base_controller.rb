@@ -24,7 +24,7 @@ module Api
         def permitted_params
           params.permit(
             :national_currency_amount, :national_currency, :external_order_id,
-            :redirect_url, :callback_url
+            :redirect_url, :callback_url, :locale
           )
         end
 

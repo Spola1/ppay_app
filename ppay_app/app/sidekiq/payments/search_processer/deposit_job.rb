@@ -2,12 +2,6 @@
 
 module Payments
   module SearchProcesser
-    class DepositJob < Base
-      private
-
-      def selected_advertisement
-        Advertisement.for_deposit(payment).first
-      end
-    end
+    class DepositJob < Base; end
   end
 end
