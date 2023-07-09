@@ -5,7 +5,7 @@
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .proc-amount-block
       .proc-amount-content1{ 'data-controller': 'clipboard' }

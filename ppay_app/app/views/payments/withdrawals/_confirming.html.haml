@@ -3,7 +3,7 @@
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .mt-10
       .select-payment-system

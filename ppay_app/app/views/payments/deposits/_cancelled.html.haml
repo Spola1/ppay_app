@@ -3,7 +3,7 @@
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .proc-payment-cancelled-block
       .proc-payment-cancelled-img

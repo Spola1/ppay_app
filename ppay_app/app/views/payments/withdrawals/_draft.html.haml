@@ -13,7 +13,7 @@
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .mt-4
       .proc-shop-block

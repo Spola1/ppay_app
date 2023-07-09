@@ -50,6 +50,16 @@
       </td>
     </tr>
     <tr>
+      <td><code>locale</code></td>
+      <td>Язык платежа</td>
+      <td>String</td>
+      <td>Опционально</td>
+      <td>
+        Может иметь значения: <strong>ru</strong> (русский), <strong>kk</strong> (казахский), <strong>ky</strong> (киргизский), <strong>tg</strong> (таджикский), <strong>tr</strong> (турецкий), <strong>uk</strong> (украинский), <strong>uz</strong> (узбекский).</br>
+        По умолчанию устанавливается язык соответствующий валюте.</br>
+      </td>
+    </tr>
+    <tr>
       <td><code>redirect_url</code></td>
       <td>Ссылка на возврат в магазин</td>
       <td>String</td>
