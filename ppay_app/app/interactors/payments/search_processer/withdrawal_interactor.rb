@@ -6,9 +6,7 @@ module Payments
       private
 
       def selected_advertisement
-        Advertisement.for_payment(payment)
-                     .by_direction('Withdrawal')
-                     .first
+        Advertisement.for_withdrawal(payment).first
       end
     end
   end

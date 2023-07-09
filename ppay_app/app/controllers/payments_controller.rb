@@ -12,12 +12,8 @@ class PaymentsController < ApplicationController
   private
 
   def set_locale
-    if @payment.locale.present?
-      I18n.locale = @payment.locale.to_sym
-    end
-
-    rescue I18n::InvalidLocale
-
+    I18n.locale = @payment.locale.to_sym if @payment.locale.present?
+  rescue I18n::InvalidLocale
     I18n.locale = I18n.default_locale
   end
 

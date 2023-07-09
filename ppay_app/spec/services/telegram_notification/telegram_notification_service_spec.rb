@@ -24,7 +24,7 @@ RSpec.describe TelegramNotification::ProcessersService do
                   "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{payment.payment_status}")}\n" \
                   "Платёж будет отменён: #{service.send(:time_of_payment_cancellation)}\n" \
                   "Ссылка на платёж: \n" \
-                  "http://localhost:3000/payments/deposits/#{payment.uuid}\n"
+                  "http://example.org/payments/deposits/#{payment.uuid}\n"
 
         expect(service).to receive(:send_message_to_user)
           .with(payment.processer.telegram_id, message)
@@ -54,7 +54,7 @@ RSpec.describe TelegramNotification::ProcessersService do
                   "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{payment.payment_status}")}\n" \
                   "Платёж будет отменён: #{service.send(:time_of_payment_cancellation)}\n" \
                   "Ссылка на платёж: \n" \
-                  "http://localhost:3000/payments/withdrawals/#{payment.uuid}\n"
+                  "http://example.org/payments/withdrawals/#{payment.uuid}\n"
 
         expect(service).to receive(:send_message_to_user)
           .with(payment.processer.telegram_id, message)

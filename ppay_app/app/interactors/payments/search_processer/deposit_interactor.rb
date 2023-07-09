@@ -6,10 +6,7 @@ module Payments
       private
 
       def selected_advertisement
-        Advertisement.for_payment(payment)
-                     .by_processer_balance(payment.cryptocurrency_amount)
-                     .by_direction('Deposit')
-                     .first
+        Advertisement.for_deposit(payment).first
       end
     end
   end

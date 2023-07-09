@@ -22,6 +22,14 @@ class PaymentDecorator < ApplicationDecorator
   end
   alias expiration_time countdown_end_time
 
+  def countdown_end_time_for_clients
+    if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
+      status_changed_at + merchant.ftd_payment_exec_time_in_sec
+    else
+      status_changed_at + merchant.regular_payment_exec_time_in_sec
+    end
+  end
+
   def human_payment_status
     return unless payment_status
 

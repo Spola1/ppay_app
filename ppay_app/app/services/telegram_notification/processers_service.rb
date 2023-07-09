@@ -5,11 +5,8 @@ require 'date'
 
 module TelegramNotification
   class ProcessersService < BaseService
-    PROTOCOL = ENV.fetch('PROTOCOL', nil)
-    ADDRESS = ENV.fetch('ADDRESS', nil)
-
-    attr_reader :national_currency_amount, :card_number, :national_currency, :external_order_id, :payment_status,
-                :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid
+    attr_reader :payment, :national_currency_amount, :card_number, :national_currency, :external_order_id,
+                :payment_status, :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid
 
     def initialize(payment)
       super()
@@ -23,6 +20,7 @@ module TelegramNotification
       @type = payment.type
       @status_changed_at = payment.status_changed_at
       @uuid = payment.uuid
+      @payment = payment
     end
 
     def send_notification_to_user(user)
@@ -36,7 +34,7 @@ module TelegramNotification
       message += "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{@payment_status}")}\n"
       message += "Платёж будет отменён: #{time_of_payment_cancellation}\n"
       message += "Ссылка на платёж: \n"
-      message += "#{PROTOCOL}://#{ADDRESS}/payments/#{payment_type}/#{uuid}\n"
+      message += "#{PaymentUrlUtility.new(payment).url}\n"
 
       send_message_to_user(user, message) unless user.nil?
     end

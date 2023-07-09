@@ -9,7 +9,7 @@ module Api
             include JSONAPI::Serializer
 
             set_id :uuid
-            set_type :Withdrawal
+            set_type :withdrawal
 
             attributes :uuid, :national_currency, :national_currency_amount, :initial_amount,
                        :cryptocurrency_commission_amount, :national_currency_commission_amount

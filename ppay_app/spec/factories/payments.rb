@@ -11,6 +11,7 @@ FactoryBot.define do
     external_order_id { '1234' }
     national_currency { 'RUB' }
     national_currency_amount { 100 }
+    initial_amount { 100.0 }
     cryptocurrency_amount { 1 }
     cryptocurrency { 'USDT' }
     payment_system { 'Sberbank' }
