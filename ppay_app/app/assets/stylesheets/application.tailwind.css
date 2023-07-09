@@ -731,4 +731,8 @@
   .select-submit-container input[type="submit"] {
     margin-left: 10px;
   }
+
+  .select-locale {
+    @apply mt-0.5;
+  }
 }
