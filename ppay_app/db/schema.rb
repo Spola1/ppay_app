@@ -249,8 +249,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_085113) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 12, scale: 2
+    t.integer "processing_type", default: 0
     t.string "locale"
     t.bigint "form_customization_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
