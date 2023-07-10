@@ -55,6 +55,7 @@ class Payment < ApplicationRecord
   delegate :processer, to: :advertisement, allow_nil: true
 
   has_one_attached :image
+  has_one :form_customization
 
   has_many :comments, as: :commentable
   has_many :chats
