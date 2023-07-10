@@ -259,6 +259,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "default_payment_system_id"
+    t.integer "ad_position_deposit", default: 10
+    t.integer "ad_position_withdrawal", default: 5
+    t.index ["default_payment_system_id"], name: "index_national_currencies_on_default_payment_system_id"
   end
 
   create_table "not_found_payments", force: :cascade do |t|
@@ -284,8 +288,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "national_currency_id", null: false
+    t.string "binance_name"
+    t.integer "ad_position_deposit", default: 10
+    t.integer "ad_position_withdrawal", default: 5
+    t.integer "trans_amount_deposit"
+    t.integer "trans_amount_withdrawal"
+    t.bigint "payment_system_copy_id"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
+    t.index ["payment_system_copy_id"], name: "index_payment_systems_on_payment_system_copy_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -335,6 +346,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.decimal "value"
     t.string "national_currency"
     t.decimal "adv_amount"
+    t.bigint "payment_system_id"
+    t.index ["payment_system_id"], name: "index_rate_snapshots_on_payment_system_id"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -417,7 +430,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
   add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
+  add_foreign_key "national_currencies", "payment_systems", column: "default_payment_system_id"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_systems", "national_currencies"
+  add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
+  add_foreign_key "rate_snapshots", "payment_systems"
 end
