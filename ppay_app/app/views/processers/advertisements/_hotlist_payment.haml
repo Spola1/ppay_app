@@ -2,10 +2,10 @@
   .toast-text.text-xs
     %table
       %tr
-        %td.toast-text-value
+        %td.font-medium
           = payment.national_currency_amount
       %tr
-        %td.toast-text-value
+        %td
           .toast-header-time-text.countdown{
             data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' }
           }

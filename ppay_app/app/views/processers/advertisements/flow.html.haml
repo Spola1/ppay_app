@@ -19,7 +19,7 @@
               %td.items-list-td-break-all= ad.comment
               %td.items-list-td.flex.flex-wrap
                 .toast-row{ 'data-controller': 'countdown-row' }
-                  %div.grid.grid-cols-10.gap-2
+                  %div.grid.grid-cols-9.gap-2
                     - ad.payments.in_hotlist.each do |payment|
                       .text-xs.p-1{ class: 'max-w-[140px] min-w-[120px]', 'data-controller': 'countdown' }
                         = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
