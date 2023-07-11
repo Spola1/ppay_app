@@ -53,6 +53,14 @@ class PaymentDecorator < ApplicationDecorator
     classes.join(' ')
   end
 
+  def flow_class
+    classes = ['toast']
+    classes << 'arbitration' if arbitration
+    classes << 'transferring' if payment_status == 'transferring' && !arbitration
+    classes << 'confirming' if payment_status == 'confirming' && !arbitration
+    classes.join(' ')
+  end
+
   def show_merchant_logo
     return unless merchant.form_customization.logo.present
 

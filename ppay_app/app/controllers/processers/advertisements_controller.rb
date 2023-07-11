@@ -9,6 +9,11 @@ module Processers
       @advertisements = @advertisements.decorate
     end
 
+    def flow
+      @pagy, @advertisements = pagy(current_user.advertisements.order(id: :asc))
+      @advertisements = @advertisements.decorate
+    end
+
     def show; end
 
     def new
