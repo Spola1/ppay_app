@@ -10,7 +10,7 @@ module Processers
     end
 
     def flow
-      @pagy, @advertisements = pagy(current_user.advertisements.order(id: :asc))
+      @pagy, @advertisements = pagy(current_user.advertisements)
       @advertisements = @advertisements.decorate
     end
 
