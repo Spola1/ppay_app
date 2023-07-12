@@ -85,14 +85,14 @@ class Payment < ApplicationRecord
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
-   #broadcast_replace_payment_to_processer_adv
+    broadcast_replace_payment_to_ad
     broadcast_replace_payment_to_support
   }
 
   after_update_commit lambda {
     if payment_status_previously_changed? && processer
       broadcast_replace_hotlist_to_processer
-     #broadcast_replace_hotlist_to_processer_adv
+      broadcast_replace_hotlist_to_ad
       broadcast_append_notification_to_processer if in_hotlist?
     end
   }
@@ -178,14 +178,14 @@ class Payment < ApplicationRecord
     )
   end
 
-  # def broadcast_replace_payment_to_processer_adv
-  #   broadcast_replace_later_to(
-  #     "processers_payment_#{uuid}",
-  #     partial: 'processers/advertisements/show_turbo_frame',
-  #     locals: { payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
-  #     target: "processers_payment_#{uuid}"
-  #   )
-  # end
+  def broadcast_replace_payment_to_ad
+    broadcast_replace_later_to(
+      "advertisements_payment_#{uuid}",
+      partial: 'processers/advertisements/show_turbo_frame',
+      locals: { advertisement: advertisement, payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
+      target: "advertisements_payment_#{uuid}"
+    )
+  end
 
   def broadcast_replace_hotlist_to_processer
     broadcast_replace_later_to(
@@ -196,14 +196,14 @@ class Payment < ApplicationRecord
     )
   end
 
-  # def broadcast_replace_hotlist_to_processer_adv
-  #   broadcast_replace_later_to(
-  #     "processer_#{processer.id}_hotlist",
-  #     partial: 'processers/advertisements/flow',
-  #     locals: { role_namespace: 'processers', user: processer },
-  #     target: "processer_#{processer.id}_hotlist"
-  #   )
-  # end
+  def broadcast_replace_hotlist_to_ad
+    broadcast_replace_later_to(
+      "advertisement_#{advertisement.id}_hotlist",
+      partial: 'processers/advertisements/hotlist',
+      locals: { advertisement: advertisement, payment: decorate },
+      target: "advertisement_#{advertisement.id}_hotlist"
+    )
+  end
 
   def broadcast_append_notification_to_processer
     Payments::TelegramNotificationJob.perform_async(id)

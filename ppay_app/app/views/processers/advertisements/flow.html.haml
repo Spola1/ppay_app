@@ -18,12 +18,9 @@
               %td.items-list-td-break-all= ad.card_info
               %td.items-list-td-break-all= ad.comment
               %td.items-list-td.flex.flex-wrap
-                .toast-row{ 'data-controller': 'countdown-row' }
-                  %div.grid.grid-cols-9.gap-2
-                    - ad.payments.in_hotlist.each do |payment|
-                      .text-xs.p-1{ class: 'max-w-[140px] min-w-[120px]', 'data-controller': 'countdown' }
-                        = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
-                          = render 'processers/advertisements/hotlist_payment', payment:
+                - ad.payments.in_hotlist.each do |payment|
+                  .p-1.text-xs{ class: 'w-[140px]', 'data-controller': 'countdown' }
+                    = render 'processers/advertisements/hotlist', payment:, advertisement: ad
 
       .card-wrap
         = render 'shared/pagination', pagy: @pagy

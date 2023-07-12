@@ -310,7 +310,7 @@
   }
 
   .toast.transferring {
-    @apply bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-500 active:bg-yellow-600;
+    @apply bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-500 active:bg-yellow-600 w-['250px'];
   }
 
   .toast.transferring .toast-text.text-xs, 
