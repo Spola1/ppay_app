@@ -85,7 +85,6 @@ class Payment < ApplicationRecord
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
-    broadcast_replace_payment_to_ad
     broadcast_replace_payment_to_support
   }
 
@@ -175,15 +174,6 @@ class Payment < ApplicationRecord
       partial: 'processers/payments/show_turbo_frame',
       locals: { payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
       target: "processers_payment_#{uuid}"
-    )
-  end
-
-  def broadcast_replace_payment_to_ad
-    broadcast_replace_later_to(
-      "advertisements_payment_#{uuid}",
-      partial: 'processers/advertisements/show_turbo_frame',
-      locals: { advertisement: advertisement, payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
-      target: "advertisements_payment_#{uuid}"
     )
   end
 

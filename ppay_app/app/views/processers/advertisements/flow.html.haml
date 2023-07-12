@@ -18,6 +18,7 @@
               %td.items-list-td-break-all= ad.card_info
               %td.items-list-td-break-all= ad.comment
               %td.items-list-td.flex.flex-wrap
+                = turbo_stream_from "advertisement_#{ad.id}_hotlist"
                 - ad.payments.in_hotlist.each do |payment|
                   .p-1.text-xs{ class: 'w-[140px]', 'data-controller': 'countdown' }
                     = render 'processers/advertisements/hotlist', payment:, advertisement: ad
