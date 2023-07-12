@@ -56,6 +56,9 @@ Rails.application.routes.draw do
     resources :national_currencies, only: :index
     post :national_currencies, to: '/admins/national_currencies#update'
 
+    resources :payment_systems, only: :index
+    post :payment_systems, to: '/admins/payment_systems#update'
+
     root 'payments#index', as: :admins_root
   end
 
@@ -153,7 +156,7 @@ Rails.application.routes.draw do
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
-          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|national_currencies|$)}
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|national_currencies|payment_systems|$)}
         ].present?
     end
   ) do

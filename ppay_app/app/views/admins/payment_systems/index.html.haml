@@ -1,0 +1,8 @@
+= turbo_frame_tag 'content' do
+  %section.wrap
+    .card-wrap
+      .item-card
+        .card-head
+          %h1 Платёжные системы
+
+        = render 'table', payment_systems: @payment_systems
