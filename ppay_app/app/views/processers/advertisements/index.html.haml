@@ -85,7 +85,6 @@
               %td.items-list-td-break-all= ad.card_info
               %td.items-list-td-break-all= ad.comment
               %td.items-list-td.flex.flex-wrap
-                = turbo_stream_from "advertisement_#{ad.id}_hotlist"
                 = render 'processers/advertisements/hotlist', advertisement: ad
 
 

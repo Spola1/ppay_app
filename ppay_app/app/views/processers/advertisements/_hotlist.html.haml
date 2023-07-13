@@ -1,4 +1,4 @@
-= turbo_stream.append "advertisement_#{advertisement.id}_hotlist"
+= turbo_stream_from "advertisement_#{advertisement.id}_hotlist"
 = turbo_frame_tag "advertisement_#{advertisement.id}_hotlist" do
   .div.flex.flex-wrap
     - advertisement.payments.in_hotlist.each do |payment|

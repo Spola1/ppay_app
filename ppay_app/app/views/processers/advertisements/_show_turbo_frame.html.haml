@@ -1,5 +1,4 @@
 = turbo_frame_tag "processers_advertisement_#{payment.uuid}" do
-  = render 'shared/staff/payments/payment',
-    payment: payment.decorate,
-    signature:,
-    advertisement: payment.advertisement
+  payment: payment.decorate,
+  signature:,
+  advertisement: payment.advertisement
