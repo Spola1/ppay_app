@@ -64,29 +64,3 @@
                     = fa_icon 'search'
       .card-wrap
         = render 'shared/pagination', pagy: @pagy
-
-%section.wrap
-  .card-wrap
-    .item-card
-      %h1.mb-4.text-xl Флоу
-
-      %table
-        %thead.item-list-thead
-          %tr
-            %th.items-list-th ID
-            %th.items-list-th-text-left КАРТА
-            %th.items-list-th-text-left КОММЕНТАРИЙ
-            %th.items-list-th-text-left ПЛАТЕЖИ
-
-        %tbody
-          - @advertisements.each do |ad|
-            %tr.items-list-tr
-              %td.items-list-td-link= link_to ad.id, ad
-              %td.items-list-td-break-all= ad.card_info
-              %td.items-list-td-break-all= ad.comment
-              %td.items-list-td.flex.flex-wrap
-                = render 'processers/advertisements/hotlist', advertisement: ad
-
-
-      .card-wrap
-        = render 'shared/pagination', pagy: @pagy

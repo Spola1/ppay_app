@@ -1,0 +1,20 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      %table.w-full
+        %thead.item-list-thead
+          %tr
+            %th.items-list-th ID
+            %th.items-list-th-text-left КАРТА
+            %th.items-list-th-text-left КОММЕНТАРИЙ
+            %th.items-list-th-text-left ПЛАТЕЖИ
+  
+        %tbody
+          - @advertisements.each do |ad|
+            - if ad.payments.in_flow_hotlist.exists?
+              %tr.items-list-tr
+                %td.items-list-td-link-flow.border.border-gray-300= link_to ad.id, ad
+                %td.items-list-td-break-all.border.border-gray-300= ad.card_info
+                %td.items-list-td-break-all.border.border-gray-300= ad.comment
+                %td.items-list-td.flex.flex-wrap.border.border-gray-300
+                  = render 'processers/advertisements/hotlist', advertisement: ad

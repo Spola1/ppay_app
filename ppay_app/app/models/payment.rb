@@ -107,6 +107,16 @@ class Payment < ApplicationRecord
     deposits.confirming.or(deposits.transferring).or(withdrawals.confirming).or(withdrawals.transferring).order(created_at: :desc)
   }
 
+  scope :in_flow_hotlist, lambda {
+    deposits.confirming
+           .or(deposits.transferring)
+           .or(deposits.arbitration)
+           .or(withdrawals.confirming)
+           .or(withdrawals.transferring)
+           .or(withdrawals.arbitration)
+           .order(created_at: :desc)
+  }
+
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
@@ -183,21 +193,21 @@ class Payment < ApplicationRecord
     )
   end
 
-  def broadcast_replace_payment_to_ad
-    broadcast_replace_later_to(
-      "advertisements_payment_#{uuid}",
-      partial: 'processers/advertisements/show_turbo_frame',
-      locals: {payment: decorate, signature: nil, advertisement: decorate.advertisement },
-      target: "advertisements_payment_#{uuid}"
-    )
-  end
-
   def broadcast_replace_hotlist_to_processer
     broadcast_replace_later_to(
       "processer_#{processer.id}_hotlist",
       partial: 'processers/payments/hotlist',
       locals: { role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_hotlist"
+    )
+  end
+
+  def broadcast_replace_payment_to_ad
+    broadcast_replace_later_to(
+      "advertisements_payment_#{uuid}",
+      partial: 'processers/advertisements/show_turbo_frame',
+      locals: {payment: decorate, signature: nil, advertisement: decorate.advertisement },
+      target: "advertisements_payment_#{uuid}"
     )
   end
 
