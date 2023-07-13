@@ -151,6 +151,14 @@
     @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
   }
 
+  .items-list-td-break-all {
+    @apply text-xs text-gray-900 font-light p-2 break-words w-[140px] text-left;
+  }
+
+  .items-list-th-text-left {
+    @apply text-xs font-medium text-gray-900 p-2 text-left;
+  }
+
   .items-list-td-link {
     @apply items-list-td text-gray-900 underline font-medium;
   }
@@ -298,6 +306,19 @@
   }
 
   .toast.deposit {
+    @apply bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
+  }
+
+  .toast.transferring {
+    @apply bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-500 active:bg-yellow-600 w-['250px'];
+  }
+
+  .toast.transferring .toast-text.text-xs, 
+  .toast.transferring .toast-header-time-text.countdown {
+    color: black;
+  }
+
+  .toast.confirming {
     @apply bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
   }
 

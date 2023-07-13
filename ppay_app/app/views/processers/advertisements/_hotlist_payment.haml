@@ -1,0 +1,12 @@
+.toast{ 'data-controller': 'countdown', class: (payment.decorate.flow_class) }
+  .toast-text.text-xs
+    %table
+      %tr
+        %td.font-medium
+          = payment.national_currency_amount
+      %tr
+        %td
+          .toast-header-time-text.countdown{
+            data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' }
+          }
+            = payment.decorate.countdown
