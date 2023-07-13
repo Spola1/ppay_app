@@ -102,6 +102,11 @@ class Payment < ApplicationRecord
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).order(created_at: :desc)
   }
+
+  scope :in_flow_hotlist, lambda {
+    deposits.confirming.or(deposits.transferring).or(withdrawals.confirming).or(withdrawals.transferring).order(created_at: :desc)
+  }
+
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
