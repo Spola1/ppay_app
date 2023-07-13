@@ -40,7 +40,7 @@
       "post": {
         "summary": "Создание депозита с внешним процессингом",
         "tags": [
-          "Платежи - внешний процессинг (оплата на стороне магазина)"
+          "Платежи - H2H (оплата на стороне магазина)"
         ],
         "security": [
           {
@@ -59,19 +59,19 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "d85fa853-ccc1-4b02-a575-9f3c7517e1a9",
+                    "id": "7d37935c-ba87-48a9-81ea-ed55c418bc70",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "d85fa853-ccc1-4b02-a575-9f3c7517e1a9",
+                      "uuid": "7d37935c-ba87-48a9-81ea-ed55c418bc70",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-07-09T22:44:44.699+03:00",
+                      "expiration_time": "2023-07-13T19:56:06.409+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "initial_amount": "100.0",
                       "cryptocurrency_commission_amount": 0.0652,
                       "national_currency_commission_amount": 3.996108,
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBGQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--636549e5b2908196b26cbde05ebda4e5eee0f0f3/d41894ac4d8f30d9cc6d3111622b4155.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBHQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--91d72d2878dba515b75ab5532154c6498cefc04d/0af90ce34fed8af458ea22ccea0ee8dd.svg"
                     }
                   }
                 },
@@ -116,7 +116,7 @@
       "patch": {
         "summary": "Обновление статуса платежа с внешним процессингом",
         "tags": [
-          "Платежи - внешний процессинг (оплата на стороне магазина)"
+          "Платежи - H2H (оплата на стороне магазина)"
         ],
         "security": [
           {
@@ -166,7 +166,7 @@
       "post": {
         "summary": "Создание вывода средств с внешним процессингом",
         "tags": [
-          "Платежи - внешний процессинг (оплата на стороне магазина)"
+          "Платежи - H2H (оплата на стороне магазина)"
         ],
         "security": [
           {
@@ -185,10 +185,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "ef2cdbcb-cb4b-4339-9fe6-4dbe33edcc55",
+                    "id": "19c91246-1115-4fb5-ae14-fe01974e2e67",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "ef2cdbcb-cb4b-4339-9fe6-4dbe33edcc55",
+                      "uuid": "19c91246-1115-4fb5-ae14-fe01974e2e67",
                       "national_currency": "RUB",
                       "national_currency_amount": "58932.13",
                       "initial_amount": "58932.13",
@@ -238,7 +238,7 @@
       "post": {
         "summary": "Создание депозита",
         "tags": [
-          "Платежи - внутренний процессинг (оплата с переходом по ссылке на наш сайт)"
+          "Платежи - HPP (оплата с переходом по ссылке на наш сайт)"
         ],
         "security": [
           {
@@ -257,11 +257,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "884c3f0a-1247-43d7-ba14-8d4f23c326be",
+                    "id": "975d4848-3c42-4cc2-a792-84b502ae94a2",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "884c3f0a-1247-43d7-ba14-8d4f23c326be",
-                      "url": "http://example.org/payments/deposits/884c3f0a-1247-43d7-ba14-8d4f23c326be?signature=644812ea8dd7c5805035c6ca58540e17d4637804d2a333af7172bb993257c7cd"
+                      "uuid": "975d4848-3c42-4cc2-a792-84b502ae94a2",
+                      "url": "http://example.org/payments/deposits/975d4848-3c42-4cc2-a792-84b502ae94a2?signature=b61480478ef96a7dffd2e0e56b732003138c3ee920d98c8e52225d509a1ccf1a"
                     }
                   }
                 },
@@ -306,7 +306,7 @@
       "post": {
         "summary": "Создание вывода средств",
         "tags": [
-          "Платежи - внутренний процессинг (оплата с переходом по ссылке на наш сайт)"
+          "Платежи - HPP (оплата с переходом по ссылке на наш сайт)"
         ],
         "security": [
           {
@@ -325,11 +325,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "7d7739db-4b45-454f-a508-00e52769aea4",
+                    "id": "4574bd20-5171-4789-b3ee-e3c21392cb6c",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "7d7739db-4b45-454f-a508-00e52769aea4",
-                      "url": "http://example.org/payments/withdrawals/7d7739db-4b45-454f-a508-00e52769aea4?signature=9a35f76452e5ae12d4e15a312783cb905ba84db67698cd127c094137045331cc"
+                      "uuid": "4574bd20-5171-4789-b3ee-e3c21392cb6c",
+                      "url": "http://example.org/payments/withdrawals/4574bd20-5171-4789-b3ee-e3c21392cb6c?signature=db626cac0600b69ccf4df9e4ec21bd753039b47f90151f45875f2e2d3baac325"
                     }
                   }
                 },
@@ -374,7 +374,7 @@
       "get": {
         "summary": "Получение информации по платежу",
         "tags": [
-          "Платежи - внутренний процессинг (оплата с переходом по ссылке на наш сайт)"
+          "Платежи - HPP (оплата с переходом по ссылке на наш сайт)"
         ],
         "security": [
           {
@@ -770,7 +770,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "1004a0e1-133e-49af-89ae-17283926de8f"
+                    "example": "07c179d1-f7d6-4883-a396-1f624387a348"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -778,7 +778,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-07-09T22:24:42.835+03:00"
+                    "example": "2023-07-13T19:36:04.107+03:00"
                   },
                   "national_currency": {
                     "type": "string",

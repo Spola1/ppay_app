@@ -12,7 +12,7 @@ describe 'External processing withdrawals' do
 
   path '/api/v1/external_processing/payments/withdrawals' do
     post 'Создание вывода средств с внешним процессингом' do
-      tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
+      tags 'Платежи - H2H (оплата на стороне магазина)'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]
