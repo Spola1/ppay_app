@@ -23,11 +23,11 @@ class Advertisement < ApplicationRecord
     payments.in_flow_hotlist.exists?
   end
 
-  after_create_commit lambda {
+  after_update_commit lambda {
     broadcast_replace_ad_to_processer
   }
 
-  after_create_commit lambda {
+  after_update_commit lambda {
     broadcast_replace_ad_hotlist_to_processer
   }
 
