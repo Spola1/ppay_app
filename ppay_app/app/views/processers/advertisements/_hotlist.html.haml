@@ -2,6 +2,5 @@
 = turbo_frame_tag "advertisement_#{advertisement.id}_hotlist" do
   .div.flex.flex-wrap
     - advertisement.payments.in_flow_hotlist.each do |payment|
-      .p-1.text-xs{ class: 'min-w-[115px]', 'data-controller': 'countdown' }
-        = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
-          = render 'processers/advertisements/hotlist_payment', payment:
+      = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
+        = render 'processers/advertisements/hotlist_payment', payment:

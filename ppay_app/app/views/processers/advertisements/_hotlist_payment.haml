@@ -1,12 +1,7 @@
-.toast{ 'data-controller': 'countdown', class: (payment.decorate.flow_class) }
-  .text-xs.p-1
-    %table
-      %tr
-        %td.font-medium
-          = payment.national_currency_amount
-      %tr
-        %td
-          .toast-header-time-text.countdown{
-            data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' }
-          }
-            = payment.decorate.countdown
+.m-1
+  .toast{ 'data-controller': 'countdown', class: (payment.decorate.flow_class), style: 'width: 100px; height: 50px;' }
+    .text-xs.p-1
+      .font-medium
+        = payment.national_currency_amount
+      .toast-header-time-text.countdown{ data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' } }
+        = payment.decorate.countdown
