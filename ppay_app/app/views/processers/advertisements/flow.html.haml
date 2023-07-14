@@ -4,18 +4,18 @@
       %table.w-full
         %thead.item-list-thead
           %tr
-            %th.items-list-th-link-flow.flow-table-text.font-sans ID
-            %th.items-list-th-text-left.flow-table-text.font-sans КАРТА
-            %th.items-list-th-text-left.flow-table-text КОММЕНТАРИЙ
-            %th.items-list-th-text-left.flow-table-text ПЛАТЕЖИ
+            %th.items-list-th-link-flow.flow-table-text.font-firs ID
+            %th.items-list-th-text-left.flow-table-text.font-firs КАРТА
+            %th.items-list-th-text-left.flow-table-text.font-firs КОММЕНТАРИЙ
+            %th.items-list-th-text-left.flow-table-text.font-firs ПЛАТЕЖИ
   
         %tbody
           - @advertisements.each do |ad|
             - if ad.payments.in_flow_hotlist.exists?
               %tr.items-list-tr
-                %td.items-list-td-link-flow.border.border-gray-300.text-center.no-underline.flow-table-text
+                %td.items-list-td-link-flow.border.border-gray-300.text-center.no-underline.flow-table-text.font-firs
                   = link_to ad.id, ad
-                %td.items-list-td-break-all-card.border.border-gray-300.flow-table-text= ad.card_info
-                %td.items-list-td-break-all-comment.border.border-gray-300.flow-table-text= ad.comment
+                %td.items-list-td-break-all-card.border.border-gray-300.flow-table-text.font-firs= ad.card_info
+                %td.items-list-td-break-all-comment.border.border-gray-300.flow-table-text.font-firs= ad.comment
                 %td.items-list-td.flex.flex-wrap.border.border-gray-300
                   = render 'processers/advertisements/hotlist', advertisement: ad

@@ -780,6 +780,5 @@
 
   .flow-table-text {
     @apply text-sm mt-5 font-medium;
-    @apply font-sans;
   }
 }
