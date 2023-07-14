@@ -10,7 +10,7 @@ module Binance
       'RUB' => %w[RosBankNew TinkoffNew RaiffeisenBank],
       'UZS' => %w[Humo Uzcard],
       'KZT' => %w[CenterCreditBank],
-      'UAH' => %w[PUMBBank],
+      'UAH' => %w[RaiffeisenBankAval],
       'TJS' => %w[DCbank AlifBank SpitamenBank],
       'TRY' => %w[VakifBank],
       'KGS' => %w[OPTIMABANK mBank HalykBank BAKAIBANK DEMIRBANK]
