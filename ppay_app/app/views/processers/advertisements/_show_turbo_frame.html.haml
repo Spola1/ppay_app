@@ -2,3 +2,8 @@
   payment: payment.decorate,
   signature:,
   advertisement: payment.advertisement
+
+= turbo_frame_tag "processers_advertisement_#{payment.advertisement.id}" do
+  advertisement: advertisement.id,
+  role_namespace:,
+  can_manage_payment?: local_assigns[:can_manage_payment?] || can_manage_payment?

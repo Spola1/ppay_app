@@ -11,6 +11,12 @@ module ApplicationHelper
     user.payments.in_hotlist.decorate
   end
 
+  def hotlist_advertisements(user)
+    user.advertisements.order('payment_system ASC').select do |advertisement|
+      advertisement.payments.in_flow_hotlist.any?
+    end
+  end
+
   private
 
   def language_options

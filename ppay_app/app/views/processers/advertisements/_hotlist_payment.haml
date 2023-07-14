@@ -1,7 +1,7 @@
 .m-1
-  .toast{ 'data-controller': 'countdown', class: (payment.decorate.flow_class), style: 'min-width: 100px; height: 50px;' }
+  .toast{ 'data-controller': 'countdown', class: (payment.decorate.flow_class), style: 'max-width: auto; min-width: 100px; height: 50px;' }
     .text-xs.p-1
-      .font-medium.font-firs.text-sm
-        = payment.national_currency_amount
-      .toast-header-time-text.countdown{ data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' } }
+      .font-medium.font-firs.text-size-13
+        = number_with_precision(payment.national_currency_amount, precision: 2)
+      .toast-header-time-text.font-firs.text-size-11.countdown{ data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' } }
         = payment.decorate.countdown

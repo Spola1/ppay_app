@@ -19,7 +19,7 @@
       <%- end %>
     </div>
     <%= render partial: "layouts/flash_alerts" %>
-    <%- if role_namespace == 'processers' && action_name != 'flow' %>
+    <%- if role_namespace == 'processers' && action_name != 'flow' && @payment.blank? %>
       <%= turbo_stream_from "processer_#{current_user.id}_hotlist" %>
       <%= render 'processers/payments/hotlist', user: current_user %>
       <%= render 'processers/notifications/index', user: current_user %>

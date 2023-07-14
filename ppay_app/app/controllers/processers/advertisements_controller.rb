@@ -11,7 +11,6 @@ module Processers
 
     def flow
       @advertisements = current_user.advertisements
-      @advertisements = @advertisements.decorate
     end
 
     def show; end

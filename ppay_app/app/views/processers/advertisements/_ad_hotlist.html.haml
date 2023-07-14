@@ -1,0 +1,4 @@
+= turbo_stream_from "processer_#{user.id}_ad_hotlist"
+= turbo_frame_tag "processer_#{user.id}_ad_hotlist" do
+  - hotlist_advertisements(user).each do |advertisement|
+    = render 'processers/advertisements/hotlist_advertisement', advertisement:

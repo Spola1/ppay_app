@@ -104,10 +104,6 @@ class Payment < ApplicationRecord
   }
 
   scope :in_flow_hotlist, lambda {
-    deposits.confirming.or(deposits.transferring).or(withdrawals.confirming).or(withdrawals.transferring).order(created_at: :desc)
-  }
-
-  scope :in_flow_hotlist, lambda {
     deposits.confirming
            .or(deposits.transferring)
            .or(deposits.arbitration)
