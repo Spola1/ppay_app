@@ -1,13 +1,1 @@
-%section.wrap
-  .card-wrap
-    .item-card
-      %table.w-full.table-striped
-        %thead.item-list-thead
-          %tr
-            %th.items-list-th-link-flow.flow-table-text.font-firs ID
-            %th.items-list-th-text-left-card.flow-table-text.font-firs КАРТА
-            %th.items-list-th-text-left-comment.flow-table-text.font-firs КОММЕНТ
-            %th.items-list-th-text-left-payments.flow-table-text.font-firs ПЛАТЕЖИ
-  
-        %tbody
-          = render 'processers/advertisements/ad_hotlist', user: current_user
+= render 'processers/advertisements/ad_hotlist', user: current_user

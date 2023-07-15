@@ -1,4 +1,15 @@
 = turbo_stream_from "processer_#{user.id}_ad_hotlist"
 = turbo_frame_tag "processer_#{user.id}_ad_hotlist" do
-  - hotlist_advertisements(user).each do |advertisement|
-    = render 'processers/advertisements/hotlist_advertisement', advertisement:
+  %section.wrap
+    .card-wrap
+      .item-card
+        %table.w-full.table-striped
+          %thead.item-list-thead
+            %tr
+              %th.items-list-th-link-flow.flow-table-text.font-firs ID
+              %th.items-list-th-text-left-card.flow-table-text.font-firs КАРТА
+              %th.items-list-th-text-left-comment.flow-table-text.font-firs КОММЕНТ
+              %th.items-list-th-text-left-payments.flow-table-text.font-firs ПЛАТЕЖИ
+    
+              - hotlist_advertisements(user).each do |advertisement|
+                = render 'processers/advertisements/hotlist_advertisement', advertisement:

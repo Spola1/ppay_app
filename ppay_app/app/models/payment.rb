@@ -84,7 +84,6 @@ class Payment < ApplicationRecord
 
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
-    broadcast_replace_payment_to_ad
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
   }
@@ -93,6 +92,7 @@ class Payment < ApplicationRecord
     if payment_status_previously_changed? && processer
       broadcast_replace_hotlist_to_processer
       broadcast_replace_hotlist_to_ad
+      broadcast_replace_ad_hotlist_to_processer
       broadcast_append_notification_to_processer if in_hotlist?
     end
   }
@@ -189,21 +189,21 @@ class Payment < ApplicationRecord
     )
   end
 
+  def broadcast_replace_ad_hotlist_to_processer
+    broadcast_replace_later_to(
+      "processer_#{processer.id}_ad_hotlist",
+      partial: 'processers/advertisements/ad_hotlist',
+      locals: { role_namespace: 'processers', user: processer },
+      target: "processer_#{processer.id}_ad_hotlist"
+    )
+  end
+
   def broadcast_replace_hotlist_to_processer
     broadcast_replace_later_to(
       "processer_#{processer.id}_hotlist",
       partial: 'processers/payments/hotlist',
       locals: { role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_hotlist"
-    )
-  end
-
-  def broadcast_replace_payment_to_ad
-    broadcast_replace_later_to(
-      "advertisements_payment_#{uuid}",
-      partial: 'processers/advertisements/show_turbo_frame',
-      locals: {payment: decorate, signature: nil, advertisement: decorate.advertisement },
-      target: "advertisements_payment_#{uuid}"
     )
   end
 
