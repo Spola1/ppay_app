@@ -100,7 +100,7 @@ class Payment < ApplicationRecord
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
   scope :in_hotlist, lambda {
-    deposits.confirming.or(withdrawals.transferring).order(created_at: :desc)
+    deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
 
   scope :in_flow_hotlist, lambda {
@@ -110,7 +110,7 @@ class Payment < ApplicationRecord
            .or(withdrawals.confirming)
            .or(withdrawals.transferring)
            .or(withdrawals.arbitration)
-           .order(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
+           .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }
