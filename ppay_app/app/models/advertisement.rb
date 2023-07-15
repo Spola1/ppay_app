@@ -19,18 +19,6 @@ class Advertisement < ApplicationRecord
 
   after_commit :set_payment_link_qr_code, if: -> { payment_link_previously_changed? }
 
-  def in_hotlist?
-    payments.in_flow_hotlist.exists?
-  end
-
-  # after_update_commit lambda {
-  #   broadcast_replace_ad_to_processer
-  # }
-
-  # after_update_commit lambda {
-  #   broadcast_replace_ad_hotlist_to_processer
-  # }
-
   def sorted_payments
     payments.in_flow_hotlist.sort do |a, b|
       if a.payment_status == b.payment_status
@@ -42,24 +30,6 @@ class Advertisement < ApplicationRecord
   end
 
   private
-
-  # def broadcast_replace_ad_to_processer
-  #   broadcast_replace_later_to(
-  #     "processers_advertisement_#{id}",
-  #     partial: 'processers/advertisements/show_turbo_frame',
-  #     locals: { payment: decorate, signature: nil, advertisement: decorate.advertisement, role_namespace: 'processers', can_manage_payment?: true },
-  #     target: "processers_advertisement_#{id}"
-  #   )
-  # end
-
-  # def broadcast_replace_ad_hotlist_to_processer
-  #   broadcast_replace_later_to(
-  #     "processer_#{processer.id}_ad_hotlist",
-  #     partial: 'processers/advertisements/ad_hotlist',
-  #     locals: { role_namespace: 'processers', user: processer },
-  #     target: "processer_#{processer.id}_ad_hotlist"
-  #   )
-  # end
 
   def set_payment_link_qr_code
     if payment_link.blank?
