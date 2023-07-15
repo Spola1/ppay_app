@@ -19,16 +19,6 @@ class Advertisement < ApplicationRecord
 
   after_commit :set_payment_link_qr_code, if: -> { payment_link_previously_changed? }
 
-  def sorted_payments
-    payments.in_flow_hotlist.sort do |a, b|
-      if a.payment_status == b.payment_status
-        b.status_changed_at <=> a.status_changed_at
-      else
-        a.payment_status == 'confirming' ? -1 : 1
-      end
-    end
-  end
-
   private
 
   def set_payment_link_qr_code

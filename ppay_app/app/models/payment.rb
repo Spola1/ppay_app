@@ -110,7 +110,7 @@ class Payment < ApplicationRecord
            .or(withdrawals.confirming)
            .or(withdrawals.transferring)
            .or(withdrawals.arbitration)
-           .order(created_at: :desc)
+           .order(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }
