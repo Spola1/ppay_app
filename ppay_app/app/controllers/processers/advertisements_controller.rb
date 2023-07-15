@@ -9,6 +9,10 @@ module Processers
       @advertisements = @advertisements.decorate
     end
 
+    def flow
+      @advertisements = current_user.advertisements
+    end
+
     def show; end
 
     def new

@@ -151,13 +151,26 @@
     @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
   }
 
-  .items-list-td-break-all {
-    @apply text-xs text-gray-900 font-light p-2 break-words w-[140px] text-left;
+  .items-list-td-break-all-card {
+    @apply text-xs text-gray-900 font-light p-2 break-words w-[100px] text-left;
   }
 
-  .items-list-th-text-left {
+  .items-list-td-break-all-comment {
+    @apply text-xs text-gray-900 font-light p-2 break-words w-[100px] text-left;
+  }
+
+  .items-list-th-text-left-card {
+    @apply text-xs font-medium text-gray-900 p-2 text-left w-[100px];
+  }
+
+  .items-list-th-text-left-comment {
+    @apply text-xs font-medium text-gray-900 p-2 text-left w-[100px];
+  }
+
+  .items-list-th-text-left-payments {
     @apply text-xs font-medium text-gray-900 p-2 text-left;
   }
+
 
   .items-list-td-link {
     @apply items-list-td text-gray-900 underline font-medium;
@@ -301,25 +314,59 @@
       focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 p-1 ease-in-out;
   }
 
+  .items-list-td-link-flow {
+    @apply items-list-td text-gray-900 underline font-medium w-[20px];
+  }
+
+  .items-list-th-link-flow {
+    @apply items-list-td text-gray-900 font-medium w-[20px];
+  }
+
   .toast.arbitration {
     @apply bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
+    color: white;
   }
 
   .toast.deposit {
     @apply bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
   }
 
-  .toast.transferring {
-    @apply bg-yellow-400 hover:bg-yellow-500 focus:bg-yellow-500 active:bg-yellow-600 w-['250px'];
+  .text-size-11 {
+    font-size: 11px;
+  }
+  
+  .text-size-13 {
+    font-size: 13px;
   }
 
-  .toast.transferring .toast-text.text-xs, 
+  .table-striped tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .table-striped tbody tr:nth-child(even) {
+    background-color: #fbf9f9dd;
+  }
+
+  .w-50 {
+    width: 50px;
+  }
+
+  .toast.transferring {
+    @apply bg-yellow-300 hover:bg-yellow-400 focus:bg-yellow-400 active:bg-yellow-400;
+  }
+
+  .toast.transferring .text-xs, 
   .toast.transferring .toast-header-time-text.countdown {
     color: black;
   }
 
+  .toast.confirming .text-xs, 
+  .toast.confirming .toast-header-time-text.countdown {
+    color: white;
+  }
+
   .toast.confirming {
-    @apply bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
+    @apply bg-green-700 hover:bg-green-800 focus:bg-green-800 active:bg-green-900;
   }
 
   .toast-header {
@@ -755,5 +802,9 @@
 
   .select-locale {
     @apply mt-0.5;
+  }
+
+  .flow-table-text {
+    @apply text-sm mt-5 font-medium;
   }
 }

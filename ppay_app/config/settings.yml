@@ -31,6 +31,8 @@ navbar:
       path: balance_requests_path
     - name: Телеграм Бот
       path: edit_processers_profile_path
+    - name: ОБРАБОТКА
+      path: flow_advertisements_path
   support:
     - name: Все платежи
       path: payments_path

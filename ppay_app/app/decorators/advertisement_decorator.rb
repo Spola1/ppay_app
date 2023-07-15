@@ -8,6 +8,7 @@ class AdvertisementDecorator < ApplicationDecorator
   end
 
   def card_info
-    "#{payment_system} #{card_number[-4..-1]}"
+    truncated_payment_system = payment_system.length <= 8 ? "#{payment_system}**" : "#{payment_system[0..7]}**"
+    "#{truncated_payment_system}#{card_number[-4..-1]}"
   end
 end

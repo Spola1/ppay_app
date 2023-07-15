@@ -82,6 +82,7 @@ Rails.application.routes.draw do
       collection do
         post :activate_all
         post :deactivate_all
+        get :flow
       end
     end
     resources :exchange_portals, only: %i[index show]
