@@ -17,7 +17,7 @@ module Admins
       params.require(:national_currencies)
             .permit(national_currencies:
                     %i[id default_payment_system_id
-                       ad_position_deposit ad_position_withdrawal])
+                       adv_position_deposit adv_position_withdrawal])
     end
   end
 end

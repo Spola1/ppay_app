@@ -17,9 +17,9 @@
                          options_from_collection_for_select(national_currency.payment_systems, :id, :name, national_currency.default_payment_system_id),
                          class: 'w-80'
           %td.items-list-td
-            = text_field_tag "national_currencies[national_currencies][][ad_position_deposit]", national_currency.ad_position_deposit, size: 5
+            = text_field_tag "national_currencies[national_currencies][][adv_position_deposit]", national_currency.adv_position_deposit, size: 5
           %td.items-list-td
-            = text_field_tag "national_currencies[national_currencies][][ad_position_withdrawal]", national_currency.ad_position_withdrawal, size: 5
+            = text_field_tag "national_currencies[national_currencies][][adv_position_withdrawal]", national_currency.adv_position_withdrawal, size: 5
 
   .mt-4
     = f.submit t('buttons.submit'), class: 'form-submit'

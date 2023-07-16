@@ -2,20 +2,14 @@
 
 module Binance
   class OtcTrade
-    attr_accessor :asset, :fiat, :fiat_amount, :trade_type
+    attr_accessor :asset, :fiat, :fiat_amount, :trade_type, :merchant_check
 
     def initialize(asset, fiat, trade_type, fiat_amount, payment_method, merchant_check)
-      # "USDT"
       @asset = asset
-      # "RUB"
       @fiat = fiat
-      # 200000
-      @fiat_amount = fiat_amount
-      # "sell"
+      @fiat_amount = fiat_amount || false
       @trade_type = trade_type
-      # "sberbank"
       @payment_method = payment_method
-      # true или false
       @merchant_check = merchant_check
     end
 
@@ -28,7 +22,7 @@ module Binance
     def in_adv_limits?(adv)
       # проверяем - попадаем ли мы в лимиты,
       # которые выставил человек в объявлении
-      (adv.min_amount <= @fiat_amount) && (@fiat_amount <= adv.max_amount)
+      (adv.min_amount <= fiat_amount) && (fiat_amount <= adv.max_amount)
     end
 
     def can_change?(adv)
@@ -37,32 +31,24 @@ module Binance
     end
 
     def suitable_advs_array
-      advs_params = { asset: @asset, fiat: @fiat, merchant_check: @merchant_check, pay_types: @payment_method,
+      return @suitable_advs_array if @suitable_advs_array
+
+      advs_params = { asset:, fiat:, merchant_check:, pay_types: @payment_method,
                       trade_type: @trade_type, trans_amount: @fiat_amount }
       binance_session = OpenSession.new(advs_params)
-      binance_session.otc_advs_array
+      @suitable_advs_array = binance_session.otc_advs_array
     end
 
     def choose_10_advs_from_array
       advs_array = suitable_advs_array
       results = []
       advs_array.each do |adv_arr_item|
-        # adv = Garantex::Adv.new(adv_item)
         adv = Adv.new(adv_arr_item)
-        # пробегаем по объявлениям и находим
-        # первые два подходящих
 
-        # puts ".can_change?(adv): #{self.can_change?(adv)}"
-        # puts "results.size: #{results.size}"
         next unless ((fiat_amount == false) || can_change?(adv)) && results.size < 10
 
         results << adv_arr_item
-        # else
-        # puts "-1-1-1-"
       end
-      # puts "\n\n--- выбранные 2 объявления на Binance P2P: ---\n\n"
-      # puts "results size: #{results.size}"
-      # puts results
       results
     end
   end

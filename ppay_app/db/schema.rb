@@ -260,8 +260,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "default_payment_system_id"
-    t.integer "ad_position_deposit", default: 10
-    t.integer "ad_position_withdrawal", default: 5
+    t.integer "adv_position_deposit", default: 10
+    t.integer "adv_position_withdrawal", default: 5
     t.index ["default_payment_system_id"], name: "index_national_currencies_on_default_payment_system_id"
   end
 
@@ -289,8 +289,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.datetime "updated_at", null: false
     t.bigint "national_currency_id", null: false
     t.string "binance_name"
-    t.integer "ad_position_deposit", default: 10
-    t.integer "ad_position_withdrawal", default: 5
+    t.integer "adv_position_deposit", default: 10
+    t.integer "adv_position_withdrawal", default: 5
     t.integer "trans_amount_deposit"
     t.integer "trans_amount_withdrawal"
     t.bigint "payment_system_copy_id"

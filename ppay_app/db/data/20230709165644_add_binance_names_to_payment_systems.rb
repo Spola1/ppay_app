@@ -15,7 +15,7 @@ class AddBinanceNamesToPaymentSystems < ActiveRecord::Migration[7.0]
       ['Halyk Bank',                 'HalykBank'],
       ['Jusan Bank',                 'JysanBank'],
       ['Kaspi Bank',                 'KaspiBank'],
-      ['IBAN',                       ''],
+      ['IBAN',                       'ISBANK'],
       ['PrivatBank',                 'PrivatBank'],
       ['MonoBank',                   'Monobank'],
       ['PUMB',                       'PUMBBank'],
