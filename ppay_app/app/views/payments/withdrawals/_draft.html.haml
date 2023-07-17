@@ -1,15 +1,5 @@
 .show-payment
   .show-payment-block
-
-    .simple-form-for-payment-deposit
-      = simple_form_for payment, url: payments_withdrawal_path(uuid: payment.uuid, signature:), action: :update do |f|
-        .select-language
-          = f.label :language, t('payments.choise_language')
-        .select-submit-container
-          = f.select :locale, language_options, {}, { class: 'form-input-select' }
-
-          = f.submit t('payments.choise'), class: "button-submit", style: payment.button_color_style
-
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
