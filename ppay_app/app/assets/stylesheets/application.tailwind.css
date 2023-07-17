@@ -732,8 +732,6 @@
     @apply mt-0.5;
   }
 
-
-
   .items-list-td-break-all-card {
     @apply text-xs text-gray-900 font-light p-2 break-words w-[100px] text-left;
   }
@@ -743,7 +741,7 @@
   }
 
   .items-list-th-text-left-card {
-    @apply text-xs font-medium text-gray-900 p-2 text-left w-[100px];
+    @apply text-xs font-medium text-gray-900 p-2 text-left w-[135px];
   }
 
   .items-list-th-text-left-comment {
