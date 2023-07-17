@@ -779,26 +779,28 @@
     font-size: 13px;
   }
 
-  .table-striped tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  
-  .table-striped tbody tr:nth-child(even) {
-    background-color: #fbf9f9dd;
-  }
-
   .w-50 {
     width: 50px;
   }
 
-  .toast.transferring {
+  .toast.deposit-transferring {
     @apply hover:bg-yellow-300 focus:bg-yellow-300 active:bg-yellow-300;
     background-color: #FFEE95;
   }
 
-  .toast.confirming {
+  .toast.deposit-confirming {
     @apply hover:bg-green-800 focus:bg-green-800 active:bg-green-900;
     background-color: #057A17;
+  }
+
+  .toast.withdrawal-transferring {
+    @apply hover:bg-blue-800 focus:bg-blue-800 active:bg-blue-900;
+    background-color: #0656CD;
+  }
+
+  .toast.withdrawal-confirming {
+    @apply hover:bg-blue-300 focus:bg-blue-300 active:bg-blue-400;
+    background-color: #C3DBFF;
   }
 
   .toast.flow-arbitration {
@@ -807,13 +809,17 @@
     background-color: #D60B0B;
   }
 
-  .toast.transferring .text-xs, 
-  .toast.transferring .toast-header-time-text.countdown {
+  .toast.withdrawal-confirming .text-xs,
+  .toast.withdrawal-confirming .toast-header-time-text.countdown,
+  .toast.deposit-transferring .text-xs, 
+  .toast.deposit-transferring .toast-header-time-text.countdown {
     color: black;
   }
 
-  .toast.confirming .text-xs, 
-  .toast.confirming .toast-header-time-text.countdown {
+  .toast.withdrawal-transferring .text-xs, 
+  .toast.withdrawal-transferring .toast-header-time-text.countdown,
+  .toast.deposit-confirming .text-xs, 
+  .toast.deposit-confirming .toast-header-time-text.countdown {
     color: white;
   }
 

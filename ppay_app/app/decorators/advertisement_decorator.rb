@@ -8,7 +8,11 @@ class AdvertisementDecorator < ApplicationDecorator
   end
 
   def card_info
-    truncated_payment_system = payment_system.length <= 8 ? "#{payment_system}**" : "#{payment_system[0..7]}**"
-    "#{truncated_payment_system}#{card_number[-4..-1]}"
+    truncated_payment_system = payment_system.length <= 8 ? "#{payment_system}**" : "#{payment_system.delete(' ')[0..7]}**"
+    "#{truncated_payment_system.upcase}#{card_number[-4..-1]}"
+  end
+
+  def hotlist_payments
+    direction == 'Deposit' ? payments.in_deposit_flow_hotlist : payments.in_withdrawal_flow_hotlist
   end
 end

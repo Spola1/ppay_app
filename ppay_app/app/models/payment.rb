@@ -103,14 +103,18 @@ class Payment < ApplicationRecord
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
 
-  scope :in_flow_hotlist, lambda {
+  scope :in_deposit_flow_hotlist, lambda {
     deposits.confirming
            .or(deposits.transferring)
            .or(deposits.arbitration)
-           .or(withdrawals.confirming)
+           .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
+  }
+
+  scope :in_withdrawal_flow_hotlist, lambda {
+    withdrawals.confirming
            .or(withdrawals.transferring)
            .or(withdrawals.arbitration)
-           .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
+           .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, status_changed_at DESC")))
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }

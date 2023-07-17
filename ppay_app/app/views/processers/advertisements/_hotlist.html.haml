@@ -1,6 +1,6 @@
 = turbo_stream_from "advertisement_#{advertisement.id}_hotlist"
 = turbo_frame_tag "advertisement_#{advertisement.id}_hotlist" do
   .div.flex.flex-wrap
-    - advertisement.payments.in_flow_hotlist.each do |payment|
+    - advertisement.decorate.hotlist_payments.each do |payment|
       = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
         = render 'processers/advertisements/hotlist_payment', payment: payment
