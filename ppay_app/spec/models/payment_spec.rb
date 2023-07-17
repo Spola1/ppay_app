@@ -13,6 +13,34 @@ RSpec.describe Payment, type: :model do
   it { is_expected.to belong_to(:rate_snapshot).optional(true) }
   it { is_expected.to belong_to(:advertisement).optional(true) }
 
+  describe '.in_deposit_flow_hotlist' do
+    let(:adv) { create(:advertisement, :deposit) }
+    let(:payment1) { create(:payment, :deposit, :confirming, advertisement: adv) }
+    let(:payment2) { create(:payment, :deposit, :transferring, advertisement: adv) }
+    let(:payment3) { create(:payment, :deposit, :confirming, arbitration: true, advertisement: adv) }
+    let(:payment4) { create(:payment, :deposit, :processer_search, advertisement: adv) }
+
+    it 'returns payments in the deposit flow hotlist' do
+      result = adv.payments.in_deposit_flow_hotlist
+
+      expect(result).to eq([payment1, payment2, payment3])
+    end
+  end
+
+  describe '.in_withdrawal_flow_hotlist' do
+    let(:adv) { create(:advertisement, :withdrawal) }
+    let(:payment1) { create(:payment, :withdrawal, :confirming, advertisement: adv) }
+    let(:payment2) { create(:payment, :withdrawal, :transferring, advertisement: adv) }
+    let(:payment3) { create(:payment, :withdrawal, :confirming, arbitration: true, advertisement: adv) }
+    let(:payment4) { create(:payment, :withdrawal, :processer_search, advertisement: adv) }
+
+    it 'returns payments in the withdrawal flow hotlist' do
+      result = adv.payments.in_withdrawal_flow_hotlist
+
+      expect(result).to eq([payment2, payment1, payment3])
+    end
+  end
+
   describe 'before_save' do
     describe 'take_off_arbitration' do
       let(:payment) { create :payment, payment_status: :processer_search, arbitration: true }
