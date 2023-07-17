@@ -189,6 +189,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.boolean "in_progress"
   end
 
   create_table "form_customizations", force: :cascade do |t|
@@ -340,11 +341,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.datetime "updated_at", null: false
     t.string "direction"
     t.string "cryptocurrency"
-    t.string "payment_system"
     t.integer "position_number"
     t.integer "exchange_portal_id"
     t.decimal "value"
-    t.string "national_currency"
     t.decimal "adv_amount"
     t.bigint "payment_system_id"
     t.index ["payment_system_id"], name: "index_rate_snapshots_on_payment_system_id"
