@@ -151,6 +151,11 @@
     @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
   }
 
+  .items-list-td-national_currency {
+    @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
+    font-weight: 450;
+  }
+
   .items-list-td-link {
     @apply items-list-td text-gray-900 underline font-medium;
   }
