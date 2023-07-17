@@ -75,9 +75,9 @@ module StateMachines
       private
 
       def available_processer_search?(params)
-        return unless insufficient_merchant_balance?
         return unless valid_payment_system?(params)
         return unless valid_card_number?(params)
+        return unless insufficient_merchant_balance?
         return unless rate_snapshot.present?
 
         true
