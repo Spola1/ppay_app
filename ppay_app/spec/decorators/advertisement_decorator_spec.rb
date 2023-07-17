@@ -8,7 +8,7 @@ RSpec.describe AdvertisementDecorator do
   describe '#card_info' do
     context 'when payment_system is less than or equal to 8 characters' do
       it 'Should return the correct card_info' do
-        expect(advertisement.decorate.card_info).to eq('Sberbank**1111')
+        expect(advertisement.decorate.card_info).to eq('SBERBANK**1111')
       end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe AdvertisementDecorator do
       end
 
       it 'Should return the correct card_info' do
-        expect(advertisement.decorate.card_info).to eq('Dushanbe**1111')
+        expect(advertisement.decorate.card_info).to eq('DUSHANBE**1111')
       end
     end
   end

@@ -1,6 +1,6 @@
 %tr.items-list-tr
   %td.items-list-td-link-flow.border.border-gray-300.text-center.no-underline.flow-table-text.font-firs
-    = link_to advertisement.id, advertisement
+    = link_to advertisement.id, advertisement, data: { turbo: false }
   %td.items-list-td-break-all-card.border.border-gray-300.flow-table-text.font-firs= advertisement.decorate.card_info
   %td.items-list-td-break-all-comment.border.border-gray-300.flow-table-text.font-firs= advertisement.comment
   %td.items-list-td.border.border-gray-300
