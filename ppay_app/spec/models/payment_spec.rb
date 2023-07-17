@@ -273,10 +273,9 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'scope' do
-    let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id: }
-    let!(:payment2) { create :payment, :IDR, created_at:, uuid: }
-    let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
-    let(:created_at)  { 'Mon, 06 Mar 2023 22:53:42.811063000 MSK +03:00' }
+    let!(:payment1) { create(:payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id:, created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow')) }
+    let!(:payment2) { create(:payment, :IDR, created_at: Time.parse('2023-09-02 23:59:59').in_time_zone('Moscow'), uuid:) }
+    let!(:payment3) { create(:payment, :by_client, :Tinkoff, national_currency_amount:, created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow')) }
     let(:national_currency_amount) { 1000 }
     let(:cryptocurrency_amount) { 111 }
     let(:uuid) { '06e2f816-3d85-4c0d-b5d7-c1729b3d4ac2' }
@@ -284,24 +283,30 @@ RSpec.describe Payment, type: :model do
 
     describe 'filter_by_created_from' do
       context 'when 03.09.2023' do
-        subject(:payment) { Payment.filter_by_created_from('03.09.2023') }
-        let(:correct_result) { [payment3, payment1] }
-        it { expect(payment.to_a).to eq(correct_result) }
+        subject(:payments) { Payment.filter_by_created_from(Time.parse('2023-09-03 00:00:00').in_time_zone('Moscow')) }
+        let(:correct_result) { [payment1, payment3] }
+
+        it 'returns payments created from the specified date' do
+          expect(payments).to eq(correct_result)
+        end
       end
     end
 
     describe 'filter_by_created_to' do
       context 'when 03.09.2023' do
-        subject(:payment) { Payment.filter_by_created_to('03.09.2023') }
-        let(:correct_result) { [payment2] }
-        it { expect(payment.to_a).to eq(correct_result) }
+        subject(:payments) { Payment.filter_by_created_to(Time.parse('2023-09-03 23:59:59').in_time_zone('Moscow')) }
+        let(:correct_result) { [payment1, payment3, payment2] }
+
+        it 'returns payments created before the specified date' do
+          expect(payments).to eq(correct_result)
+        end
       end
     end
 
     describe 'filter_by_cancellation_reason' do
       context 'when by_client' do
         subject(:payment) { Payment.filter_by_cancellation_reason('by_client') }
-        let(:correct_result) { [payment3, payment1] }
+        let(:correct_result) { [payment1, payment3] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
     end
@@ -317,7 +322,7 @@ RSpec.describe Payment, type: :model do
     describe 'filter_by_national_currency' do
       context 'when RUB' do
         subject(:payment) { Payment.filter_by_national_currency('RUB') }
-        let(:correct_result) { [payment3, payment1] }
+        let(:correct_result) { [payment1, payment3] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
     end
@@ -325,7 +330,7 @@ RSpec.describe Payment, type: :model do
     describe 'filter_by_payment_system' do
       context 'when Tinkoff' do
         subject(:payment) { Payment.filter_by_payment_system('Tinkoff') }
-        let(:correct_result) { [payment3, payment1] }
+        let(:correct_result) { [payment1, payment3] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
     end
