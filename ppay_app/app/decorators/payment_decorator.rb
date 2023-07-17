@@ -55,7 +55,7 @@ class PaymentDecorator < ApplicationDecorator
 
   def flow_class
     classes = ['toast']
-    classes << 'arbitration' if arbitration
+    classes << 'flow-arbitration' if arbitration
     classes << 'transferring' if payment_status == 'transferring' && !arbitration
     classes << 'confirming' if payment_status == 'confirming' && !arbitration
     classes.join(' ')

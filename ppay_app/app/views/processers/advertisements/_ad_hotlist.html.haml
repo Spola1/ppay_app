@@ -9,7 +9,23 @@
               %th.items-list-th-link-flow.flow-table-text.font-firs ID
               %th.items-list-th-text-left-card.flow-table-text.font-firs КАРТА
               %th.items-list-th-text-left-comment.flow-table-text.font-firs КОММЕНТ
-              %th.items-list-th-text-left-payments.flow-table-text.font-firs ПЛАТЕЖИ
-    
-              - hotlist_advertisements(user).each do |advertisement|
+              %th.items-list-th-text-left-payments.flow-table-text.font-firs
+                ПЛАТЕЖ -
+                %span.text-green ДЕПОЗИТ
+              - deposit_hotlist_advertisements(user).each do |advertisement|
+                = render 'processers/advertisements/hotlist_advertisement', advertisement:
+
+  %section.wrap
+    .card-wrap
+      .flow-item-card
+        %table.w-full.table-striped
+          %thead.item-list-thead
+            %tr
+              %th.items-list-th-link-flow.flow-table-text.font-firs ID
+              %th.items-list-th-text-left-card.flow-table-text.font-firs КАРТА
+              %th.items-list-th-text-left-comment.flow-table-text.font-firs КОММЕНТ
+              %th.items-list-th-text-left-payments.flow-table-text.font-firs
+                ПЛАТЕЖ -
+                %span.text-blue ВЫВОД
+              - withdrawal_hotlist_advertisements(user).each do |advertisement|
                 = render 'processers/advertisements/hotlist_advertisement', advertisement:

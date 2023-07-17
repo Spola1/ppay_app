@@ -11,9 +11,15 @@ module ApplicationHelper
     user.payments.in_hotlist.decorate
   end
 
-  def hotlist_advertisements(user)
-    user.advertisements.order('payment_system ASC').select do |advertisement|
-      advertisement.payments.in_flow_hotlist.any?
+  def deposit_hotlist_advertisements(user)
+    user.advertisements.order('payment_system ASC').by_direction('Deposit').select do |advertisement|
+      advertisement.status? || advertisement.payments.in_flow_hotlist.any?
+    end
+  end
+
+  def withdrawal_hotlist_advertisements(user)
+    user.advertisements.order('payment_system ASC').by_direction('Withdrawal').select do |advertisement|
+      advertisement.status? || advertisement.payments.in_flow_hotlist.any?
     end
   end
 

@@ -298,10 +298,6 @@
       focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 p-1 ease-in-out;
   }
 
-  .toast.confirming {
-    @apply bg-green-700 hover:bg-green-800 focus:bg-green-800 active:bg-green-900;
-  }
-
   .toast-header {
     @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-blue-500 rounded-t-lg;
   }
@@ -796,7 +792,19 @@
   }
 
   .toast.transferring {
-    @apply bg-yellow-300 hover:bg-yellow-400 focus:bg-yellow-400 active:bg-yellow-400;
+    @apply hover:bg-yellow-300 focus:bg-yellow-300 active:bg-yellow-300;
+    background-color: #FFEE95;
+  }
+
+  .toast.confirming {
+    @apply hover:bg-green-800 focus:bg-green-800 active:bg-green-900;
+    background-color: #057A17;
+  }
+
+  .toast.flow-arbitration {
+    @apply bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
+    color: white;
+    background-color: #D60B0B;
   }
 
   .toast.transferring .text-xs, 
@@ -815,5 +823,13 @@
 
   .flow-item-card {
     @apply rounded-lg bg-white;
+  }
+
+  .text-green {
+    color: #057A17;
+  }
+  
+  .text-blue {
+    color: #0656CD;
   }
 }
