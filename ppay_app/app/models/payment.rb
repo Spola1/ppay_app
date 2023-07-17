@@ -9,8 +9,14 @@ class Payment < ApplicationRecord
   audited
 
   default_scope { order(created_at: :desc, id: :desc) }
-  scope :filter_by_created_from, ->(created_from) { where('payments.created_at > ?', created_from) }
-  scope :filter_by_created_to, ->(created_to) { where('payments.created_at < ?', created_to) }
+  scope :filter_by_created_from, ->(created_from) do
+    created_from = Time.zone.parse(created_from.to_s).beginning_of_day
+    where('payments.created_at >= ?', created_from)
+  end
+  scope :filter_by_created_to, ->(created_to) do
+    created_to = Time.zone.parse(created_to.to_s).end_of_day
+    where('payments.created_at <= ?', created_to)
+  end
   scope :filter_by_cancellation_reason, ->(cancellation_reason) { where(cancellation_reason:) }
   scope :filter_by_payment_status, ->(payment_status) { where(payment_status:) }
   scope :filter_by_payment_system, ->(payment_system) { where(payment_system:) }
