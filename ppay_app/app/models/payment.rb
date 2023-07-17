@@ -9,14 +9,14 @@ class Payment < ApplicationRecord
   audited
 
   default_scope { order(created_at: :desc, id: :desc) }
-  scope :filter_by_created_from, ->(created_from) do
+  scope :filter_by_created_from, lambda { |created_from|
     created_from = Time.zone.parse(created_from.to_s).beginning_of_day
     where('payments.created_at >= ?', created_from)
-  end
-  scope :filter_by_created_to, ->(created_to) do
+  }
+  scope :filter_by_created_to, lambda { |created_to|
     created_to = Time.zone.parse(created_to.to_s).end_of_day
     where('payments.created_at <= ?', created_to)
-  end
+  }
   scope :filter_by_cancellation_reason, ->(cancellation_reason) { where(cancellation_reason:) }
   scope :filter_by_payment_status, ->(payment_status) { where(payment_status:) }
   scope :filter_by_payment_system, ->(payment_system) { where(payment_system:) }
@@ -111,16 +111,16 @@ class Payment < ApplicationRecord
 
   scope :in_deposit_flow_hotlist, lambda {
     deposits.confirming
-           .or(deposits.transferring)
-           .or(deposits.arbitration)
-           .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
+            .or(deposits.transferring)
+            .or(deposits.arbitration)
+            .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
   }
 
   scope :in_withdrawal_flow_hotlist, lambda {
     withdrawals.confirming
-           .or(withdrawals.transferring)
-           .or(withdrawals.arbitration)
-           .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, status_changed_at DESC")))
+               .or(withdrawals.transferring)
+               .or(withdrawals.arbitration)
+               .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, status_changed_at DESC")))
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }
@@ -221,7 +221,7 @@ class Payment < ApplicationRecord
     broadcast_replace_later_to(
       "advertisement_#{advertisement.id}_hotlist",
       partial: 'processers/advertisements/hotlist',
-      locals: { advertisement: advertisement, payment: decorate },
+      locals: { advertisement:, payment: decorate },
       target: "advertisement_#{advertisement.id}_hotlist"
     )
   end

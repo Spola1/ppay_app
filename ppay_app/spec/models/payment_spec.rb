@@ -273,9 +273,17 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'scope' do
-    let!(:payment1) { create(:payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id:, created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow')) }
-    let!(:payment2) { create(:payment, :IDR, created_at: Time.parse('2023-09-02 23:59:59').in_time_zone('Moscow'), uuid:) }
-    let!(:payment3) { create(:payment, :by_client, :Tinkoff, national_currency_amount:, created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow')) }
+    let!(:payment1) do
+      create(:payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id:,
+                                                         created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow'))
+    end
+    let!(:payment2) do
+      create(:payment, :IDR, created_at: Time.parse('2023-09-02 23:59:59').in_time_zone('Moscow'), uuid:)
+    end
+    let!(:payment3) do
+      create(:payment, :by_client, :Tinkoff, national_currency_amount:,
+                                             created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow'))
+    end
     let(:national_currency_amount) { 1000 }
     let(:cryptocurrency_amount) { 111 }
     let(:uuid) { '06e2f816-3d85-4c0d-b5d7-c1729b3d4ac2' }
