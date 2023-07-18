@@ -13,6 +13,8 @@ navbar:
       path: balance_requests_path
     - name: Мерчанты
       path: merchants_path
+    - name: Маски
+      path: masks_path
   merchant:
     - name: Все платежи
       path: payments_path
