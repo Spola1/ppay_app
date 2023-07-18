@@ -1,7 +1,9 @@
-%h2.mt-4 Глобальные настройки
-= simple_form_for @setting, url: setting_path, method: :patch do |f|
-  .field.mb-1
-    = f.label :receive_requests_enabled, 'Включить прием запросов'
-    = f.check_box :receive_requests_enabled
-  .actions
-    = f.submit 'Сохранить', class: 'form-submit'
+%section.wrap
+  .card-wrap
+    .item-card
+      %h2.mt-4 Глобальные настройки
+      = simple_form_for @setting, url: setting_path, method: :patch do |f|
+        = f.label :receive_requests_enabled, 'Включить прием запросов'
+        = f.check_box :receive_requests_enabled
+        .mt-3
+          = f.submit 'Сохранить', class: 'form-submit'
