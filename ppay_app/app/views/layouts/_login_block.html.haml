@@ -13,7 +13,7 @@
         = "(#{current_user.decorate.human_type})"
         %span.block
           = "(#{current_user.email})"
-    - if current_user.is_a? Merchant
+    - if current_user.is_a?(Processer) || current_user.is_a?(Merchant)
       .p-2.text-xl
         = link_to fa_icon('user'), users_settings_path
     .p-2.text-xl

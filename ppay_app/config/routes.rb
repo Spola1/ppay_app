@@ -95,6 +95,11 @@ Rails.application.routes.draw do
 
       concerns :statuses_updatable
     end
+
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :processers_root
   end
 

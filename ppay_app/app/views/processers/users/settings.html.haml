@@ -1,0 +1,5 @@
+%h2.mt-4 Api ключи
+
+- current_user.api_keys.each do |api_key|
+  %pre.api_key.mb-2
+    = api_key.token
