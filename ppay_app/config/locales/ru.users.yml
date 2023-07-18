@@ -17,3 +17,9 @@ ru:
       settings:
         title: Настройки мерчанта
         update: Обновить
+
+  processers:
+    users:
+      settings:
+        title: Настройки оператора
+        update: Обновить

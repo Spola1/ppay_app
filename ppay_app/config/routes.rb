@@ -99,6 +99,7 @@ Rails.application.routes.draw do
 
     namespace :users do
       get :settings
+      patch :settings, to: '/processers/users#settings_update'
     end
 
     root 'payments#index', as: :processers_root

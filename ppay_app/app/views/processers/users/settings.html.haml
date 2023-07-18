@@ -1,3 +1,14 @@
+%h2= t('.title')
+
+= simple_form_for(current_user, url: users_settings_path, action: :update) do |f|
+  .text-sm.mb-2
+    = f.label :receive_requests_enabled, 'Включить прием запросов'
+    = f.check_box :receive_requests_enabled
+
+  .form-actions
+    = f.button :submit, t('.update'), class: 'form-submit'
+
+
 %h2.mt-4 Api ключи
 
 - current_user.api_keys.each do |api_key|
