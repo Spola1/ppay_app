@@ -3,7 +3,7 @@
 module Admins
   class NationalCurrenciesController < Staff::BaseController
     def index
-      @national_currencies = NationalCurrency.includes(:payment_systems)
+      @national_currencies = NationalCurrency.includes(:payment_systems).order(id: :asc)
     end
 
     def update

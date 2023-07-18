@@ -7,6 +7,4 @@ class PaymentSystem < ApplicationRecord
 
   belongs_to :payment_system_copy, class_name: 'PaymentSystem', optional: true
   belongs_to :national_currency
-
-  default_scope { order(id: :asc) }
 end
