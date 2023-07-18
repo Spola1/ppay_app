@@ -356,7 +356,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_18_110126) do
     t.integer "regular_payment_exec_time_in_sec", default: 1200
     t.decimal "ftd_payment_default_summ", precision: 12, scale: 2
     t.boolean "differ_ftd_and_other_payments", default: false
-    t.boolean "receive_requests_enabled", default: false
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
