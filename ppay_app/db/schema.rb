@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_18_083429) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_110126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -299,6 +299,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_18_083429) do
     t.decimal "value"
     t.string "national_currency"
     t.decimal "adv_amount"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.boolean "receive_requests_enabled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "transactions", force: :cascade do |t|
