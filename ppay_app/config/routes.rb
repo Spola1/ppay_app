@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   mount Sidekiq::Web => '/sidekiq'
 
+  post '/incoming_requests', to: 'incoming_requests#create'
+
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == Settings.basic_auth.username &&
       password == Settings.basic_auth.password
