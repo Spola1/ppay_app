@@ -14,6 +14,15 @@
         %td.item-card-td.item-card-td-label Номер карты
         %td.item-card-td= @advertisement.card_number
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Автоматизированная проверка платежей
+        %td.item-card-td= @advertisement.simbank_auto_confirmation ? 'Активно' : 'Неактивно'
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Идентификатор SIM-банк
+        %td.item-card-td= @advertisement.simbank_identifier
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Номер карты/счета SIM-банк
+        %td.item-card-td= @advertisement.simbank_card_number
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Ссылка для оплаты
         %td.item-card-td= link_to nil, @advertisement.payment_link
       %tr.item-card-tr

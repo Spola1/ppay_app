@@ -706,6 +706,14 @@
     width: 400px !important;
   }
 
+  input[name="advertisement[simbank_identifier]"] {
+    width: 400px !important;
+  }
+
+  .hint-red {
+    color: red !important;
+  }
+
   .show-countries-block {
     @apply w-fit font-firs rounded-xl py-3 px-3 ml-3 border-qr;
   }
