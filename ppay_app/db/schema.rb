@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_26_152027) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_062655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -191,7 +191,31 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_152027) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "merchant_id"
+    t.string "name"
+    t.boolean "default", default: false, null: false
     t.index ["merchant_id"], name: "index_form_customizations_on_merchant_id"
+  end
+
+  create_table "incoming_requests", force: :cascade do |t|
+    t.string "type"
+    t.string "app"
+    t.string "api_key"
+    t.string "from"
+    t.string "to"
+    t.string "message"
+    t.string "res_sn"
+    t.string "imsi"
+    t.string "imei"
+    t.string "com"
+    t.string "simno"
+    t.string "softwareid"
+    t.string "custmemo"
+    t.integer "sendstat"
+    t.string "user_agent"
+    t.string "text"
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "merchant_methods", force: :cascade do |t|
@@ -247,10 +271,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_152027) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 12, scale: 2
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 12, scale: 2
     t.string "locale"
+    t.bigint "form_customization_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
+    t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
@@ -338,4 +364,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_152027) do
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
   add_foreign_key "payment_systems", "national_currencies"
+  add_foreign_key "payments", "form_customizations"
 end

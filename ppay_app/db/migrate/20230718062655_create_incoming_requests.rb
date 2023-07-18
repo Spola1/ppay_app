@@ -1,0 +1,25 @@
+class CreateIncomingRequests < ActiveRecord::Migration[7.0]
+  def change
+    create_table :incoming_requests do |t|
+      t.string :type
+      t.string :app
+      t.string :api_key
+      t.string :from
+      t.string :to
+      t.string :message
+      t.string :res_sn
+      t.string :imsi
+      t.string :imei
+      t.string :com
+      t.string :simno
+      t.string :softwareid
+      t.string :custmemo
+      t.integer :sendstat
+      t.string :user_agent
+      t.string :text
+      t.string :content
+
+      t.timestamps
+    end
+  end
+end
