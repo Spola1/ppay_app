@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_19_055642) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -224,9 +224,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_055642) do
   end
 
   create_table "masks", force: :cascade do |t|
-    t.string "name"
-    t.string "sms_mask"
-    t.string "push_mask"
+    t.string "app"
+    t.string "request_type"
+    t.string "mask"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

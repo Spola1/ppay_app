@@ -2,29 +2,33 @@
 
 module Admins
   class MasksController < Staff::BaseController
-    before_action :find_mask, only: %i[edit update destroy]
+    before_action :set_mask, only: %i[show edit update destroy]
 
     def index
       @masks = Mask.all
     end
 
+    def show; end
+
     def new
       @mask = Mask.new
     end
 
+    def edit; end
+
     def create
+      @mask = Mask.create(mask_params)
+
       if @mask.save
-        redirect_to masks_path, notice: 'Маска успешно создана.'
+        redirect_to mask_path(@mask), notice: 'Маска создана.'
       else
         render :new
       end
     end
 
-    def edit; end
-
     def update
       if @mask.update(mask_params)
-        redirect_to masks_path, notice: 'Маска успешно обновлена.'
+        redirect_to mask_path(@mask), notice: 'Маска успешно обновлена.'
       else
         render :edit
       end
@@ -32,17 +36,17 @@ module Admins
 
     def destroy
       @mask.destroy
-      redirect_to masks_path, notice: 'Маска успешно удалена.'
+      redirect_to masks_path, notice: 'Маска удалена.'
     end
 
     private
 
-    def find_mask
+    def set_mask
       @mask = Mask.find(params[:id])
     end
 
     def mask_params
-      params.require(:mask).permit(:name, :sms_mask, :push_mask)
+      params.require(:mask).permit(:app, :request_type, :mask)
     end
   end
 end

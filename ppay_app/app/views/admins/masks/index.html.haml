@@ -1,20 +1,37 @@
-%h1 Маски ввода для SMS и пуш-уведомлений
+%section.wrap
+  .card-wrap
+    .item-card
+      .card-head
+        %h1 Маски
 
-= link_to 'Добавить маску', new_mask_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+      = link_to "Создать маску", new_mask_path, class: "bg-blue-500 text-white px-4 py-2 rounded"
 
-%table.border-collapse.border.border-gray-400.mt-4
-  %thead
-    %tr.bg-gray-200
-      %th.border.border-gray-400.px-4.py-2 Маска
-      %th.border.border-gray-400.px-4.py-2 Маска для SMS
-      %th.border.border-gray-400.px-4.py-2 Маска для пуш-уведомлений
-      %th.border.border-gray-400.px-4.py-2 Действия
-  %tbody
-    - @masks.each do |mask|
-      %tr
-        %td.border.border-gray-400.px-4.py-2= mask.name
-        %td.border.border-gray-400.px-4.py-2= mask.sms_mask
-        %td.border.border-gray-400.px-4.py-2= mask.push_mask
-        %td.border.border-gray-400.px-4.py-2
-          = link_to 'Редактировать', edit_mask_path(mask), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'
-          = link_to 'Удалить', mask_path(mask), method: :delete, data: { confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+      %table.items-list-table.mt-3
+        %thead.items-list-thead
+          %tr
+            %th.items-list-th-mask-id ID
+            %th.items-list-th-mask-app Приложение
+            %th.items-list-th-mask-type Тип
+            %th.items-list-th Маска
+            %th.items-list-th
+        %tbody
+          - @masks.each do |mask|
+            %tr
+              %td.items-list-td-link
+                = link_to mask.id, mask_path(mask), data: { turbo_action: :advance }            
+              %td.items-list-td= mask.app
+              %td.items-list-td= mask.request_type
+              %td.items-list-td.text-left
+                %pre= mask.mask
+              %td.items-list-td.px-1.w-0
+                = link_to mask, data: { turbo_confirm: 'Вы уверены что хотите удалить маску?', turbo_method: :delete }  do
+                  .icon-button-red
+                    = fa_icon 'trash'
+              %td.items-list-td.px-1.w-0
+                = link_to edit_mask_path(mask) do
+                  .icon-button
+                    = fa_icon 'pencil'
+              %td.items-list-td.px-1.w-0
+                = link_to mask do
+                  .icon-button-gray
+                    = fa_icon 'search'

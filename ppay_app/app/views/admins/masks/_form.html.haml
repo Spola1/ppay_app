@@ -1,14 +1,5 @@
-= form_with model: @mask, url: @mask.new_record? ? masks_path : mask_path(@mask), method: @mask.new_record? ? :post : :patch do |form|
-  .field
-    = form.label :name
-    = form.text_field :name, class: 'form-control'
-
-  .field
-    = form.label :sms_mask
-    = form.text_field :sms_mask, class: 'form-control'
-
-  .field
-    = form.label :push_mask
-    = form.text_field :push_mask, class: 'form-control'
-
-  = form.submit 'Сохранить', class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+= simple_form_for @mask, url: mask_path(@mask) do |f|
+  = f.input :app
+  = f.input :request_type, collection: ["PUSH", "SMS"], include_blank: '-выбрать-'
+  = f.input :mask, as: :text, input_html: { class: "mask-input-style" }
+  = f.submit 'Сохранить', class: 'form-submit'

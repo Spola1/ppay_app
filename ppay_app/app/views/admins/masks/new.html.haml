@@ -1,5 +1,14 @@
-%h1 Добавить маску
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Создать новую маску
 
-= render 'form'
-
-= link_to 'Назад', masks_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+      = simple_form_for @mask, url: masks_path do |f|
+        = f.input :app, class: "block w-full mt-2 border rounded px-4 py-2"
+        = f.input :request_type, collection: ["PUSH", "SMS"], include_blank: '-выбрать-'
+        = f.input :mask, as: :text, input_html: { class: "mask-input-style" }
+        = f.submit "Сохранить", class: "mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+      .back-link
+        = link_to '<- К списку масок', masks_path

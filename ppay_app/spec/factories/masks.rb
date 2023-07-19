@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :mask do
-    name { "MyString" }
-    sms_mask { "MyString" }
-    push_mask { "MyString" }
+    app { "MyString" }
+    request_type { "MyString" }
+    mask { "MyString" }
   end
 end

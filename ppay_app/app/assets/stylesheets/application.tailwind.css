@@ -849,4 +849,22 @@
   .text-blue {
     color: #0656CD;
   }
+
+  .items-list-th-mask-id {
+    @apply text-xs font-medium text-gray-900 p-2 w-[30px];
+  }
+
+  .items-list-th-mask-app {
+    @apply text-xs font-medium text-gray-900 p-2 w-[200px];
+  }
+
+  .items-list-th-mask-type {
+    @apply text-xs font-medium text-gray-900 p-2 w-[200px];
+  }
+
+  .mask-input-style {
+    max-width: 800px;
+    height: 300px;
+    resize: both;
+  }
 }

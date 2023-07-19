@@ -3,6 +3,10 @@ ru:
     models:
       payment: Платёж
     attributes:
+      mask:
+        app: Название приложения
+        request_type: Тип
+        mask: Маска
       advertisement:
         direction: Направление
         national_currency: Нац. валюта
