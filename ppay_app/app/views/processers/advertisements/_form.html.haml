@@ -11,7 +11,13 @@
 
   = f.input :simbank_auto_confirmation
 
-  = f.input :simbank_identifier, hint: simbank_identifier_hint
+  Введите данные в поле в зависимости от того, каким способом будет осуществляться подключение к автоматизации
+
+  = f.input :imei
+
+  = f.input :phone_number
+
+  = f.input :imsi
 
   = f.input :simbank_card_number, hint: simbank_card_number, hint_html: { class: 'hint-red' }
 

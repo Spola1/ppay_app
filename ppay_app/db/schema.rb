@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_18_120342) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_055642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -68,7 +68,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_18_120342) do
     t.bigint "processer_id"
     t.string "payment_link"
     t.boolean "simbank_auto_confirmation", default: false
-    t.string "simbank_identifier"
+    t.string "imei"
+    t.string "phone_number"
+    t.string "imsi"
     t.string "simbank_card_number"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
