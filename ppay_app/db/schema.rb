@@ -260,10 +260,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "default_payment_system_id"
-    t.integer "adv_position_deposit", default: 10
-    t.integer "adv_position_withdrawal", default: 5
-    t.index ["default_payment_system_id"], name: "index_national_currencies_on_default_payment_system_id"
   end
 
   create_table "not_found_payments", force: :cascade do |t|
@@ -429,7 +425,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
   add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
-  add_foreign_key "national_currencies", "payment_systems", column: "default_payment_system_id"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_systems", "national_currencies"

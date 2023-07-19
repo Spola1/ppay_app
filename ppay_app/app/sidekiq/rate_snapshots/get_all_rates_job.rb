@@ -67,8 +67,7 @@ module RateSnapshots
           {
             action: 'buy',
             fiat_amount: payment_system.trans_amount_deposit,
-            position_number: (payment_system.adv_position_deposit ||
-                              payment_system.national_currency.adv_position_deposit)
+            position_number: payment_system.adv_position_deposit
           }
         ).stringify_keys
       )
@@ -80,8 +79,7 @@ module RateSnapshots
           {
             action: 'sell',
             fiat_amount: payment_system.trans_amount_withdrawal,
-            position_number: (payment_system.adv_position_withdrawal ||
-                              payment_system.national_currency.adv_position_withdrawal)
+            position_number: payment_system.adv_position_withdrawal
           }
         ).stringify_keys
       )
