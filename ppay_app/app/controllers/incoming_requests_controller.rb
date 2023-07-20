@@ -6,27 +6,25 @@ class IncomingRequestsController < ApplicationController
   def create
     incoming_data = JSON.parse(request.body.read)
 
-    app_name = incoming_data['app']
-    request_type = incoming_data['type']
-
     @incoming_request = IncomingRequest.new(
-      app: app_name,
+      app: incoming_data['app'],
       api_key: incoming_data['api_key'],
-      request_type: request_type,
+      request_type: incoming_data['type'],
       request_id: incoming_data['id'],
       from: incoming_data['from'],
       to: incoming_data['to'],
       message: incoming_data['message'],
       res_sn: incoming_data['res_sn'],
-      imsi: incoming_data['imsi'],
-      imei: incoming_data['imei'],
+      identifier: incoming_data['identifier']&.keys&.first,
+      imsi: incoming_data['imsi'] || incoming_data['identifier']['imsi'],
+      imei: incoming_data['imei'] || incoming_data['identifier']['imei'],
+      phone: incoming_data['identifier']&.[]('phone'),
       com: incoming_data['com'],
       simno: incoming_data['simno'],
       softwareid: incoming_data['softwareid'],
       custmemo: incoming_data['custmemo'],
       sendstat: incoming_data['sendstat'],
       user_agent: incoming_data['user_agent'],
-      text: incoming_data['text'],
       content: incoming_data['content']
     )
 
@@ -40,10 +38,10 @@ class IncomingRequestsController < ApplicationController
   private
 
   def process_push_request(request)
-    # ..........................
+
   end
 
   def process_sms_request(request)
-    # ..........................
+
   end
 end

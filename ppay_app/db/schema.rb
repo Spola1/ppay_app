@@ -204,6 +204,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
   create_table "incoming_requests", force: :cascade do |t|
     t.string "request_type"
     t.string "request_id"
+    t.string "identifier"
+    t.string "phone"
     t.string "app"
     t.string "api_key"
     t.string "from"
@@ -218,7 +220,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
     t.string "custmemo"
     t.integer "sendstat"
     t.string "user_agent"
-    t.string "text"
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
