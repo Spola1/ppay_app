@@ -16,6 +16,7 @@ class Advertisement < ApplicationRecord
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
+  validates :simbank_card_number, uniqueness: true
 
   after_commit :set_payment_link_qr_code, if: -> { payment_link_previously_changed? }
 

@@ -34,6 +34,22 @@ class IncomingRequestsController < ApplicationController
                                                       imsi: @incoming_request.imsi,
                                                       phone: @incoming_request.phone)
 
+      masks = Mask.where(regexp_type: 'Номер счёта')
+
+      @advertisement = nil
+
+      @matching_advertisements.each do |advertisement|
+        masks.each do |mask|
+          regexp = eval(mask.regexp)
+          field_to_check = @incoming_request.content || @incoming_request.message
+          match = field_to_check.scan(regexp).first
+
+          if match.include?(advertisement.simbank_card_number)
+            @advertisement = advertisement
+          end
+        end
+      end
+
       debugger
 
       render json: { status: 'success', message: 'Запрос успешно сохранен' }, status: :created
