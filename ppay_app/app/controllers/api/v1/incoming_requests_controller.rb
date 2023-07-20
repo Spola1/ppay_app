@@ -47,7 +47,7 @@ module Api
                                                       imsi: @incoming_request.imsi,
                                                       phone: @incoming_request.phone)
 
-        card_number_masks = Mask.where(regexp_type: 'Номер счёта')
+        card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
         @advertisement = nil
 
@@ -63,7 +63,7 @@ module Api
       end
 
       def find_matching_payment
-        amount_masks = Mask.where(regexp_type: 'Сумма')
+        amount_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Сумма')
 
         @payment = nil
 
@@ -97,8 +97,8 @@ module Api
 
           text += 'симбанк подтвердил подтвердил платеж согласно этому сообщению'
 
-          @payment.comments.create(
-            author_nickname: @payment.processer.nickname,
+          @payment.comments.create!(
+            author_nickname: 'SIM-банк',
             author_type: 'Processor',
             user_id: @payment.processer.id,
             text: text

@@ -10,6 +10,7 @@
         %thead.items-list-thead
           %tr
             %th.items-list-th-mask-id ID
+            %th.items-list-th Отправитель
             %th.items-list-th-mask-type Тип регулярного выражения
             %th.items-list-th Регулярное выражение
             %th.items-list-th
@@ -17,7 +18,8 @@
           - @masks.each do |mask|
             %tr
               %td.items-list-td-link
-                = link_to mask.id, mask_path(mask), data: { turbo_action: :advance }            
+                = link_to mask.id, mask_path(mask), data: { turbo_action: :advance }
+              %td.items-list-td= mask.sender            
               %td.items-list-td= mask.regexp_type
               %td.items-list-td
                 %pre= mask.regexp

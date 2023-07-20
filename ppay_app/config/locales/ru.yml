@@ -4,6 +4,7 @@ ru:
       payment: Платёж
     attributes:
       mask:
+        sender: Отправитель
         regexp_type: Тип регулярного выражения
         regexp: Регулярное выражение
       advertisement:

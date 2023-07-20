@@ -176,6 +176,9 @@
               - payment.comments.decorate.each do |comment|
                 .flex.flex-col.my-2.items-start
                   .text-xs.mb-1
+                  - if comment.author_nickname.present?
+                    = comment.author_nickname
+                  - else
                     = "#{comment.user.nickname} (#{comment.user.decorate.human_type})"
                   .comment_item.px-4.py-2.rounded-lg.text-sm.border{
                     class: comment.user&.support? ? 'bg-blue-100' : 'bg-slate-100'

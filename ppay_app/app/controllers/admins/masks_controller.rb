@@ -46,7 +46,7 @@ module Admins
     end
 
     def mask_params
-      params.require(:mask).permit(:app, :regexp_type, :regexp)
+      params.require(:mask).permit(:sender, :regexp_type, :regexp)
     end
   end
 end
