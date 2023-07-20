@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
     t.string "payment_link"
     t.boolean "simbank_auto_confirmation", default: false
     t.string "imei"
-    t.string "phone_number"
+    t.string "phone"
     t.string "imsi"
     t.string "simbank_card_number"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"

@@ -29,6 +29,13 @@ class IncomingRequestsController < ApplicationController
     )
 
     if @incoming_request.save
+      @matching_advertisements = Advertisement.where("imei = :imei OR imsi = :imsi OR phone = :phone",
+                                                      imei: @incoming_request.imei,
+                                                      imsi: @incoming_request.imsi,
+                                                      phone: @incoming_request.phone)
+
+      debugger
+
       render json: { status: 'success', message: 'Запрос успешно сохранен' }, status: :created
     else
       render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
