@@ -30,41 +30,39 @@ class IncomingRequestsController < ApplicationController
 
     if @incoming_request.save
       @matching_advertisements = Advertisement.where("imei = :imei OR imsi = :imsi OR phone = :phone",
-                                                      imei: @incoming_request.imei,
-                                                      imsi: @incoming_request.imsi,
-                                                      phone: @incoming_request.phone)
+                                                                        imei: @incoming_request.imei,
+                                                                        imsi: @incoming_request.imsi,
+                                                                        phone: @incoming_request.phone)
 
-      masks = Mask.where(regexp_type: 'Номер счёта')
+      card_number_masks = Mask.where(regexp_type: 'Номер счёта')
+      amount_masks = Mask.where(regexp_type: 'Сумма')
 
       @advertisement = nil
+      @payment = nil
 
       @matching_advertisements.each do |advertisement|
-        masks.each do |mask|
+        card_number_masks.each do |mask|
           regexp = eval(mask.regexp)
           field_to_check = @incoming_request.content || @incoming_request.message
           match = field_to_check.scan(regexp).first
 
-          if match.include?(advertisement.simbank_card_number)
-            @advertisement = advertisement
-          end
+          @advertisement = advertisement if match.include?(advertisement.simbank_card_number)
         end
       end
 
-      debugger
+      @advertisement.payments.for_simbank.each do |payment|
+        amount_masks.each do |mask|
+          regexp = eval(mask.regexp)
+          field_to_check = @incoming_request.content || @incoming_request.message
+          match = field_to_check.scan(regexp).first
+
+          payment.confirm! if match.include?(payment.decorate.national_formatted)
+        end
+      end
 
       render json: { status: 'success', message: 'Запрос успешно сохранен' }, status: :created
     else
       render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
     end
-  end
-
-  private
-
-  def process_push_request(request)
-
-  end
-
-  def process_sms_request(request)
-
   end
 end

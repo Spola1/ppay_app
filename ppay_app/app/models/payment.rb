@@ -107,6 +107,10 @@ class Payment < ApplicationRecord
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
 
+  scope :for_simbank, lambda {
+    deposits.confirming.or(deposits.transferring).reorder(created_at: :desc)
+  }
+
   scope :in_deposit_flow_hotlist, lambda {
     deposits.confirming
             .or(deposits.transferring)
