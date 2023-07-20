@@ -10,19 +10,17 @@
         %thead.items-list-thead
           %tr
             %th.items-list-th-mask-id ID
-            %th.items-list-th-mask-app Приложение
-            %th.items-list-th-mask-type Тип
-            %th.items-list-th Маска
+            %th.items-list-th-mask-type Тип регулярного выражения
+            %th.items-list-th Регулярное выражение
             %th.items-list-th
         %tbody
           - @masks.each do |mask|
             %tr
               %td.items-list-td-link
                 = link_to mask.id, mask_path(mask), data: { turbo_action: :advance }            
-              %td.items-list-td= mask.app
-              %td.items-list-td= mask.request_type
-              %td.items-list-td.text-left
-                %pre= mask.mask
+              %td.items-list-td= mask.regexp_type
+              %td.items-list-td
+                %pre= mask.regexp
               %td.items-list-td.px-1.w-0
                 = link_to mask, data: { turbo_confirm: 'Вы уверены что хотите удалить маску?', turbo_method: :delete }  do
                   .icon-button-red

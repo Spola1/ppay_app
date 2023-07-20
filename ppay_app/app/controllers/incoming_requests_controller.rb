@@ -12,7 +12,8 @@ class IncomingRequestsController < ApplicationController
     @incoming_request = IncomingRequest.new(
       app: app_name,
       api_key: incoming_data['api_key'],
-      type: request_type,
+      request_type: request_type,
+      request_id: incoming_data['id'],
       from: incoming_data['from'],
       to: incoming_data['to'],
       message: incoming_data['message'],
@@ -30,15 +31,6 @@ class IncomingRequestsController < ApplicationController
     )
 
     if @incoming_request.save
-      case request_type
-      when 'PUSH'
-        process_push_request(@incoming_request)
-      when 'SMS'
-        process_sms_request(@incoming_request)
-      else
-        # ..............................
-      end
-
       render json: { status: 'success', message: 'Запрос успешно сохранен' }, status: :created
     else
       render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity

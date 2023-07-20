@@ -195,14 +195,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
     t.string "background_color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "merchant_id"
     t.string "name"
     t.boolean "default", default: false, null: false
+    t.bigint "merchant_id"
     t.index ["merchant_id"], name: "index_form_customizations_on_merchant_id"
   end
 
   create_table "incoming_requests", force: :cascade do |t|
-    t.string "type"
+    t.string "request_type"
+    t.string "request_id"
     t.string "app"
     t.string "api_key"
     t.string "from"
@@ -224,9 +225,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
   end
 
   create_table "masks", force: :cascade do |t|
-    t.string "app"
-    t.string "request_type"
-    t.string "mask"
+    t.string "regexp_type"
+    t.string "regexp"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

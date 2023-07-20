@@ -1,5 +1,4 @@
 = simple_form_for @mask, url: mask_path(@mask) do |f|
-  = f.input :app
-  = f.input :request_type, collection: ["PUSH", "SMS"], include_blank: '-выбрать-'
-  = f.input :mask, as: :text, input_html: { class: "mask-input-style" }
+  = f.input :regexp_type, collection: ["Номер счёта", "Сумма"], include_blank: '-выбрать-'
+  = f.input :regexp
   = f.submit 'Сохранить', class: 'form-submit'

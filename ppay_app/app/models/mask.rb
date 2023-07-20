@@ -1,3 +1,3 @@
 class Mask < ApplicationRecord
-  validates_presence_of :app, :request_type
+  validates_presence_of :regexp_type, :regexp
 end

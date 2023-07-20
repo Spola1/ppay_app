@@ -6,9 +6,8 @@
           Создать новую маску
 
       = simple_form_for @mask, url: masks_path do |f|
-        = f.input :app, class: "block w-full mt-2 border rounded px-4 py-2"
-        = f.input :request_type, collection: ["PUSH", "SMS"], include_blank: '-выбрать-'
-        = f.input :mask, as: :text, input_html: { class: "mask-input-style" }
+        = f.input :regexp_type, collection: ["Номер счёта", "Сумма"], include_blank: '-выбрать-'
+        = f.input :regexp
         = f.submit "Сохранить", class: "mt-4 bg-blue-500 text-white px-4 py-2 rounded"
       .back-link
         = link_to '<- К списку масок', masks_path

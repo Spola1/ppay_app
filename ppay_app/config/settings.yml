@@ -13,7 +13,7 @@ navbar:
       path: balance_requests_path
     - name: Мерчанты
       path: merchants_path
-    - name: Маски
+    - name: Регулярные выражения
       path: masks_path
     - name: Настройки приложения
       path: edit_setting_path

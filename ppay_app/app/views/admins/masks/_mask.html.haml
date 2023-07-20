@@ -2,13 +2,10 @@
   %table.item-card-table
     %tbody
       %tr.item-card-tr
-        %td.item-card-td.item-card-td-label Приложение
-        %td.item-card-td= @mask.app
+        %td.item-card-td.item-card-td-label Тип регулярного выражения
+        %td.item-card-td= @mask.regexp_type
       %tr.item-card-tr
-        %td.item-card-td.item-card-td-label Тип
-        %td.item-card-td= @mask.request_type
-      %tr.item-card-tr
-        %td.item-card-td.item-card-td-label Маска
+        %td.item-card-td.item-card-td-label Регулярное выражение
         %td.item-card-td.left
-          %pre= mask.mask
+          %pre= mask.regexp
       

@@ -4,9 +4,8 @@ ru:
       payment: Платёж
     attributes:
       mask:
-        app: Название приложения
-        request_type: Тип
-        mask: Маска
+        regexp_type: Тип регулярного выражения
+        regexp: Регулярное выражение
       advertisement:
         direction: Направление
         national_currency: Нац. валюта
