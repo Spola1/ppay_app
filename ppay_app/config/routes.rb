@@ -7,8 +7,6 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   mount Sidekiq::Web => '/sidekiq'
 
-  post '/incoming_requests', to: 'incoming_requests#create'
-
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == Settings.basic_auth.username &&
       password == Settings.basic_auth.password
@@ -128,6 +126,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/incoming_requests', to: 'incoming_requests#create'
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
