@@ -126,7 +126,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post '/incoming_requests', to: 'incoming_requests#create'
+      post '/simbank/requests', to: 'incoming_requests#create'
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
