@@ -42,6 +42,12 @@ class PaymentDecorator < ApplicationDecorator
     Payment.human_attribute_name("cancellation_reason.#{cancellation_reason}")
   end
 
+  def human_arbitration_reason
+    return unless arbitration_reason
+
+    Payment.human_attribute_name("arbitration_reason.#{arbitration_reason}")
+  end
+
   def fiat_amount_with_currency
     "#{fiat_amount} #{national_currency}"
   end

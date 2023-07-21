@@ -1,0 +1,3 @@
+.flex
+  = f.select :arbitration_reason, support_payment_arbitration_reasons_collection, {include_blank: true}, class: 'form-input-select w-full text-xs'
+  %button.form-submit.px-4.ml-2= fa_icon 'check'

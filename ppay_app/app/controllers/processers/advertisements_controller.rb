@@ -73,7 +73,8 @@ module Processers
                                             :payment_system_type, :min_summ, :max_summ, :card_number, :payment_link,
                                             :autoacceptance, :comment, :operator_contact, :exchange_rate_type,
                                             :exchange_rate_source, :percent, :min_fix_price, :status, :hidden,
-                                            :account_id)
+                                            :account_id, :simbank_auto_confirmation, :imei,
+                                            :phone, :imsi, :simbank_card_number, :simbank_sender)
     end
   end
 end

@@ -31,9 +31,12 @@ Rails.application.routes.draw do
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
+    resource :setting, only: [:edit, :update]
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :incoming_requests
+    resources :masks
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -95,6 +98,11 @@ Rails.application.routes.draw do
 
       concerns :statuses_updatable
     end
+
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :processers_root
   end
 
@@ -119,6 +127,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/simbank/requests', to: 'incoming_requests#create'
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 

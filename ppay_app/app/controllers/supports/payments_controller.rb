@@ -40,7 +40,7 @@ module Supports
     end
 
     def payment_params
-      required_params.permit(:payment_status, :arbitration, :cancellation_reason)
+      required_params.permit(:payment_status, :arbitration, :cancellation_reason, :arbitration_reason)
     end
 
     def filtering_params
