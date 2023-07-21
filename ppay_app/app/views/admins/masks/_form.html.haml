@@ -1,5 +1,5 @@
 = simple_form_for @mask, url: mask_path(@mask) do |f|
-  = f.input :sender
+  = f.input :sender, hint: 'как в СМС, напр. 900 или Tinkoff'
   = f.input :regexp_type, collection: ["Номер счёта", "Сумма"], include_blank: '-выбрать-'
   = f.input :regexp
   = f.submit 'Сохранить', class: 'form-submit'
