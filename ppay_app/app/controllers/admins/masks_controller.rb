@@ -5,7 +5,8 @@ module Admins
     before_action :set_mask, only: %i[show edit update destroy]
 
     def index
-      @masks = Mask.all
+      @pagy, @masks = pagy(Mask.all)
+      @masks = @masks.order(created_at: :desc)
     end
 
     def show; end

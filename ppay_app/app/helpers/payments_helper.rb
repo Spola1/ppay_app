@@ -4,8 +4,7 @@ module PaymentsHelper
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
   AVAILABLE_CANCELLATION_REASONS_COLLECTION = %i[by_client duplicate_payment fraud_attempt incorrect_amount
                                                  not_paid].freeze
-  AVAILABLE_ARBITRATION_REASONS_COLLECTION = %i[arbitration_duplicate_payment arbitration_fraud_attempt 
-                                                arbitration_incorrect_amount arbitration_not_paid].freeze
+  AVAILABLE_ARBITRATION_REASONS_COLLECTION = %i[duplicate_payment fraud_attempt incorrect_amount not_paid].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
 
   def edit_payment_path(payment)

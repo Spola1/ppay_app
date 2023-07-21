@@ -1,0 +1,75 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Приложение
+        %td.item-card-td= @incoming_request.app
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label API-ключ
+        %td.item-card-td= @incoming_request.api_key
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Тип запроса
+        %td.item-card-td= @incoming_request.request_type
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Идентификатор запроса
+        %td.item-card-td= @incoming_request.request_id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label От кого
+        %td.item-card-td= @incoming_request.from
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Кому
+        %td.item-card-td= @incoming_request.to
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Сообщение
+        %td.item-card-td= @incoming_request.message
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label res_sn
+        %td.item-card-td= @incoming_request.res_sn
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Идентификатор
+        %td.item-card-td= @incoming_request.identifier
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label IMSI
+        %td.item-card-td= @incoming_request.imsi
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label IMEI
+        %td.item-card-td= @incoming_request.imei
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Телефон
+        %td.item-card-td= @incoming_request.phone
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label com
+        %td.item-card-td= @incoming_request.com
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label SIM-карта
+        %td.item-card-td= @incoming_request.simno
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label softwareid
+        %td.item-card-td= @incoming_request.softwareid
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label custmemo
+        %td.item-card-td= @incoming_request.custmemo
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label sendstat
+        %td.item-card-td= @incoming_request.sendstat
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label User-Agent
+        %td.item-card-td= @incoming_request.user_agent
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Изначальные параметры
+        %td.item-card-td.break-all{ style: 'text-wrap: wrap;' }= @incoming_request.initial_params
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Оператор
+        %td.item-card-td= @incoming_request.user&.id
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Платеж
+        %td.item-card-td.underline= link_to @incoming_request.payment.uuid, payment_path(@incoming_request.payment) if @incoming_request.payment
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Объявление
+        %td.item-card-td.underline= link_to @incoming_request.advertisement.id, @incoming_request.advertisement if @incoming_request.advertisement
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Маска номера карты/счета
+        %td.item-card-td.underline= link_to @incoming_request.card_mask.regexp, @incoming_request.card_mask if @incoming_request.card_mask
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Маска суммы
+        %td.item-card-td.underline= link_to @incoming_request.sum_mask.regexp, @incoming_request.sum_mask if @incoming_request.sum_mask

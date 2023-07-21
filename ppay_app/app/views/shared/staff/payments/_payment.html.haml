@@ -194,8 +194,8 @@
                   .comment_item.px-4.py-2.rounded-lg.text-sm.border{
                     class: comment.user&.support? ? 'bg-blue-100' : 'bg-slate-100'
                   }
-                    .comment_item_text
-                      = comment.text
+                    .comment_item_text{ class: ('simbank-comment' if comment.author_nickname == Settings.simbank_nickname) }
+                      = comment.text.gsub("\n", '<br />').html_safe
                   .text-xs.mt-1.text-gray-500
                     = comment.formatted_created_at
 

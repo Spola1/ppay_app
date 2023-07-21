@@ -31,7 +31,7 @@ class Payment < ApplicationRecord
         ->(cryptocurrency_amount) { where 'cryptocurrency_amount < ?', cryptocurrency_amount }
   scope :expired_arbitration_not_paid, lambda {
     where(arbitration: true,
-          arbitration_reason: :arbitration_not_paid)
+          arbitration_reason: :not_paid)
       .where('status_changed_at <= ?', 10.minutes.ago)
   }
   scope :expired_autoconfirming, lambda {
@@ -48,12 +48,12 @@ class Payment < ApplicationRecord
     time_expired: 5
   }
   enum arbitration_reason: {
-    arbitration_duplicate_payment: 0,
-    arbitration_fraud_attempt: 1,
-    arbitration_incorrect_amount: 2,
-    arbitration_not_paid: 3,
-    arbitration_time_expired: 4
-  }
+    duplicate_payment: 0,
+    fraud_attempt: 1,
+    incorrect_amount: 2,
+    not_paid: 3,
+    time_expired: 4
+  }, _prefix: true
   enum processing_type: { internal: 0, external: 1 }
   enum unique_amount: {
     none: 0,
@@ -172,6 +172,24 @@ class Payment < ApplicationRecord
     language_mapping[locale] || 'ru-ru'
   end
 
+  def broadcast_replace_payment_to_processer
+    broadcast_replace_later_to(
+      "processers_payment_#{uuid}",
+      partial: 'processers/payments/show_turbo_frame',
+      locals: { payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
+      target: "processers_payment_#{uuid}"
+    )
+  end
+
+  def broadcast_replace_payment_to_support
+    broadcast_replace_later_to(
+      "supports_payment_#{uuid}",
+      partial: 'supports/payments/show_turbo_frame',
+      locals: { payment: decorate, signature: nil, role_namespace: 'supports', can_manage_payment?: true },
+      target: "supports_payment_#{uuid}"
+    )
+  end
+
   private
 
   def set_locale_from_currency
@@ -205,15 +223,6 @@ class Payment < ApplicationRecord
       partial: 'payments/show_turbo_frame',
       locals: { payment: decorate, signature: },
       target: "payment_#{uuid}"
-    )
-  end
-
-  def broadcast_replace_payment_to_processer
-    broadcast_replace_later_to(
-      "processers_payment_#{uuid}",
-      partial: 'processers/payments/show_turbo_frame',
-      locals: { payment: decorate, signature: nil, role_namespace: 'processers', can_manage_payment?: true },
-      target: "processers_payment_#{uuid}"
     )
   end
 
@@ -252,15 +261,6 @@ class Payment < ApplicationRecord
       partial: 'processers/notifications/notification',
       locals: { payment: decorate, role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_notifications"
-    )
-  end
-
-  def broadcast_replace_payment_to_support
-    broadcast_replace_later_to(
-      "supports_payment_#{uuid}",
-      partial: 'supports/payments/show_turbo_frame',
-      locals: { payment: decorate, signature: nil, role_namespace: 'supports', can_manage_payment?: true },
-      target: "supports_payment_#{uuid}"
     )
   end
 

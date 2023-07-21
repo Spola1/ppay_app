@@ -11,7 +11,8 @@
         = t('payments.payment_completed')
 
     .proc-payment-done-links-block
-      = link_to t('payments.back_to_shop'), payment.redirect_url
+      - if payment.redirect_url.present?
+        = link_to t('payments.back_to_shop'), payment.redirect_url
 
     = render 'payments/uuid', payment:, class: 'text-center'
 

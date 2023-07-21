@@ -5,10 +5,7 @@
         .text-xl
           Создать новую маску
 
-      = simple_form_for @mask, url: masks_path do |f|
-        = f.input :sender, hint: 'как в СМС, напр. 900 или Tinkoff'
-        = f.input :regexp_type, collection: ["Номер счёта", "Сумма"], include_blank: '-выбрать-'
-        = f.input :regexp
-        = f.submit "Сохранить", class: "mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-      .back-link
-        = link_to '<- К списку масок', masks_path
+          .mt-8.my-4
+            = render 'form'
+          .back-link
+            = link_to '<- К списку масок', masks_path

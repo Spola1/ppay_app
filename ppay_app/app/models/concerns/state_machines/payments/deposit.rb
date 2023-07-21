@@ -53,6 +53,8 @@ module StateMachines
 
           # make_deposit
           event :check do
+            after_commit :add_simbank_comment
+
             transitions from: :transferring, to: :confirming,
                         guard: proc { |params| valid_image?(params) }
           end
@@ -69,7 +71,7 @@ module StateMachines
             before :set_cancellation_reason
             after :cancel_transactions
 
-            transitions from: %i[draft processer_search transferring], to: :cancelled
+            transitions from: %i[draft processer_search transferring confirming], to: :cancelled
           end
         end
       end
@@ -89,6 +91,16 @@ module StateMachines
         while amounts.include?(national_currency_amount)
           self.national_currency_amount += uniqueization_difference[unique_amount]
         end
+      end
+
+      def add_simbank_comment
+        return unless autoconfirming
+
+        comments.create(
+          author_nickname: Settings.simbank_nickname,
+          user_id: processer.id,
+          text: 'Проверка по симбанку. Ждем 3 минуты'
+        )
       end
     end
   end

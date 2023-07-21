@@ -30,7 +30,7 @@ module Processers
     end
 
     def payment_params
-      required_params.permit(:arbitration)
+      required_params.permit(:arbitration, :arbitration_reason)
     end
 
     def filtering_params

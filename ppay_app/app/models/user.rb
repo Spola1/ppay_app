@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :chats
   has_many :balance_requests
+  has_many :incoming_requests
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key

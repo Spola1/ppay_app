@@ -3,6 +3,8 @@ basic_auth:
   password: password
 ppay_commission: 4
 
+simbank_nickname: Симбанк
+
 navbar:
   admin:
     - name: Все платежи
@@ -13,10 +15,12 @@ navbar:
       path: balance_requests_path
     - name: Мерчанты
       path: merchants_path
-    - name: Регулярные выражения
-      path: masks_path
-    - name: Настройки приложения
+    - name: Настройки
       path: edit_setting_path
+    - name: Регулярки
+      path: masks_path
+    - name: Запросы
+      path: incoming_requests_path
   merchant:
     - name: Все платежи
       path: payments_path

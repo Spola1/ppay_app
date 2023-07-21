@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :incoming_requests
     resources :masks
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]

@@ -1,25 +1,30 @@
 class IncomingRequestService
   def initialize(incoming_request)
+    @processer = incoming_request.user.becomes(Processer)
     @incoming_request = incoming_request
   end
 
   def process_request
-    return unless find_matching_advertisement
+    if @processer
+      find_matching_advertisement
 
-    find_matching_payment
+      find_matching_payment
 
-    build_related_models
+      build_related_models
 
-    payment_message
+      payment_message
 
-    render_success_response
+      render_success_response
+    end
   end
 
   private
 
   def find_matching_advertisement
     search_fields = {
-      'smsdeliverer' => { search_field: :imsi },
+      'smsdeliverer' => {
+        'SMS' => { search_field: :imsi }
+      },
       'SMS Forwarder' => {
         'SMS' => { search_field: :phone },
         'PUSH' => { search_field: :imei }
@@ -34,22 +39,25 @@ class IncomingRequestService
     search_field = search_value[:search_field]
     search_value = @incoming_request.send(search_field)
 
-    @matching_advertisements = Advertisement.where("imei = :value OR imsi = :value OR phone = :value",
-                                                   value: search_value, simbank_auto_confirmation: true)
+    @matching_advertisements = @processer.advertisements
+                                         .where("imei = :value OR imsi = :value OR phone = :value",
+                                                value: search_value, simbank_auto_confirmation: true,
+                                                simbank_sender: @incoming_request.from)
 
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
     @advertisement = nil
     @card_mask = nil
 
-    @matching_advertisements.each do |advertisement|
-      card_number_masks.each do |mask|
-        regexp = eval(mask.regexp)
-        field_to_check = @incoming_request.content || @incoming_request.message
-        match = field_to_check.scan(regexp).first
+    card_number_masks.each do |mask|
+      regexp = eval(mask.regexp)
+      match = @incoming_request.message.scan(regexp).first
 
-        @advertisement = advertisement if match.present? && match.include?(advertisement.simbank_card_number)
-        @card_mask = mask if match.present? && match.include?(advertisement.simbank_card_number)
+      if match.present?
+        @advertisement = @matching_advertisements.where(simbank_card_number: match).last
+        @card_mask = mask
+
+        break
       end
     end
   end
@@ -69,42 +77,59 @@ class IncomingRequestService
     @payment = nil
     @amount_mask = nil
 
-    return unless @advertisement
+    if @advertisement.present?
+      find_payment_by_amount(@advertisement, amount_masks)
+    else
+      @matching_advertisements.where(simbank_card_number: [nil, '']).each do |advertisement|
+        find_payment_by_amount(advertisement, amount_masks)
+      end
+    end
+  end
+
+  def find_payment_by_amount(advertisement, amount_masks)
+    @advertisement = advertisement
 
     @advertisement.payments.for_simbank.each do |payment|
       amount_masks.each do |mask|
         regexp = eval(mask.regexp)
-        field_to_check = @incoming_request.content || @incoming_request.message
-        match = field_to_check.scan(regexp).first
+        match = @incoming_request.message.scan(regexp).first
 
-        @payment = payment
-        @amount_mask = mask if match.present? && match.include?(payment.decorate.national_formatted) 
-        @payment.confirm! if match.present? && match.include?(payment.decorate.national_formatted)
+        if match.present? && sum_matched?(payment, match)
+          @payment = payment
+          @amount_mask = mask 
+          @payment.confirm!
+
+          break
+        end
       end
+
+      break if @payment
     end
   end
 
   def payment_message
     return unless @payment.present?
 
-    text = "#{@incoming_request.created_at}\n"
-    text += "#{@incoming_request.message}\n" if @incoming_request.message
-    text += "#{@incoming_request.content}\n" if @incoming_request.content
+    text = "#{@incoming_request.message}\n\n"
 
     @incoming_request.attributes.each do |attr, value|
-      next if value.nil? || %w[id created_at updated_at message content].include?(attr)
+      next if value.nil? || %w[id created_at updated_at message content initial_params payment_id
+                               advertisement_id sum_mask_id card_mask_id user_id].include?(attr)
 
       text += "#{attr}: #{value}\n"
     end
 
-    text += 'симбанк подтвердил подтвердил платеж согласно этому сообщению'
+    text += "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
 
     @payment.comments.create!(
-      author_nickname: 'SIM-банк',
-      author_type: 'Processor',
+      author_nickname: Settings.simbank_nickname,
       user_id: @payment.processer.id,
       text: text
     )
+  end
+
+  def sum_matched?(payment, match)
+    match.first.to_f == payment.national_currency_amount.to_f
   end
 
   def render_success_response

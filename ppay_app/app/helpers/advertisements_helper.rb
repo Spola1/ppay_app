@@ -7,7 +7,11 @@ module AdvertisementsHelper
     Для SMS через SIM-банк - номер IMSI в формате: 1234567890123')
   end
 
-  def simbank_card_number
+  def simbank_card_number_hint
     '*Указывается только если такая информация есть в SMS или PUSH'
+  end
+
+  def simbank_sender_hint
+    '*Например 900 или Тинькофф'
   end
 end

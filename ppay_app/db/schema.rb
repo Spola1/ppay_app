@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_165743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
     t.string "phone"
     t.string "imsi"
     t.string "simbank_card_number"
+    t.string "simbank_sender"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
@@ -195,8 +196,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
     t.string "background_color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
-    t.boolean "default", default: false, null: false
     t.bigint "merchant_id"
     t.index ["merchant_id"], name: "index_form_customizations_on_merchant_id"
   end
@@ -227,10 +226,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
     t.bigint "advertisement_id"
     t.bigint "card_mask_id"
     t.bigint "sum_mask_id"
+    t.jsonb "initial_params"
+    t.bigint "user_id"
     t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
     t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
     t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
     t.index ["sum_mask_id"], name: "index_incoming_requests_on_sum_mask_id"
+    t.index ["user_id"], name: "index_incoming_requests_on_user_id"
   end
 
   create_table "masks", force: :cascade do |t|
@@ -297,11 +299,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
     t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 12, scale: 2
     t.string "locale"
-    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
-    t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
 
@@ -399,5 +399,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
   add_foreign_key "payment_systems", "national_currencies"
-  add_foreign_key "payments", "form_customizations"
 end
