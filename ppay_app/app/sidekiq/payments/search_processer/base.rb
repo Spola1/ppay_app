@@ -9,26 +9,32 @@ module Payments
       attr_reader :payment
 
       def perform(payment_id)
-        loop do
-          result = search_processer.call(payment_id:)
+        @payment = Payment.find(payment_id)
 
-          if result.success?
-            puts 'найден'
-            break
-          else
-            puts 'не найден'
+        search_advertisment
 
-            break unless result.processer_search
+        payment.bind! if payment.reload.processer_search? && payment.advertisement
 
-            sleep 0.5
-          end
-        end
+        puts 'найден' if payment.advertisement.present?
       end
 
       private
 
-      def search_processer
-        self.class.name.gsub('Job', 'Interactor').constantize
+      def search_advertisment
+        start_time = Time.now
+
+        while search_valid?(start_time)
+          puts 'не найден'
+          payment.update(advertisement: selected_advertisement)
+          payment.bind! if payment.advertisement
+          sleep 0.5
+        end
+      end
+
+      def search_valid?(start_time)
+        payment.reload.advertisement.blank? &&
+        payment.reload.processer_search? &&
+        (Time.now - start_time) < 600
       end
     end
   end
