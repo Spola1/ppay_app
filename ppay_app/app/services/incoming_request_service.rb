@@ -8,6 +8,8 @@ class IncomingRequestService
 
     find_matching_payment
 
+    build_related_models
+
     payment_message
 
     render_success_response
@@ -38,6 +40,7 @@ class IncomingRequestService
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
     @advertisement = nil
+    @card_mask = nil
 
     @matching_advertisements.each do |advertisement|
       card_number_masks.each do |mask|
@@ -45,17 +48,26 @@ class IncomingRequestService
         field_to_check = @incoming_request.content || @incoming_request.message
         match = field_to_check.scan(regexp).first
 
-        @advertisement = advertisement if match.include?(advertisement.simbank_card_number)
+        @advertisement = advertisement if match.present? && match.include?(advertisement.simbank_card_number)
+        @card_mask = mask if match.present? && match.include?(advertisement.simbank_card_number)
       end
     end
+  end
 
-    @advertisement.present?
+  def build_related_models
+    @incoming_request.advertisement = @advertisement if @advertisement.present?
+    @incoming_request.payment = @payment if @payment.present?
+    @incoming_request.card_mask = @card_mask if @card_mask.present?
+    @incoming_request.sum_mask = @amount_mask if @amount_mask.present?
+
+    @incoming_request.save
   end
 
   def find_matching_payment
     amount_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Сумма')
 
     @payment = nil
+    @amount_mask = nil
 
     return unless @advertisement
 
@@ -66,8 +78,8 @@ class IncomingRequestService
         match = field_to_check.scan(regexp).first
 
         @payment = payment
-
-        @payment.confirm! if match.include?(payment.decorate.national_formatted)
+        @amount_mask = mask if match.present? && match.include?(payment.decorate.national_formatted) 
+        @payment.confirm! if match.present? && match.include?(payment.decorate.national_formatted)
       end
     end
   end

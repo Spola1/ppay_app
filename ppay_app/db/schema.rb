@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_085123) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -223,6 +223,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "payment_id"
+    t.bigint "advertisement_id"
+    t.bigint "card_mask_id"
+    t.bigint "sum_mask_id"
+    t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
+    t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
+    t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
+    t.index ["sum_mask_id"], name: "index_incoming_requests_on_sum_mask_id"
   end
 
   create_table "masks", force: :cascade do |t|
@@ -382,6 +390,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_074734) do
   add_foreign_key "chats", "users"
   add_foreign_key "commissions", "merchant_methods"
   add_foreign_key "crypto_wallets", "users"
+  add_foreign_key "incoming_requests", "advertisements"
+  add_foreign_key "incoming_requests", "masks", column: "card_mask_id"
+  add_foreign_key "incoming_requests", "masks", column: "sum_mask_id"
+  add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
   add_foreign_key "payment_systems", "national_currencies"
