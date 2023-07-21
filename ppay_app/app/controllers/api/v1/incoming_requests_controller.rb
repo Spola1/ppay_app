@@ -5,28 +5,7 @@ module Api
 
       def create
         incoming_data = JSON.parse(request.body.read)
-
-        @incoming_request = IncomingRequest.new(
-          app: incoming_data['app'],
-          api_key: incoming_data['api_key'],
-          request_type: incoming_data['type'],
-          request_id: incoming_data['id'],
-          from: incoming_data['from'],
-          to: incoming_data['to'],
-          message: incoming_data['message'],
-          res_sn: incoming_data['res_sn'],
-          identifier: incoming_data['identifier']&.keys&.first,
-          imsi: incoming_data['imsi'] || incoming_data['identifier']['imsi'],
-          imei: incoming_data['imei'] || incoming_data['identifier']['imei'],
-          phone: incoming_data['identifier']&.[]('phone'),
-          com: incoming_data['com'],
-          simno: incoming_data['simno'],
-          softwareid: incoming_data['softwareid'],
-          custmemo: incoming_data['custmemo'],
-          sendstat: incoming_data['sendstat'],
-          user_agent: incoming_data['user_agent'],
-          content: incoming_data['content']
-        )
+        @incoming_request = IncomingRequest.new(incoming_request_params(incoming_data))
 
         if @incoming_request.save
           find_matching_advertisement
@@ -41,11 +20,49 @@ module Api
 
       private
 
+      def incoming_request_params(data)
+        {
+          app: data['app'],
+          api_key: data['api_key'],
+          request_type: data['type'],
+          request_id: data['id'],
+          from: data['from'],
+          to: data['to'],
+          message: data['message'],
+          res_sn: data['res_sn'],
+          identifier: data['identifier']&.keys&.first,
+          imsi: data['imsi'] || data['identifier']['imsi'],
+          imei: data['imei'] || data['identifier']['imei'],
+          phone: data['identifier']&.[]('phone'),
+          com: data['com'],
+          simno: data['simno'],
+          softwareid: data['softwareid'],
+          custmemo: data['custmemo'],
+          sendstat: data['sendstat'],
+          user_agent: data['user_agent'],
+          content: data['content']
+        }
+      end
+
       def find_matching_advertisement
-        @matching_advertisements = Advertisement.where("imei = :imei OR imsi = :imsi OR phone = :phone",
-                                                      imei: @incoming_request.imei,
-                                                      imsi: @incoming_request.imsi,
-                                                      phone: @incoming_request.phone)
+        search_fields = {
+          'smsdeliverer' => { search_field: :imsi },
+          'SMS Forwarder' => {
+            'SMS' => { search_field: :phone },
+            'PUSH' => { search_field: :imei }
+          }
+        }
+
+        app = @incoming_request.app
+        request_type = @incoming_request.request_type
+        search_value = search_fields.dig(app, request_type)
+        return unless search_value
+
+        search_field = search_value[:search_field]
+        search_value = @incoming_request.send(search_field)
+
+        @matching_advertisements = Advertisement.where("imei = :value OR imsi = :value OR phone = :value",
+                                                       value: search_value, simbank_auto_confirmation: true)
 
         card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
