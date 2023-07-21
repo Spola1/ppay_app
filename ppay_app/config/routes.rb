@@ -43,15 +43,12 @@ Rails.application.routes.draw do
     end
 
     resources :merchants, only: %i[index new create update] do
-      member do
-        get :settings
-        patch :settings, to: '/admins/merchants#update_settings'
-        get :account
-        patch :account, to: '/admins/merchants#update_account'
+      scope module: :merchants do
+        resource :account, only: %i[show update]
+        resource :settings, only: %i[show update]
+        resources :merchant_methods, only: %i[create destroy]
       end
-      resources :merchant_methods, only: %i[create destroy]
     end
-    get '/merchants/:id', to: '/admins/merchants#settings'
 
     root 'payments#index', as: :admins_root
   end

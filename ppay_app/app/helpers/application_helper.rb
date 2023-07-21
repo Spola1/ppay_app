@@ -38,7 +38,11 @@ module ApplicationHelper
     }
   end
 
-  def active?(name)
+  def action_active?(name)
     name == action_name ? :active : nil
+  end
+
+  def controller_active?(name)
+    name == controller_name ? :active : nil
   end
 end
