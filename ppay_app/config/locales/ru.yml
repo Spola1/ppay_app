@@ -49,6 +49,12 @@ ru:
         incorrect_amount: Переведённая клиентом сумма не соответствует запрошенной
         not_paid: Сумма не поступила
         time_expired: Время оплаты истекло
+      payment/arbitration_reason:
+        arbitration_duplicate_payment: Задублированный платеж
+        arbitration_fraud_attempt: Попытка мошенничества
+        arbitration_incorrect_amount: Переведённая клиентом сумма не соответствует запрошенной
+        arbitration_not_paid: Сумма не поступила
+        arbitration_time_expired: Время оплаты истекло
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена

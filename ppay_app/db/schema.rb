@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_085123) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_120734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -298,6 +298,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_085123) do
     t.decimal "initial_amount", precision: 12, scale: 2
     t.string "locale"
     t.bigint "form_customization_id"
+    t.integer "arbitration_reason"
+    t.boolean "autoconfirming", default: false
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
     t.index ["support_id"], name: "index_payments_on_support_id"

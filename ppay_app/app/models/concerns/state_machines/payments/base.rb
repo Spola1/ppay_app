@@ -80,6 +80,10 @@ module StateMachines
         self.cancellation_reason = 0 unless cancellation_reason
       end
 
+      def set_autoconfirming
+        self.autoconfirming = advertisement.simbank_auto_confirmation?
+      end
+
       def advertisement?
         return true if advertisement.present?
 

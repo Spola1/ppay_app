@@ -59,6 +59,12 @@
                 %td.item-card-td
                   = render "supports/payments/payment_cancellation_reason_field", f:, payment:
 
+            - if role_namespace == 'supports'
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина арбитража
+                %td.item-card-td
+                  = render "supports/payments/payment_arbitration_reason_field", f:, payment:
+
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
               %td.item-card-td
@@ -96,6 +102,11 @@
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Причина отмены
                 %td.item-card-td= "#{payment.human_cancellation_reason}"
+
+            - if payment.arbitration_reason
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Причина арбитража
+                %td.item-card-td= "#{payment.human_arbitration_reason}"
 
             - if payment.advertisement_id
               %tr.item-card-tr

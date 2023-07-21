@@ -29,6 +29,15 @@ class Payment < ApplicationRecord
         ->(cryptocurrency_amount) { where 'cryptocurrency_amount > ?', cryptocurrency_amount }
   scope :filter_by_cryptocurrency_amount_to,
         ->(cryptocurrency_amount) { where 'cryptocurrency_amount < ?', cryptocurrency_amount }
+  scope :expired_arbitration_not_paid, lambda {
+    where(arbitration: true,
+          arbitration_reason: :arbitration_not_paid)
+      .where('status_changed_at <= ?', 10.minutes.ago)
+  }
+  scope :expired_autoconfirming, lambda {
+    where(autoconfirming: true, payment_status: :confirming)
+      .where('status_changed_at <= ?', 3.minutes.ago)
+  }
 
   enum cancellation_reason: {
     by_client: 0,
@@ -37,6 +46,13 @@ class Payment < ApplicationRecord
     incorrect_amount: 3,
     not_paid: 4,
     time_expired: 5
+  }
+  enum arbitration_reason: {
+    arbitration_duplicate_payment: 0,
+    arbitration_fraud_attempt: 1,
+    arbitration_incorrect_amount: 2,
+    arbitration_not_paid: 3,
+    arbitration_time_expired: 4
   }
   enum processing_type: { internal: 0, external: 1 }
   enum unique_amount: {

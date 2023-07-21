@@ -20,7 +20,7 @@ module Supports
     def show; end
 
     def update
-      @payment.update(payment_params)
+      @payment.update!(payment_params)
 
       render :show
     end
@@ -40,7 +40,7 @@ module Supports
     end
 
     def payment_params
-      required_params.permit(:payment_status, :arbitration, :cancellation_reason)
+      required_params.permit(:payment_status, :arbitration, :cancellation_reason, :arbitration_reason)
     end
 
     def filtering_params
