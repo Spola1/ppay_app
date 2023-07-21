@@ -20,7 +20,7 @@ module Supports
     def show; end
 
     def update
-      @payment.update!(payment_params)
+      @payment.update(payment_params)
 
       render :show
     end
