@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IncomingRequestService
   def initialize(incoming_request)
     @processer = incoming_request.user.becomes(Processer)
@@ -40,7 +42,7 @@ class IncomingRequestService
     search_value = @incoming_request.send(search_field)
 
     @matching_advertisements = @processer.advertisements
-                                         .where("imei = :value OR imsi = :value OR phone = :value",
+                                         .where('imei = :value OR imsi = :value OR phone = :value',
                                                 value: search_value, simbank_auto_confirmation: true,
                                                 simbank_sender: @incoming_request.from)
 
@@ -53,12 +55,12 @@ class IncomingRequestService
       regexp = eval(mask.regexp)
       match = @incoming_request.message.scan(regexp).first
 
-      if match.present?
-        @advertisement = @matching_advertisements.where(simbank_card_number: match).last
-        @card_mask = mask
+      next unless match.present?
 
-        break
-      end
+      @advertisement = @matching_advertisements.where(simbank_card_number: match).last
+      @card_mask = mask
+
+      break
     end
   end
 
@@ -94,13 +96,13 @@ class IncomingRequestService
         regexp = eval(mask.regexp)
         match = @incoming_request.message.scan(regexp).first
 
-        if match.present? && sum_matched?(payment, match)
-          @payment = payment
-          @amount_mask = mask 
-          @payment.confirm!
+        next unless match.present? && sum_matched?(payment, match)
 
-          break
-        end
+        @payment = payment
+        @amount_mask = mask
+        @payment.confirm!
+
+        break
       end
 
       break if @payment
@@ -124,12 +126,12 @@ class IncomingRequestService
     @payment.comments.create!(
       author_nickname: Settings.simbank_nickname,
       user_id: @payment.processer.id,
-      text: text
+      text:
     )
   end
 
   def sum_matched?(payment, match)
-    match.first.to_f == payment.national_currency_amount.to_f
+    match.first.to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response

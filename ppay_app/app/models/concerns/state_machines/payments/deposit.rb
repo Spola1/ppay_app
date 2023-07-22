@@ -44,7 +44,8 @@ module StateMachines
 
           # bind_operator
           event :bind do
-            before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount, :set_locale, :set_autoconfirming
+            before :ensure_unique_amount, :bind_rate_snapshot, :set_cryptocurrency_amount, :set_locale,
+                   :set_autoconfirming
             after :create_transactions
             ensure :search_processer # rubocop:disable Layout/RescueEnsureAlignment
 

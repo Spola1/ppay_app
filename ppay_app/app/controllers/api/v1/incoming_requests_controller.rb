@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class IncomingRequestsController < ApplicationController
@@ -23,8 +25,8 @@ module Api
         if params[:body]
           body = CGI.unescape(params[:body])
 
-          body.gsub!(/"content": "(.*?)"/m) do |match|
-            content_value = $1.gsub(/\n/, ' ')
+          body.gsub!(/"content": "(.*?)"/m) do |_match|
+            content_value = ::Regexp.last_match(1).gsub(/\n/, ' ')
             "\"content\": \"#{content_value}\""
           end
 

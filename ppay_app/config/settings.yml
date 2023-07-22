@@ -21,7 +21,7 @@ navbar:
       path: masks_path
     - name: Запросы
       path: incoming_requests_path
-    - name: Статистика по обороту
+    - name: Оборот
       path: turnover_stats_path
   merchant:
     - name: Все платежи
