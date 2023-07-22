@@ -43,15 +43,14 @@ Rails.application.routes.draw do
     end
 
     resources :merchants, only: %i[index new create update] do
-      member do
-        get :settings
-        patch :settings, to: '/admins/merchants#update_settings'
-        get :account
-        patch :account, to: '/admins/merchants#update_account'
+      scope module: :merchants do
+        resource :account, only: %i[show update]
+        resource :settings, only: %i[show update]
+        resources :merchant_methods, only: %i[create destroy]
       end
-      resources :merchant_methods, only: %i[create destroy]
     end
-    get '/merchants/:id', to: '/admins/merchants#settings'
+
+    resources :turnover_stats, only: %i[index]
 
     root 'payments#index', as: :admins_root
   end
@@ -77,7 +76,7 @@ Rails.application.routes.draw do
   end
 
   namespace :processers do
-    resource :profile, only: [:edit, :update]
+    resource :profile, only: %i[edit update]
   end
 
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
@@ -144,7 +143,7 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
-  constraints (
+  constraints(
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
