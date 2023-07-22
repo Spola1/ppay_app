@@ -57,7 +57,9 @@ class IncomingRequestService
 
       next unless match.present?
 
-      @advertisement = @matching_advertisements.where(simbank_card_number: match).last
+      @advertisement = @matching_advertisements
+                         .where("RIGHT(card_number, 4) = :match OR simbank_card_number = :match", match:)
+                         .last
       @card_mask = mask
 
       break
@@ -115,7 +117,7 @@ class IncomingRequestService
     text = "#{@incoming_request.message}\n\n"
 
     @incoming_request.attributes.each do |attr, value|
-      next if value.nil? || %w[id created_at updated_at message content initial_params payment_id
+      next if value.nil? || %w[id created_at updated_at message content initial_params api_key payment_id
                                advertisement_id sum_mask_id card_mask_id user_id].include?(attr)
 
       text += "#{attr}: #{value}\n"
