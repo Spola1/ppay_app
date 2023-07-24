@@ -59,6 +59,9 @@
         %td.item-card-td.item-card-td-label Изначальные параметры
         %td.item-card-td.break-all{ style: 'text-wrap: wrap;' }= @incoming_request.initial_params
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Ошибка
+        %td.item-card-td.break-all{ style: 'text-wrap: wrap;' }= simple_format(@incoming_request.error)
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Оператор
         %td.item-card-td= @incoming_request.user&.id
       %tr.item-card-tr

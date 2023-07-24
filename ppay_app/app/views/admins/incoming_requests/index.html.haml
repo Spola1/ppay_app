@@ -16,7 +16,7 @@
 
           %tbody
             - @incoming_requests.each do |ir|
-              %tr.bg-white.border-b
+              %tr.border-b{ class: ('bg-red-100' if ir.error) }
                 %td.items-list-td-link= link_to ir.id, ir
                 %td.items-list-td= ir.decorate.formatted_created_at
                 %td.items-list-td= ir.app

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_165743) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_24_203654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -228,6 +228,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_165743) do
     t.bigint "sum_mask_id"
     t.jsonb "initial_params"
     t.bigint "user_id"
+    t.text "error"
     t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
     t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
     t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
