@@ -30,7 +30,11 @@ class IncomingRequestService
       'SMS Forwarder' => {
         'SMS' => { search_field: :phone },
         'PUSH' => { search_field: :imei }
-      }
+      },
+      'MacroDroid' => {
+        'SMS' => { search_field: :phone },
+        'PUSH' => { search_field: :imei }
+      },
     }
 
     app = @incoming_request.app

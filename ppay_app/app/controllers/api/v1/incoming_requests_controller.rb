@@ -22,17 +22,23 @@ module Api
       private
 
       def set_incoming_data
-        if params[:body]
-          body = CGI.unescape(params[:body])
+        if from_macrodroid? || params[:body]
+          body = from_macrodroid? ? request.raw_post : params[:body]
 
-          body.gsub!(/"content": "(.*?)"/m) do |_match|
-            content_value = ::Regexp.last_match(1).gsub(/\n/, ' ')
-            "\"content\": \"#{content_value}\""
-          end
-
-          @incoming_data = JSON.parse(body)
+          @incoming_data = JSON.parse(sanitized_params(body))
         else
           @incoming_data = params.permit!.to_h
+        end
+      end
+
+      def from_macrodroid?
+        request.user_agent.match?(/macrodroid/)
+      end
+
+      def sanitized_params(body)
+        CGI.unescape(body).gsub(/"content": "(.*?)"/m) do |_match|
+          content_value = ::Regexp.last_match(1).gsub(/\n/, ' ')
+          "\"content\": \"#{content_value}\""
         end
       end
 
@@ -57,7 +63,7 @@ module Api
           sendstat: data['sendstat'],
           user_agent: data['user_agent'],
           user: user(data['api_key']),
-          initial_params: params
+          initial_params: request.raw_post
         }
       end
 
