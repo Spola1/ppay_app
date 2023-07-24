@@ -19,6 +19,8 @@ module Api
         end
       rescue Exception => error
         @incoming_request = IncomingRequest.create(initial_params: request.raw_post, error: error.full_message)
+
+        render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
       end
 
       private
