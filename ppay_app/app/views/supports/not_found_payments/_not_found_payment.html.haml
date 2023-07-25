@@ -1,0 +1,20 @@
+.mt-8
+  %table.payment-details-table
+    %tbody
+      %tr
+        %td Объявление
+        %td= link_to @not_found_payment.advertisement.id, advertisement_path(@not_found_payment.advertisement.id)
+      %tr
+        %td Входящий запрос
+        %td= link_to @not_found_payment.incoming_request.id, incoming_request_path(@not_found_payment.incoming_request.id)
+      %tr
+        %td Сумма
+        %td= @not_found_payment.parsed_amount
+      %tr
+        %td Номер карты
+        %td= @not_found_payment.parsed_card_number
+      %tr
+        %td Похожие платежи
+        %td
+          - @not_found_payment.payments.each do |sub_payment|
+            = link_to sub_payment.id, payment_path(sub_payment), data: { turbo_action: :advance }

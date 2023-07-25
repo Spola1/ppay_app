@@ -9,15 +9,10 @@ class IncomingRequestService
   def process_request
     if @processer
       find_matching_advertisement
-
       find_matching_payment
-
       create_not_found_payment
-
       build_related_models
-
       payment_message
-
       render_success_response
     end
   end
@@ -107,11 +102,14 @@ class IncomingRequestService
         regexp = eval(mask.regexp)
         match = @incoming_request.message.scan(regexp).first
 
+        @amount = match.to_d
+
+        #debugger
+
         next unless match.present? && sum_matched?(payment, match)
 
         @payment = payment
         @amount_mask = mask
-        @amount = match.to_d
         @payment.confirm!
 
         break
@@ -143,7 +141,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.to_d == payment.national_currency_amount.to_d
+    match.to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
@@ -160,7 +158,10 @@ class IncomingRequestService
       parsed_card_number: @card_number
     )
 
-    not_found_payment.payments << @advertisement.payments.for_simbank
+    if @advertisement.payments.for_simbank.present?
+      not_found_payment.payments << @advertisement.payments.for_simbank
+    end
+
     not_found_payment.save!
   end
 end

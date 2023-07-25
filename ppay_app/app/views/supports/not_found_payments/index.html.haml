@@ -1,0 +1,11 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .card-head
+        %h1 Реестр ненайденных платежей
+
+      .card-wrap
+        = render 'table'
+
+      .card-wrap
+      = render 'shared/pagination', pagy: @pagy
