@@ -139,7 +139,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.to_d == payment.national_currency_amount.to_d
+    match.first.to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
