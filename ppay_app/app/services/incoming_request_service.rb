@@ -12,6 +12,8 @@ class IncomingRequestService
 
       find_matching_payment
 
+      create_not_found_payment
+
       build_related_models
 
       payment_message
@@ -54,6 +56,7 @@ class IncomingRequestService
 
     @advertisement = nil
     @card_mask = nil
+    @card_number = nil
 
     card_number_masks.each do |mask|
       regexp = eval(mask.regexp)
@@ -65,6 +68,7 @@ class IncomingRequestService
                          .where("RIGHT(card_number, 4) = :match OR simbank_card_number = :match", match:)
                          .last
       @card_mask = mask
+      @card_number = match.first
 
       break
     end
@@ -84,6 +88,7 @@ class IncomingRequestService
 
     @payment = nil
     @amount_mask = nil
+    @amount = nil
 
     if @advertisement.present?
       find_payment_by_amount(@advertisement, amount_masks)
@@ -106,6 +111,7 @@ class IncomingRequestService
 
         @payment = payment
         @amount_mask = mask
+        @amount = match.to_d
         @payment.confirm!
 
         break
@@ -142,5 +148,19 @@ class IncomingRequestService
 
   def render_success_response
     { status: 'success', message: 'Запрос успешно сохранен' }
+  end
+
+  def create_not_found_payment
+    return if @advertisement.nil? || @payment.present?
+
+    not_found_payment = NotFoundPayment.create(
+      advertisement: @advertisement,
+      incoming_request: @incoming_request,
+      parsed_amount: @amount,
+      parsed_card_number: @card_number
+    )
+
+    not_found_payment.payments << @advertisement.payments.for_simbank
+    not_found_payment.save!
   end
 end
