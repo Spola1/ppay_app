@@ -104,8 +104,6 @@ class IncomingRequestService
 
         @amount = match.to_d
 
-        #debugger
-
         next unless match.present? && sum_matched?(payment, match)
 
         @payment = payment
