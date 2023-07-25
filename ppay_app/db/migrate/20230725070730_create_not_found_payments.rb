@@ -8,7 +8,5 @@ class CreateNotFoundPayments < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-
-    #add_reference :not_found_payments, :payment, foreign_key: true
   end
 end

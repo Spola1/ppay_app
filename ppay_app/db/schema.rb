@@ -315,8 +315,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 12, scale: 2
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 12, scale: 2
     t.string "locale"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
