@@ -102,7 +102,7 @@ class IncomingRequestService
         regexp = eval(mask.regexp)
         match = @incoming_request.message.scan(regexp).first
 
-        @amount = match.to_d
+        @amount = match.first.to_d
 
         next unless match.present? && sum_matched?(payment, match)
 
