@@ -5,7 +5,7 @@ module Supports
     before_action :find_not_found_payment, only: %i[show]
 
     def index
-      @pagy, @not_found_payments = pagy(NotFoundPayment.all)
+      @pagy, @not_found_payments = pagy(NotFoundPayment.order(created_at: :desc))
       @not_found_payments = @not_found_payments.decorate
     end
 

@@ -421,4 +421,40 @@ RSpec.describe Payment, type: :model do
       expect(payment.send(:currency_to_locale, 'UZS')).to eq(:uz)
     end
   end
+
+  describe '.expired_arbitration_not_paid' do
+    let!(:not_expired_arbitration) { create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :not_paid, status_changed_at: 5.minutes.ago) }
+    let!(:expired_arbitration_not_paid) { create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :not_paid, status_changed_at: 15.minutes.ago) }
+    let!(:expired_arbitration_other_reason) { create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :fraud_attempt, status_changed_at: 15.minutes.ago) }
+
+    it 'includes expired arbitration with not_paid reason' do
+      expect(Payment.expired_arbitration_not_paid).to include(expired_arbitration_not_paid)
+    end
+
+    it 'excludes not expired arbitration with not_paid reason' do
+      expect(Payment.expired_arbitration_not_paid).not_to include(not_expired_arbitration)
+    end
+
+    it 'excludes expired arbitration with other reason' do
+      expect(Payment.expired_arbitration_not_paid).not_to include(expired_arbitration_other_reason)
+    end
+  end
+
+  describe '.expired_autoconfirming' do
+    let!(:not_expired_autoconfirming) { create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 2.minutes.ago) }
+    let!(:expired_autoconfirming) { create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 5.minutes.ago) }
+    let!(:expired_autoconfirming_other_status) { create(:payment, autoconfirming: true, payment_status: :transferring, status_changed_at: 5.minutes.ago) }
+
+    it 'includes expired autoconfirming with confirming status' do
+      expect(Payment.expired_autoconfirming).to include(expired_autoconfirming)
+    end
+
+    it 'excludes not expired autoconfirming with confirming status' do
+      expect(Payment.expired_autoconfirming).not_to include(not_expired_autoconfirming)
+    end
+
+    it 'excludes expired autoconfirming with other status' do
+      expect(Payment.expired_autoconfirming).not_to include(expired_autoconfirming_other_status)
+    end
+  end
 end
