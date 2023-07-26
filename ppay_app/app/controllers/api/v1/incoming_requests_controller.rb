@@ -40,9 +40,9 @@ module Api
       end
 
       def sanitized_params(body)
-        CGI.unescape(body).gsub(/"content":\s?"(.*?),/m) do |_match|
-          content_value = ::Regexp.last_match(1).gsub(/\n/, ' ').gsub(/"(?!$)/, '\"')
-          "\"content\": \"#{content_value},"
+        CGI.unescape(body).gsub(/"content":\s?"(.*?)\"\,[\S\s]*\"identifier\"/m) do |_match|
+          content_value = ::Regexp.last_match(1).gsub(/\n/, ' ').gsub(/"/, '\"')
+          "\"content\": \"#{content_value}\",\"identifier\""
         end
       end
 
