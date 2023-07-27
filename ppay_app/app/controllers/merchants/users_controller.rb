@@ -15,7 +15,7 @@ module Merchants
     private
 
     def settings_params
-      params.require(:merchant).permit(:nickname)
+      params.require(:merchant).permit(:nickname, :iban)
     end
   end
 end
