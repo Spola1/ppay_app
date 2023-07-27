@@ -15,6 +15,8 @@ module Payments
           payment.bind! if payment.advertisement
         end
 
+        payment.bind! if payment.reload.processer_search? && payment.advertisement
+
         return unless payment.advertisement.blank?
 
         context.fail!(
