@@ -1,3 +1,3 @@
-= simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
+= simple_form_for payment, url: payment.form_url, action: :update do |f|
   .select-submit-container
     = f.select :locale, language_options, {}, { class: 'form-input-select text-sm select-locale', onchange: 'this.form.requestSubmit()' }
