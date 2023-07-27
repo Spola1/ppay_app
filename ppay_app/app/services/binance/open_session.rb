@@ -108,6 +108,9 @@ module Binance
       if advs_params[:trans_amount] == false
         # если мы не хотим указывать сумму, то просто передаем
         # false
+
+        # временный костыль для укр
+        form_data_hash[:transAmount] = 20_000 if advs_params[:fiat] == 'UAH'
       else
         form_data_hash[:transAmount] = advs_params[:trans_amount].to_s
       end

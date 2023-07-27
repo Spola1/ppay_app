@@ -43,8 +43,10 @@ class IncomingRequestService
     search_value = @incoming_request.send(search_field)
 
     @matching_advertisements = @processer.advertisements
-                                         .where('imei = :value OR imsi = :value OR phone = :value', value: search_value)
-                                         .where(simbank_auto_confirmation: true, simbank_sender: @incoming_request.from)
+                                         .where('imei = :value OR imsi = :value OR phone = :value',
+                                                value: search_value)
+                                         .where(simbank_auto_confirmation: true,
+                                                simbank_sender: @incoming_request.from)
 
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
@@ -138,7 +140,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.to_d == payment.national_currency_amount.to_d
+    match.first.gsub(/\s/,'').to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
