@@ -13,7 +13,8 @@ module Binance
       'UAH' => %w[RaiffeisenBankAval],
       'TJS' => %w[DCbank AlifBank SpitamenBank],
       'TRY' => %w[VakifBank],
-      'KGS' => %w[OPTIMABANK mBank HalykBank BAKAIBANK DEMIRBANK]
+      'KGS' => %w[OPTIMABANK mBank HalykBank BAKAIBANK DEMIRBANK],
+      'BYN' => %w[BANK]
     }.freeze
 
     def initialize(advs_params)
@@ -111,6 +112,7 @@ module Binance
 
         # временный костыль для укр
         form_data_hash[:transAmount] = 20_000 if advs_params[:fiat] == 'UAH'
+        form_data_hash[:transAmount] = 3_000 if advs_params[:fiat] == 'BYN'
       else
         form_data_hash[:transAmount] = advs_params[:trans_amount].to_s
       end
