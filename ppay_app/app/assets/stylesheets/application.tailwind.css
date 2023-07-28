@@ -113,12 +113,6 @@
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
-  .orange-button-iban-submit {
-    @apply w-278 px-6 py-2.5 h-12 bg-orange-600 text-white text-sm rounded-xl shadow-md
-      hover:bg-orange-700 hover:shadow-lg focus:bg-orange-700 focus:shadow-lg focus:outline-none focus:ring-0
-      active:bg-orange-800 active:shadow-lg transition duration-150 ease-in-out;
-  }
-
   .button-submit {
     @apply px-6 h-8 bg-[#21a038] text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
@@ -571,10 +565,6 @@
 
   .w-300 {
     width: 300px;
-  }
-
-  .w-278 {
-    width: 278px;
   }
 
   .w-100 {

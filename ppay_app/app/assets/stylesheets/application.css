@@ -123,15 +123,6 @@ label[for=withdrawal_card_number]{
   padding: 10px 31px
 }
 
-.modal_iban {
-  margin-top: 170px;
-  background-color: white;
-  border-radius: 15px;
-  width: 340px;
-  color: black;
-  padding: 10px 31px
-}
-
 .filepond--credits {
   display: none;
 }

@@ -91,34 +91,6 @@ module StateMachines
         false
       end
 
-      # def valid_image?(params)
-      #   return true unless merchant.check_required
-
-      #   assign_params(params, %i[image])
-      #   validate_image
-      # end
-
-      # def validate_image
-      #   return true if image.present? || merchant.account_number_required?
-
-      #   errors.add(:image, :blank)
-      #   false
-      # end
-
-      # def valid_account_number?(params)
-      #   return true unless merchant.account_number_required?
-
-      #   assign_params(params, %i[account_number])
-      #   validate_account_number
-      # end
-
-      # def validate_account_number
-      #   return true if account_number.present?
-
-      #   errors.add(:account_number, :blank)
-      #   false
-      # end
-
       def valid_image?(params)
         return true unless merchant.check_required
 

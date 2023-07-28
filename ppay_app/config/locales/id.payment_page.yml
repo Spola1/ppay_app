@@ -9,7 +9,6 @@ id:
     order:
     choise:
     confirm:
-    continue: Melanjutkan
     success:
     payment_completed:
     cancellation_payment:

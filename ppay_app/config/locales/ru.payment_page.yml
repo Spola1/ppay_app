@@ -9,7 +9,6 @@ ru:
     order: Заказ
     choise: Выбрать
     confirm: Подтвердить
-    continue: Продолжить
     success: Успешно!
     payment_completed: Платёж выполнен!
     cancellation_payment: Отменить платёж

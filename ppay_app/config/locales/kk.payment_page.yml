@@ -9,7 +9,6 @@ kk:
     order: Тапсырыс
     choise: Таңдау
     confirm: Растау
-    continue: Жалғастыру
     success: Сәтті!
     payment_completed: Төлем орындалды!
     cancellation_payment: Төлемді болдырмау
