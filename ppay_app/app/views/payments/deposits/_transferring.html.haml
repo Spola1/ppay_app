@@ -42,14 +42,13 @@
         = t('payments.deposit.attributes.make_transfer')
 
     = render 'payments/deposits/change_sum', payment: payment
-    = render 'payments/deposits/iban', payment: payment, signature:
     = render 'payments/deposits/bank_card', payment: payment
 
 
     = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
       = hidden_field_tag :event, 'check'
 
-      - if payment.merchant.check_required? && !payment.merchant.account_number_required
+      - if payment.merchant.check_required? && !payment.merchant.account_number_required?
 
         .add-img-confirm
           %span.text-red
@@ -66,7 +65,21 @@
                               direct_upload: true,
                               data: { controller: 'filepond', 'max-file-size': '5MB' }
 
-      - if payment.merchant.check_required?
+      - elsif payment.merchant.account_number_required?
+
+        .add-img-confirm
+          %span.text-red
+            2.
+          %span
+            = content_tag(:span, payment.merchant.account_number_title, class: 'font-medium')
+            .modal_text.mt-3
+
+              = render 'payments/errors', payment: payment
+
+              = f.text_field :account_number, class: "grey-iban-cardplace text-left", placeholder: payment.merchant.account_number_placeholder
+            
+
+      - if payment.merchant.check_required? || payment.merchant.account_number_required?
         .text-instruction
           %span.text-red
             3.

@@ -37,6 +37,7 @@ ru:
         payment_system: Платёжная система
         card_number: Номер карты
         image: Скриншот
+        account_number: Поле
       payment/payment_status:
         created: Создан
         draft: Ввод данных карты

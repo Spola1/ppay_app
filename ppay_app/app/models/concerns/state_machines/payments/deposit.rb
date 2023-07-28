@@ -57,7 +57,7 @@ module StateMachines
             after_commit :add_simbank_comment
 
             transitions from: :transferring, to: :confirming,
-                        guard: proc { |params| valid_image?(params) }
+                        guard: proc { |params| valid_image?(params) && valid_account_number?(params) }
           end
 
           # show_confirmation
