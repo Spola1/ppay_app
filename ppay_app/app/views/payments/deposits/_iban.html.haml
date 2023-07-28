@@ -6,5 +6,5 @@
           = content_tag(:span, payment.merchant.account_number_title, class: 'font-medium')
         .modal_text.mt-3
           = simple_form_for payment, url: payments_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
-            = f.text_field :account_number, class: "grey-cardplace"
-            = f.submit t('payments.confirm'), class: "green-button-iban-submit mt-3 mb-10", style: payment.button_color_style
+            = f.text_field :account_number, class: "grey-iban-cardplace text-left", placeholder: payment.merchant.account_number_placeholder
+            = f.submit t('payments.continue'), class: "orange-button-iban-submit mt-3 mb-10", style: payment.button_color_style

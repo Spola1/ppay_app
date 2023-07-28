@@ -9,6 +9,7 @@ tr:
     order: Sipariş
     choise: Seçmek
     confirm: Doğrulamak
+    continue: Devam etmek
     success: Başarılıydı!
     payment_completed: Ödeme tamamlandı!
     cancellation_payment: Ödeme tamamlandı!

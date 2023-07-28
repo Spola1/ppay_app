@@ -9,6 +9,7 @@ uk:
     order: Замовлення
     choise: Вибрати
     confirm: Підтвердивши
+    continue: Продовжити
     success: Успішно!
     payment_completed: Платіж виконано!
     cancellation_payment: Скасувати платіж

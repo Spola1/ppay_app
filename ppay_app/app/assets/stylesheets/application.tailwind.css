@@ -113,10 +113,10 @@
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
-  .green-button-iban-submit {
-    @apply w-278 px-6 py-2.5 h-12 bg-[#21a038] text-white text-sm rounded-xl shadow-md
-      hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
-      active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
+  .orange-button-iban-submit {
+    @apply w-278 px-6 py-2.5 h-12 bg-orange-600 text-white text-sm rounded-xl shadow-md
+      hover:bg-orange-700 hover:shadow-lg focus:bg-orange-700 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-orange-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
   .button-submit {
@@ -364,6 +364,11 @@
 
   .grey-cardplace {
     @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0;
+  }
+
+  .grey-iban-cardplace {
+    @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 
   .proc-head {
