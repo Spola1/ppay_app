@@ -23,6 +23,7 @@ FactoryBot.define do
 
     trait :created do
       payment_status { 'created' }
+      payment_system { nil }
     end
 
     trait :confirming do

@@ -15,6 +15,11 @@ class RateSnapshot < ApplicationRecord
         lambda { |payment_system|
           where(payment_system: payment_system.payment_system_copy || payment_system)
         }
+  scope :by_national_currency,
+        lambda { |national_currency|
+          where(payment_system: national_currency.payment_systems)
+        }
+
   scope :by_cryptocurrency, ->(currency) { where(cryptocurrency: currency) }
 
   def to_crypto(amount)

@@ -44,10 +44,12 @@ module RateSnapshots
       end
     end
 
+    def recent_snapshot
+      RateSnapshot.buy.by_payment_system(PaymentSystem.first).order(created_at: :desc).first
+    end
+
     def too_recent_rate_snapshot?
-      (Time.zone.now -
-       RateSnapshot.buy.by_payment_system(PaymentSystem.first)
-         .order(created_at: :desc).first.created_at) < 50.seconds
+      recent_snapshot ? (Time.zone.now - recent_snapshot.created_at) < 50.seconds : false
     end
 
     def binance_params(payment_system)
