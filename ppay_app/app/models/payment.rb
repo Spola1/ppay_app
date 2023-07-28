@@ -22,13 +22,13 @@ class Payment < ApplicationRecord
   scope :filter_by_uuid, ->(uuid) { where('uuid::text LIKE ?', "%#{uuid}%") }
   scope :filter_by_external_order_id, ->(external_order_id) { where(external_order_id:) }
   scope :filter_by_national_currency_amount_from,
-        ->(national_currency_amount) { where 'national_currency_amount > ?', national_currency_amount }
+        ->(national_currency_amount) { where 'national_currency_amount >= ?', national_currency_amount }
   scope :filter_by_national_currency_amount_to,
-        ->(national_currency_amount) { where 'national_currency_amount < ?', national_currency_amount }
+        ->(national_currency_amount) { where 'national_currency_amount <= ?', national_currency_amount }
   scope :filter_by_cryptocurrency_amount_from,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount > ?', cryptocurrency_amount }
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount >= ?', cryptocurrency_amount }
   scope :filter_by_cryptocurrency_amount_to,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount < ?', cryptocurrency_amount }
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount <= ?', cryptocurrency_amount }
   scope :expired_arbitration_not_paid, lambda {
     where(arbitration: true,
           arbitration_reason: :not_paid)
