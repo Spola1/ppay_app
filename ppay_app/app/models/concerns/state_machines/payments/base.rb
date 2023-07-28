@@ -99,7 +99,7 @@ module StateMachines
       end
 
       def validate_image
-        return true if image.present?
+        return true if image.present? || merchant.account_number_required?
 
         errors.add(:image, :blank)
         false

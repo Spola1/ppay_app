@@ -1,4 +1,4 @@
-- unless payment.account_number.present?
+- if !payment.account_number.present? && payment.merchant.account_number_required?
   .modal.show{ 'data-controller': 'modal' }
     %div
       .modal_iban{ 'data-controller': 'clipboard' }
