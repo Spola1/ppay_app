@@ -139,6 +139,14 @@ class PaymentDecorator < ApplicationDecorator
     commission_amount&.to_f
   end
 
+  def card_owner_name
+    advertisement.card_owner_name
+  end
+
+  def sbp_phone_number
+    advertisement.sbp_phone_number
+  end
+
   def national_currency_commission_amount
     return unless commission_amount && rate_snapshot
 
