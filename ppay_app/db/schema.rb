@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_063606) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -263,6 +263,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_063606) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "not_found_payments", force: :cascade do |t|
+    t.bigint "advertisement_id", null: false
+    t.bigint "incoming_request_id", null: false
+    t.decimal "parsed_amount", precision: 12, scale: 2
+    t.string "parsed_card_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advertisement_id"], name: "index_not_found_payments_on_advertisement_id"
+    t.index ["incoming_request_id"], name: "index_not_found_payments_on_incoming_request_id"
+  end
+
+  create_table "not_found_payments_payments", id: false, force: :cascade do |t|
+    t.bigint "not_found_payment_id", null: false
+    t.bigint "payment_id", null: false
+    t.index ["not_found_payment_id", "payment_id"], name: "index_nfp_payments_on_nfp_id_and_p_id"
+    t.index ["payment_id", "not_found_payment_id"], name: "index_nfp_payments_on_p_id_and_nfp_id"
+  end
+
   create_table "payment_systems", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -299,11 +317,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_063606) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 12, scale: 2
+    t.integer "processing_type", default: 0
     t.string "locale"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
+    t.string "account_number"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
@@ -376,7 +395,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_063606) do
     t.integer "regular_payment_exec_time_in_sec", default: 1200
     t.decimal "ftd_payment_default_summ", precision: 12, scale: 2
     t.boolean "differ_ftd_and_other_payments", default: false
-    t.string "iban"
+    t.boolean "account_number_required", default: false
+    t.string "account_number_title"
+    t.string "account_number_placeholder"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -402,5 +423,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_063606) do
   add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
+  add_foreign_key "not_found_payments", "advertisements"
+  add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_systems", "national_currencies"
 end
