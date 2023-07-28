@@ -52,6 +52,9 @@
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - else
                   = payment.human_payment_status
+            %tr.item-card-tr
+              %td.item-card-td.item-card-td-label{ class: 'w-1/4' } IBAN
+              %td.item-card-td= "#{payment.account_number}"
 
             - if role_namespace == 'supports'
               %tr.item-card-tr
