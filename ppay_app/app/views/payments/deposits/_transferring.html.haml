@@ -42,6 +42,7 @@
         = t('payments.deposit.attributes.make_transfer')
 
     = render 'payments/deposits/change_sum', payment: payment
+    = render 'payments/deposits/iban', payment: payment, signature:
     = render 'payments/deposits/bank_card', payment: payment
 
 

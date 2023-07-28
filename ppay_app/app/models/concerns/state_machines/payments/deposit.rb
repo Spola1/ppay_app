@@ -89,7 +89,7 @@ module StateMachines
         recent_payments = advertisement.deposits.active.excluding(self)
         amounts = recent_payments.pluck(:national_currency_amount)
 
-        while amounts.include?(national_currency_amount)
+        while amounts.include?(national_currency_amount) && !self.merchant.account_number_required
           self.national_currency_amount += uniqueization_difference[unique_amount]
         end
       end
