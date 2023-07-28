@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe PaymentDecorator do
-  let(:payment) { create(:payment, :processer_search, status_changed_at:, type:) }
+  let(:advertisement) { create(:advertisement, :deposit) }
+  let(:payment) { create(:payment, :processer_search, status_changed_at:, type:, advertisement:) }
   let(:time_now) { FFaker::Time.datetime }
   let(:status_changed_at) { time_now - 10.minutes }
   let(:type) { 'Withdrawal' }
@@ -12,6 +13,22 @@ RSpec.describe PaymentDecorator do
 
   before do
     allow(Time).to receive(:now).and_return(time_now)
+  end
+
+  describe '#card_owner_name' do
+    let(:decorator) { payment.decorate }
+
+    it 'returns the card owner name from advertisement' do
+      expect(decorator.card_owner_name).to eq 'John Doe'
+    end
+  end
+
+  describe '#sbp_phone_number' do
+    let(:decorator) { payment.decorate }
+
+    it 'returns the SBP phone number from advertisement' do
+      expect(decorator.sbp_phone_number).to eq '+1234567890'
+    end
   end
 
   describe '#countdown_end_time' do
