@@ -141,6 +141,14 @@ class PaymentDecorator < ApplicationDecorator
     (cryptocurrency_commission_amount * rate_snapshot.value).to_f
   end
 
+  def form_url
+    if type == 'Deposit'
+      Rails.application.routes.url_helpers.payments_deposit_path(uuid: uuid, signature: signature)
+    elsif type == 'Withdrawal'
+      Rails.application.routes.url_helpers.payments_withdrawal_path(uuid: uuid, signature: signature)
+    end
+  end
+
   private
 
   def commission_amount

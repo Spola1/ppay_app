@@ -3,48 +3,48 @@ id:
     formats:
       short: "%Y-%m-%d %H:%M:%S"
   payments:
-    payment_preparation:
-    payment processing:
-    expectation:
-    order:
-    choise:
-    confirm:
-    success:
-    payment_completed:
-    cancellation_payment:
-    back_to_shop:
-    confirmation_transfer_cancellation:
-    payment_cancelled:
-    choise_language: Pilih bahasa
+    payment_preparation: Pembayaran sedang dipersiapkan
+    payment processing: Pemrosesan sedang berlangsung
+    expectation: Mohon tunggu...
+    order: Pesan
+    choise: Pilih
+    confirm: Konfirmasi
+    success: Berhasil!
+    payment_completed: Pembayaran selesai!
+    cancellation_payment: Batalkan pembayaran
+    back_to_shop: Kembali ke toko
+    confirmation_transfer_cancellation: Apakah Anda yakin ingin membatalkan pembayaran?
+    payment_cancelled: Pembayaran dibatalkan!
     deposit:
       attributes:
-        shop:
-        choosing_payment_system:
-        request:
-        attention:
-        paragraph_1:
-        paragraph_2:
-        paragraph_3:
-        qr_manual_1:
-        qr_manual_2:
-        time_for_payment:
-        make_transfer:
-        add_receipt_image:
-        click_payment_completed_button:
-        payment_completed:
-        copy_deposit_amount:
-        changing_amount:
-        continue_payment:
+        shop: Toko
+        choosing_payment_system: Pilih sistem pembayaran
+        request: Silakan pilih dari daftar hanya bank yang kartunya Anda miliki dan yang Anda rencanakan untuk membayar!
+        attention: Perhatian
+        paragraph_1: Saat mengirim uang, dilarang keras menulis pesan di aplikasi.
+        paragraph_2: Pembayaran harus dilakukan tepat untuk jumlah yang ditentukan, termasuk semua tempat desimal.
+        paragraph_3: Dana harus dikirim secara ketat melalui transfer intrabank, bank pengirim dan bank penerima harus sama. Jika tidak, pengkreditan pembayaran tidak dijamin.
+        qr_manual_1: Arahkan kamera ke kode QR untuk melanjutkan
+        qr_manual_2: dari telepon
+        time_for_payment: Anda dapat membayar dalam waktu
+        make_transfer: Lakukan transfer jumlah yang ditentukan ke nomor kartu yang tercantum di bawah ini
+        add_receipt_image: Tambahkan gambar tanda terima
+        click_payment_completed_button: Setelah transfer, klik tombol "Pembayaran selesai" 
+        payment_completed: Pembayaran selesai
+        copy_deposit_amount: Salin jumlah setoran yang tepat
+        changing_amount: Kami telah mengubah jumlah untuk menentukan pembayaran Anda dan memprosesnya lebih cepat
+        continue_payment: Lanjutkan pembayaran
     withdraw:
       attributes:
-        merchant:
-        amount:
-        choosing_bank_card:
-        bank:
-        card_number:
-        money_transfer:
-        transfer_confirmation:
-        confirmation_receipt_of_money:
+        merchant: Merchant
+        amount: Jumlahnya
+        choosing_bank_card: Sebutkan kartu tempat Anda ingin menarik dana
+        bank: Bank
+        card_number: Nomor kartu
+        money_transfer: Kami mentransfer uang...
+        transfer_confirmation: Apakah Anda mendapatkan uangnya?
+        confirmation_receipt_of_money: Apakah Anda yakin telah menerima pembayaran secara penuh dan ingin mengonfirmasinya?
+        confirmation_payment_cancellation: Apakah Anda yakin ingin membatalkan pembayaran?
     locale:
       ru: Russian
       uz: Uzbek
