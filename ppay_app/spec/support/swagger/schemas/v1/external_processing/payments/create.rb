@@ -28,7 +28,6 @@ module Swagger
                     external_order_id: { type: :string, example: '1234' },
                     unique_amount: { type: :string, example: 'integer' },
                     callback_url: { type: :string, example: 'https://example.com/callback_url' },
-                    account_number: { type: :string, example: '1234' }
                   }
                 },
                 external_processing_withdrawals_create_parameter_body_schema: {
