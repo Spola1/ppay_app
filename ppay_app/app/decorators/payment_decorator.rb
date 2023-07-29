@@ -5,6 +5,8 @@ class PaymentDecorator < ApplicationDecorator
 
   delegate_all
 
+  delegate :card_owner_name, :sbp_phone_number, to: :advertisement
+
   def countdown
     return '00:00:00' if countdown_difference.negative?
 
@@ -133,14 +135,6 @@ class PaymentDecorator < ApplicationDecorator
 
   def cryptocurrency_commission_amount
     commission_amount&.to_f
-  end
-
-  def card_owner_name
-    advertisement.card_owner_name
-  end
-
-  def sbp_phone_number
-    advertisement.sbp_phone_number
   end
 
   def national_currency_commission_amount

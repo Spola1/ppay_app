@@ -48,7 +48,7 @@
     = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
       = hidden_field_tag :event, 'check'
 
-      - if payment.merchant.check_required? && !payment.merchant.account_number_required?
+      - if payment.merchant.check_required?
 
         .add-img-confirm
           %span.text-red

@@ -32,6 +32,6 @@ class PaymentsController < ApplicationController
   end
 
   def payment_params
-    required_params.permit(:locale, :account_number)
+    required_params.permit(:locale)
   end
 end
