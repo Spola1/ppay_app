@@ -6,6 +6,9 @@ ru:
         name: Отображаемое при оплате название
         check_required: Требуется загрузка чека
         unique_amount: Тип идентификации платежа
+        account_number_required: Подтверждение по номеру счета
+        account_number_title: Название поля для номера счета
+        account_number_placeholder: Плейсхолдер для номера счета
 
   users:
     sidebar:
