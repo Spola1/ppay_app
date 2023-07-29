@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_24_203654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -67,6 +67,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
     t.integer "account_id"
     t.bigint "processer_id"
     t.string "payment_link"
+    t.boolean "simbank_auto_confirmation", default: false
+    t.string "imei"
+    t.string "phone"
+    t.string "imsi"
+    t.string "simbank_card_number"
+    t.string "simbank_sender"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
@@ -159,17 +165,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
   end
 
   create_table "commissions", force: :cascade do |t|
-    t.bigint "payment_system_id", null: false
-    t.string "national_currency"
-    t.string "direction"
     t.integer "commission_type"
     t.decimal "commission", precision: 15, scale: 10
-    t.bigint "merchant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["merchant_id"], name: "index_commissions_on_merchant_id"
-    t.index ["payment_system_id", "national_currency", "direction", "commission_type", "merchant_id"], name: "index_unique_commission", unique: true
-    t.index ["payment_system_id"], name: "index_commissions_on_payment_system_id"
+    t.bigint "merchant_method_id", null: false
+    t.index ["commission_type", "merchant_method_id"], name: "index_commissions_uniqueness", unique: true
+    t.index ["merchant_method_id"], name: "index_commissions_on_merchant_method_id"
   end
 
   create_table "crypto_wallets", force: :cascade do |t|
@@ -189,10 +191,83 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
     t.string "name"
   end
 
+  create_table "form_customizations", force: :cascade do |t|
+    t.string "button_color"
+    t.string "background_color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "merchant_id"
+    t.index ["merchant_id"], name: "index_form_customizations_on_merchant_id"
+  end
+
+  create_table "incoming_requests", force: :cascade do |t|
+    t.string "request_type"
+    t.string "request_id"
+    t.string "identifier"
+    t.string "phone"
+    t.string "app"
+    t.string "api_key"
+    t.string "from"
+    t.string "to"
+    t.string "message"
+    t.string "res_sn"
+    t.string "imsi"
+    t.string "imei"
+    t.string "com"
+    t.string "simno"
+    t.string "softwareid"
+    t.string "custmemo"
+    t.integer "sendstat"
+    t.string "user_agent"
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "payment_id"
+    t.bigint "advertisement_id"
+    t.bigint "card_mask_id"
+    t.bigint "sum_mask_id"
+    t.jsonb "initial_params"
+    t.bigint "user_id"
+    t.text "error"
+    t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
+    t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
+    t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
+    t.index ["sum_mask_id"], name: "index_incoming_requests_on_sum_mask_id"
+    t.index ["user_id"], name: "index_incoming_requests_on_user_id"
+  end
+
+  create_table "masks", force: :cascade do |t|
+    t.string "regexp_type"
+    t.string "regexp"
+    t.string "sender"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "merchant_methods", force: :cascade do |t|
+    t.bigint "merchant_id", null: false
+    t.bigint "payment_system_id", null: false
+    t.string "direction"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id", "payment_system_id", "direction"], name: "index_merchant_methods_uniqueness", unique: true
+    t.index ["merchant_id"], name: "index_merchant_methods_on_merchant_id"
+    t.index ["payment_system_id"], name: "index_merchant_methods_on_payment_system_id"
+  end
+
+  create_table "national_currencies", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "payment_systems", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "national_currency_id", null: false
+    t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
+    t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -222,8 +297,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 12, scale: 2
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 12, scale: 2
+    t.string "locale"
+    t.integer "arbitration_reason"
+    t.boolean "autoconfirming", default: false
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["support_id"], name: "index_payments_on_support_id"
   end
@@ -239,6 +317,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
     t.decimal "value"
     t.string "national_currency"
     t.decimal "adv_amount"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.boolean "receive_requests_enabled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -284,6 +368,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
     t.string "usdt_trc20_address"
     t.boolean "check_required", default: true
     t.integer "unique_amount", default: 0
+    t.string "telegram"
+    t.string "telegram_id"
+    t.integer "ftd_payment_exec_time_in_sec", default: 480
+    t.integer "regular_payment_exec_time_in_sec", default: 1200
+    t.decimal "ftd_payment_default_summ", precision: 12, scale: 2
+    t.boolean "differ_ftd_and_other_payments", default: false
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -301,7 +391,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_07_135503) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "payments"
   add_foreign_key "chats", "users"
-  add_foreign_key "commissions", "payment_systems"
-  add_foreign_key "commissions", "users", column: "merchant_id"
+  add_foreign_key "commissions", "merchant_methods"
   add_foreign_key "crypto_wallets", "users"
+  add_foreign_key "incoming_requests", "advertisements"
+  add_foreign_key "incoming_requests", "masks", column: "card_mask_id"
+  add_foreign_key "incoming_requests", "masks", column: "sum_mask_id"
+  add_foreign_key "incoming_requests", "payments"
+  add_foreign_key "merchant_methods", "payment_systems"
+  add_foreign_key "merchant_methods", "users", column: "merchant_id"
+  add_foreign_key "payment_systems", "national_currencies"
 end

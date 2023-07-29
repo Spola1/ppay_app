@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Supports
-  class PaymentsController < ApplicationController
+  class PaymentsController < Staff::BaseController
     before_action :find_payment, only: %i[update show]
 
     def index
@@ -40,7 +40,7 @@ module Supports
     end
 
     def payment_params
-      required_params.permit(:payment_status, :arbitration, :cancellation_reason)
+      required_params.permit(:payment_status, :arbitration, :cancellation_reason, :arbitration_reason)
     end
 
     def filtering_params

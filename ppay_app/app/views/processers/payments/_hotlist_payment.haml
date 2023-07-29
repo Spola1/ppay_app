@@ -1,9 +1,9 @@
-.toast.bg-blue-600{ 'data-controller': 'countdown' }
+.toast{ 'data-controller': 'countdown', class: (payment.toast_class) }
   .toast-header
     .toast-header-text
-      .mr-2.text-xs
-        = fa_icon payment.type_icon
       = payment.human_type
+      - if payment.arbitration
+        (арбитраж)
     .toast-header-time
       .toast-header-time-text.countdown{
         data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' }

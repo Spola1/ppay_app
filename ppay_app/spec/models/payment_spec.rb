@@ -6,12 +6,40 @@ RSpec.describe Payment, type: :model do
   let!(:ppay_user) { create(:user, :ppay) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:rate_snapshot_sell) { create(:rate_snapshot, :sell) }
-  let!(:payment_system) { create :payment_system }
+  let!(:national_currency_idr) { create(:national_currency, name: 'IDR') }
 
   it { is_expected.to have_many(:transactions) }
 
   it { is_expected.to belong_to(:rate_snapshot).optional(true) }
   it { is_expected.to belong_to(:advertisement).optional(true) }
+
+  describe '.in_deposit_flow_hotlist' do
+    let(:adv) { create(:advertisement, :deposit) }
+    let(:payment1) { create(:payment, :deposit, :confirming, advertisement: adv) }
+    let(:payment2) { create(:payment, :deposit, :transferring, advertisement: adv) }
+    let(:payment3) { create(:payment, :deposit, :confirming, arbitration: true, advertisement: adv) }
+    let(:payment4) { create(:payment, :deposit, :processer_search, advertisement: adv) }
+
+    it 'returns payments in the deposit flow hotlist' do
+      result = adv.payments.in_deposit_flow_hotlist
+
+      expect(result).to eq([payment1, payment2, payment3])
+    end
+  end
+
+  describe '.in_withdrawal_flow_hotlist' do
+    let(:adv) { create(:advertisement, :withdrawal) }
+    let(:payment1) { create(:payment, :withdrawal, :confirming, advertisement: adv) }
+    let(:payment2) { create(:payment, :withdrawal, :transferring, advertisement: adv) }
+    let(:payment3) { create(:payment, :withdrawal, :confirming, arbitration: true, advertisement: adv) }
+    let(:payment4) { create(:payment, :withdrawal, :processer_search, advertisement: adv) }
+
+    it 'returns payments in the withdrawal flow hotlist' do
+      result = adv.payments.in_withdrawal_flow_hotlist
+
+      expect(result).to eq([payment2, payment1, payment3])
+    end
+  end
 
   describe 'before_save' do
     describe 'take_off_arbitration' do
@@ -92,16 +120,20 @@ RSpec.describe Payment, type: :model do
     describe '#ensure_unique_amount for deposits' do
       let(:advertisement) { create(:advertisement, :deposit) }
       let(:unique_amount) { nil }
+      let(:merchant) { create :merchant }
       let(:payment1) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      merchant:,
                                                       payment_system: payment_system.name)
       end
       let(:payment2) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      merchant:,
                                                       payment_system: payment_system.name)
       end
       let(:payment3) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
+                                                      merchant:,
                                                       payment_system: payment_system.name)
       end
 
@@ -127,6 +159,7 @@ RSpec.describe Payment, type: :model do
         context 'when different types' do
           let(:payment1) do
             create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:,
+                                                             merchant:,
                                                              payment_system: payment_system.name)
           end
 
@@ -152,6 +185,7 @@ RSpec.describe Payment, type: :model do
         context 'when different types' do
           let(:payment1) do
             create(:payment, :withdrawal, :processer_search, advertisement:, unique_amount:,
+                                                             merchant:,
                                                              payment_system: payment_system.name)
           end
 
@@ -239,10 +273,18 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'filter scope' do
-    let!(:payment1) { create :payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id: }
-    let!(:payment2) { create :payment, :UZS, created_at:, uuid: }
-    let!(:payment3) { create :payment, :by_client, :Tinkoff, national_currency_amount: }
-    let(:created_at)  { 'Mon, 06 Mar 2023 22:53:42.811063000 MSK +03:00' }
+    let!(:payment1) do
+      create(:payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id:,
+                                                         created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow'))
+    end
+    let!(:payment2) do
+      create(:payment, :IDR, created_at: Time.parse('2023-09-02 23:59:59').in_time_zone('Moscow'), uuid:)
+    end
+    let!(:payment3) do
+      create(:payment, :by_client, :Tinkoff, national_currency_amount:,
+                                             created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow'))
+    end
+
     let(:national_currency_amount) { 1000 }
     let(:cryptocurrency_amount) { 111 }
     let(:uuid) { '06e2f816-3d85-4c0d-b5d7-c1729b3d4ac2' }
@@ -250,24 +292,30 @@ RSpec.describe Payment, type: :model do
 
     describe 'filter_by_created_from' do
       context 'when 03.09.2023' do
-        subject(:payment) { Payment.filter_by_created_from('03.09.2023') }
-        let(:correct_result) { [payment3, payment1] }
-        it { expect(payment.to_a).to eq(correct_result) }
+        subject(:payments) { Payment.filter_by_created_from(Time.parse('2023-09-03 00:00:00').in_time_zone('Moscow')) }
+        let(:correct_result) { [payment1, payment3] }
+
+        it 'returns payments created from the specified date' do
+          expect(payments).to eq(correct_result)
+        end
       end
     end
 
     describe 'filter_by_created_to' do
       context 'when 03.09.2023' do
-        subject(:payment) { Payment.filter_by_created_to('03.09.2023') }
-        let(:correct_result) { [payment2] }
-        it { expect(payment.to_a).to eq(correct_result) }
+        subject(:payments) { Payment.filter_by_created_to(Time.parse('2023-09-03 23:59:59').in_time_zone('Moscow')) }
+        let(:correct_result) { [payment1, payment3, payment2] }
+
+        it 'returns payments created before the specified date' do
+          expect(payments).to eq(correct_result)
+        end
       end
     end
 
     describe 'filter_by_cancellation_reason' do
       context 'when by_client' do
         subject(:payment) { Payment.filter_by_cancellation_reason('by_client') }
-        let(:correct_result) { [payment3, payment1] }
+        let(:correct_result) { [payment1, payment3] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
     end
@@ -283,7 +331,7 @@ RSpec.describe Payment, type: :model do
     describe 'filter_by_national_currency' do
       context 'when RUB' do
         subject(:payment) { Payment.filter_by_national_currency('RUB') }
-        let(:correct_result) { [payment3, payment1] }
+        let(:correct_result) { [payment1, payment3] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
     end
@@ -291,7 +339,7 @@ RSpec.describe Payment, type: :model do
     describe 'filter_by_payment_system' do
       context 'when Tinkoff' do
         subject(:payment) { Payment.filter_by_payment_system('Tinkoff') }
-        let(:correct_result) { [payment3, payment1] }
+        let(:correct_result) { [payment1, payment3] }
         it { expect(payment.to_a).to eq(correct_result) }
       end
     end
@@ -474,5 +522,33 @@ RSpec.describe Payment, type: :model do
 
     it { is_expected.to eq(merchant1.unique_amount) }
     it { is_expected.not_to eq(merchant2.unique_amount) }
+  end
+
+  describe '#set_locale_from_currency' do
+    let(:payment) { create :payment, payment_status: :created }
+
+    context 'when locale is blank' do
+      it 'sets locale based on currency' do
+        payment.send(:set_locale_from_currency)
+        expect(payment.locale).to eq('ru')
+      end
+    end
+
+    context 'when locale is already set' do
+      it 'does not change the locale' do
+        payment.locale = 'kk'
+        payment.send(:set_locale_from_currency)
+        expect(payment.locale).to eq('kk')
+      end
+    end
+  end
+
+  describe '#currency_to_locale' do
+    let(:payment) { create :payment, payment_status: :created }
+
+    it 'returns locale based on currency' do
+      expect(payment.send(:currency_to_locale, 'RUB')).to eq(:ru)
+      expect(payment.send(:currency_to_locale, 'UZS')).to eq(:uz)
+    end
   end
 end

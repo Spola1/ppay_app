@@ -8,7 +8,7 @@ describe 'External processing payments statuses' do
 
   path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do
     patch 'Обновление статуса платежа с внешним процессингом' do
-      tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
+      tags 'Платежи - H2H (оплата на стороне магазина)'
       security [bearerAuth: {}]
 
       description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
@@ -21,7 +21,7 @@ describe 'External processing payments statuses' do
       let(:uuid) { payment.uuid }
       let(:event) { 'check' }
 
-      response '204', 'on allowed event' do
+      response '204', 'статус успешно обновлен' do
         %w[check cancel].each do |event|
           context "deposit #{event}" do
             let(:event) { event }
@@ -41,7 +41,7 @@ describe 'External processing payments statuses' do
         end
       end
 
-      response '422', 'on merchant requires image' do
+      response '422', 'требуется загрузка чека' do
         let(:check_required) { true }
 
         let(:expected_errors) do
@@ -59,27 +59,27 @@ describe 'External processing payments statuses' do
         end
       end
 
-      response '400', 'on disallowed event' do
-        let(:event) { 'draft' }
-        run_test!
-      end
-
-      response '400', 'on internal processing type' do
+      response '400', 'платеж был создан для HPP интеграции' do
         let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :internal }
         run_test!
       end
 
-      response '404', 'does not found payment with invalid uuid' do
+      response '400', 'данный event недоступен в текущем статусе' do
+        let(:event) { 'draft' }
+        run_test!
+      end
+
+      response '404', 'платеж с указанным uuid не найден' do
         let(:uuid) { 'invalid' }
         run_test!
       end
 
-      response '404', 'does not found with unauthorized payment access' do
+      response '404', 'платеж с указанным uuid не найден' do
         let(:payment) { create :payment, :deposit, :transferring }
         run_test!
       end
 
-      response '401', 'unauthorized on invalid token' do
+      response '401', 'неверный API-ключ' do
         let(:merchant_token) { invalid_merchant_token }
         run_test!
       end

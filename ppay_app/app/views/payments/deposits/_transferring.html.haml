@@ -1,11 +1,11 @@
 .show-payment
   -unless browser.device.mobile? || browser.device.tablet?
-    .show-second-block
+    .show-second-block{style: payment.background_color_style}
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .proc-amount-block
       .proc-amount-content1{ 'data-controller': 'clipboard' }
@@ -18,20 +18,20 @@
             = image_tag 'copy.svg', class: 'h-full'
 
     .proc-countdown-block
-      Вы можете оплатить в течение:
+      = "#{t('payments.deposit.attributes.time_for_payment')}:"
       .text-red.font-medium{ data: { end_time: payment.countdown_end_time, 'countdown-target': 'countdown' } }
         = payment.countdown
 
     .mt-1
       .proc-shop-block
         .proc-shop-title
-          Магазин
+          = t('payments.deposit.attributes.shop')
         .proc-shop-content
           = payment.merchant.name
 
     .proc-order-block
       .proc-order-title
-        Заказ
+        = t('payments.order')
       .proc-order-content
         = payment.external_order_id
 
@@ -39,7 +39,7 @@
       %span.text-red
         1.
       %span
-        Сделайте перевод указанной суммы по номеру карты указанному ниже
+        = t('payments.deposit.attributes.make_transfer')
 
     = render 'payments/deposits/change_sum', payment: payment
     = render 'payments/deposits/bank_card', payment: payment
@@ -54,7 +54,7 @@
           %span.text-red
             2.
           %span
-            Добавьте изображение чека:
+            = "#{t('payments.deposit.attributes.add_receipt_image')}:"
 
         - if payment.image.present?
           = image_tag payment.image
@@ -62,25 +62,24 @@
         = render 'payments/errors', payment: payment
 
         = f.file_field :image, class: 'filepond',
-                               direct_upload: true,
-                               data: { controller: 'filepond', 'max-file-size': '5MB' }
+                              direct_upload: true,
+                              data: { controller: 'filepond', 'max-file-size': '5MB' }
 
       - if payment.merchant.check_required?
         .text-instruction
           %span.text-red
             3.
           %span
-            После перевода нажмите кнопку «Оплата завершена»
+            = t('payments.deposit.attributes.click_payment_completed_button')
 
       - else
         .text-instruction
           %span.text-red
             2.
           %span
-            После перевода нажмите кнопку «Оплата завершена»
+            = t('payments.deposit.attributes.click_payment_completed_button')
 
-
-      = f.submit "Оплата завершена", class: 'green-button mt-2 mb-5'
+      = f.submit t('payments.deposit.attributes.payment_completed'), class: 'green-button mt-2 mb-5', style: payment.button_color_style
 
     .block-sending-cancel-on-img-form
       = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
@@ -91,5 +90,9 @@
     = render 'shared/chat', payment:
     
   -unless browser.device.mobile? || browser.device.tablet?
-    .show-second-block
+    .show-second-block{style: payment.background_color_style}
       = render 'payments/qr_code', payment: payment
+
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";
+

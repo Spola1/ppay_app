@@ -1,3 +1,5 @@
+- content_for :body_style, @payment.background_color_style
+
 = turbo_stream_from "payment_#{@payment.uuid}"
 
 = render 'payments/show_turbo_frame', payment: @payment, signature: params[:signature]

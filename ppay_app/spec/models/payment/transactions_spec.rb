@@ -6,9 +6,7 @@ RSpec.describe 'Payment transactions commissions' do
   let!(:ppay_user) { create(:user, :ppay) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
 
-  let(:payment_system) { create :payment_system }
-  let(:national_currency) { 'RUB' }
-  let(:merchant) { create :merchant }
+  let!(:merchant) { create(:merchant) }
 
   let(:commissions_values) do
     [ # ppay processer agent working_group
@@ -21,11 +19,14 @@ RSpec.describe 'Payment transactions commissions' do
     %w[Deposit Withdrawal].each_with_index do |direction, di|
       %i[ppay processer agent working_group].each_with_index do |commission_type, ci|
         Commission.find_by(
-          payment_system:,
-          national_currency:,
-          direction:,
           commission_type:,
-          merchant:
+          merchant_method: MerchantMethod.find_by(
+            {
+              merchant:,
+              direction:,
+              payment_system:
+            }
+          )
         ).update(commission: commissions_values[(di * 4) + ci])
       end
     end

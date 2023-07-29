@@ -12,7 +12,7 @@ describe 'External processing deposits' do
 
   path '/api/v1/external_processing/payments/deposits' do
     post 'Создание депозита с внешним процессингом' do
-      tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
+      tags 'Платежи - H2H (оплата на стороне магазина)'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]
@@ -25,14 +25,14 @@ describe 'External processing deposits' do
                 in: :body,
                 schema: { '$ref': '#/components/schemas/external_processing_deposits_create_parameter_body_schema' }
 
-      let(:national_currency) { 'RUB' }
+      let(:national_currency_name) { national_currency.name }
       let(:unique_amount) { :integer }
       let(:payment_system_name) { payment_system.name }
       let(:payment_link) { nil }
       let(:params) do
         {
           payment_system: payment_system_name,
-          national_currency:,
+          national_currency: national_currency_name,
           unique_amount:,
           external_order_id: '1234',
           national_currency_amount: '100.0',

@@ -9,7 +9,7 @@ describe 'Withdrawals' do
 
   path '/api/v1/payments/withdrawals' do
     post 'Создание вывода средств' do
-      tags 'Платежи - внутренний процессинг (оплата с переходом по ссылке на наш сайт)'
+      tags 'Платежи - HPP (оплата с переходом по ссылке на наш сайт)'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]

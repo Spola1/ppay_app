@@ -3,7 +3,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable,
+  devise :database_authenticatable, # :registerable,
          :rememberable, :trackable, :validatable, :lockable
 
   has_one :balance, as: :balanceable, dependent: :destroy
@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :chats
   has_many :balance_requests
+  has_many :incoming_requests
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key

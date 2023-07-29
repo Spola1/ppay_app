@@ -1,15 +1,15 @@
 .show-payment
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .proc-payment-waiting-block
       .proc-payment-waiting-img
-      Идёт обработка
+      = t('payments.payment processing')
       .mt-2
-        Ожидайте пожалуйста...
+        = t('payments.expectation')
 
     = render 'payments/uuid', payment:
 

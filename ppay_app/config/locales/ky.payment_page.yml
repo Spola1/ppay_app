@@ -1,0 +1,56 @@
+ky:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M:%S"
+  payments:
+    payment_preparation: Төлөмдү даярдоо жүрүп жатат
+    payment processing: Иштетүү жүрүп жатат
+    expectation: Сураныч, күтө туруңуз...
+    order: Тартип
+    choise: Тандоо
+    confirm: Ырастоо
+    success: Ийгиликтүү!
+    payment_completed: Төлөм аткарылды!
+    cancellation_payment: Төлөмдү жокко чыгаруу
+    back_to_shop: Дүкөнгө кайтуу
+    confirmation_transfer_cancellation: Төлөмдү жокко чыгаргыңыз келеби?
+    payment_cancelled: Төлөм жокко чыгарылды!
+    choise_language: Тил тандоо
+    deposit:
+      attributes:
+        shop: Дүкөн
+        choosing_payment_system: Төлөм системасын тандаңыз
+        request: Сураныч, тизмеден картаңыз бар жана аны менен төлөөнү пландап жаткан банкты гана тандаңыз
+        attention: Көңүл
+        paragraph_1: Акча каражаттарын жөнөтүүдө тиркемеде билдирүү жазууга катуу тыюу салынат.
+        paragraph_2: Төлөм үтүрдөн кийинки бардык белгилерди кошкондо, көрсөтүлгөн суммага так аткарылышы керек.
+        paragraph_3: Каражаттар банк ичиндеги которуу жолу менен катуу жөнөтүлүшү керек, банк жөнөтүүчү жана банк алуучу бирдей болушу керек. Болбосо, төлөмдү кредиттөөгө кепилдик жок.
+        qr_manual_1: Улантуу үчүн камераны ТВ кодуна багыттаңыз
+        qr_manual_2: телефондон
+        time_for_payment: Сиз үчүн төлөй аласыз
+        make_transfer: Көрсөтүлгөн сумманы төмөндө көрсөтүлгөн картанын номери боюнча которуңуз
+        add_receipt_image: Чек сүрөтүн кошуңуз
+        click_payment_completed_button: Которгондон кийин "Төлөм аяктады" баскычын басыңыз
+        payment_completed: Төлөм аяктады
+        copy_deposit_amount: Депозиттин так суммасын көчүрүңүз
+        changing_amount: Төлөмүңүздү аныктоо жана аны тезирээк иштетүү үчүн сумманы өзгөрттүк
+        continue_payment: Төлөөнү улантыңыз
+    withdraw:
+      attributes:
+        merchant: Сатуучу
+        amount: Суммасы
+        choosing_bank_card: Сураныч, сиз каражаттарды алып келет картаны көрсөтүү
+        bank: Банк
+        card_number: Картанын номери
+        money_transfer: Акча которуу...
+        transfer_confirmation: Акча алдыңызбы?
+        confirmation_receipt_of_money: Төлөмдү толугу менен алганыңызга жана аны ырастагыңыз келгенине ишенесизби?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

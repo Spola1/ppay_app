@@ -18,7 +18,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_end_time
-    status_changed_at + 20.minutes
+    if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
+      status_changed_at + merchant.ftd_payment_exec_time_in_sec
+    else
+      status_changed_at + merchant.regular_payment_exec_time_in_sec
+    end
   end
   alias expiration_time countdown_end_time
 
@@ -34,16 +38,63 @@ class PaymentDecorator < ApplicationDecorator
     Payment.human_attribute_name("cancellation_reason.#{cancellation_reason}")
   end
 
+  def human_arbitration_reason
+    return unless arbitration_reason
+
+    Payment.human_attribute_name("arbitration_reason.#{arbitration_reason}")
+  end
+
   def fiat_amount_with_currency
     "#{fiat_amount} #{national_currency}"
   end
 
-  def human_type
-    type == 'Deposit' ? 'Депозит' : 'Вывод'
+  def toast_class
+    classes = ['toast']
+    classes << 'arbitration' if arbitration
+    classes << 'deposit' if type == 'Deposit' && !arbitration
+    classes.join(' ')
   end
 
-  def type_icon
-    type == 'Deposit' ? 'arrow-up' : 'arrow-down'
+  def flow_class
+    classes = ['toast']
+    classes << 'flow-arbitration' if arbitration
+    classes << 'deposit-transferring' if payment_status == 'transferring' && type == 'Deposit' && !arbitration
+    classes << 'deposit-confirming' if payment_status == 'confirming' && type == 'Deposit' && !arbitration
+    classes << 'withdrawal-transferring' if payment_status == 'transferring' && type == 'Withdrawal' && !arbitration
+    classes << 'withdrawal-confirming' if payment_status == 'confirming' && type == 'Withdrawal' && !arbitration
+    classes.join(' ')
+  end
+
+  def show_merchant_logo
+    return unless merchant.form_customization.logo.present
+
+    merchant.form_customization.logo
+  end
+
+  def logo_image_tag
+    return unless payment.merchant.form_customization&.logo.present?
+
+    h.content_tag(:div, class: 'show-logo') do
+      h.content_tag(:div, class: 'logo_img') do
+        h.image_tag(payment.merchant.form_customization.logo)
+      end
+    end
+  end
+
+  def background_color_style
+    return unless payment.merchant.form_customization&.background_color
+
+    "background-color: #{payment.merchant.form_customization.background_color};"
+  end
+
+  def button_color_style
+    return unless payment.merchant.form_customization&.button_color
+
+    "background-color: #{payment.merchant.form_customization.button_color};"
+  end
+
+  def human_type
+    type == 'Deposit' ? 'ДЕПОЗИТ' : 'ВЫВОД'
   end
 
   def formatted_status_changed_at

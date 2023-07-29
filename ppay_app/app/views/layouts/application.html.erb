@@ -11,7 +11,7 @@
     <%= audio_tag 'notification.mp3', id: 'notification_sound' %>
   </head>
 
-  <body data-controller="countdown">
+  <body data-controller="countdown" style="<%= yield(:body_style) %>">
     <div class="default-nav">
       <%- if user_signed_in? %>
         <%= render partial: "layouts/menu_block" %>
@@ -19,13 +19,13 @@
       <%- end %>
     </div>
     <%= render partial: "layouts/flash_alerts" %>
-    <%- if role_namespace == 'processers' %>
+    <%- if role_namespace == 'processers' && !['flow', 'settings'].include?(action_name) && @payment.blank? %>
       <%= turbo_stream_from "processer_#{current_user.id}_hotlist" %>
       <%= render 'processers/payments/hotlist', user: current_user %>
       <%= render 'processers/notifications/index', user: current_user %>
     <%- end %>
     <div class="main_container py-4 px-8">
-      <%= yield %>
+      <%= content_for?(:main_container) ? yield(:main_container) : yield %>
     </div>
   </body>
 </html>

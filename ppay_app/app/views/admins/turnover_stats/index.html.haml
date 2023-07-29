@@ -1,0 +1,17 @@
+= turbo_frame_tag 'content' do
+  %section.flex.flex-col
+    .card-wrap
+      .item-card
+        .card-head
+          %h1 Фильтр статистики
+        = render 'stats_filter'
+
+    .card-wrap
+      .item-card
+        .card-head
+          %h1 Мерчанты
+
+        = render 'table', merchants: @merchants, filtering_params: @filtering_params
+
+        .card-wrap
+          = render 'shared/pagination', pagy: @pagy

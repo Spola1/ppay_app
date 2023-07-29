@@ -11,9 +11,11 @@
         %span.font-medium
           = current_user.nickname
         = "(#{current_user.decorate.human_type})"
-
-      = "(#{current_user.email})"
-    //= link_to 'Редактировать профиль', edit_user_registration_path, :class => 'navbar-link'
+        %span.block
+          = "(#{current_user.email})"
+    - if current_user.is_a?(Processer) || current_user.is_a?(Merchant)
+      .p-2.text-xl
+        = link_to fa_icon('user'), users_settings_path
     .p-2.text-xl
       = button_to destroy_session_path(current_user), method: :delete, data: { turbo: false } do
         = fa_icon('sign-out')

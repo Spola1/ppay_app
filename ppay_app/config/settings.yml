@@ -2,36 +2,8 @@ basic_auth:
   username: ppay
   password: password
 ppay_commission: 4
-national_currencies:
-  - RUB
-  - UZS
-  - TJS
-  - IDR
-  - KZT
-  - UAH
-  - TRY
-  - KGS
-payment_systems:
-  - Sberbank
-  - Tinkoff
-  - Raiffeisen
-  - AlfaBank
-  - HUMO
-  - Банк ЦентрКредит
-  - Halyk Bank
-  - Jusan Bank
-  - Kaspi Bank
-  - Другой банк
-  - IBAN
-  - PrivatBank
-  - MonoBank
-  - PUMB
-  - PermataBank
-  - Optima24
-  - Halyk
-  - Bakai24
-  - Demir
-  - UzCard
+
+simbank_nickname: Симбанк
 
 navbar:
   admin:
@@ -41,6 +13,16 @@ navbar:
       path: advertisements_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Мерчанты
+      path: merchants_path
+    - name: Настройки
+      path: edit_setting_path
+    - name: Регулярки
+      path: masks_path
+    - name: Запросы
+      path: incoming_requests_path
+    - name: Оборот
+      path: turnover_stats_path
   merchant:
     - name: Все платежи
       path: payments_path
@@ -57,6 +39,10 @@ navbar:
       path: rate_snapshots_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Телеграм Бот
+      path: edit_processers_profile_path
+    - name: Обработка
+      path: flow_advertisements_path
   support:
     - name: Все платежи
       path: payments_path

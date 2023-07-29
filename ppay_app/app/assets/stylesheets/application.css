@@ -130,3 +130,7 @@ label[for=withdrawal_card_number]{
 .filepond--file-action-button.filepond--file-action-button:after {
   cursor: pointer;
 }
+
+.simbank-comment {
+  word-break: break-all;
+}

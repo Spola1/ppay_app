@@ -5,7 +5,7 @@ module Api
     module Payments
       module UpdateCallback
         class DepositSerializer < BaseSerializer
-          set_type :Deposit
+          set_type :deposit
         end
       end
     end

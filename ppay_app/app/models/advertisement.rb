@@ -2,6 +2,7 @@
 
 class Advertisement < ApplicationRecord
   include CardNumberSettable
+  include AdvertisementScopes
 
   has_many :payments
   has_many :deposits
@@ -12,12 +13,6 @@ class Advertisement < ApplicationRecord
   has_one_attached :payment_link_qr_code
 
   enum payment_system_type: [:card_number], _prefix: true
-
-  scope :active,               -> { where(status: true) }
-  scope :by_payment_system,    ->(payment_system) { where(payment_system:) }
-  scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
-  scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
-  scope :by_direction,         ->(direction) { where(direction:) }
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }

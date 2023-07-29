@@ -1,2 +1,8 @@
 - unless payment.arbitration
-  = render 'shared/staff/payments/to_arbitration_button', payment:, role_namespace:
+  = simple_form_for payment, url: payment_path(payment), action: :update,
+            data: { turbo_confirm: 'Вы уверены, что хотите отправить платёж на арбитраж?' } do |f|
+    = f.hidden_field :arbitration, value: true
+    .flex
+      .m-1
+        = f.select :arbitration_reason, support_payment_arbitration_reasons_collection, {include_blank: true}, class: 'form-input-select w-[300px] text-xs'
+      = f.submit 'На арбитраж', class: 'red-button'

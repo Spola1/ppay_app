@@ -1,0 +1,14 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Отправитель
+        %td.item-card-td= @mask.sender
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Тип регулярного выражения
+        %td.item-card-td= @mask.regexp_type
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Регулярное выражение
+        %td.item-card-td.left
+          %pre= mask.regexp
+      

@@ -3,6 +3,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
+ENV['TELEGRAM_BOT_LINK'] ||= 'http://localhost:3000'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
@@ -74,6 +75,7 @@ RSpec.configure do |config|
   config.include ActionView::Helpers::NumberHelper
 
   config.include_context 'turn off UpdateCallbackJob'
+  config.include_context 'payment means'
 end
 
 Shoulda::Matchers.configure do |config|

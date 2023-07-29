@@ -1,5 +1,16 @@
 ru:
   simple_form:
+    "yes": 'Да'
+    "no": 'Нет'
+    required:
+      text: 'обязательно'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Пожалуйста, просмотрите приведенные ниже проблемы:"
+
     labels:
       payment_filters:
         created_from: 'Дата от:'
@@ -14,5 +25,8 @@ ru:
         cryptocurrency_amount_to: 'Кол-во криптовалюты до:'
         uuid: 'UUID:'
         external_order_id: 'Внешний номер заказа:'
+      stats_filters:
+        created_from: 'Дата от:'
+        created_to: 'Дата до:'
 
 

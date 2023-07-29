@@ -39,7 +39,7 @@ shared_context 'invalid_response' do |type: :deposit|
         ]
       end
 
-      let(:national_currency_error) { "Доступные значения #{Settings.national_currencies.join(', ')}" }
+      let(:national_currency_error) { "Доступные значения #{NationalCurrency.pluck(:name).join(', ')}" }
 
       run_test! do |_response|
         expect(response_body['errors']).to eq(expected_errors)

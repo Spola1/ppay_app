@@ -21,7 +21,17 @@ module StateMachines
       end
 
       def inline_search_processer
-        "::Payments::SearchProcesser::#{type}Job".constantize.new.perform(id)
+        "::Payments::SearchProcesser::#{type}Interactor".constantize.call(payment_id: id)
+
+        reload
+
+        advertisement?
+      end
+
+      def set_locale
+        I18n.locale = locale.to_sym if locale.present?
+      rescue I18n::InvalidLocale
+        I18n.locale = I18n.default_locale
       end
 
       def valid_payment_system?(params)
@@ -40,14 +50,14 @@ module StateMachines
       end
 
       def validate_payment_system_availability
-        return true if payment_system.in?(merchant_payment_systems).present?
+        return true if payment_system.in?(merchant_payment_systems)
 
         errors.add(:payment_system, :invalid)
         false
       end
 
       def merchant_payment_systems
-        merchant.payment_systems.joins(:commissions).where(commissions: { direction: type }).distinct.pluck(:name)
+        merchant.payment_systems.where(merchant_methods: { direction: type }).pluck(:name)
       end
 
       def bind_rate_snapshot
@@ -70,8 +80,15 @@ module StateMachines
         self.cancellation_reason = 0 unless cancellation_reason
       end
 
+      def set_autoconfirming
+        self.autoconfirming = advertisement.simbank_auto_confirmation?
+      end
+
       def advertisement?
-        advertisement.present?
+        return true if advertisement.present?
+
+        errors.add(:advertisement, :not_found)
+        false
       end
 
       def valid_image?(params)

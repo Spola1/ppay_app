@@ -1,0 +1,56 @@
+tr:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M:%S"
+  payments:
+    payment_preparation: Ödemenin hazırlanması devam ediyor
+    payment processing: İşleme devam ediyor
+    expectation: Lütfen bekleyin...
+    order: Sipariş
+    choise: Seçmek
+    confirm: Doğrulamak
+    success: Başarılıydı!
+    payment_completed: Ödeme tamamlandı!
+    cancellation_payment: Ödeme tamamlandı!
+    back_to_shop: Mağazaya geri dön
+    confirmation_transfer_cancellation: Ödemeyi iptal etmek istediğinize emin misiniz?
+    payment_cancelled: Ödeme iptal edildi!
+    choise_language: Dil seç
+    deposit:
+      attributes:
+        shop: Mağaza
+        choosing_payment_system: Ödeme sisteminizi seçin
+        request: Lütfen listeden yalnızca kartınız olan ve ödemeyi planladığınız bankayı seçin!
+        attention: Dikkat
+        paragraph_1: Nakit gönderirken, uygulamada mesaj yazmak kesinlikle yasaktır.
+        paragraph_2: Ödemenin, tüm ondalık basamaklar da dahil olmak üzere, belirtilen tutar için tam olarak yapılması gerekir.
+        paragraph_3: Fonlar kesinlikle banka içi havale ile gönderilmeli, gönderen banka ve alıcı banka aynı olmalıdır. Aksi takdirde ödemenin yatırılması garanti edilmez.
+        qr_manual_1: Devam etmek için kamerayı QR koduna yönlendirin
+        qr_manual_2: telefondan
+        time_for_payment: İçinde ödeme yapabilirsiniz
+        make_transfer: Belirtilen tutarın aşağıda belirtilen kart numarasına göre transferini yapın
+        add_receipt_image: Çekin resmini ekleyin
+        click_payment_completed_button: Transferden sonra "Ödeme tamamlandı» düğmesine tıklayın
+        payment_completed: Ödeme tamamlandı
+        copy_deposit_amount: Depozitonun tam miktarını kopyalayın
+        changing_amount: Ödemenizi belirlemek ve daha hızlı işlemek için tutarı değiştirdik
+        continue_payment: Ödemeye devam et
+    withdraw:
+      attributes:
+        merchant: Tüccar
+        amount: Tutar
+        choosing_bank_card: Lütfen parayı çekmek istediğiniz kartı belirtin
+        bank: Банк
+        card_number: Kart numarası
+        money_transfer: Parayı transfer ediyoruz...
+        transfer_confirmation: Parayı aldınız mı?
+        confirmation_receipt_of_money: Ödemeyi tamamen aldığınızdan ve onaylamak istediğinizden emin misiniz?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz

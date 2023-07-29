@@ -7,9 +7,51 @@ RSpec.describe PaymentDecorator do
   let(:time_now) { FFaker::Time.datetime }
   let(:status_changed_at) { time_now - 10.minutes }
   let(:type) { 'Withdrawal' }
+  let(:decorator) { payment.decorate }
+  let(:form_customization) { create(:form_customization, merchant: payment.merchant) }
 
   before do
     allow(Time).to receive(:now).and_return(time_now)
+  end
+
+  describe '#countdown_end_time' do
+    context 'when differ_ftd_and_other_payments is true' do
+      before do
+        payment.merchant.update(differ_ftd_and_other_payments: true)
+        payment.merchant.update(ftd_payment_default_summ: 100.0)
+      end
+
+      describe '#countdown_end_time' do
+        context 'when cryptocurrency_amount equals ftd_payment_default_summ' do
+          it 'returns the correct countdown end time' do
+            expected_countdown_end_time = payment.status_changed_at + payment.merchant.ftd_payment_exec_time_in_sec
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+          end
+        end
+
+        context 'when cryptocurrency_amount is not equal to ftd_payment_default_summ' do
+          before do
+            payment.merchant.update(ftd_payment_default_summ: 50)
+          end
+
+          it 'returns the correct countdown end time' do
+            expected_countdown_end_time = payment.status_changed_at + payment.merchant.regular_payment_exec_time_in_sec
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+          end
+        end
+
+        context 'when differ_ftd_and_other_payments is false' do
+          before do
+            payment.merchant.update(differ_ftd_and_other_payments: false)
+          end
+
+          it 'returns the correct countdown end time' do
+            expected_countdown_end_time = payment.status_changed_at + payment.merchant.regular_payment_exec_time_in_sec
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+          end
+        end
+      end
+    end
   end
 
   describe '#countdown' do
@@ -22,12 +64,6 @@ RSpec.describe PaymentDecorator do
       it 'should return 00:00:00' do
         expect(payment.decorate.countdown).to eq '00:00:00'
       end
-    end
-  end
-
-  describe '#countdown_end_time' do
-    it 'Should return status_changed_at + 20' do
-      expect(payment.decorate.countdown_end_time).to eq(payment.status_changed_at + 20.minutes)
     end
   end
 
@@ -46,26 +82,13 @@ RSpec.describe PaymentDecorator do
   describe '#human_type' do
     context 'when payment.type == Deposit' do
       let(:type) { 'Deposit' }
-      it 'If type == deposit then return Депозит' do
-        expect(payment.decorate.human_type).to eq 'Депозит'
+      it 'If type == deposit then return ДЕПОЗИТ' do
+        expect(payment.decorate.human_type).to eq 'ДЕПОЗИТ'
       end
     end
 
-    it 'If type != deposit then return Вывод' do
-      expect(payment.decorate.human_type).to eq 'Вывод'
-    end
-  end
-
-  describe '#type_icon' do
-    context 'when payment.type == Deposit' do
-      let(:type) { 'Deposit' }
-      it 'If type == deposit then return arrow-up' do
-        expect(payment.decorate.type_icon).to eq 'arrow-up'
-      end
-    end
-
-    it 'If type == deposit then return arrow-down' do
-      expect(payment.decorate.type_icon).to eq 'arrow-down'
+    it 'If type != deposit then return ВЫВОД' do
+      expect(payment.decorate.human_type).to eq 'ВЫВОД'
     end
   end
 
@@ -94,6 +117,76 @@ RSpec.describe PaymentDecorator do
 
       it 'calculates amount of all commissions and converts it to national currency' do
         is_expected.to eq(200)
+      end
+    end
+  end
+
+  describe '#logo_image_tag' do
+    context 'when merchant has a logo' do
+      before do
+        allow(form_customization.logo).to receive(:present?).and_return(true)
+        allow(decorator)
+          .to receive_message_chain('h.content_tag')
+          .and_return("<div class='show-logo'><div class='logo_img'><img src='logo_url' /></div></div>")
+      end
+
+      it 'returns the image tag with the logo' do
+        expect(decorator.logo_image_tag)
+          .to eq("<div class='show-logo'><div class='logo_img'><img src='logo_url' /></div></div>")
+      end
+    end
+
+    context 'when merchant does not have a logo' do
+      before do
+        allow(form_customization.logo).to receive(:present?).and_return(false)
+      end
+
+      it 'returns nil' do
+        expect(decorator.logo_image_tag).to be_nil
+      end
+    end
+  end
+
+  describe '#background_color_style' do
+    context 'when merchant has a background color' do
+      before do
+        allow(form_customization).to receive(:background_color).and_return('red')
+      end
+
+      it 'returns the background color style' do
+        expect(decorator.background_color_style).to eq('background-color: red;')
+      end
+    end
+
+    context 'when merchant does not have a background color' do
+      before do
+        allow(form_customization).to receive(:background_color).and_return(nil)
+      end
+
+      it 'returns nil' do
+        expect(decorator.background_color_style).to be_nil
+      end
+    end
+  end
+
+  describe '#button_color_style' do
+    context 'when merchant has a button color' do
+      before do
+        allow(form_customization).to receive(:button_color).and_return('blue')
+      end
+
+      it 'returns the button color style' do
+        expect(decorator.button_color_style).to eq('background-color: blue;')
+      end
+    end
+
+    context 'when merchant does not have a button color' do
+      before do
+        allow(form_customization).to receive(:button_color).and_return(nil)
+      end
+
+      it 'returns nil' do
+        expect(decorator.button_color_style).to be_nil
       end
     end
   end

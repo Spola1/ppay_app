@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :payment_system do
-    name { FFaker::InternetSE.company_name_single_word }
+    name { 'Sberbank' }
+    national_currency { create(:national_currency, name: 'RUB') }
   end
 end

@@ -6,10 +6,12 @@ module Payments
       include Sidekiq::Job
       sidekiq_options queue: 'high', tags: ['search_processer']
 
-      def perform(payment_id)
-        payment = Payment.find(payment_id)
+      attr_reader :payment
 
-        search_advertisment(payment)
+      def perform(payment_id)
+        @payment = Payment.find(payment_id)
+
+        search_advertisment
 
         payment.bind! if payment.reload.processer_search? && payment.advertisement
 
@@ -18,13 +20,21 @@ module Payments
 
       private
 
-      def search_advertisment(payment)
-        while payment.reload.advertisement.blank? && payment.reload.processer_search?
+      def search_advertisment
+        start_time = Time.now
+
+        while search_valid?(start_time)
           puts 'не найден'
-          payment.update(advertisement: selected_advertisement(payment))
+          payment.update(advertisement: selected_advertisement)
           payment.bind! if payment.advertisement
           sleep 0.5
         end
+      end
+
+      def search_valid?(start_time)
+        payment.reload.advertisement.blank? &&
+          payment.reload.processer_search? &&
+          (Time.now - start_time) < 600
       end
     end
   end

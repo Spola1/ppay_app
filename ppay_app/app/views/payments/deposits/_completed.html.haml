@@ -1,18 +1,19 @@
 .show-payment
   .show-payment-block
     .proc-head
-      .proc-logo
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
-        UID Check
+        = render 'payments/select_locale', payment:, signature:
 
     .proc-payment-done-block
       .proc-payment-done-img
-      Успешно!
+      = t('payments.success')
       .mt-4
-        Платеж выполнен!
+        = t('payments.payment_completed')
 
     .proc-payment-done-links-block
-      = link_to "вернуться в магазин", payment.redirect_url
+      - if payment.redirect_url.present?
+        = link_to t('payments.back_to_shop'), payment.redirect_url
 
     = render 'payments/uuid', payment:, class: 'text-center'
 

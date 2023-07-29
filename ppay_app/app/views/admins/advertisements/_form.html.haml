@@ -3,11 +3,21 @@
   = f.input :direction, collection: [["продажа (sell) / ввод (deposit)", "Deposit"], ["покупка (buy) / вывод (withdrawal)", "Withdrawal"]],
                         include_blank: '-выбрать-'
 
-  = f.input :national_currency, collection: Settings.national_currencies, include_blank: '-выбрать-'
+  = f.input :national_currency, collection: NationalCurrency.pluck(:name), include_blank: '-выбрать-'
 
-  = f.input :payment_system, collection: ["Sberbank", "Tinkoff", "Raiffeisen", "AlfaBank"], include_blank: '-выбрать-'
+  = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: '-выбрать-'
 
   = f.input :card_number, input_html: { data: { 'inputmask--card-number-target': 'input' } }
+
+  = f.input :simbank_auto_confirmation
+
+  = f.input :imei
+
+  = f.input :phone
+
+  = f.input :imsi
+
+  = f.input :simbank_card_number, hint: simbank_card_number, hint_html: { class: 'hint-red' }
 
   = f.input :comment
 

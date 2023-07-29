@@ -2,7 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply text-2xl mb-4;
+  }
+
+  h2 {
+    @apply text-xl mb-4;
+  }
+}
+
 @layer components {
+  .with-sidebar {
+    @apply flex flex-row;
+  }
+
+  .with-sidebar aside {
+    @apply w-1/5 px-2;
+  }
+
+  .with-sidebar section {
+    @apply w-4/5 px-2;
+  }
+
+  .with-sidebar aside .sticky-menu {
+    @apply sticky top-0 p-4 w-full;
+  }
+
+  .sticky-menu ul {
+    @apply flex flex-col overflow-hidden;
+  }
+
+  .sticky-menu a > i {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sticky-menu li > a {
+    @apply items-center flex space-x-2 p-3 text-black hover:no-underline;
+  }
+
+  .sticky-menu li > a.active {
+    @apply bg-gray-100;
+  }
+
+  section:has(.devise_container) {
+    @apply w-full;
+  }
+
+  .devise_container {
+    @apply text-xs text-gray-900 font-light py-2 px-4;
+  }
+
+  .devise_container h2 {
+    @apply text-xl mb-4;
+  }
+
+  .devise_container form {
+    @apply mb-6;
+  }
+
+  .devise_container .links a {
+    @apply underline;
+  }
+
   .form-input {
     @apply block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border
       border-solid border-gray-300 rounded transition ease-in-out m-0 w-auto;
@@ -18,6 +81,10 @@
     @apply px-6 py-2.5 flex bg-green-600 text-white font-medium text-sm leading-tight rounded shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .form-submit-red {
+    @apply form-submit bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
   }
 
   .default-nav {
@@ -42,6 +109,12 @@
 
   .green-button-submit {
     @apply w-300 px-6 py-2.5 h-12 bg-[#21a038] text-white text-sm rounded-xl shadow-md
+      hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
+  .button-submit {
+    @apply px-6 h-8 bg-[#21a038] text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
@@ -78,6 +151,11 @@
     @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
   }
 
+  .items-list-td-national_currency {
+    @apply text-xs text-gray-900 font-light p-2 whitespace-nowrap;
+    font-weight: 450;
+  }
+
   .items-list-td-link {
     @apply items-list-td text-gray-900 underline font-medium;
   }
@@ -106,12 +184,12 @@
     @apply bg-red-100;
   }
 
-  .item-card {
-    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
-  }
-
   .card-wrap {
     @apply p-2 flex-1;
+  }
+
+  .item-card {
+    @apply p-6 block rounded-lg shadow-xl bg-white border mb-4;
   }
 
   .card-head {
@@ -119,7 +197,11 @@
   }
 
   .card-head h1 {
-    @apply inline-block text-xl;
+    @apply inline-block text-xl mb-0;
+  }
+
+  .card-body {
+    @apply my-4;
   }
 
   .wrap {
@@ -160,11 +242,11 @@
   }
 
   .simple_form .input input.string, .simple_form .input input.text, .simple_form .input input.numeric,
-  .simple_form .input textarea.text, .simple_form .input input.date {
+  .simple_form .input textarea.text, .simple_form .input input.date, .simple_form .input input.password {
     @apply form-input;
   }
 
-  .simple_form .hint {
+  .simple_form .hint, .form_with .hint {
     @apply my-1 text-xs text-gray-500;
   }
 
@@ -206,14 +288,22 @@
     @apply w-full max-w-full;
   }
 
+  .error_notification {
+    @apply text-xs;
+  }
+
   .toast {
     @apply shadow-lg mx-auto w-96 max-w-full text-sm pointer-events-auto bg-clip-padding rounded-lg block
-      w-full hover:bg-blue-700 hover:shadow-xl focus:bg-blue-700 focus:shadow-xl focus:outline-none
-      focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 ease-in-out;
+      w-full bg-blue-600 hover:bg-blue-700 hover:shadow-xl focus:bg-blue-700 focus:shadow-xl focus:outline-none
+      focus:ring-0 active:bg-blue-800 active:shadow-xl transition duration-150 p-1 ease-in-out;
   }
 
   .toast-header {
-    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-b border-blue-500 rounded-t-lg;
+    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-blue-500 rounded-t-lg;
+  }
+
+  .arbitration .toast-header {
+    @apply flex justify-between items-center py-2 px-3 bg-clip-padding border-red-500 rounded-t-lg;
   }
 
   .toast-header-text {
@@ -237,12 +327,12 @@
   }
 
   .notifications-block {
-    @apply fixed flex flex-col max-w-full bg-clip-padding shadow-sm outline-none
+    @apply fixed flex flex-col max-w-full bg-clip-padding outline-none
       transition duration-300 ease-in-out text-gray-700 top-2 right-2 w-auto h-auto;
   }
 
   .notification .toast {
-    @apply border bg-blue-600/95 border-blue-700 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800 hover:opacity-100
+    @apply bg-blue-600/95 border-blue-700 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800 hover:opacity-100
       transition duration-150 ease-in-out w-80;
   }
 
@@ -262,7 +352,6 @@
     @apply text-gray-500 text-sm mt-8;
   }
 
-
   .grey-drop-down {
     @apply w-full h-12 px-3 py-2.5 mr-3 text-sm font-medium text-left text-black bg-gray-200 rounded md:mb-0;
   }
@@ -272,15 +361,15 @@
   }
 
   .proc-head {
-    @apply flex justify-between;
+    @apply flex justify-between items-center mt-4;
   }
 
   .proc-logo {
-    @apply bg-[url('/logo.svg')] bg-contain bg-no-repeat w-40 h-10 mt-1.5;
+    @apply bg-[url('/test_logo.jpg')] bg-contain bg-no-repeat w-40 h-10 mt-1.5;
   }
 
   .proc-text {
-    @apply text-gray-400 mt-4;
+    @apply text-gray-400;
   }
 
   .proc-amount-block{
@@ -478,6 +567,10 @@
     @apply text-xs text-gray-600 mt-6;
   }
 
+  .alert-block {
+    @apply text-gray-900 font-light inline-block rounded-lg shadow-md shadow-slate-100 bg-white border;
+  }
+
   .payment_img {
     width: 300px;
     height: 180px;
@@ -575,12 +668,30 @@
   .pxy-15 {
     padding: 15px 15px 15px 15px
   }
+
+  .pxy-7 {
+    padding: 7px 7px 7px 7px
+  }
+
+  .logo_img img {
+    width: 100px;
+    max-height: 100px;
+  }
+
   .show-qr-block {
-    @apply w-fit font-firs rounded-xl py-6 px-6 ml-6 border-qr;
+    @apply w-fit font-firs rounded-xl py-6 px-6 ml-6 border-qr bg-white;
   }
 
   .show-qr {
     @apply w-fit rounded-xl justify-center pxy-15 bg-white border-qr;
+  }
+
+  .show-logo-block {
+    @apply w-fit font-firs rounded-xl py-6 px-6 ml-6 border-qr;
+  }
+
+  .show-logo {
+    @apply w-fit rounded-xl justify-center pxy-7 bg-white border-qr flex;
   }
 
   .completed-status {
@@ -591,11 +702,169 @@
     @apply text-red-500;
   }
 
-  .image-processer-block {
-    @apply h-96;
-  }
-
   input[name="advertisement[card_number]"] {
     width: 400px !important;
+  }
+
+  input[name="advertisement[simbank_identifier]"] {
+    width: 400px !important;
+  }
+
+  .hint-red {
+    color: red !important;
+  }
+
+  .show-countries-block {
+    @apply w-fit font-firs rounded-xl py-3 px-3 ml-3 border-qr;
+  }
+
+  .success-notice {
+    @apply text-sm text-green-600;
+  }
+
+  .select-submit-container {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .select-submit-container select {
+    flex: 1;
+  }
+  
+  .select-submit-container input[type="submit"] {
+    margin-left: 10px;
+  }
+
+  .select-locale {
+    @apply mt-0.5;
+  }
+
+  .items-list-td-break-all-card {
+    @apply text-xs text-gray-900 font-light p-2 break-words w-[100px] text-left;
+  }
+
+  .items-list-td-break-all-comment {
+    @apply text-xs text-gray-900 font-light p-2 break-words w-[100px] text-left;
+  }
+
+  .items-list-th-text-left-card {
+    @apply text-xs font-medium text-gray-900 p-2 text-left w-[135px];
+  }
+
+  .items-list-th-text-left-comment {
+    @apply text-xs font-medium text-gray-900 p-2 text-left w-[100px];
+  }
+
+  .items-list-th-text-left-payments {
+    @apply text-xs font-medium text-gray-900 p-2 text-left;
+  }
+
+  .items-list-td-link-flow {
+    @apply items-list-td text-gray-900 underline font-medium w-[20px];
+  }
+
+  .items-list-th-link-flow {
+    @apply items-list-td text-gray-900 font-medium w-[20px];
+  }
+
+  .toast.arbitration {
+    @apply bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
+    color: white;
+  }
+
+  .toast.deposit {
+    @apply bg-green-600 hover:bg-green-700 focus:bg-green-700 active:bg-green-800;
+  }
+
+  .text-size-11 {
+    font-size: 11px;
+  }
+  
+  .text-size-13 {
+    font-size: 13px;
+  }
+
+  .w-50 {
+    width: 50px;
+  }
+
+  .toast.deposit-transferring {
+    @apply hover:bg-yellow-300 focus:bg-yellow-300 active:bg-yellow-300;
+    background-color: #FFEE95;
+    box-shadow: none;
+  }
+
+  .toast.deposit-confirming {
+    @apply hover:bg-green-800 focus:bg-green-800 active:bg-green-900;
+    background-color: #057A17;
+    box-shadow: none;
+  }
+
+  .toast.withdrawal-transferring {
+    @apply hover:bg-blue-800 focus:bg-blue-800 active:bg-blue-900;
+    background-color: #0656CD;
+    box-shadow: none;
+  }
+
+  .toast.withdrawal-confirming {
+    @apply hover:bg-blue-300 focus:bg-blue-300 active:bg-blue-400;
+    background-color: #C3DBFF;
+    box-shadow: none;
+  }
+
+  .toast.flow-arbitration {
+    @apply bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
+    color: white;
+    background-color: #D60B0B;
+    box-shadow: none;
+  }
+
+  .toast.withdrawal-confirming .text-xs,
+  .toast.withdrawal-confirming .toast-header-time-text.countdown,
+  .toast.deposit-transferring .text-xs, 
+  .toast.deposit-transferring .toast-header-time-text.countdown {
+    color: black;
+  }
+
+  .toast.withdrawal-transferring .text-xs, 
+  .toast.withdrawal-transferring .toast-header-time-text.countdown,
+  .toast.deposit-confirming .text-xs, 
+  .toast.deposit-confirming .toast-header-time-text.countdown {
+    color: white;
+  }
+
+  .flow-table-text {
+    @apply text-sm mt-5 font-medium;
+  }
+
+  .flow-item-card {
+    @apply rounded-lg bg-white;
+  }
+
+  .text-green {
+    color: #057A17;
+  }
+  
+  .text-blue {
+    color: #0656CD;
+  }
+
+  .items-list-th-mask-id {
+    @apply text-xs font-medium text-gray-900 p-2 w-[30px];
+  }
+
+  .items-list-th-mask-app {
+    @apply text-xs font-medium text-gray-900 p-2 w-[200px];
+  }
+
+  .items-list-th-mask-type {
+    @apply text-xs font-medium text-gray-900 p-2 w-[200px];
+  }
+
+  .mask-input-style {
+    max-width: 800px;
+    height: 300px;
+    resize: both;
   }
 }

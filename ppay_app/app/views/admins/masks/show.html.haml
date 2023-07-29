@@ -1,0 +1,15 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Маска (ID: #{@mask.id})"
+        .flex.text-right
+          = link_to edit_mask_path(@mask), class: 'icon-button' do
+            .flex
+              .mr-2
+                = fa_icon 'pencil'
+              Редактировать
+      .mt-8.my-4
+        = render @mask
+      .back-link
+        = link_to '<- К списку масок', masks_path

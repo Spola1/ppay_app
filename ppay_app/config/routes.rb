@@ -12,11 +12,9 @@ Rails.application.routes.draw do
       password == Settings.basic_auth.password
   end
 
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :users # , controllers: {
+  #   registrations: 'users/registrations'
+  # }
 
   concern :statuses_updatable do
     namespace :statuses do
@@ -26,20 +24,34 @@ Rails.application.routes.draw do
   end
 
   namespace :payments, constraints: ->(request) { request.params[:signature].present? } do
-    resources :deposits, param: :uuid, only: :show
-    resources :withdrawals, param: :uuid, only: :show
+    resources :deposits, param: :uuid, only: %i[show update]
+    resources :withdrawals, param: :uuid, only: %i[show update]
 
     concerns :statuses_updatable
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
+    resource :setting, only: [:edit, :update]
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :incoming_requests
+    resources :masks
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
+
+    resources :merchants, only: %i[index new create update] do
+      scope module: :merchants do
+        resource :account, only: %i[show update]
+        resource :settings, only: %i[show update]
+        resources :merchant_methods, only: %i[create destroy]
+      end
+    end
+
+    resources :turnover_stats, only: %i[index]
+
     root 'payments#index', as: :admins_root
   end
 
@@ -54,7 +66,17 @@ Rails.application.routes.draw do
       end
       resources :withdrawals, only: :index
     end
+
+    namespace :users do
+      get :settings
+      patch :settings, to: '/merchants/users#settings_update'
+    end
+
     root 'payments#index', as: :merchants_root
+  end
+
+  namespace :processers do
+    resource :profile, only: %i[edit update]
   end
 
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
@@ -62,6 +84,7 @@ Rails.application.routes.draw do
       collection do
         post :activate_all
         post :deactivate_all
+        get :flow
       end
     end
     resources :exchange_portals, only: %i[index show]
@@ -74,6 +97,11 @@ Rails.application.routes.draw do
 
       concerns :statuses_updatable
     end
+
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :processers_root
   end
 
@@ -85,6 +113,7 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
+
     root 'payments#index', as: :supports_root
   end
 
@@ -97,6 +126,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/simbank/requests', to: 'incoming_requests#create'
+      get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
       concerns :payments_creatable
@@ -112,8 +143,16 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
-  scope module: :processers do
-    root 'payments#index'
+  constraints(
+    lambda do |request|
+      request.env['warden'].user.blank? &&
+        request.path[
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|$)}
+        ].present?
+    end
+  ) do
+    match '*path', to: 'users/sign_in#index', via: :all
+    root 'users/sign_in#index'
   end
 
   # временно для тестов добавляю таблицу
