@@ -8,10 +8,14 @@ module Api
           def update
             raise ActionController::BadRequest unless payment.external?
 
-            render_object_errors(payment) unless payment.public_send("#{allowed_event}!")
+            render_object_errors(payment) unless payment.public_send("#{allowed_event}!", payment_params)
           end
 
           private
+
+          def payment_params
+            params.permit(:account_number)
+          end
 
           def deposit_allowed_events
             %i[check cancel]
