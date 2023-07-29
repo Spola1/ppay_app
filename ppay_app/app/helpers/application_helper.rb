@@ -12,15 +12,21 @@ module ApplicationHelper
   end
 
   def deposit_hotlist_advertisements(user)
-    user.advertisements.includes(:payments).order('payment_system ASC').by_direction('Deposit').select do |advertisement|
-      advertisement.status? || advertisement.payments.in_deposit_flow_hotlist.any?
-    end
+    subquery = user.advertisements.left_outer_joins(:payments).merge(Payment.in_deposit_flow_hotlist)
+
+    Advertisement.where(id: subquery)
+                 .or(user.advertisements.active)
+                 .by_direction('Deposit')
+                 .order('payment_system ASC')
   end
 
   def withdrawal_hotlist_advertisements(user)
-    user.advertisements.includes(:payments).order('payment_system ASC').by_direction('Withdrawal').select do |advertisement|
-      advertisement.status? || advertisement.payments.in_withdrawal_flow_hotlist.any?
-    end
+    subquery = user.advertisements.left_outer_joins(:payments).merge(Payment.in_withdrawal_flow_hotlist)
+
+    Advertisement.where(id: subquery)
+                 .or(user.advertisements.active)
+                 .by_direction('Withdrawal')
+                 .order('payment_system ASC')
   end
 
   private

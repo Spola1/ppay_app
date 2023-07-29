@@ -111,7 +111,6 @@ class Payment < ApplicationRecord
   after_update_commit lambda {
     if payment_status_previously_changed? && processer
       broadcast_replace_hotlist_to_processer
-      broadcast_replace_ad_hotlist_to_processer
       broadcast_append_notification_to_processer if in_hotlist?
     end
   }
