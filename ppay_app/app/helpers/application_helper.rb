@@ -12,13 +12,13 @@ module ApplicationHelper
   end
 
   def deposit_hotlist_advertisements(user)
-    user.advertisements.order('payment_system ASC').by_direction('Deposit').select do |advertisement|
+    user.advertisements.includes(:payments).order('payment_system ASC').by_direction('Deposit').select do |advertisement|
       advertisement.status? || advertisement.payments.in_deposit_flow_hotlist.any?
     end
   end
 
   def withdrawal_hotlist_advertisements(user)
-    user.advertisements.order('payment_system ASC').by_direction('Withdrawal').select do |advertisement|
+    user.advertisements.includes(:payments).order('payment_system ASC').by_direction('Withdrawal').select do |advertisement|
       advertisement.status? || advertisement.payments.in_withdrawal_flow_hotlist.any?
     end
   end
