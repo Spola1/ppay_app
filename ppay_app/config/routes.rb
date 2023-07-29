@@ -53,6 +53,9 @@ Rails.application.routes.draw do
 
     resources :turnover_stats, only: %i[index]
 
+    resources :payment_systems, only: :index
+    post :payment_systems, to: '/admins/payment_systems#update'
+
     root 'payments#index', as: :admins_root
   end
 
@@ -150,7 +153,7 @@ Rails.application.routes.draw do
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
-          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|$)}
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|payment_systems|$)}
         ].present?
     end
   ) do

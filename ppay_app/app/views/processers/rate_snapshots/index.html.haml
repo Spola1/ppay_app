@@ -24,9 +24,9 @@
                 %td.items-list-td-link= link_to rs.id, rs
                 %td.items-list-td= rs.decorate.formatted_created_at
                 %td.items-list-td= rs.direction
-                %td.items-list-td= rs.national_currency
+                %td.items-list-td= rs.payment_system.national_currency.name
                 %td.items-list-td= rs.cryptocurrency
-                %td.items-list-td= rs.payment_system
+                %td.items-list-td= rs.payment_system.name
                 %td.items-list-td= rs.position_number
                 %td.items-list-td= rs.exchange_portal_id
                 %td.items-list-td= rs.value

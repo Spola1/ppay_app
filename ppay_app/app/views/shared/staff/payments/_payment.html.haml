@@ -124,7 +124,7 @@
             - if payment.merchant_id && role_namespace == 'supports'
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
-                %td.item-card-td= payment.merchant.decorate.display_name                          
+                %td.item-card-td= payment.merchant.decorate.display_name
             - else
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Мерчант
@@ -142,7 +142,7 @@
                   %br
                   = "криптовалюта: #{payment.rate_snapshot.cryptocurrency}"
                   %br
-                  = "платежная система: #{payment.rate_snapshot.payment_system}"
+                  = "платежная система: #{payment.rate_snapshot.payment_system.name}"
                   %br
                   = "биржа: #{payment.rate_snapshot.exchange_portal&.name}"
                 - else
@@ -203,5 +203,3 @@
             = form_for Comment.new, url: payment_comments_path(payment_uuid: payment.uuid), remote: true do |f|
               = f.text_area :text, class: 'form-input w-full h-16'
               = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
-
-

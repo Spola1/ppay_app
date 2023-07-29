@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
 class AddNationalCurrenciesToPaymentSystems < ActiveRecord::Migration[7.0]
+  class PaymentSystem < ApplicationRecord
+    belongs_to :national_currency
+  end
+
+  class NationalCurrency < ApplicationRecord;  end
+
   def up
-    PaymentSystem.connection.schema_cache.clear!
-    PaymentSystem.reset_column_information
+    ApplicationRecord.connection.schema_cache.clear!
+    ApplicationRecord.reset_column_information
 
     [
       { national_currency: 'RUB', payment_system: 'Sberbank' },

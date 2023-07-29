@@ -3,7 +3,10 @@
 module Processers
   class RateSnapshotsController < Staff::BaseController
     def index
-      @pagy, @rate_snapshots = pagy(RateSnapshot.all.order(created_at: :desc))
+      @pagy, @rate_snapshots = pagy(
+        RateSnapshot.includes(payment_system: :national_currency)
+                    .order(created_at: :desc)
+      )
     end
 
     def show
