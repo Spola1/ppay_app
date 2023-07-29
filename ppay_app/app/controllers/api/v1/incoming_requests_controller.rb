@@ -17,8 +17,8 @@ module Api
         else
           render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
         end
-      rescue Exception => error
-        @incoming_request = IncomingRequest.create(initial_params: request.raw_post, error: error.full_message)
+      rescue Exception => e
+        @incoming_request = IncomingRequest.create(initial_params: request.raw_post, error: e.full_message)
 
         render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
       end
@@ -40,7 +40,7 @@ module Api
       end
 
       def sanitized_params(body)
-        CGI.unescape(body).gsub(/"content":\s?"(.*?)\"\,[\S\s]*\"identifier\"/m) do |_match|
+        CGI.unescape(body).gsub(/"content":\s?"(.*?)",[\S\s]*"identifier"/m) do |_match|
           content_value = ::Regexp.last_match(1).gsub(/\n/, ' ').gsub(/"/, '\"')
           "\"content\": \"#{content_value}\",\"identifier\""
         end

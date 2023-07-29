@@ -31,7 +31,7 @@ class IncomingRequestService
       'MacroDroid' => {
         'SMS' => { search_field: :phone },
         'PUSH' => { search_field: :imei }
-      },
+      }
     }
 
     app = @incoming_request.app
@@ -61,8 +61,8 @@ class IncomingRequestService
       next unless match.present?
 
       @advertisement = @matching_advertisements
-                         .where("RIGHT(card_number, 4) = :match OR simbank_card_number = :match", match:)
-                         .last
+                       .where('RIGHT(card_number, 4) = :match OR simbank_card_number = :match', match:)
+                       .last
       @card_mask = mask
       @card_number = match.first
 
@@ -140,7 +140,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.gsub(/\s/,'').to_d == payment.national_currency_amount.to_d
+    match.first.gsub(/\s/, '').to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response

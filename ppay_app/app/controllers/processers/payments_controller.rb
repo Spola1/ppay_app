@@ -5,14 +5,15 @@ module Processers
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
-                                                   .includes(:merchant)
-                                                   .order(created_at: :desc))
-      @payments = @payments.decorate
+      respond_to do |format|
+        format.html do
+          set_payments
+        end
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(current_user.payments.arbitration.includes(:merchant),
-                                                               page_param: :arbitration_page)
-      @arbitration_payments = @arbitration_payments.decorate
+        format.xlsx do
+          render xlsx: 'payments', locals: { payments: current_user.payments.filter_by(filtering_params).decorate }
+        end
+      end
     end
 
     def show; end
@@ -24,6 +25,17 @@ module Processers
     end
 
     private
+
+    def set_payments
+      @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
+                                                   .includes(:merchant)
+                                                   .order(created_at: :desc))
+      @payments = @payments.decorate
+
+      @arbitration_payments_pagy, @arbitration_payments = pagy(current_user.payments.arbitration.includes(:merchant),
+                                                               page_param: :arbitration_page)
+      @arbitration_payments = @arbitration_payments.decorate
+    end
 
     def find_payment
       @payment = current_user.payments.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate

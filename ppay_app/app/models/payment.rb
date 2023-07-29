@@ -22,13 +22,13 @@ class Payment < ApplicationRecord
   scope :filter_by_uuid, ->(uuid) { where('uuid::text LIKE ?', "%#{uuid}%") }
   scope :filter_by_external_order_id, ->(external_order_id) { where(external_order_id:) }
   scope :filter_by_national_currency_amount_from,
-        ->(national_currency_amount) { where 'national_currency_amount > ?', national_currency_amount }
+        ->(national_currency_amount) { where 'national_currency_amount >= ?', national_currency_amount }
   scope :filter_by_national_currency_amount_to,
-        ->(national_currency_amount) { where 'national_currency_amount < ?', national_currency_amount }
+        ->(national_currency_amount) { where 'national_currency_amount <= ?', national_currency_amount }
   scope :filter_by_cryptocurrency_amount_from,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount > ?', cryptocurrency_amount }
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount >= ?', cryptocurrency_amount }
   scope :filter_by_cryptocurrency_amount_to,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount < ?', cryptocurrency_amount }
+        ->(cryptocurrency_amount) { where 'cryptocurrency_amount <= ?', cryptocurrency_amount }
   scope :expired_arbitration_not_paid, lambda {
     where(arbitration: true,
           arbitration_reason: :not_paid)
@@ -143,9 +143,16 @@ class Payment < ApplicationRecord
 
   scope :deposits,    -> { where(type: 'Deposit') }
   scope :withdrawals, -> { where(type: 'Withdrawal') }
-  scope :expired,     -> { where('status_changed_at < ?', 20.minutes.ago) }
   scope :arbitration, -> { where(arbitration: true) }
   scope :active,      -> { where.not(payment_status: %w[completed cancelled]) }
+  scope :expired,     lambda {
+    joins(:merchant).where(
+      "CASE WHEN users.differ_ftd_and_other_payments = TRUE AND payments.initial_amount = users.ftd_payment_default_summ
+        THEN (payments.status_changed_at + INTERVAL '1 second' * users.ftd_payment_exec_time_in_sec)
+      ELSE (payments.status_changed_at + INTERVAL '1 second' * users.regular_payment_exec_time_in_sec)
+      END < NOW()"
+    )
+  }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }

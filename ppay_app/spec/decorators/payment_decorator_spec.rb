@@ -15,24 +15,17 @@ RSpec.describe PaymentDecorator do
   end
 
   describe '#countdown_end_time' do
-    it 'returns the correct countdown end time' do
-      expected_countdown_end_time = payment.status_changed_at + 20.minutes
-      expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
-    end
-  end
-
-  describe '#countdown_end_time_for_clients' do
     context 'when differ_ftd_and_other_payments is true' do
       before do
         payment.merchant.update(differ_ftd_and_other_payments: true)
         payment.merchant.update(ftd_payment_default_summ: 100.0)
       end
 
-      describe '#countdown_end_time_for_clients' do
+      describe '#countdown_end_time' do
         context 'when cryptocurrency_amount equals ftd_payment_default_summ' do
           it 'returns the correct countdown end time' do
             expected_countdown_end_time = payment.status_changed_at + payment.merchant.ftd_payment_exec_time_in_sec
-            expect(payment.decorate.countdown_end_time_for_clients).to eq(expected_countdown_end_time)
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
           end
         end
 
@@ -43,7 +36,7 @@ RSpec.describe PaymentDecorator do
 
           it 'returns the correct countdown end time' do
             expected_countdown_end_time = payment.status_changed_at + payment.merchant.regular_payment_exec_time_in_sec
-            expect(payment.decorate.countdown_end_time_for_clients).to eq(expected_countdown_end_time)
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
           end
         end
 
@@ -54,7 +47,7 @@ RSpec.describe PaymentDecorator do
 
           it 'returns the correct countdown end time' do
             expected_countdown_end_time = payment.status_changed_at + payment.merchant.regular_payment_exec_time_in_sec
-            expect(payment.decorate.countdown_end_time_for_clients).to eq(expected_countdown_end_time)
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
           end
         end
       end
