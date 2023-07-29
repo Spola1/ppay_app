@@ -45,6 +45,18 @@ FactoryBot.define do
       payment_status { 'cancelled' }
     end
 
+    trait :confirming do
+      payment_status { 'confirming' }
+    end
+
+    trait :created do
+      payment_status { 'created' }
+    end
+
+    trait :transferring do
+      payment_status { 'transferring' }
+    end
+
     trait :withdrawal do
       type { 'Withdrawal' }
     end
@@ -91,6 +103,14 @@ FactoryBot.define do
          build(:transaction, transaction_type: :processer_commission, status: :cancelled),
          build(:transaction, transaction_type: :ppay_commission, status: :cancelled)]
       end
+    end
+
+    trait :arbitration do
+      arbitration { true }
+    end
+
+    trait :status_changed_at do
+      status_changed_at { Time.now - 10.minutes }
     end
   end
 end

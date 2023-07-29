@@ -145,12 +145,13 @@ class Payment < ApplicationRecord
   scope :withdrawals, -> { where(type: 'Withdrawal') }
   scope :arbitration, -> { where(arbitration: true) }
   scope :active,      -> { where.not(payment_status: %w[completed cancelled]) }
-  scope :expired,     -> {
+  scope :expired,     lambda {
     joins(:merchant).where(
       "CASE WHEN users.differ_ftd_and_other_payments = TRUE AND payments.initial_amount = users.ftd_payment_default_summ
         THEN (payments.status_changed_at + INTERVAL '1 second' * users.ftd_payment_exec_time_in_sec)
       ELSE (payments.status_changed_at + INTERVAL '1 second' * users.regular_payment_exec_time_in_sec)
-      END < NOW()")
+      END < NOW()"
+    )
   }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
