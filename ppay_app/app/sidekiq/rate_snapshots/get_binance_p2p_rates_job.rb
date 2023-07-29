@@ -13,11 +13,12 @@ module RateSnapshots
       case params.symbolize_keys
       in {crypto_asset:, fiat:, payment_system_id:, payment_method:, merchant_check:,
           exchange_portal_id_for_binance:, action:, fiat_amount:, position_number:}
-        binance_otc_trade = Binance::OtcTrade.new(crypto_asset, fiat, action, fiat_amount,
-                                                  payment_method, merchant_check)
 
-        choosed_from_bin_otc = binance_otc_trade.choose_10_advs_from_array
-        adv = choosed_from_bin_otc[..(position_number - 1)].last
+        advs_params = { asset: crypto_asset, fiat:, merchant_check:, pay_types: payment_method,
+                        trade_type: action, trans_amount: fiat_amount || false }
+        binance_session = Binance::OpenSession.new(advs_params)
+
+        adv = binance_session.otc_advs_array[..(position_number - 1)].last
         price_bin_otc = adv[:price].to_f
 
         RateSnapshot.create(direction: action, cryptocurrency: crypto_asset,
