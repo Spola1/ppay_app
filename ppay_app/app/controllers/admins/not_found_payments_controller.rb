@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Supports
+module Admins
   class NotFoundPaymentsController < Staff::Management::NotFoundPaymentsController
   end
 end
