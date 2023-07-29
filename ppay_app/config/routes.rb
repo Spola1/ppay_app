@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     resources :payments, param: :uuid, only: %i[index update show]
     resources :incoming_requests
     resources :masks
+    resources :not_found_payments, only: %i[index show destroy]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -109,6 +110,8 @@ Rails.application.routes.draw do
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :not_found_payments, only: %i[index show destroy]
+    resources :incoming_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
