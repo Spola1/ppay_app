@@ -7,7 +7,7 @@
       %th.items-list-th Входящий запрос
       %th.items-list-th Сумма
       %th.items-list-th Номер карты
-      %th.items-list-th Похожие платежи
+      %th.items-list-th
       %th.items-list-th
 
   %tbody
@@ -19,11 +19,13 @@
         %td.items-list-td= link_to payment.incoming_request.id, incoming_request_path(payment.incoming_request.id)
         %td.items-list-td= payment.national_formatted
         %td.items-list-td= payment.parsed_card_number
-        %td.items-list-td
-          - payment.payments.each do |sub_payment|
-            = link_to sub_payment.id, payment_path(sub_payment), data: { turbo_action: :advance }
 
         %td.items-list-td.px-1.w-0
           = link_to not_found_payment_path(payment), data: { turbo_action: :advance } do
             .icon-button-gray
               = fa_icon 'search'
+
+        %td.items-list-td.px-1.w-0
+          = link_to payment, data: { turbo_confirm: 'Вы уверены что хотите удалить платеж?', turbo_method: :delete } do
+            .icon-button-red
+              = fa_icon 'trash'

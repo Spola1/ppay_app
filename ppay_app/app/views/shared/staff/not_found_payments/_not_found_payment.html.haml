@@ -2,11 +2,14 @@
   %table.item-card-table
     %tbody
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Создан
+        %td.item-card-td= @not_found_payment.formatted_created_at
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Объявление
-        %td.item-card-td= link_to @not_found_payment.advertisement.id, advertisement_path(@not_found_payment.advertisement.id)
+        %td.item-card-td.underline= link_to @not_found_payment.advertisement.id, advertisement_path(@not_found_payment.advertisement.id)
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Входящий запрос
-        %td.item-card-td= link_to @not_found_payment.incoming_request.id, incoming_request_path(@not_found_payment.incoming_request.id)
+        %td.item-card-td.underline= link_to @not_found_payment.incoming_request.id, incoming_request_path(@not_found_payment.incoming_request.id)
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Сумма
         %td.item-card-td= @not_found_payment.parsed_amount
