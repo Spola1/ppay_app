@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     resources :payments, param: :uuid, only: %i[index update show]
     resources :incoming_requests
     resources :masks
+    resources :not_found_payments, only: %i[index show destroy]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -51,6 +52,9 @@ Rails.application.routes.draw do
     end
 
     resources :turnover_stats, only: %i[index]
+
+    resources :payment_systems, only: :index
+    post :payment_systems, to: '/admins/payment_systems#update'
 
     root 'payments#index', as: :admins_root
   end
@@ -109,6 +113,8 @@ Rails.application.routes.draw do
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :not_found_payments, only: %i[index show destroy]
+    resources :incoming_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -147,7 +153,7 @@ Rails.application.routes.draw do
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
-          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|$)}
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|payment_systems|$)}
         ].present?
     end
   ) do

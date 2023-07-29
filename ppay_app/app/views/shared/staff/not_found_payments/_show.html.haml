@@ -1,0 +1,9 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Ненайденный платёж (ID: #{@not_found_payment.id})"
+      .mt-8.my-4
+        = render 'shared/staff/not_found_payments/not_found_payment', not_found_payments: @not_found_payment
+      .back-link
+        = link_to '<- К списку ненайденных платежей', not_found_payments_path

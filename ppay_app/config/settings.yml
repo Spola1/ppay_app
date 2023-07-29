@@ -23,6 +23,10 @@ navbar:
       path: incoming_requests_path
     - name: Оборот
       path: turnover_stats_path
+    - name: Реестр
+      path: not_found_payments_path
+    - name: Платёжные системы
+      path: payment_systems_path
   merchant:
     - name: Все платежи
       path: payments_path
@@ -52,3 +56,5 @@ navbar:
     #   path: rate_snapshots_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Реестр
+      path: not_found_payments_path

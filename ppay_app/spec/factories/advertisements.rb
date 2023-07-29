@@ -12,6 +12,10 @@ FactoryBot.define do
     status { true }
     max_summ { 10_000 }
     min_summ { 10 }
+    simbank_auto_confirmation { true }
+    phone { '79231636742' }
+    simbank_card_number { '8412' }
+    simbank_sender { 'Raiffeisen' }
 
     trait :deposit do
       direction { 'Deposit' }

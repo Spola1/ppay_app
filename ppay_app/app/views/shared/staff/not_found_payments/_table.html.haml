@@ -1,0 +1,31 @@
+%table.items-list-table
+  %thead.items-list-thead
+    %tr
+      %th.items-list-th ID
+      %th.items-list-th Объявление
+      %th.items-list-th Создан
+      %th.items-list-th Входящий запрос
+      %th.items-list-th Сумма
+      %th.items-list-th Номер карты
+      %th.items-list-th
+      %th.items-list-th
+
+  %tbody
+    - @not_found_payments.each do |payment|
+      %tr.items-list-tr
+        %td.items-list-td= link_to payment.id, not_found_payment_path(payment.id)
+        %td.items-list-td= link_to payment.advertisement.id, advertisement_path(payment.advertisement.id)
+        %td.items-list-td= payment.formatted_status_created_at
+        %td.items-list-td= link_to payment.incoming_request.id, incoming_request_path(payment.incoming_request.id)
+        %td.items-list-td= payment.national_formatted
+        %td.items-list-td= payment.parsed_card_number
+
+        %td.items-list-td.px-1.w-0
+          = link_to not_found_payment_path(payment), data: { turbo_action: :advance } do
+            .icon-button-gray
+              = fa_icon 'search'
+
+        %td.items-list-td.px-1.w-0
+          = link_to payment, data: { turbo_confirm: 'Вы уверены что хотите удалить платеж?', turbo_method: :delete } do
+            .icon-button-red
+              = fa_icon 'trash'

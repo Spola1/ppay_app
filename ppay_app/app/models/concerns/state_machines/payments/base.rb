@@ -60,9 +60,18 @@ module StateMachines
         merchant.payment_systems.where(merchant_methods: { direction: type }).pluck(:name)
       end
 
+      def bind_estimated_rate_snapshot
+        self.rate_snapshot = rate_snapshots_scope
+                             .by_national_currency(NationalCurrency.find_by(name: national_currency))
+                             .by_cryptocurrency(cryptocurrency)
+                             .where(created_at: 5.minutes.ago..)
+                             .order(value: type == 'Deposit' ? :desc : :asc)
+                             .first
+      end
+
       def bind_rate_snapshot
         self.rate_snapshot = rate_snapshots_scope
-                             .by_national_currency(national_currency)
+                             .by_payment_system(PaymentSystem.find_by(name: payment_system))
                              .by_cryptocurrency(cryptocurrency)
                              .order(created_at: :asc)
                              .last

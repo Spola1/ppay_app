@@ -95,6 +95,11 @@ module PaymentsHelper
     end
   end
 
+  def similar_payment(payment)
+    "ID: #{payment.id} - **#{payment.card_number.last(4)} - #{payment.national_formatted} " \
+    "#{payment.national_currency}"
+  end
+
   private
 
   def state_translation(state)

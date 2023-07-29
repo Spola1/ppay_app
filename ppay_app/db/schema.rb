@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_07_25_094920) do
+>>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -191,6 +195,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.boolean "in_progress"
   end
 
   create_table "form_customizations", force: :cascade do |t|
@@ -263,13 +268,38 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "not_found_payments", force: :cascade do |t|
+    t.bigint "advertisement_id", null: false
+    t.bigint "incoming_request_id", null: false
+    t.decimal "parsed_amount", precision: 12, scale: 2
+    t.string "parsed_card_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["advertisement_id"], name: "index_not_found_payments_on_advertisement_id"
+    t.index ["incoming_request_id"], name: "index_not_found_payments_on_incoming_request_id"
+  end
+
+  create_table "not_found_payments_payments", id: false, force: :cascade do |t|
+    t.bigint "not_found_payment_id", null: false
+    t.bigint "payment_id", null: false
+    t.index ["not_found_payment_id", "payment_id"], name: "index_nfp_payments_on_nfp_id_and_p_id"
+    t.index ["payment_id", "not_found_payment_id"], name: "index_nfp_payments_on_p_id_and_nfp_id"
+  end
+
   create_table "payment_systems", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "national_currency_id", null: false
+    t.string "binance_name"
+    t.integer "adv_position_deposit", default: 10
+    t.integer "adv_position_withdrawal", default: 5
+    t.integer "trans_amount_deposit"
+    t.integer "trans_amount_withdrawal"
+    t.bigint "payment_system_copy_id"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
+    t.index ["payment_system_copy_id"], name: "index_payment_systems_on_payment_system_copy_id"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -314,12 +344,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.datetime "updated_at", null: false
     t.string "direction"
     t.string "cryptocurrency"
-    t.string "payment_system"
     t.integer "position_number"
     t.integer "exchange_portal_id"
     t.decimal "value"
-    t.string "national_currency"
     t.decimal "adv_amount"
+    t.bigint "payment_system_id"
+    t.index ["payment_system_id"], name: "index_rate_snapshots_on_payment_system_id"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -405,5 +435,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
   add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
+  add_foreign_key "not_found_payments", "advertisements"
+  add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_systems", "national_currencies"
+  add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
+  add_foreign_key "rate_snapshots", "payment_systems"
 end

@@ -55,7 +55,7 @@
       <td>String</td>
       <td>Опционально</td>
       <td>
-        Может иметь значения: <strong>ru</strong> (русский), <strong>kk</strong> (казахский), <strong>ky</strong> (киргизский), <strong>tg</strong> (таджикский), <strong>tr</strong> (турецкий), <strong>uk</strong> (украинский), <strong>uz</strong> (узбекский).</br>
+        Может иметь значения: <strong>ru</strong> (русский), <strong>kk</strong> (казахский), <strong>ky</strong> (киргизский), <strong>tg</strong> (таджикский), <strong>tr</strong> (турецкий), <strong>uk</strong> (украинский), <strong>uz</strong> (узбекский), <strong>id</strong> (индонезийский).</br>
         По умолчанию устанавливается язык соответствующий валюте.</br>
       </td>
     </tr>

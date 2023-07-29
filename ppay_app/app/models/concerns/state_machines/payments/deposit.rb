@@ -24,7 +24,7 @@ module StateMachines
 
           # search_operator
           event :search do
-            before :bind_rate_snapshot
+            before :bind_estimated_rate_snapshot
             after_commit :search_processer
 
             transitions from: :draft, to: :processer_search,
@@ -34,7 +34,7 @@ module StateMachines
 
           # search_operator
           event :inline_search do
-            before :bind_rate_snapshot
+            before :bind_estimated_rate_snapshot
             after_commit :inline_search_processer
 
             transitions from: :created, to: :processer_search,

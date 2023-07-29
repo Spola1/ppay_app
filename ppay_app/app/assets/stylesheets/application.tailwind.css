@@ -246,7 +246,7 @@
     @apply form-input;
   }
 
-  .simple_form .hint, .form_with .hint {
+  .simple_form .hint, .form_with .hint, .item-card .hint {
     @apply my-1 text-xs text-gray-500;
   }
 

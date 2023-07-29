@@ -9,13 +9,10 @@ class IncomingRequestService
   def process_request
     if @processer
       find_matching_advertisement
-
       find_matching_payment
-
+      create_not_found_payment
       build_related_models
-
       payment_message
-
       render_success_response
     end
   end
@@ -34,7 +31,7 @@ class IncomingRequestService
       'MacroDroid' => {
         'SMS' => { search_field: :phone },
         'PUSH' => { search_field: :imei }
-      },
+      }
     }
 
     app = @incoming_request.app
@@ -55,6 +52,7 @@ class IncomingRequestService
 
     @advertisement = nil
     @card_mask = nil
+    @card_number = nil
 
     card_number_masks.each do |mask|
       regexp = eval(mask.regexp)
@@ -63,9 +61,10 @@ class IncomingRequestService
       next unless match.present?
 
       @advertisement = @matching_advertisements
-                         .where("RIGHT(card_number, 4) = :match OR simbank_card_number = :match", match:)
-                         .last
+                       .where('RIGHT(card_number, 4) = :match OR simbank_card_number = :match', match:)
+                       .last
       @card_mask = mask
+      @card_number = match.first
 
       break
     end
@@ -85,6 +84,7 @@ class IncomingRequestService
 
     @payment = nil
     @amount_mask = nil
+    @amount = nil
 
     if @advertisement.present?
       find_payment_by_amount(@advertisement, amount_masks)
@@ -102,6 +102,8 @@ class IncomingRequestService
       amount_masks.each do |mask|
         regexp = eval(mask.regexp)
         match = @incoming_request.message.scan(regexp).first
+
+        @amount = match.first.to_d
 
         next unless match.present? && sum_matched?(payment, match)
 
@@ -138,10 +140,27 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.gsub(/\s/,'').to_d == payment.national_currency_amount.to_d
+    match.first.gsub(/\s/, '').to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
     { status: 'success', message: 'Запрос успешно сохранен' }
+  end
+
+  def create_not_found_payment
+    return if @advertisement.nil? || @payment.present?
+
+    not_found_payment = NotFoundPayment.create(
+      advertisement: @advertisement,
+      incoming_request: @incoming_request,
+      parsed_amount: @amount,
+      parsed_card_number: @card_number
+    )
+
+    if @advertisement.payments.for_simbank.present?
+      not_found_payment.payments << @advertisement.payments.for_simbank
+    end
+
+    not_found_payment.save!
   end
 end

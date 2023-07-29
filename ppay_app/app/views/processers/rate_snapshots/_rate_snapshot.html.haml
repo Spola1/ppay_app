@@ -9,13 +9,13 @@
         %td.item-card-td= @rate_snapshot.direction
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Нац. валюта
-        %td.item-card-td= @rate_snapshot.national_currency
+        %td.item-card-td= @rate_snapshot.payment_system.national_currency.name
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Криптовалюта
         %td.item-card-td= @rate_snapshot.cryptocurrency
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Платежная система
-        %td.item-card-td= @rate_snapshot.payment_system
+        %td.item-card-td= @rate_snapshot.payment_system.name
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Позиция в стакане
         %td.item-card-td= @rate_snapshot.position_number
@@ -27,4 +27,4 @@
         %td.item-card-td= @rate_portal_name
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Значение
-        %td.item-card-td= @rate_portal_value
+        %td.item-card-td= @rate_snapshot.value

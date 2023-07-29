@@ -272,7 +272,7 @@ RSpec.describe Payment, type: :model do
     }
   end
 
-  describe 'scope' do
+  describe 'filter scope' do
     let!(:payment1) do
       create(:payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id:,
                                                          created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow'))
@@ -284,6 +284,7 @@ RSpec.describe Payment, type: :model do
       create(:payment, :by_client, :Tinkoff, national_currency_amount:,
                                              created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow'))
     end
+
     let(:national_currency_amount) { 1000 }
     let(:cryptocurrency_amount) { 111 }
     let(:uuid) { '06e2f816-3d85-4c0d-b5d7-c1729b3d4ac2' }
@@ -394,6 +395,135 @@ RSpec.describe Payment, type: :model do
     end
   end
 
+  describe 'scope' do
+    let!(:payment1) { create :payment, :deposit, status_changed_at: }
+    let!(:payment2) { create :payment, :withdrawal, :arbitration }
+    let!(:payment3) { create :payment, :deposit, :arbitration }
+    let(:arbitration) { true }
+    let(:status_changed_at) { Time.now - 21.minutes }
+
+    context 'when deposits' do
+      subject(:payment) { Payment.deposits }
+      let(:correct_result) { [payment3, payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only deposits' do
+      subject(:payment) { Payment.deposits }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when withdrawals' do
+      subject(:payment) { Payment.withdrawals }
+      let(:correct_result) { [payment2] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only withdrawals' do
+      subject(:payment) { Payment.withdrawals }
+      let(:correct_result) { [payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when arbitarrion' do
+      subject(:payment) { Payment.arbitration }
+      let(:correct_result) { [payment3, payment2] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only arbitration' do
+      subject(:payment) { Payment.arbitration }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when expired' do
+      subject(:payment) { Payment.expired }
+      let(:correct_result) { [payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only expired' do
+      subject(:payment) { Payment.expired }
+      let(:correct_result) { [payment1, payment3] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+  end
+
+  describe 'active scope' do
+    let!(:payment1) { create :payment, :created }
+    let!(:payment2) { create :payment, :transferring }
+    let!(:payment3) { create :payment, :confirming }
+    let!(:payment4) { create :payment, :cancelled }
+    let!(:payment5) { create :payment, :completed }
+
+    context 'when active' do
+      subject(:payment) { Payment.active }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not only active' do
+      subject(:payment) { Payment.active }
+      let(:correct_result) { [payment5, payment4, payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when not active' do
+      subject(:payment) { Payment.active }
+      let(:correct_result) { [payment5, payment4] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+  end
+
+  describe 'in_hotlist scope' do
+    let!(:payment1) { create :payment, :deposit, :confirming }
+    let!(:payment2) { create :payment, :withdrawal, :transferring }
+    let!(:payment3) { create :payment, :deposit, :transferring }
+    let!(:payment4) { create :payment, :withdrawal, :confirming }
+
+    context 'when in hotlist' do
+      subject(:payment) { Payment.in_hotlist }
+      let(:correct_result) { [payment2, payment1] }
+      it { expect(payment.to_a).to eq(correct_result) }
+    end
+
+    context 'when not all payments in hotlist' do
+      subject(:payment) { Payment.in_hotlist }
+      let(:correct_result) { [payment3, payment2, payment1] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+
+    context 'when not in hotlist' do
+      subject(:payment) { Payment.in_hotlist }
+      let(:correct_result) { [payment4, payment3] }
+      it { expect(payment.to_a).not_to eq(correct_result) }
+    end
+  end
+
+  describe 'initial_amount' do
+    let!(:payment1) { create :payment, national_currency_amount: }
+    let(:national_currency_amount) { 1000 }
+
+    subject { payment1.initial_amount }
+
+    it { is_expected.to eq(payment1.national_currency_amount) }
+  end
+
+  describe 'unique_amount' do
+    let!(:merchant1) { create :merchant, unique_amount: unique_amount1 }
+    let!(:merchant2) { create :merchant, unique_amount: unique_amount2 }
+    let!(:payment1) { create :payment, merchant: merchant1 }
+    let(:unique_amount1) { :integer }
+    let(:unique_amount2) { :decimal }
+
+    subject { payment1.unique_amount }
+
+    it { is_expected.to eq(merchant1.unique_amount) }
+    it { is_expected.not_to eq(merchant2.unique_amount) }
+  end
+
   describe '#set_locale_from_currency' do
     let(:payment) { create :payment, payment_status: :created }
 
@@ -419,6 +549,42 @@ RSpec.describe Payment, type: :model do
     it 'returns locale based on currency' do
       expect(payment.send(:currency_to_locale, 'RUB')).to eq(:ru)
       expect(payment.send(:currency_to_locale, 'UZS')).to eq(:uz)
+    end
+  end
+
+  describe '.expired_arbitration_not_paid' do
+    let!(:not_expired_arbitration) { create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :not_paid, status_changed_at: 5.minutes.ago) }
+    let!(:expired_arbitration_not_paid) { create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :not_paid, status_changed_at: 15.minutes.ago) }
+    let!(:expired_arbitration_other_reason) { create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :fraud_attempt, status_changed_at: 15.minutes.ago) }
+
+    it 'includes expired arbitration with not_paid reason' do
+      expect(Payment.expired_arbitration_not_paid).to include(expired_arbitration_not_paid)
+    end
+
+    it 'excludes not expired arbitration with not_paid reason' do
+      expect(Payment.expired_arbitration_not_paid).not_to include(not_expired_arbitration)
+    end
+
+    it 'excludes expired arbitration with other reason' do
+      expect(Payment.expired_arbitration_not_paid).not_to include(expired_arbitration_other_reason)
+    end
+  end
+
+  describe '.expired_autoconfirming' do
+    let!(:not_expired_autoconfirming) { create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 2.minutes.ago) }
+    let!(:expired_autoconfirming) { create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 5.minutes.ago) }
+    let!(:expired_autoconfirming_other_status) { create(:payment, autoconfirming: true, payment_status: :transferring, status_changed_at: 5.minutes.ago) }
+
+    it 'includes expired autoconfirming with confirming status' do
+      expect(Payment.expired_autoconfirming).to include(expired_autoconfirming)
+    end
+
+    it 'excludes not expired autoconfirming with confirming status' do
+      expect(Payment.expired_autoconfirming).not_to include(not_expired_autoconfirming)
+    end
+
+    it 'excludes expired autoconfirming with other status' do
+      expect(Payment.expired_autoconfirming).not_to include(expired_autoconfirming_other_status)
     end
   end
 end
