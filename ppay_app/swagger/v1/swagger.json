@@ -59,12 +59,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "437e9683-81cf-4490-8489-028236c86b30",
+                    "id": "13815cd1-f82b-4854-b404-d585699db2b2",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "437e9683-81cf-4490-8489-028236c86b30",
+                      "uuid": "13815cd1-f82b-4854-b404-d585699db2b2",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-07-31T10:46:26.208+03:00",
+                      "expiration_time": "2023-07-31T17:38:50.106+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "initial_amount": "100.0",
@@ -73,7 +73,7 @@
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFdz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--1e0af415c794c0b275e35d32a9e15809bc662a87/ed93fae0a762a3c11dd574e904aebf84.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBlQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--67e8769ae260cb724c9c6d87313e079f7358d60f/f58501dce18ff27acfab925f461de238.svg"
                     }
                   }
                 },
@@ -126,7 +126,7 @@
             }
           }
         ],
-        "description": "## Обновление статуса платежа\n\nДля отправки запроса нужно указать уникальный идентификатор платежа **uuid** и\nсобытие **event** в строке GET-запроса\n`/api/v1/external_processing/payments/{uuid}/statuses/{event}`.\n\nВозможные события для **депозитов**:\n- **check** — проверить переведённые клиентом средства по платёжной системе.\n- **cancel** — отменить платёж.\n\nВозможные события для **выводов средств**:\n- **confirm** — подтвердить принятые клиентом средства по платёжной системе.\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, введите __uuid__ платежа, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "description": "## Обновление статуса платежа\n\nДля отправки запроса нужно указать уникальный идентификатор платежа **uuid** и\nсобытие **event** в строке GET-запроса\n`/api/v1/external_processing/payments/{uuid}/statuses/{event}`.\n\nВозможные события для **депозитов**:\n- **check** — проверить переведённые клиентом средства по платёжной системе.\n- **cancel** — отменить платёж.\n\nВозможные события для **выводов средств**:\n- **confirm** — подтвердить принятые клиентом средства по платёжной системе.\n\nВозможные дополнительные параметры для **депозитов**:\n- **account_number** - обязательный атрибут при активированной проверке номера счёта.\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, введите __uuid__ платежа, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
           {
             "name": "uuid",
@@ -143,14 +143,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "account_number",
-            "in": "query",
-            "example": "1234",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -158,7 +150,7 @@
             "description": "статус успешно обновлен"
           },
           "422": {
-            "description": "требуется загрузка чека"
+            "description": "ошибка валидации"
           },
           "400": {
             "description": "данный event недоступен в текущем статусе"
@@ -168,6 +160,21 @@
           },
           "401": {
             "description": "неверный API-ключ"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_number": {
+                    "type": "string",
+                    "example": "1234"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -195,10 +202,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "3984f030-c179-4869-848d-f26882254e6b",
+                    "id": "1d774a5c-1b38-4d34-8918-d4da4a52c77a",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "3984f030-c179-4869-848d-f26882254e6b",
+                      "uuid": "1d774a5c-1b38-4d34-8918-d4da4a52c77a",
                       "national_currency": "RUB",
                       "national_currency_amount": "58932.13",
                       "initial_amount": "58932.13",
@@ -267,11 +274,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "788ea186-943c-4b2d-b206-511bfcfec976",
+                    "id": "5bacf535-5164-419f-94ea-e2578e2de4f3",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "788ea186-943c-4b2d-b206-511bfcfec976",
-                      "url": "http://example.org/payments/deposits/788ea186-943c-4b2d-b206-511bfcfec976?signature=5badc3f60f4bec793733ff84e32c3feadd7d0e88180a58a3f68f2fb1b5a9cc28"
+                      "uuid": "5bacf535-5164-419f-94ea-e2578e2de4f3",
+                      "url": "http://example.org/payments/deposits/5bacf535-5164-419f-94ea-e2578e2de4f3?signature=109cb5f5e49179adb2aad11fd426ca4d2777d3bafbbe54d9a1a7b5e7318c385e"
                     }
                   }
                 },
@@ -335,11 +342,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "ddf557f6-cbf1-461b-b8b7-cac0f25fe717",
+                    "id": "baa606ba-6c37-4db9-94d2-231abd0069ae",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "ddf557f6-cbf1-461b-b8b7-cac0f25fe717",
-                      "url": "http://example.org/payments/withdrawals/ddf557f6-cbf1-461b-b8b7-cac0f25fe717?signature=515c3ae90ba4d6986480437abd58641a1bef3360da0613280dad01fba4c410e8"
+                      "uuid": "baa606ba-6c37-4db9-94d2-231abd0069ae",
+                      "url": "http://example.org/payments/withdrawals/baa606ba-6c37-4db9-94d2-231abd0069ae?signature=95f8451f47cce049854285296ba35b3c3c8ea561434f69cb85ac2e884d3693fd"
                     }
                   }
                 },
@@ -780,7 +787,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "6c262c69-2c69-4a88-888e-e567b2501420"
+                    "example": "8cb0407c-3472-4aa9-9ff5-9d15f233ab88"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -788,7 +795,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-07-31T10:26:24.647+03:00"
+                    "example": "2023-07-31T17:18:48.706+03:00"
                   },
                   "national_currency": {
                     "type": "string",

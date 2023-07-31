@@ -9,19 +9,25 @@ describe 'External processing payments statuses' do
   path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do
     patch 'Обновление статуса платежа с внешним процессингом' do
       tags 'Платежи - H2H (оплата на стороне магазина)'
+      consumes 'application/json'
+      produces 'application/json'
       security [bearerAuth: {}]
 
       description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
                                             'statuses.md'))
-
-      parameter name: :uuid, in: :path, type: :string
-      parameter name: :event, in: :path, type: :string
-      parameter name: :account_number, in: :query, type: :string, example: '1234'
+      parameter name: :uuid, in: :path, type: :string, required: true
+      parameter name: :event, in: :path, type: :string, required: true
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          account_number: { type: :string, example: '1234' }
+        }
+      }
 
       let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
       let(:uuid) { payment.uuid }
       let(:event) { 'check' }
-      let(:account_number) { '1234' }
+      let(:params) { { account_number: '1234' } }
 
       response '204', 'статус успешно обновлен' do
         %w[check cancel].each do |event|
@@ -43,7 +49,7 @@ describe 'External processing payments statuses' do
         end
       end
 
-      response '422', 'требуется загрузка чека' do
+      response '422', 'ошибка валидации' do
         let(:check_required) { true }
 
         let(:expected_errors) do
