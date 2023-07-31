@@ -111,9 +111,13 @@ class Payment < ApplicationRecord
   after_update_commit lambda {
     if payment_status_previously_changed? && processer
       broadcast_replace_hotlist_to_processer
-      broadcast_replace_hotlist_to_ad
-      broadcast_replace_ad_hotlist_to_processer
       broadcast_append_notification_to_processer if in_hotlist?
+    end
+  }
+
+  after_update_commit lambda {
+    if (payment_status_previously_changed? || autoconfirming_previously_changed?) && processer
+      broadcast_replace_ad_hotlist_to_processer
     end
   }
 
@@ -128,7 +132,7 @@ class Payment < ApplicationRecord
   }
 
   scope :in_deposit_flow_hotlist, lambda {
-    deposits.confirming
+    deposits.confirming.where(autoconfirming: false)
             .or(deposits.transferring)
             .or(deposits.arbitration)
             .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
@@ -248,15 +252,6 @@ class Payment < ApplicationRecord
       partial: 'processers/payments/hotlist',
       locals: { role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_hotlist"
-    )
-  end
-
-  def broadcast_replace_hotlist_to_ad
-    broadcast_replace_later_to(
-      "advertisement_#{advertisement.id}_hotlist",
-      partial: 'processers/advertisements/hotlist',
-      locals: { advertisement:, payment: decorate },
-      target: "advertisement_#{advertisement.id}_hotlist"
     )
   end
 
