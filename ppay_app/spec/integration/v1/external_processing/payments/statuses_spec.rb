@@ -27,9 +27,10 @@ describe 'External processing payments statuses' do
       let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
       let(:uuid) { payment.uuid }
       let(:event) { 'check' }
-      let(:params) { { account_number: '1234' } }
+      let(:params) { { account_number: '' } }
 
       response '204', 'статус успешно обновлен' do
+        let(:params) { { account_number: '1234' } }
         %w[check cancel].each do |event|
           context "deposit #{event}" do
             let(:event) { event }
@@ -50,13 +51,11 @@ describe 'External processing payments statuses' do
       end
 
       response '422', 'ошибка валидации' do
-        let(:check_required) { true }
-
         let(:expected_errors) do
           [
             {
-              title: 'image',
-              detail: I18n.t('activerecord.errors.models.payment.attributes.image.blank'),
+              title: 'account_number',
+              detail: I18n.t('activerecord.errors.models.payment.attributes.account_number.blank'),
               code: 422
             }.stringify_keys
           ]
