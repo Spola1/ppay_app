@@ -61,12 +61,17 @@ module StateMachines
       end
 
       def bind_estimated_rate_snapshot
-        self.rate_snapshot = rate_snapshots_scope
-                             .by_national_currency(NationalCurrency.find_by(name: national_currency))
-                             .by_cryptocurrency(cryptocurrency)
+        rates = rate_snapshots_scope
+                .by_national_currency(NationalCurrency.find_by(name: national_currency))
+                .by_cryptocurrency(cryptocurrency)
+
+        self.rate_snapshot = rates
                              .where(created_at: 5.minutes.ago..)
                              .order(value: type == 'Deposit' ? :desc : :asc)
-                             .first
+                             .first ||
+                             rates
+                             .order(created_at: :asc)
+                             .last
       end
 
       def bind_rate_snapshot
