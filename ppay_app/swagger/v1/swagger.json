@@ -59,12 +59,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "89074265-23d1-4f34-86e0-03fc03b9fb1f",
+                    "id": "8197403e-c732-4149-9481-b09371356fa2",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "89074265-23d1-4f34-86e0-03fc03b9fb1f",
+                      "uuid": "8197403e-c732-4149-9481-b09371356fa2",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-07-31T17:57:34.233+03:00",
+                      "expiration_time": "2023-07-31T18:04:45.185+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "initial_amount": "100.0",
@@ -73,7 +73,7 @@
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBWDQ9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce7d95c7ed21af4c6ea889d34fb19babf95393fa/744dda7b488cd7832109bada07138881.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBWWc9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--691269e868c4006a587dcd66d95673709f7ab4ea/e2ae6553a8dec75a4b1b7987504767c7.svg"
                     }
                   }
                 },
@@ -202,10 +202,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "f44329aa-59c5-4fa8-9af1-dc9806c984cc",
+                    "id": "1f5860ea-5766-4a42-8598-dfcc9fb95ddf",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "f44329aa-59c5-4fa8-9af1-dc9806c984cc",
+                      "uuid": "1f5860ea-5766-4a42-8598-dfcc9fb95ddf",
                       "national_currency": "RUB",
                       "national_currency_amount": "58932.13",
                       "initial_amount": "58932.13",
@@ -274,11 +274,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "68ca1e40-9236-4201-a832-ffd6364ac451",
+                    "id": "bddbe90b-98d1-44b7-b21a-ce3ec43c86b0",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "68ca1e40-9236-4201-a832-ffd6364ac451",
-                      "url": "http://example.org/payments/deposits/68ca1e40-9236-4201-a832-ffd6364ac451?signature=cb51ec216115da31727a2e3ff59b6bf52e2232969ad70a11337684ddb617b8f6"
+                      "uuid": "bddbe90b-98d1-44b7-b21a-ce3ec43c86b0",
+                      "url": "http://example.org/payments/deposits/bddbe90b-98d1-44b7-b21a-ce3ec43c86b0?signature=cc81869cdcf98b13f6e432074c97e4a660b146a5a58a893138029fb1854175ff"
                     }
                   }
                 },
@@ -342,11 +342,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "b5d167a1-d9fa-4f52-a5fe-7794e56cfcf6",
+                    "id": "1fa7310a-e17f-4627-b41f-bb921abe0614",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "b5d167a1-d9fa-4f52-a5fe-7794e56cfcf6",
-                      "url": "http://example.org/payments/withdrawals/b5d167a1-d9fa-4f52-a5fe-7794e56cfcf6?signature=24edef612916eff8f3ee7890979b946972aa60130b761583959a493c374b3113"
+                      "uuid": "1fa7310a-e17f-4627-b41f-bb921abe0614",
+                      "url": "http://example.org/payments/withdrawals/1fa7310a-e17f-4627-b41f-bb921abe0614?signature=1e3ee78fd323ee8fe39cbd7687ca9e8432bd86f6d8ff3fd99ed0ce98278c545f"
                     }
                   }
                 },
@@ -787,7 +787,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "7f4b669f-71ac-4c5f-b808-49d19e5eb8ae"
+                    "example": "f6d2f621-5a1c-4b2f-bc8e-835edac305eb"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -795,7 +795,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-07-31T17:37:32.808+03:00"
+                    "example": "2023-07-31T17:44:43.716+03:00"
                   },
                   "national_currency": {
                     "type": "string",
