@@ -142,7 +142,7 @@
                   %br
                   = "криптовалюта: #{payment.rate_snapshot.cryptocurrency}"
                   %br
-                  = "платежная система: #{payment.rate_snapshot.payment_system.name}"
+                  = "платежная система: #{payment.rate_snapshot.payment_system&.name}"
                   %br
                   = "биржа: #{payment.rate_snapshot.exchange_portal&.name}"
                 - else
