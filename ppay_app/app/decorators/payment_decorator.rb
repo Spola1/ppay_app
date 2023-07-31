@@ -106,7 +106,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_card_number
-    card_number&.gsub(/(.{4})/, '\1 ')
+    if ["ЕРИП БНБ", "ЕРИП Альфа", "ЕРИП Белагро"].include?(payment_system)
+      card_number
+    else
+      card_number&.gsub(/(.{4})/, '\1 ')
+    end
   end
 
   def payment_link
