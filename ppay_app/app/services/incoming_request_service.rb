@@ -99,6 +99,8 @@ class IncomingRequestService
 
     if @payments.present?
       @amount_mask = @payments.last[:mask]
+      @amount = @payments.last[:amount]
+
       if @payments.size == 1
         @payment = @payments.last[:payment]
         @payment.confirm!
@@ -130,11 +132,9 @@ class IncomingRequestService
         regexp = eval(mask.regexp)
         match = @incoming_request.message.scan(regexp).first
 
-        @amount = match.first.to_d
-
         next unless match.present? && sum_matched?(payment, match)
 
-        @payments << { payment:, mask: }
+        @payments << { payment:, mask:, amount: match.first&.to_d }
 
         break if @payments.size > 1
       end
