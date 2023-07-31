@@ -17,12 +17,9 @@ describe 'External processing payments statuses' do
                                             'statuses.md'))
       parameter name: :uuid, in: :path, type: :string, required: true
       parameter name: :event, in: :path, type: :string, required: true
-      parameter name: :params, in: :body, schema: {
-        type: :object,
-        properties: {
-          account_number: { type: :string, example: '1234' }
-        }
-      }
+      parameter name: :params,
+                in: :body,
+                schema: { '$ref': '#/components/schemas/external_processing_deposits_create_status_patameter_body_schema' }
 
       let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
       let(:uuid) { payment.uuid }

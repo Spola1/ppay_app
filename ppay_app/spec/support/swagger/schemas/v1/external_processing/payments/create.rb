@@ -11,11 +11,23 @@ module Swagger
             def schemas
               [
                 create_parameter_body_schema,
-                create_response_body_schema
+                create_response_body_schema,
+                create_status_parameter_body_schema
               ].inject(:merge)
             end
 
             private
+
+            def create_status_parameter_body_schema
+              {
+                external_processing_deposits_create_status_patameter_body_schema: {
+                  type: :object,
+                  properties: {
+                    account_number: { type: :string, example: '1234' }
+                  }
+                }
+              }
+            end
 
             def create_parameter_body_schema
               {
