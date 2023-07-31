@@ -16,10 +16,12 @@ describe 'External processing payments statuses' do
 
       parameter name: :uuid, in: :path, type: :string
       parameter name: :event, in: :path, type: :string
+      parameter name: :account_number, in: :query, type: :string, example: '1234'
 
       let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
       let(:uuid) { payment.uuid }
       let(:event) { 'check' }
+      let(:account_number) { '1234' }
 
       response '204', 'статус успешно обновлен' do
         %w[check cancel].each do |event|

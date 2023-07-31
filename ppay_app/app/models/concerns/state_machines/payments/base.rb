@@ -88,6 +88,8 @@ module StateMachines
 
       def set_cryptocurrency_amount
         self.cryptocurrency_amount = rate_snapshot.to_crypto(national_currency_amount)
+      
+        #debugger
       end
 
       def set_cancellation_reason
