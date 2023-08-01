@@ -32,7 +32,6 @@ class Payment < ApplicationRecord
   scope :expired_arbitration_not_paid, lambda {
     where(arbitration: true,
           arbitration_reason: :not_paid)
-      .where('status_changed_at <= ?', 10.minutes.ago)
   }
   scope :expired_autoconfirming, lambda {
     where(autoconfirming: true, payment_status: :confirming)

@@ -82,6 +82,7 @@ class IncomingRequestService
   def find_matching_payment
     amount_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Сумма')
 
+    @payments = []
     @payment = nil
     @amount_mask = nil
     @amount = nil
@@ -91,7 +92,35 @@ class IncomingRequestService
     else
       @matching_advertisements.where(simbank_card_number: [nil, '']).each do |advertisement|
         find_payment_by_amount(advertisement, amount_masks)
+
+        break if @payments.size > 1
       end
+    end
+
+    if @payments.present?
+      @amount_mask = @payments.last[:mask]
+      @amount = @payments.last[:amount]
+
+      if @payments.size == 1
+        @payment = @payments.last[:payment]
+        @payment.confirm!
+      end
+    else
+      find_amount(amount_masks)
+    end
+  end
+
+  def find_amount(amount_masks)
+    amount_masks.each do |mask|
+      regexp = eval(mask.regexp)
+      match = @incoming_request.message.scan(regexp).first
+
+      next unless match.present?
+
+      @amount = match.first.to_d
+      @amount_mask = mask
+
+      break if @amount
     end
   end
 
@@ -103,18 +132,12 @@ class IncomingRequestService
         regexp = eval(mask.regexp)
         match = @incoming_request.message.scan(regexp).first
 
-        @amount = match.first.to_d
-
         next unless match.present? && sum_matched?(payment, match)
 
-        @payment = payment
-        @amount_mask = mask
-        @payment.confirm!
+        @payments << { payment:, mask:, amount: match.first&.to_d }
 
-        break
+        break if @payments.size > 1
       end
-
-      break if @payment
     end
   end
 
