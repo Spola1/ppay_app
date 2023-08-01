@@ -2,6 +2,12 @@
 
 module Payments
   module SearchProcesser
-    class WithdrawalJob < Base; end
+    class WithdrawalJob < Base
+      private
+
+      def selected_advertisement
+        Advertisement.for_withdrawal(payment).first
+      end
+    end
   end
 end

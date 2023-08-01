@@ -31,24 +31,30 @@ Rails.application.routes.draw do
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
+    resource :setting, only: [:edit, :update]
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :incoming_requests
+    resources :masks
+    resources :not_found_payments, only: %i[index show destroy]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
 
     resources :merchants, only: %i[index new create update] do
-      member do
-        get :settings
-        patch :settings, to: '/admins/merchants#update_settings'
-        get :account
-        patch :account, to: '/admins/merchants#update_account'
+      scope module: :merchants do
+        resource :account, only: %i[show update]
+        resource :settings, only: %i[show update]
+        resources :merchant_methods, only: %i[create destroy]
       end
-      resources :merchant_methods, only: %i[create destroy]
     end
-    get '/merchants/:id', to: '/admins/merchants#settings'
+
+    resources :turnover_stats, only: %i[index]
+
+    resources :payment_systems, only: :index
+    post :payment_systems, to: '/admins/payment_systems#update'
 
     root 'payments#index', as: :admins_root
   end
@@ -74,7 +80,7 @@ Rails.application.routes.draw do
   end
 
   namespace :processers do
-    resource :profile, only: [:edit, :update]
+    resource :profile, only: %i[edit update]
   end
 
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
@@ -82,6 +88,7 @@ Rails.application.routes.draw do
       collection do
         post :activate_all
         post :deactivate_all
+        get :flow
       end
     end
     resources :exchange_portals, only: %i[index show]
@@ -94,6 +101,11 @@ Rails.application.routes.draw do
 
       concerns :statuses_updatable
     end
+
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :processers_root
   end
 
@@ -101,6 +113,8 @@ Rails.application.routes.draw do
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
+    resources :not_found_payments, only: %i[index show destroy]
+    resources :incoming_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -118,6 +132,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/simbank/requests', to: 'incoming_requests#create'
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
@@ -134,11 +149,11 @@ Rails.application.routes.draw do
     resources :chats, only: :create, controller: 'payments/chats'
   end
 
-  constraints (
+  constraints(
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
-          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|$)}
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|payment_systems|$)}
         ].present?
     end
   ) do

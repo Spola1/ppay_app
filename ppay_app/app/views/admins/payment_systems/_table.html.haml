@@ -1,0 +1,35 @@
+= form_with(url: payment_systems_path, action: :update) do |f|
+  %table.items-list-table.mt-4
+    %thead.items-list-thead
+      %tr
+        %th.items-list-th Название
+        %th.items-list-th Название на Binance
+        %th.items-list-th Использовать курс
+        %th.items-list-th Позиция объявления по умолчанию (депозит)
+        %th.items-list-th Позиция объявления по умолчанию (снятие)
+        %th.items-list-th Сумма для мониторинга (депозит)
+        %th.items-list-th Сумма для мониторинга (снятие)
+
+    %tbody
+      - payment_systems.each do |payment_system|
+        = hidden_field_tag "payment_systems[payment_systems][][id]", payment_system.id
+        = hidden_field_tag "payment_systems[payment_systems][][national_currency_id]", payment_system.national_currency_id
+        %tr.items-list-tr
+          %td.items-list-td= payment_system.name
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][binance_name]", payment_system.binance_name, size: 15
+          %td.items-list-td
+            = select_tag "payment_systems[payment_systems][][payment_system_copy_id]",
+                         options_from_collection_for_select(payment_system.national_currency.payment_systems, :id, :name, payment_system.payment_system_copy_id),
+                         include_blank: true, class: 'w-80'
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][adv_position_deposit]", payment_system.adv_position_deposit, size: 5
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][adv_position_withdrawal]", payment_system.adv_position_withdrawal, size: 5
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][trans_amount_deposit]", payment_system.trans_amount_deposit, size: 5
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][trans_amount_withdrawal]", payment_system.trans_amount_withdrawal, size: 5
+
+  .mt-4
+    = f.submit t('buttons.submit'), class: 'form-submit'

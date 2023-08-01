@@ -12,7 +12,7 @@ describe 'External processing deposits' do
 
   path '/api/v1/external_processing/payments/deposits' do
     post 'Создание депозита с внешним процессингом' do
-      tags 'Платежи - внешний процессинг (оплата на стороне магазина)'
+      tags 'Платежи - H2H (оплата на стороне магазина)'
       consumes 'application/json'
       produces 'application/json'
       security [bearerAuth: {}]

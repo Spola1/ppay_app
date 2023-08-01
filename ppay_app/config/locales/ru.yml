@@ -3,6 +3,10 @@ ru:
     models:
       payment: Платёж
     attributes:
+      mask:
+        sender: Отправитель
+        regexp_type: Тип регулярного выражения
+        regexp: Регулярное выражение
       advertisement:
         direction: Направление
         national_currency: Нац. валюта
@@ -11,6 +15,12 @@ ru:
         payment_link: Ссылка для оплаты
         comment: Комментарий
         status: Активно
+        simbank_auto_confirmation: Автоматизированная проверка платежей
+        imei: '1. PUSH. Укажите IMEI устройства где установлено приложение в формате: 1234567890123'
+        phone: '2. SMS через приложение. Укажите номер телефона в формате: 79232005555'
+        imsi: '3. SMS через SIM-банк. Укажите номер IMSI в формате: 1234567890123'
+        simbank_card_number: Последние 4 цифры номера счета, как указывается в SMS или PUSH
+        simbank_sender: Отправитель SMS или PUSH
       type:
         deposit: Депозит
         withdrawal: Вывод
@@ -35,6 +45,12 @@ ru:
         cancelled: Отменён
       payment/cancellation_reason:
         by_client: Отменено клиентом
+        duplicate_payment: Задублированный платеж
+        fraud_attempt: Попытка мошенничества
+        incorrect_amount: Переведённая клиентом сумма не соответствует запрошенной
+        not_paid: Сумма не поступила
+        time_expired: Время оплаты истекло
+      payment/arbitration_reason:
         duplicate_payment: Задублированный платеж
         fraud_attempt: Попытка мошенничества
         incorrect_amount: Переведённая клиентом сумма не соответствует запрошенной

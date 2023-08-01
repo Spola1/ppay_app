@@ -6,25 +6,14 @@ module Binance
   class OpenSession
     attr_reader :advs_params
 
-    PAY_TYPES = {
-      'RUB' => %w[RosBankNew TinkoffNew RaiffeisenBank],
-      'UZS' => %w[Humo Uzcard],
-      'KZT' => %w[CenterCreditBank],
-      'UAH' => %w[PUMBBank],
-      'TJS' => %w[DCbank AlifBank SpitamenBank],
-      'TRY' => %w[VakifBank],
-      'KGS' => %w[OPTIMABANK mBank HalykBank BAKAIBANK DEMIRBANK]
-    }.freeze
-
     def initialize(advs_params)
       @advs_params = advs_params
-      @otc_advs_data_hash = nil
       @otc_advs_array = nil
     end
 
     def otc_advs_data
       # advs_params = {asset: "USDT", fiat: "RUB", merchant_check: true, page: 1,
-      #                                                 pay_types: 'sberbank' , trade_type: 'sell', trans_amount: 5000}
+      #                pay_types: 'sberbank' , trade_type: 'sell', trans_amount: 5000}
       #
       #  оригинальные параметры для JSON-тела запроса
       #  {
@@ -43,8 +32,6 @@ module Binance
       check_merchant(form_data_hash, advs_params)
 
       specify_amount(form_data_hash, advs_params)
-
-      change_payment_system(advs_params, form_data_hash)
 
       res = send_request(form_data_hash)
 
@@ -76,7 +63,6 @@ module Binance
         item_hash[:user_type] = item['advertiser']['userType']
         item_hash[:user_identity] = item['advertiser']['userIdentity']
         advs_array << item_hash
-        # puts "\n#{item_hash}"
       end
       advs_array
     end
@@ -87,7 +73,7 @@ module Binance
         fiat: advs_params[:fiat],
         # merchantCheck: advs_params[:merchant_check],
         page: 1,
-        # payTypes: p_method,
+        payTypes: [advs_params[:pay_types]],
         publisherType: nil,
         rows: 20,
         tradeType: advs_params[:trade_type]
@@ -108,20 +94,24 @@ module Binance
       if advs_params[:trans_amount] == false
         # если мы не хотим указывать сумму, то просто передаем
         # false
+
+        # временный костыль для укр
+        form_data_hash[:transAmount] = 20_000 if advs_params[:fiat] == 'UAH'
+        form_data_hash[:transAmount] = 3_000 if advs_params[:fiat] == 'BYN'
       else
         form_data_hash[:transAmount] = advs_params[:trans_amount].to_s
       end
     end
 
     def send_request(form_data_hash)
-      # puts "== form_data_hash.to_json: =="
-      # puts form_data_hash.to_json
       uri = URI('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search')
+
       Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         req = Net::HTTP::Post.new(uri)
         req.body = form_data_hash.to_json
-        puts req.body
         req.set_content_type('application/json')
+        puts req.body
+
         http.request(req)
       end
     end
@@ -129,24 +119,10 @@ module Binance
     def parse_response(res)
       case res
       when Net::HTTPSuccess, Net::HTTPRedirection
-        # OK
-        # puts "Net::HTTPSuccess, Net::HTTPRedirection"
-        # puts res
-        # puts res.body
-        res_hash = JSON.parse(res.body)
-        # puts "res_hash: #{res_hash}"
-        @otc_advs_data_hash = res_hash
-        res_hash
+        JSON.parse(res.body)
       else
         res.value
       end
-    end
-
-    def change_payment_system(advs_params, form_data_hash)
-      # ниже учитываем, что названия наши и техн. названия
-      # платежного метода на бирже Бинанс отличаются
-      # p_method = ''
-      form_data_hash[:payTypes] = PAY_TYPES[advs_params[:fiat]] || []
     end
   end
 end

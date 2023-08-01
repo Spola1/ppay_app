@@ -9,6 +9,16 @@
 
   = f.input :card_number, input_html: { data: { 'inputmask--card-number-target': 'input' } }
 
+  = f.input :simbank_auto_confirmation
+
+  = f.input :imei
+
+  = f.input :phone
+
+  = f.input :imsi
+
+  = f.input :simbank_card_number, hint: simbank_card_number, hint_html: { class: 'hint-red' }
+
   = f.input :comment
 
   = f.input :status

@@ -14,11 +14,11 @@
                 .sticky-menu
                   %ul
                     %li
-                      = link_to settings_merchant_path(@merchant), class: active?('settings'), data: { turbo_action: :advance } do
+                      = link_to merchant_settings_path(@merchant), class: controller_active?('settings'), data: { turbo_action: :advance } do
                         = fa_icon 'user'
                         %span= t('users.sidebar.settings')
                     %li
-                      = link_to account_merchant_path(@merchant), class: active?('account'), data: { turbo_action: :advance } do
+                      = link_to merchant_account_path(@merchant), class: controller_active?('accounts'), data: { turbo_action: :advance } do
                         = fa_icon 'key'
                         %span= t('users.sidebar.account')
               %section

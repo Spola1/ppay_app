@@ -1,0 +1,24 @@
+.mt-8
+  %table.item-card-table
+    %tbody
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Создан
+        %td.item-card-td= @not_found_payment.formatted_created_at
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Объявление
+        %td.item-card-td.underline= link_to @not_found_payment.advertisement.id, advertisement_path(@not_found_payment.advertisement.id)
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Входящий запрос
+        %td.item-card-td.underline= link_to @not_found_payment.incoming_request.id, incoming_request_path(@not_found_payment.incoming_request.id)
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Сумма
+        %td.item-card-td= @not_found_payment.parsed_amount
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Номер карты
+        %td.item-card-td= @not_found_payment.parsed_card_number
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Похожие платежи
+        %td.item-card-td
+          - @not_found_payment.payments.decorate.each do |sub_payment|
+            = link_to similar_payment(sub_payment), payment_path(sub_payment), data: { turbo_action: :advance }, class: 'underline'
+            %br

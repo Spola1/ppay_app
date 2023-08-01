@@ -24,7 +24,7 @@ module StateMachines
 
           # search_operator
           event :search do
-            before :bind_rate_snapshot, :set_cryptocurrency_amount
+            before :bind_estimated_rate_snapshot, :set_cryptocurrency_amount
             after_commit :search_processer
 
             transitions from: :draft, to: :processer_search,
@@ -33,7 +33,7 @@ module StateMachines
 
           # search_operator
           event :inline_search do
-            before :bind_rate_snapshot, :set_cryptocurrency_amount
+            before :bind_estimated_rate_snapshot, :set_cryptocurrency_amount
             after_commit :inline_search_processer
 
             transitions from: :created, to: :processer_search,
@@ -75,9 +75,9 @@ module StateMachines
       private
 
       def available_processer_search?(params)
-        return unless insufficient_merchant_balance?
         return unless valid_payment_system?(params)
         return unless valid_card_number?(params)
+        return unless insufficient_merchant_balance?
         return unless rate_snapshot.present?
 
         true

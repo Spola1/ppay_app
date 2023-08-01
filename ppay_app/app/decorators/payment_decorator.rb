@@ -18,17 +18,13 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_end_time
-    status_changed_at + 20.minutes
-  end
-  alias expiration_time countdown_end_time
-
-  def countdown_end_time_for_clients
     if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
       status_changed_at + merchant.ftd_payment_exec_time_in_sec
     else
       status_changed_at + merchant.regular_payment_exec_time_in_sec
     end
   end
+  alias expiration_time countdown_end_time
 
   def human_payment_status
     return unless payment_status
@@ -42,6 +38,12 @@ class PaymentDecorator < ApplicationDecorator
     Payment.human_attribute_name("cancellation_reason.#{cancellation_reason}")
   end
 
+  def human_arbitration_reason
+    return unless arbitration_reason
+
+    Payment.human_attribute_name("arbitration_reason.#{arbitration_reason}")
+  end
+
   def fiat_amount_with_currency
     "#{fiat_amount} #{national_currency}"
   end
@@ -50,6 +52,16 @@ class PaymentDecorator < ApplicationDecorator
     classes = ['toast']
     classes << 'arbitration' if arbitration
     classes << 'deposit' if type == 'Deposit' && !arbitration
+    classes.join(' ')
+  end
+
+  def flow_class
+    classes = ['toast']
+    classes << 'flow-arbitration' if arbitration
+    classes << 'deposit-transferring' if payment_status == 'transferring' && type == 'Deposit' && !arbitration
+    classes << 'deposit-confirming' if payment_status == 'confirming' && type == 'Deposit' && !arbitration
+    classes << 'withdrawal-transferring' if payment_status == 'transferring' && type == 'Withdrawal' && !arbitration
+    classes << 'withdrawal-confirming' if payment_status == 'confirming' && type == 'Withdrawal' && !arbitration
     classes.join(' ')
   end
 
@@ -94,7 +106,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_card_number
-    card_number&.gsub(/(.{4})/, '\1 ')
+    if ["ЕРИП БНБ", "ЕРИП Альфа", "ЕРИП Белагро"].include?(payment_system)
+      card_number
+    else
+      card_number&.gsub(/(.{4})/, '\1 ')
+    end
   end
 
   def payment_link
@@ -127,6 +143,14 @@ class PaymentDecorator < ApplicationDecorator
     return unless commission_amount && rate_snapshot
 
     (cryptocurrency_commission_amount * rate_snapshot.value).to_f
+  end
+
+  def form_url
+    if type == 'Deposit'
+      Rails.application.routes.url_helpers.payments_deposit_path(uuid: uuid, signature: signature)
+    elsif type == 'Withdrawal'
+      Rails.application.routes.url_helpers.payments_withdrawal_path(uuid: uuid, signature: signature)
+    end
   end
 
   private

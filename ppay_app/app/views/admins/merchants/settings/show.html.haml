@@ -1,4 +1,4 @@
-= simple_form_for(@merchant, as: :merchant, url: settings_merchant_path(@merchant), action: :update) do |f|
+= simple_form_for(@merchant, as: :merchant, url: merchant_settings_path(@merchant), action: :update) do |f|
   = f.error_notification
 
   .form-inputs
@@ -42,7 +42,7 @@
 
 
   .form-actions
-    = f.button :submit, t('devise.registrations.edit.update'), class: 'form-submit'
+    = f.button :submit, t('buttons.submit'), class: 'form-submit'
 
 = form_with url: merchant_merchant_methods_path(@merchant), class: 'form_with mt-5', data: {turbo_confirm: 'Вы уверены?'} do |f|
   .flex.flex-row.items-start.space-x-2

@@ -1,0 +1,4 @@
+.div.flex.flex-wrap
+  - advertisement.decorate.hotlist_payments.each do |payment|
+    = link_to payment_path(payment), data: { turbo: false }, class: 'block' do
+      = render 'processers/advertisements/hotlist_payment', payment: payment

@@ -28,3 +28,5 @@ ru:
       cancellation_reason: Причина отмены
       unique_amount: Тип уникализации
       processing_type: Тип обработки
+      arbitration_reason: Причина арбитража
+      locale: Локаль

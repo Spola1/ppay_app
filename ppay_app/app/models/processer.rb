@@ -8,7 +8,7 @@ class Processer < User
 
   belongs_to :working_group, optional: true
 
-  before_validation :process_telegram
+  before_validation :process_telegram, if: -> { telegram.present? }
 
   validates :telegram, format: { with: /\A@?\w+\z/ }, allow_blank: true
   validate :telegram_id_presence, if: -> { telegram.present? }

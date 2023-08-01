@@ -60,9 +60,23 @@ module StateMachines
         merchant.payment_systems.where(merchant_methods: { direction: type }).pluck(:name)
       end
 
+      def bind_estimated_rate_snapshot
+        rates = rate_snapshots_scope
+                .by_national_currency(NationalCurrency.find_by(name: national_currency))
+                .by_cryptocurrency(cryptocurrency)
+
+        self.rate_snapshot = rates
+                             .where(created_at: 5.minutes.ago..)
+                             .order(value: type == 'Deposit' ? :desc : :asc)
+                             .first ||
+                             rates
+                             .order(created_at: :asc)
+                             .last
+      end
+
       def bind_rate_snapshot
         self.rate_snapshot = rate_snapshots_scope
-                             .by_national_currency(national_currency)
+                             .by_payment_system(PaymentSystem.find_by(name: payment_system))
                              .by_cryptocurrency(cryptocurrency)
                              .order(created_at: :asc)
                              .last
@@ -78,6 +92,10 @@ module StateMachines
 
       def set_cancellation_reason
         self.cancellation_reason = 0 unless cancellation_reason
+      end
+
+      def set_autoconfirming
+        self.autoconfirming = advertisement.simbank_auto_confirmation?
       end
 
       def advertisement?

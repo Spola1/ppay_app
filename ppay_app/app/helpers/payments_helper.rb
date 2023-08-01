@@ -4,6 +4,7 @@ module PaymentsHelper
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
   AVAILABLE_CANCELLATION_REASONS_COLLECTION = %i[by_client duplicate_payment fraud_attempt incorrect_amount
                                                  not_paid].freeze
+  AVAILABLE_ARBITRATION_REASONS_COLLECTION = %i[duplicate_payment fraud_attempt incorrect_amount not_paid].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
 
   def edit_payment_path(payment)
@@ -36,6 +37,10 @@ module PaymentsHelper
 
   def support_payment_cancellation_reasons_collection
     AVAILABLE_CANCELLATION_REASONS_COLLECTION.map { |reason| [cancellation_reason_translation(reason), reason] }
+  end
+
+  def support_payment_arbitration_reasons_collection
+    AVAILABLE_ARBITRATION_REASONS_COLLECTION.map { |reason| [arbitration_reason_translation(reason), reason] }
   end
 
   def can_manage_payment?
@@ -90,6 +95,11 @@ module PaymentsHelper
     end
   end
 
+  def similar_payment(payment)
+    "ID: #{payment.id} - **#{payment.card_number.last(4)} - #{payment.national_formatted} " \
+    "#{payment.national_currency}"
+  end
+
   private
 
   def state_translation(state)
@@ -98,6 +108,10 @@ module PaymentsHelper
 
   def cancellation_reason_translation(reason)
     Payment.human_attribute_name("cancellation_reason.#{reason}")
+  end
+
+  def arbitration_reason_translation(reason)
+    Payment.human_attribute_name("arbitration_reason.#{reason}")
   end
 
   def payment_prefixes(payment, prefix)
