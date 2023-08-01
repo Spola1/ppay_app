@@ -88,7 +88,6 @@ class Payment < ApplicationRecord
   before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
   before_save :update_status_changed_at, if: :payment_status_changed?
 
-  validates_presence_of :payment_system, if: :external?
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
   validates_presence_of :national_currency, :national_currency_amount, :callback_url
   validates_presence_of :redirect_url, if: :internal?

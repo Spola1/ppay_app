@@ -65,8 +65,12 @@ module PaymentsHelper
 
   def payment_systems_collection_for_payment(payment)
     payment.merchant.payment_systems
-           .where(merchant_methods: { direction: payment.type })
-           .pluck(:name)
+           .where(
+             merchant_methods: { direction: payment.type },
+             payment_systems: { national_currency: NationalCurrency.find_by(name: payment.national_currency) }
+           )
+           .order(id: :asc)
+           .map(&:name)
   end
 
   def render_qr_code(text)
