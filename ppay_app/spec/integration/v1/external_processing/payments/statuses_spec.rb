@@ -9,17 +9,22 @@ describe 'External processing payments statuses' do
   path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do
     patch 'Обновление статуса платежа с внешним процессингом' do
       tags 'Платежи - H2H (оплата на стороне магазина)'
+      consumes 'application/json'
+      produces 'application/json'
       security [bearerAuth: {}]
 
       description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
                                             'statuses.md'))
-
-      parameter name: :uuid, in: :path, type: :string
-      parameter name: :event, in: :path, type: :string
+      parameter name: :uuid, in: :path, type: :string, required: true
+      parameter name: :event, in: :path, type: :string, required: true
+      parameter name: :params,
+                in: :body,
+                schema: { '$ref': '#/components/schemas/external_processing_deposits_create_status_patameter_body_schema' }
 
       let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
       let(:uuid) { payment.uuid }
       let(:event) { 'check' }
+      let(:params) { { account_number: '1234' } }
 
       response '204', 'статус успешно обновлен' do
         %w[check cancel].each do |event|
@@ -41,14 +46,14 @@ describe 'External processing payments statuses' do
         end
       end
 
-      response '422', 'требуется загрузка чека' do
-        let(:check_required) { true }
-
+      response '422', 'ошибка валидации' do
+        before { payment.merchant.update(account_number_required: true) }
+        let(:params) { { account_number: '' } }
         let(:expected_errors) do
           [
             {
-              title: 'image',
-              detail: I18n.t('activerecord.errors.models.payment.attributes.image.blank'),
+              title: 'account_number',
+              detail: I18n.t('activerecord.errors.models.payment.attributes.account_number.blank'),
               code: 422
             }.stringify_keys
           ]

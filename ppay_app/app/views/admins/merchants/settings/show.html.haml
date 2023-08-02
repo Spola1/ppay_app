@@ -4,7 +4,10 @@
   .form-inputs
     = f.input :nickname, autofocus: true
     = f.input :name
+    = f.input :account_number_title
+    = f.input :account_number_placeholder
     = f.input :check_required, as: :boolean
+    = f.input :account_number_required, as: :boolean
     = f.input :unique_amount, collection: [['Чек', 'none'], ['Целая уникализация суммы', 'integer'], ['Дробная уникализация суммы', 'decimal']], include_blank: false
 
   .py-4

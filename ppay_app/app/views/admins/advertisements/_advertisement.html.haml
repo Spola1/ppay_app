@@ -14,6 +14,12 @@
         %td.item-card-td.item-card-td-label Номер карты
         %td.item-card-td= @advertisement.card_number
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label ФИО владельца карты
+        %td.item-card-td= @advertisement.card_owner_name
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label номер телефона СБП
+        %td.item-card-td= @advertisement.sbp_phone_number
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Комментарий
         %td.item-card-td= @advertisement.comment
       %tr.item-card-tr

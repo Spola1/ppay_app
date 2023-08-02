@@ -8,6 +8,7 @@ FactoryBot.define do
     nickname { 'AvangardBet' }
     name { 'Петр Петрович' }
     check_required { true }
+    account_number_required { false }
     crypto_wallet
     usdt_trc20_address { 'ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUt' }
 

@@ -5,6 +5,8 @@ class PaymentDecorator < ApplicationDecorator
 
   delegate_all
 
+  delegate :card_owner_name, :sbp_phone_number, to: :advertisement
+
   def countdown
     return '00:00:00' if countdown_difference.negative?
 

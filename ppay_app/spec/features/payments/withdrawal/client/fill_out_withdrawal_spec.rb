@@ -12,7 +12,7 @@ feature 'Client can fill out the withdrawal form', type: :feature do
   end
 
   scenario 'client not chosen payment system and try to confirm withdrawal' do
-    select('Выбрать', from: 'withdrawal_payment_system')
+    select('Выбрать', from: 'advertisement_payment_system')
 
     click_on 'Подтвердить'
 
@@ -24,7 +24,7 @@ feature 'Client can fill out the withdrawal form', type: :feature do
   end
 
   scenario 'client chosen payment system but not fill in card number, and try to confirm withdrawal' do
-    select(payment_system.name, from: 'withdrawal_payment_system')
+    select(payment_system.name, from: 'advertisement_payment_system')
     fill_in 'withdrawal_card_number', with: ''
 
     click_on 'Подтвердить'
@@ -37,7 +37,7 @@ feature 'Client can fill out the withdrawal form', type: :feature do
   end
 
   scenario 'client entered valid attributes' do
-    select(payment_system.name, from: 'withdrawal_payment_system')
+    select(payment_system.name, from: 'advertisement_payment_system')
     fill_in 'withdrawal_card_number', with: '1111111111111111'
 
     click_on 'Подтвердить'

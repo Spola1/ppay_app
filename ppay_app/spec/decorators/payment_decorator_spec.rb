@@ -15,6 +15,22 @@ RSpec.describe PaymentDecorator do
     allow(Time).to receive(:now).and_return(time_now)
   end
 
+  describe '#card_owner_name' do
+    let(:decorator) { payment.decorate }
+
+    it 'returns the card owner name from advertisement' do
+      expect(decorator.card_owner_name).to eq 'John Doe'
+    end
+  end
+
+  describe '#sbp_phone_number' do
+    let(:decorator) { payment.decorate }
+
+    it 'returns the SBP phone number from advertisement' do
+      expect(decorator.sbp_phone_number).to eq '+1234567890'
+    end
+  end
+  
   describe "#formatted_card_number" do
     let(:payment) { create(:payment, :transferring, :deposit, advertisement:) }
     subject { payment.decorate }
