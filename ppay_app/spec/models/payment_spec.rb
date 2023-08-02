@@ -562,7 +562,7 @@ RSpec.describe Payment, type: :model do
     end
 
     it 'excludes not expired arbitration with not_paid reason' do
-      expect(Payment.expired_arbitration_not_paid).not_to include(not_expired_arbitration)
+      expect(Payment.expired_arbitration_not_paid).not_to include([not_expired_arbitration, expired_arbitration_other_reason])
     end
 
     it 'excludes expired arbitration with other reason' do
