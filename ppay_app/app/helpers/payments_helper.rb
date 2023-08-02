@@ -71,6 +71,7 @@ module PaymentsHelper
            )
            .order(id: :asc)
            .map(&:name)
+           .prepend([I18n.t('payments.choise'), 'none'])
   end
 
   def render_qr_code(text)
@@ -101,7 +102,7 @@ module PaymentsHelper
 
   def similar_payment(payment)
     "ID: #{payment.id} - **#{payment.card_number.last(4)} - #{payment.national_formatted} " \
-    "#{payment.national_currency}"
+      "#{payment.national_currency}"
   end
 
   private

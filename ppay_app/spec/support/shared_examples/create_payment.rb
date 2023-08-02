@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_examples 'create_payment' do |type: :deposit|
+shared_examples 'create_payment' do |type:|
   let(:currency) { 'RUB' }
 
   include_context 'successful_creation_response', { type: }
@@ -10,7 +10,7 @@ shared_examples 'create_payment' do |type: :deposit|
   include_context 'unauthorized_response'
 end
 
-shared_context 'invalid_response' do |type: :deposit|
+shared_context 'invalid_response' do |type:|
   let(:currency) { 'RUB' }
 
   response '201', 'успешное создание' do
@@ -64,7 +64,7 @@ shared_context 'invalid_response' do |type: :deposit|
   end
 end
 
-shared_context 'successful_creation_response' do |type: :deposit|
+shared_context 'successful_creation_response' do |type:|
   response '201', 'успешное создание' do
     include_context 'generate_examples'
 

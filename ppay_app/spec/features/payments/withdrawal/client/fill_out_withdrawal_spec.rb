@@ -12,11 +12,12 @@ feature 'Client can fill out the withdrawal form', type: :feature do
   end
 
   scenario 'client not chosen payment system and try to confirm withdrawal' do
-    select('Выбрать', from: 'advertisement_payment_system')
+    select(I18n.t('payments.choise'), from: 'advertisement_payment_system')
 
     click_on 'Подтвердить'
 
-    expect(page).to have_content('Платёжная система не выбрана')
+    expect(page).to have_content([I18n.t('activerecord.attributes.payment.payment_system'),
+                                  I18n.t('errors.messages.invalid')].join(' '))
 
     payment.reload
 
