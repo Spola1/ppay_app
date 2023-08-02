@@ -9,6 +9,8 @@
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+      .sberbank-card-owner
+        = payment.advertisement.card_owner_name
 
   - when "Tinkoff"
     .tinkoff-card{ 'data-controller': 'clipboard' }
@@ -20,6 +22,8 @@
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+      .tinkoff-card-owner
+        = payment.advertisement.card_owner_name
 
   - when "Raiffeisen"
     .raiffeisen-card{ 'data-controller': 'clipboard' }
@@ -31,6 +35,8 @@
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+      .raiffeisen-card-owner
+        = payment.advertisement.card_owner_name
 
   - when "AlfaBank"
     .alfabank-card{ 'data-controller': 'clipboard' }
@@ -42,6 +48,8 @@
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+      .alfabank-card-owner
+        = payment.advertisement.card_owner_name
 
   - when "HUMO"
     .humo-card{ 'data-controller': 'clipboard' }
@@ -53,6 +61,8 @@
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+      .humo-card-owner
+        = payment.advertisement.card_owner_name
 
   - else
     .default-bank-card{ 'data-controller': 'clipboard' }
@@ -64,4 +74,6 @@
         .copy-card-button
           = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
             = image_tag 'copy.svg'
+      .default-card-owner
+        = payment.advertisement.card_owner_name
 

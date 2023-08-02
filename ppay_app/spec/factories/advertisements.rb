@@ -7,6 +7,8 @@ FactoryBot.define do
     national_currency { 'RUB' }
     payment_system { 'Sberbank' }
     card_number { '1111111111111111' }
+    card_owner_name { 'John Doe' }
+    sbp_phone_number { '+1234567890' }
     status { true }
     max_summ { 10_000 }
     min_summ { 10 }

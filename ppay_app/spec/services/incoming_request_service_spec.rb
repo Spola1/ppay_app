@@ -89,9 +89,9 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
       end
 
-      it 'returns correct find_matching_payment result and will automatically confirm the payment' do
+      it 'returns correct find_matching_payment result' do
         expect(incoming_request.payment).to eq(nil)
-        expect(incoming_request.sum_mask).to eq(nil)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
       end
 
       it 'does not create any outstanding payments' do
@@ -102,7 +102,7 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.advertisement).to eq(nil)
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
-        expect(incoming_request.sum_mask).to eq(nil)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
       end
 
       it 'creates a success response' do
@@ -120,12 +120,12 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
       end
 
-      it 'returns correct find_matching_payment result and will automatically confirm the payment' do
+      it 'returns correct find_matching_payment result' do
         expect(incoming_request.payment).to eq(nil)
-        expect(incoming_request.sum_mask).to eq(nil)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
       end
 
-      it 'does not create any outstanding payments' do
+      it 'does not create any NotFoundPayment' do
         expect(NotFoundPayment.all.size).to eq(0)
       end
 
@@ -133,7 +133,7 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.advertisement).to eq(nil)
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
-        expect(incoming_request.sum_mask).to eq(nil)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
       end
 
       it 'creates a success response' do
@@ -151,12 +151,12 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
       end
 
-      it 'returns correct find_matching_payment result and will automatically confirm the payment' do
+      it 'returns correct find_matching_payment result' do
         expect(incoming_request.payment).to eq(nil)
-        expect(incoming_request.sum_mask).to eq(nil)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
       end
 
-      it 'does not create any outstanding payments' do
+      it 'will create an NotFoundPayment' do
         expect(NotFoundPayment.all.size).to eq(1)
         expect(NotFoundPayment.last.payments).to eq([payment])
       end
@@ -165,7 +165,7 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.advertisement).to eq(advertisement)
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
-        expect(incoming_request.sum_mask).to eq(nil)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
       end
 
       it 'creates a success response' do

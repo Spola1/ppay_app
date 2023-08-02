@@ -73,6 +73,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.string "imsi"
     t.string "simbank_card_number"
     t.string "simbank_sender"
+    t.string "sbp_phone_number"
+    t.string "card_owner_name"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
@@ -331,6 +333,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.bigint "form_customization_id"
+    t.string "account_number"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
     t.index ["support_id"], name: "index_payments_on_support_id"
@@ -404,6 +407,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.integer "regular_payment_exec_time_in_sec", default: 1200
     t.decimal "ftd_payment_default_summ", precision: 12, scale: 2
     t.boolean "differ_ftd_and_other_payments", default: false
+    t.boolean "account_number_required", default: false
+    t.string "account_number_title"
+    t.string "account_number_placeholder"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
