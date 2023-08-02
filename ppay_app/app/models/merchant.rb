@@ -10,7 +10,7 @@ class Merchant < User
   has_many :commissions, through: :merchant_methods
   has_many :payment_systems, -> { distinct }, through: :merchant_methods
   has_many :national_currencies, -> { distinct }, through: :payment_systems
-  has_one :form_customization
+  has_many :form_customizations
 
   belongs_to :agent, optional: true
 
