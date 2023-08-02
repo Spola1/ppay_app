@@ -56,6 +56,8 @@ ru:
         incorrect_amount: Переведённая клиентом сумма не соответствует запрошенной
         not_paid: Сумма не поступила
         time_expired: Время оплаты истекло
+        check_by_check: Проверка по чеку
+        incorrect_amount_check_by_check: Перевели неверную сумму, проверить по чеку
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена

@@ -51,7 +51,9 @@ class Payment < ApplicationRecord
     fraud_attempt: 1,
     incorrect_amount: 2,
     not_paid: 3,
-    time_expired: 4
+    time_expired: 4,
+    check_by_check: 5,
+    incorrect_amount_check_by_check: 6
   }, _prefix: true
   enum processing_type: { internal: 0, external: 1 }
   enum unique_amount: {

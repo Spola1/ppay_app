@@ -3,13 +3,20 @@
 module Merchants
   module Payments
     class DepositsController < PaymentsController
+      before_action :find_payment, only: %i[display_link update show]
+
       def index
         @pagy, @payments = pagy(current_user.deposits)
         @payments = @payments.decorate
       end
 
       def show
-        @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
+        render 'supports/payments/show'
+      end
+
+      def update
+        @payment.update(payment_params)
+
         render 'supports/payments/show'
       end
 
@@ -30,15 +37,19 @@ module Merchants
       end
 
       def display_link
-        @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
         render 'merchants/payments/display_link'
       end
 
       private
 
+      def find_payment
+        @payment = Payment.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
+      end
+
       def payment_params
         params.require(:deposit).permit(:national_currency_amount, :national_currency, :direction, :redirect_url,
-                                        :callback_url, :external_order_id, :locale).merge(merchant_id: current_user.id)
+                                        :callback_url, :external_order_id, :locale,
+                                        :arbitration, :arbitration_reason, :image).merge(merchant_id: current_user.id)
       end
     end
   end

@@ -63,7 +63,7 @@ Rails.application.routes.draw do
     resources :payments, only: :index
     resources :balance_requests
     namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index show create new] do
+      resources :deposits, param: :uuid, only: %i[index show create update new] do
         member do
           get :display_link
         end

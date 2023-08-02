@@ -14,9 +14,17 @@
           - if payment.arbitration
             .badge
               На арбитраже
-        .flex
-          - if local_assigns[:can_manage_payment?]
-            = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+
+      - unless payment.arbitration
+        .mt-9.mb-2.font-medium
+          %span{style: "white-space: nowrap;"}
+            Выберите причину и загрузите изображение чека, чтобы отправить платеж
+            %span.text-red-600
+              на Арбитраж
+
+      .flex
+        - if local_assigns[:can_manage_payment?]
+          = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
 
       .mt-4.mb-8.image-processer-block
         = render 'shared/staff/payments/image', payment:
@@ -53,7 +61,7 @@
                 - else
                   = payment.human_payment_status
 
-            - if role_namespace == 'supports'
+            - if role_namespace == 'supports' || role_namespace == 'merchants'
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Причина отмены
                 %td.item-card-td

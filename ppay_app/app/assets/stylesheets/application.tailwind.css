@@ -101,6 +101,14 @@
       active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
+  .grayy-button {
+    @apply px-6 py-2.5 bg-neutral-200 text-white font-medium text-xs leading-tight uppercase rounded shadow-md
+      hover:bg-neutral-300 hover:shadow-lg focus:bg-neutral-300 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-neutral-400 active:shadow-lg border border-neutral-300 transition duration-150 ease-in-out;
+      color: black;
+  }
+  
+
   .green-button {
     @apply w-full px-6 py-2.5 h-12 bg-[#21a038] text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
