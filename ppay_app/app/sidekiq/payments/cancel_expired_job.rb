@@ -25,6 +25,7 @@ module Payments
       Payment.expired_arbitration_not_paid.find_each do |payment|
         payment.update(cancellation_reason: :not_paid)
         payment.cancel!
+        payment.update(arbitration: false)
         puts "Платёж #{payment.uuid} отменён"
       end
     end

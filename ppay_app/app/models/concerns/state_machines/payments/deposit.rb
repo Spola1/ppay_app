@@ -15,8 +15,6 @@ module StateMachines
           state :created, initial: true
           state :draft, :processer_search, :transferring, :confirming, :completed, :cancelled
 
-          after_all_transitions :update_status_changed_at
-
           # show_selection_page
           event :show do
             transitions from: :created, to: :draft
