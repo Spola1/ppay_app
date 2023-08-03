@@ -13,6 +13,7 @@ module Api
           def create
             return render_check_required_error if current_bearer.check_required?
 
+            check_other_banks
             set_object
 
             if @object.save && @object.inline_search!(search_params) && @object.advertisement.present?
@@ -23,6 +24,12 @@ module Api
           end
 
           private
+
+          def check_other_banks
+            if params[model_class.underscore.to_sym][:payment_system].match?(/^Другой банк/i)
+              params[model_class.underscore.to_sym][:payment_system] = nil
+            end
+          end
 
           def serializer
             "Api::V1::ExternalProcessing::Payments::Create::#{model_class}Serializer".classify.constantize
