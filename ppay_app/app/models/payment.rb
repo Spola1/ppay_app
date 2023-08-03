@@ -76,6 +76,7 @@ class Payment < ApplicationRecord
   delegate :processer, to: :advertisement, allow_nil: true
 
   has_one_attached :image
+  belongs_to :form_customization, optional: true
 
   has_many :comments, as: :commentable
   has_many :chats
@@ -87,8 +88,7 @@ class Payment < ApplicationRecord
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
   before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
-  before_save :complete_transactions, if: -> { payment_status.in?(%w[completed]) && payment_status_changed? }
-  before_save :cancel_transactions, if: -> { payment_status.in?(%w[cancelled]) && payment_status_changed? }
+  before_save :update_status_changed_at, if: :payment_status_changed?
 
   validates_presence_of :payment_system, if: :external?
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
@@ -102,6 +102,13 @@ class Payment < ApplicationRecord
   validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),
                                          valid_values: unique_amounts.keys.join(', ') }
   validatable_enum :unique_amount
+
+  after_update_commit :complete_transactions, if: -> {
+    payment_status.in?(%w[completed]) && payment_status_previously_changed?
+  }
+  after_update_commit :cancel_transactions, if: -> {
+    payment_status.in?(%w[cancelled]) && payment_status_previously_changed?
+  }
 
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?

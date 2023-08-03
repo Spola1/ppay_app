@@ -21,6 +21,8 @@ ru:
         imsi: '3. SMS через SIM-банк. Укажите номер IMSI в формате: 1234567890123'
         simbank_card_number: Последние 4 цифры номера счета, как указывается в SMS или PUSH
         simbank_sender: Отправитель SMS или PUSH
+        sbp_phone_number: Номер телефона СБП
+        card_owner_name: ФИО владельца карты
       type:
         deposit: Депозит
         withdrawal: Вывод
@@ -35,6 +37,7 @@ ru:
         payment_system: Платёжная система
         card_number: Номер карты
         image: Скриншот
+        account_number: Поле
       payment/payment_status:
         created: Создан
         draft: Ввод данных карты

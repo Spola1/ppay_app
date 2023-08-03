@@ -368,6 +368,11 @@
     @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0;
   }
 
+  .grey-iban-cardplace {
+    @apply w-full h-12 px-3 py-2.5 mb-3 mr-3 text-sm font-medium text-center text-black bg-gray-200 rounded md:mb-0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
   .proc-head {
     @apply flex justify-between items-center mt-4;
   }
@@ -478,6 +483,34 @@
     @apply proc-card-sceomorph-bank;
   }
 
+  .proc-card-sceomorph-owner {
+    @apply mt-2 text-lg text-white font-medium;
+  }
+
+  .alfabank-card-owner {
+    @apply proc-card-sceomorph-owner;
+  }
+
+  .sberbank-card-owner {
+    @apply proc-card-sceomorph-owner;
+  }
+
+  .tinkoff-card-owner {
+    @apply proc-card-sceomorph-owner text-black;
+  }
+
+  .raiffeisen-card-owner {
+    @apply proc-card-sceomorph-owner text-black;
+  }
+
+  .humo-card-owner {
+    @apply proc-card-sceomorph-owner text-[#f3e399];
+  }
+
+  .default-card-owner {
+    @apply proc-card-sceomorph-owner text-black;
+  }
+  
   .humo-card-bank {
     @apply proc-card-sceomorph-bank text-[#f3e399];
   }

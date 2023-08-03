@@ -2,5 +2,6 @@
 
 class FormCustomization < ApplicationRecord
   belongs_to :merchant
+  has_one :payment
   has_one_attached :logo
 end

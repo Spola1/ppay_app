@@ -74,6 +74,10 @@
                   = render "supports/payments/payment_arbitration_reason_field", f:, payment:
 
             %tr.item-card-tr
+              %td.item-card-td.item-card-td-label{ class: 'w-1/4' } Номер счёта
+              %td.item-card-td= "#{payment.account_number}"
+
+            %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
               %td.item-card-td
                 = payment.formatted_status_changed_at

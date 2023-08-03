@@ -5,6 +5,8 @@ class PaymentDecorator < ApplicationDecorator
 
   delegate_all
 
+  delegate :card_owner_name, :sbp_phone_number, to: :advertisement
+
   def countdown
     return '00:00:00' if countdown_difference.negative?
 
@@ -66,31 +68,31 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def show_merchant_logo
-    return unless merchant.form_customization.logo.present
+    return unless form_customization.present? && form_customization.default? && form_customization&.logo
 
-    merchant.form_customization.logo
+    form_customization.logo
   end
 
   def logo_image_tag
-    return unless payment.merchant.form_customization&.logo.present?
+    return unless form_customization.present? && form_customization.default? && form_customization.logo.present?
 
     h.content_tag(:div, class: 'show-logo') do
       h.content_tag(:div, class: 'logo_img') do
-        h.image_tag(payment.merchant.form_customization.logo)
+        h.image_tag(form_customization.logo)
       end
     end
   end
 
   def background_color_style
-    return unless payment.merchant.form_customization&.background_color
+    return unless form_customization.present? && form_customization.default? && form_customization&.background_color
 
-    "background-color: #{payment.merchant.form_customization.background_color};"
+    "background-color: #{form_customization.background_color};"
   end
 
   def button_color_style
-    return unless payment.merchant.form_customization&.button_color
+    return unless form_customization.present? && form_customization.default? && form_customization&.button_color
 
-    "background-color: #{payment.merchant.form_customization.button_color};"
+    "background-color: #{form_customization.button_color};"
   end
 
   def human_type

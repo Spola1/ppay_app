@@ -46,8 +46,6 @@
 
     = render 'payments/cancel_form', payment:, signature:, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:)
 
-    = render 'payments/alerts_block'
-
     = render 'payments/uuid', payment:
 
   - if payment.arbitration

@@ -10,7 +10,7 @@ module Payments
       end
 
       def payment_params
-        params.fetch(:deposit, {}).permit(:payment_system, :image)
+        params.fetch(:deposit, {}).permit(:payment_system, :image, :account_number)
       end
     end
   end

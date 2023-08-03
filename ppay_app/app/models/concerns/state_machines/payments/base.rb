@@ -119,6 +119,20 @@ module StateMachines
         false
       end
 
+      def valid_account_number?(params)
+        return true unless merchant.account_number_required?
+
+        assign_params(params, %i[account_number])
+        validate_account_number
+      end
+
+      def validate_account_number
+        return true if account_number.present?
+
+        errors.add(:account_number, :blank)
+        false
+      end
+
       def uniqueization_difference
         self.class::UNIQUEIZATION_DIFFERENCE
       end

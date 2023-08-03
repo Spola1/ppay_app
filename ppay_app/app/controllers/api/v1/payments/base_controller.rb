@@ -8,6 +8,7 @@ module Api
         include Resourceable
 
         prepend_before_action :authenticate_with_api_key!
+        before_action :set_form_customization
 
         def create
           @object = current_bearer.becomes(Merchant).public_send(model_class_plural.to_s).new(permitted_params)
@@ -21,10 +22,26 @@ module Api
 
         private
 
+        def set_form_customization
+          return if params[:form_customization_id]
+
+          form_customization = preset_form_customization || default_form_customization
+
+          params[:form_customization_id] = form_customization&.id
+        end
+
+        def preset_form_customization
+          current_bearer.form_customizations.find_by(name: params[:preset_name])
+        end
+
+        def default_form_customization
+          current_bearer.form_customizations.find_by(default: true)
+        end
+
         def permitted_params
           params.permit(
             :national_currency_amount, :national_currency, :external_order_id,
-            :redirect_url, :callback_url, :locale
+            :redirect_url, :callback_url, :locale, :form_customization_id
           )
         end
 
