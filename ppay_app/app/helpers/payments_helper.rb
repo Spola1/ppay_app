@@ -72,6 +72,7 @@ module PaymentsHelper
            .order(id: :asc)
            .map(&:name)
            .prepend([I18n.t('payments.choise'), 'none'])
+           .tap { _1 << [payment.merchant.any_bank, nil] if payment.merchant.any_bank.present? }
   end
 
   def render_qr_code(text)

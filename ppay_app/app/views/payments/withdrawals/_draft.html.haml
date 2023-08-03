@@ -34,7 +34,7 @@
 
       .select-payment-system
         = f.label :payment_system, t('payments.withdraw.attributes.bank')
-        = f.select :payment_system, payment_systems_collection_for_payment(payment),
+        = f.select :payment_system, payment_systems_collection_for_payment(payment), { selected: 'none' },
                    class: 'grey-drop-down mb-3', id: 'advertisement_payment_system'
 
       .select-payment-system

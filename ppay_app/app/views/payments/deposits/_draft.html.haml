@@ -34,7 +34,7 @@
           = f.label :payment_system, t('payments.deposit.attributes.choosing_payment_system')
 
         = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                   class: 'grey-drop-down'
+                   selected: 'none', class: 'grey-drop-down'
 
         = hidden_field_tag :event, 'search'
 
