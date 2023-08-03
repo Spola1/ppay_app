@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_examples 'create_external_processing_payment' do |type: :deposit|
+shared_examples 'create_external_processing_payment' do |type:|
   response '201', 'успешное создание' do
     schema '$ref': "#/components/schemas/external_processing_#{type}s_create_response_body_schema"
 
@@ -14,6 +14,14 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
       let(:national_currency_amount) { rate_snapshot.to_national_currency(merchant.balance.amount) / 1.04001 }
 
       run_test!
+    end
+
+    context 'without payment_system' do
+      let(:payment_system_name) { nil }
+
+      run_test! do |_response|
+        expect(response_body[:data][:attributes]).to include(payment_system: adv.payment_system)
+      end
     end
 
     it 'creates a payment for the merchant' do |example|
@@ -106,24 +114,6 @@ shared_examples 'create_external_processing_payment' do |type: :deposit|
           {
             title: 'check_required',
             detail: I18n.t('errors.check_required_with_external_processing'),
-            code: 422
-          }.stringify_keys
-        ]
-      end
-
-      run_test! do |_response|
-        expect(response_body['errors']).to eq(expected_errors)
-      end
-    end
-
-    context 'without payment system' do
-      let(:payment_system_name) { nil }
-
-      let(:expected_errors) do
-        [
-          {
-            title: 'payment_system',
-            detail: I18n.t('activerecord.errors.models.payment.attributes.payment_system.blank'),
             code: 422
           }.stringify_keys
         ]

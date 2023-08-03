@@ -65,8 +65,14 @@ module PaymentsHelper
 
   def payment_systems_collection_for_payment(payment)
     payment.merchant.payment_systems
-           .where(merchant_methods: { direction: payment.type })
-           .pluck(:name)
+           .where(
+             merchant_methods: { direction: payment.type },
+             payment_systems: { national_currency: NationalCurrency.find_by(name: payment.national_currency) }
+           )
+           .order(id: :asc)
+           .map(&:name)
+           .prepend([I18n.t('payments.choise'), 'none'])
+           .tap { _1 << [payment.merchant.any_bank, nil] if payment.merchant.any_bank.present? }
   end
 
   def render_qr_code(text)
@@ -97,7 +103,7 @@ module PaymentsHelper
 
   def similar_payment(payment)
     "ID: #{payment.id} - **#{payment.card_number.last(4)} - #{payment.national_formatted} " \
-    "#{payment.national_currency}"
+      "#{payment.national_currency}"
   end
 
   private

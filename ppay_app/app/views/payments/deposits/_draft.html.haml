@@ -27,15 +27,14 @@
           = payment.external_order_id
 
     = render 'payments/errors', payment: payment
-      
+
     .simple-form-for-payment-deposit
       = simple_form_for payment, url: payments_statuses_deposit_path(uuid: payment.uuid, signature:), action: :update do |f|
         .select-payment-system
           = f.label :payment_system, t('payments.deposit.attributes.choosing_payment_system')
 
         = f.select :payment_system, payment_systems_collection_for_payment(payment),
-                                    { include_blank: t('payments.choise') },
-                                    class: 'grey-drop-down'
+                   selected: 'none', class: 'grey-drop-down'
 
         = hidden_field_tag :event, 'search'
 
@@ -50,7 +49,7 @@
 
   - if payment.arbitration
     = render 'shared/chat', payment:
-    
+
   -unless browser.device.mobile? || browser.device.tablet?
     .show-second-block{style: payment.background_color_style}
       = render 'payments/qr_code', payment: payment

@@ -13,7 +13,7 @@ class RateSnapshot < ApplicationRecord
 
   scope :by_payment_system,
         lambda { |payment_system|
-          where(payment_system: payment_system.payment_system_copy || payment_system)
+          where(payment_system: payment_system&.payment_system_copy || payment_system)
         }
   scope :by_national_currency,
         lambda { |national_currency|
