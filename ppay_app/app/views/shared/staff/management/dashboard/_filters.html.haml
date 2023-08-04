@@ -4,9 +4,10 @@
   html: { class: 'filters'} do |f|
 
   = f.input :period, collection: periods_collection,
-                      selected: payment_filters_params(:period),
-                      label: 'Выберите из списка, либо укажите даты ниже',
-                      required: false
+                     selected: payment_filters_params(:period),
+                     include_blank: '- Не выбрано -',
+                     label: 'Выберите из списка, либо укажите даты ниже',
+                     required: false
   .filters-grid
     = f.input :created_from, as: :date,
                              html5: true,

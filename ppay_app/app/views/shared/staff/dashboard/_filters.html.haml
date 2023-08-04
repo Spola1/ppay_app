@@ -5,6 +5,7 @@
 
   = f.input :period, collection: periods_collection,
                      selected: payment_filters_params(:period),
+                     include_blank: '- Не выбрано -',
                      label: 'Выберите из списка, либо укажите даты ниже',
                      required: false
   .filters-grid

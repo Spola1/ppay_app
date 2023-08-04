@@ -9,6 +9,7 @@ module Payments
                :average_confirmation, :completed_sum, :active_advertisements, to: :context
 
       def call
+        set_default_params
         set_payments
         set_conversion
         set_average_confirmation
@@ -17,6 +18,13 @@ module Payments
       end
 
       private
+
+      def set_default_params
+        if filtering_params.blank? || (filtering_params[:period].blank? && filtering_params[:created_from].blank?)
+          context.filtering_params = {} if filtering_params.blank?
+          context.filtering_params[:period] = 'last_hour'
+        end
+      end
 
       def set_payments
         context.payments = processer.payments.except(:order).filter_by(filtering_params).includes(:merchant)
@@ -27,7 +35,7 @@ module Payments
         context.completed = payments.completed.count
         context.cancelled = finished - completed
         context.conversion = finished.positive? && completed.positive? ?
-          completed.to_f / finished.to_f * 100 :
+          (completed.to_f / finished.to_f * 100).round(2) :
           0
       end
 
