@@ -26,7 +26,7 @@ module Api
           private
 
           def check_other_banks
-            if params[model_class.underscore.to_sym][:payment_system].match?(/^Другой банк/i)
+            if params[model_class.underscore.to_sym][:payment_system]&.match?(/^Другой банк/i)
               params[model_class.underscore.to_sym][:payment_system] = nil
             end
           end

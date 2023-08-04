@@ -26,8 +26,6 @@ module Swagger
                   external_order_id: { type: :string, example: '1234' },
                   unique_amount: { type: :string, example: 'integer' },
                   locale: { type: :string, example: 'ru' },
-                  preset_name: { type: :string, example: 'first customization' },
-                  form_customization_id: { type: :string, example: '1' },
                   redirect_url: { type: :string, example: 'https://example.com/redirect_url' },
                   callback_url: { type: :string, example: 'https://example.com/callback_url' }
                 }
@@ -39,8 +37,6 @@ module Swagger
                   national_currency_amount: { type: :number, example: 3000.0 },
                   external_order_id: { type: :string, example: '1234' },
                   locale: { type: :string, example: 'ru' },
-                  preset_name: { type: :string, example: 'first customization' },
-                  form_customization_id: { type: :string, example: '1' },
                   redirect_url: { type: :string, example: 'https://example.com/redirect_url' },
                   callback_url: { type: :string, example: 'https://example.com/callback_url' }
                 }

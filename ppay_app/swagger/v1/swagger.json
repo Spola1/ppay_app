@@ -59,12 +59,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "eba2272f-da94-4bc4-bd13-bb611f9f1f9d",
+                    "id": "8bbde4d1-dca3-4458-9149-dee9edba9b79",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "eba2272f-da94-4bc4-bd13-bb611f9f1f9d",
+                      "uuid": "8bbde4d1-dca3-4458-9149-dee9edba9b79",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-08-03T18:17:03.771+03:00",
+                      "expiration_time": "2023-08-04T21:39:59.940+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "payment_system": "Sberbank",
@@ -74,7 +74,7 @@
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4d3c003d7352f02cb07ba5c8dfde60d0f8649136/213e96e1927a95ac852d5a81c61bf35c.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--9f449cfcc81c49ec88b7ae4a3f10308056249961/c8aa510e9b5f6e3d8e558eebdb5ee14e.svg"
                     }
                   }
                 },
@@ -197,10 +197,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "785f922e-24fa-43ed-a252-7695f7b69cd3",
+                    "id": "94766c9b-f3c1-4150-8ac0-7e1d8e1e720a",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "785f922e-24fa-43ed-a252-7695f7b69cd3",
+                      "uuid": "94766c9b-f3c1-4150-8ac0-7e1d8e1e720a",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "payment_system": "Sberbank",
@@ -270,11 +270,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "dcfdf9c3-c060-48c3-b2ac-94772ca2968b",
+                    "id": "d05e2030-a0a6-439e-be51-93ed821ee872",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "dcfdf9c3-c060-48c3-b2ac-94772ca2968b",
-                      "url": "http://example.org/payments/deposits/dcfdf9c3-c060-48c3-b2ac-94772ca2968b?signature=80b61bf8aa8185dd8aa3c4bb263c48b7290cf22f2a5d389ffa1188a3cc8cc368"
+                      "uuid": "d05e2030-a0a6-439e-be51-93ed821ee872",
+                      "url": "http://example.org/payments/deposits/d05e2030-a0a6-439e-be51-93ed821ee872?signature=7a25fe792ca290aaebdc79cba2f64d759ff54960683a702c2c3137b2828271e9"
                     }
                   }
                 },
@@ -338,11 +338,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "9996e1e5-3b04-41dc-86b8-2aba11d626aa",
+                    "id": "a59f0f87-aa93-4cb6-a850-3b3505b813dc",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "9996e1e5-3b04-41dc-86b8-2aba11d626aa",
-                      "url": "http://example.org/payments/withdrawals/9996e1e5-3b04-41dc-86b8-2aba11d626aa?signature=14570b01344ad9c9a0a47cb3462536c7bfc70e75d3e489f157f4bb0f01273efd"
+                      "uuid": "a59f0f87-aa93-4cb6-a850-3b3505b813dc",
+                      "url": "http://example.org/payments/withdrawals/a59f0f87-aa93-4cb6-a850-3b3505b813dc?signature=919f2c9b69bd1cef8ca5d6cf97711536cd27fba4043635c0053e5ef1d33c4188"
                     }
                   }
                 },
@@ -697,14 +697,6 @@
             "type": "string",
             "example": "ru"
           },
-          "preset_name": {
-            "type": "string",
-            "example": "first customization"
-          },
-          "form_customization_id": {
-            "type": "string",
-            "example": "1"
-          },
           "redirect_url": {
             "type": "string",
             "example": "https://example.com/redirect_url"
@@ -733,14 +725,6 @@
           "locale": {
             "type": "string",
             "example": "ru"
-          },
-          "preset_name": {
-            "type": "string",
-            "example": "first customization"
-          },
-          "form_customization_id": {
-            "type": "string",
-            "example": "1"
           },
           "redirect_url": {
             "type": "string",
@@ -808,7 +792,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "2a06b263-3868-4615-a657-6b0f60221c07"
+                    "example": "7c6b96c3-3e21-448c-bfa2-09120598e1b0"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -816,7 +800,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-08-03T17:56:59.728+03:00"
+                    "example": "2023-08-04T21:19:57.620+03:00"
                   },
                   "national_currency": {
                     "type": "string",
