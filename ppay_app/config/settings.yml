@@ -27,6 +27,8 @@ navbar:
       path: not_found_payments_path
     - name: Платёжные системы
       path: payment_systems_path
+    - name: Статистика
+      path: dashboard_path
   merchant:
     - name: Все платежи
       path: payments_path
@@ -47,6 +49,8 @@ navbar:
       path: edit_processers_profile_path
     - name: Обработка
       path: flow_advertisements_path
+    - name: Статистика
+      path: dashboard_path
   support:
     - name: Все платежи
       path: payments_path
@@ -58,3 +62,5 @@ navbar:
       path: balance_requests_path
     - name: Реестр
       path: not_found_payments_path
+    - name: Статистика
+      path: dashboard_path

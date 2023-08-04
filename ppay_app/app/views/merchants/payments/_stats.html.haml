@@ -4,16 +4,16 @@
       .text-xl.flex-1 За сегодня
     %table.item-card-table
       %tbody
-        = render 'stats_tr', title: 'Депозитов',
+        = render 'shared/staff/stats/stats_tr', title: 'Депозитов',
                              value: @today_deposits.count,
                              icon: 'arrow-up'
-        = render 'stats_tr', title: 'Выводов', 
+        = render 'shared/staff/stats/stats_tr', title: 'Выводов',
                              value: @today_withdrawals.count,
                              icon: 'arrow-down'
-        = render 'stats_tr', title: 'Всего платежей',
+        = render 'shared/staff/stats/stats_tr', title: 'Всего платежей',
                              value: @today_payments.count,
                              icon: 'exchange'
-        = render 'stats_tr', title: 'Изменение баланса',
+        = render 'shared/staff/stats/stats_tr', title: 'Изменение баланса',
                              value: @today_balance_change,
                              icon: 'line-chart',
                              float_number: true,
@@ -26,12 +26,12 @@
       .text-xl.flex-1 За всё время
     %table.item-card-table
       %tbody
-        = render 'stats_tr', title: 'Депозитов',
+        = render 'shared/staff/stats/stats_tr', title: 'Депозитов',
                              value: @deposits.count,
                              icon: 'arrow-up'
-        = render 'stats_tr', title: 'Выводов', 
+        = render 'shared/staff/stats/stats_tr', title: 'Выводов',
                              value: @withdrawals.count,
                              icon: 'arrow-down'
-        = render 'stats_tr', title: 'Всего платежей',
+        = render 'shared/staff/stats/stats_tr', title: 'Всего платежей',
                              value: @payments.count,
                              icon: 'exchange'
