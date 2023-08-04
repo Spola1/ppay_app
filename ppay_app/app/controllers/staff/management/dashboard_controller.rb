@@ -8,7 +8,7 @@ module Staff
       end
 
       def filtering_params
-        params[:payment_filters]&.slice(:created_from, :created_to, :merchant, :period)
+        params[:payment_filters]&.slice(:created_from, :created_to, :national_currency, :merchant, :period)
       end
     end
   end

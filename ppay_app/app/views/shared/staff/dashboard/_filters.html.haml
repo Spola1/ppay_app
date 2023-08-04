@@ -17,7 +17,7 @@
                            html5: true,
                            input_html:{ value: payment_filters_params(:created_to) },
                            required: false
-  .filters-grid
+  .filters-grid.filters-grid-3
     = f.input :national_currency, collection: NationalCurrency.pluck(:name),
                                   include_blank: 'Все',
                                   selected: payment_filters_params(:national_currency),
