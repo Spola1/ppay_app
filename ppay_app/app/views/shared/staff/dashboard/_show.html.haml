@@ -33,7 +33,11 @@
               title: 'Среднее время подтверждения',
               value: "#{stats.average_confirmation.round(2)} сек",
               value_color: average_confirmation_color(stats.average_confirmation)
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Текущий баланс',
+              value: "#{stats.processer.balance.decorate.amount_formatted}",
+              value_color: balance_color(stats.processer.balance.amount)
             - stats.active_advertisements.each do |currency, advertisements|
               = render 'shared/staff/stats/stats_tr',
-                title: "Активных карт #{currency}",
+                title: "Текущие активные карты #{currency}",
                 value: active_advertisements_list(advertisements)

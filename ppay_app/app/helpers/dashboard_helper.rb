@@ -12,6 +12,10 @@ module DashboardHelper
     value >= 60 ? RED_COLOR : GREEN_COLOR
   end
 
+  def balance_color(value)
+    value > 150 ? GREEN_COLOR : RED_COLOR
+  end
+
   def merchants_collection
     Merchant.all.map { |merchant| [merchant.nickname, merchant.id] }
   end
