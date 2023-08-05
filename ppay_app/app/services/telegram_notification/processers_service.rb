@@ -23,7 +23,7 @@ module TelegramNotification
       @payment = payment
     end
 
-    def send_notification_to_user(user)
+    def send_new_payment_notification_to_user(user)
       message = "Уведомление о платеже:\n\n"
 
       message += "Тип: #{I18n.t("activerecord.attributes.type.#{@type.downcase}")}\n"
@@ -33,6 +33,19 @@ module TelegramNotification
       message += "Номер карты: #{@type == 'Deposit' ? @advertisement_card_number : @card_number}\n"
       message += "Статус: #{I18n.t("activerecord.attributes.payment/payment_status.#{@payment_status}")}\n"
       message += "Платёж будет отменён: #{time_of_payment_cancellation}\n"
+      message += "Ссылка на платёж: \n"
+      message += "#{PaymentUrlUtility.new(payment).url}\n"
+
+      send_message_to_user(user, message) unless user.nil?
+    end
+
+    def send_new_arbitration_notification_to_user(user)
+      message = "Арбитраж по платежу\n\n"
+
+      message += "uuid: #{@uuid}\n"
+      message += "Сумма: #{@national_currency_amount} #{@national_currency}\n"
+      message += "Банк: #{@payment_system}\n"
+      message += "Номер карты: #{@type == 'Deposit' ? @advertisement_card_number : @card_number}\n"
       message += "Ссылка на платёж: \n"
       message += "#{PaymentUrlUtility.new(payment).url}\n"
 

@@ -10,7 +10,12 @@ module Payments
 
       notify_service = TelegramNotification::ProcessersService.new(payment)
 
-      notify_service.send_notification_to_user(payment.processer.telegram_id)
+      if payment.arbitration?
+        notify_service.send_new_arbitration_notification_to_user(payment.processer.telegram_id)
+        notify_service.send_new_arbitration_notification_to_user(payment.support.telegram_id)
+      else
+        notify_service.send_new_payment_notification_to_user(payment.processer.telegram_id)
+      end
     end
   end
 end
