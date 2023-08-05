@@ -88,6 +88,10 @@ Rails.application.routes.draw do
     resource :profile, only: %i[edit update]
   end
 
+  namespace :supports do
+    resource :profile, only: %i[edit update]
+  end
+
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
     resources :advertisements do
       collection do

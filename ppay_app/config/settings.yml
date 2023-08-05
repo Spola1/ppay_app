@@ -64,6 +64,8 @@ navbar:
     #   path: rate_snapshots_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Телеграм Бот
+      path: edit_supports_profile_path
     - name: Реестр
       path: not_found_payments_path
     - name: Арбитражи по чеку
