@@ -5,7 +5,7 @@ module Staff
     def show
       @stats = processers_scope.decorate.map do |processer|
         Payments::Dashboard::GetStatsInteractor.call(processer:, filtering_params:)
-      end.sort { |stats| stats.finished }.reverse
+      end.sort_by(&:finished).reverse
     end
 
     private
