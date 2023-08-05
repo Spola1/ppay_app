@@ -95,4 +95,40 @@ RSpec.describe TelegramNotification::ProcessersService do
       service.send_new_arbitration_notification_to_user(payment.support.telegram_id)
     end
   end
+
+  describe '#send_new_comment_notification_to_user' do
+    let(:payment) { create(:payment, :deposit, arbitration: true, advertisement: ad, support: support) }
+    let(:ad) { create(:advertisement, :deposit) }
+    let(:support) { create(:support, telegram_id: '321321321') }
+
+    before do
+      payment.support.chats.create!(text: 'test', payment_id: payment.id)
+      payment.processer.telegram_id = 123_123_123
+      payment.merchant.telegram_id = 111_111_111
+    end
+
+    it 'sends a notification message to the user' do
+      service = described_class.new(payment)
+
+      message = "Добавлен новый комментарий по арбитражу\n\n" \
+                "uuid: #{payment.uuid}\n" \
+                "Комментарий: test\n" \
+                "Ссылка на платёж: \n" \
+                "http://example.org/payments/deposits/#{payment.uuid}\n"
+
+      expect(service).to receive(:send_message_to_user)
+        .with(payment.processer.telegram_id, message)
+
+      expect(service).to receive(:send_message_to_user)
+        .with(payment.support.telegram_id, message)
+
+      expect(service).to receive(:send_message_to_user)
+        .with(payment.merchant.telegram_id, message)
+
+      service.send_new_comment_notification_to_user(payment.processer.telegram_id)
+      service.send_new_comment_notification_to_user(payment.support.telegram_id)
+      service.send_new_comment_notification_to_user(payment.merchant.telegram_id)
+    end
+  end
+  
 end

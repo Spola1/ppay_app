@@ -54,14 +54,6 @@ module TelegramNotification
     end
 
     def send_new_comment_notification_to_user(user)
-      allowed_users = [
-        payment.support.telegram_id,
-        payment.processer.telegram_id,
-        payment.merchant.telegram_id
-      ]
-
-      return if allowed_users.include?(user)
-
       message = "Добавлен новый комментарий по арбитражу\n\n"
 
       message += "uuid: #{@uuid}\n"
