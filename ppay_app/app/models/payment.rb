@@ -139,7 +139,7 @@ class Payment < ApplicationRecord
   }
 
   scope :arbitration_by_check, lambda {
-    where(payment_status: 'cancelled', arbitration_reason: [5, 6])
+    where(arbitration: true, arbitration_reason: [5, 6])
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }

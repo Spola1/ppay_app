@@ -14,22 +14,18 @@
           - if payment.arbitration
             .badge
               На арбитраже
-          - if payment.arbitration?
-            .badge
+          - if payment.arbitration? && payment.arbitration_reason?
+            .badge.bg-gray-200.text-red.border.border-red-600
               = arbitration_reason_translation(payment.arbitration_reason)
-
-
-      - unless payment.arbitration || role_namespace != 'merchants'
-        .mt-9.mb-2.font-medium
-          %span{style: "white-space: nowrap;"}
-            Выберите причину и загрузите изображение чека, чтобы отправить платеж
-            %span.text-red-600
-              на Арбитраж
-
-        .flex
-          - if local_assigns[:can_manage_payment?]
-            = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
-
+        
+        - if role_namespace == 'supports' || role_namespace == 'processers'
+          .flex
+            - if local_assigns[:can_manage_payment?]
+              = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+      
+      - if role_namespace == 'merchants'
+        = render "merchants/payments/management_buttons", payment:
+  
       .mt-4.mb-8.image-processer-block
         = render 'shared/staff/payments/image', payment:
 
@@ -185,38 +181,38 @@
               = render 'shared/staff/payments/payment_audit', payment:
 
   - if local_assigns[:can_manage_payment?]
-    .card-wrap.p-0
-      - if payment.arbitration?
-        .card-wrap
-          .item-card{ class: 'min-w-[240px]' }
-            = render 'shared/chat_content', payment:
+    .card-wrap
+      - if payment_status_partial_exists?(payment, 'processers') && role_namespace != 'merchants' && role_namespace != 'supports'
+        = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
+      
+      .card-wrap.p-0
+        - if payment.arbitration?
+          .card-wrap
+            .item-card{ class: 'min-w-[240px]' }
+              = render 'shared/chat_content', payment:
 
-      .card-wrap
-        - if payment_status_partial_exists?(payment, 'processers') && role_namespace != 'merchants'
-          = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
+        - unless role_namespace == 'merchants'
+          .item-card
+            %p.text-xl.mb-2 Комментарии
 
-      - unless role_namespace == 'merchants'
-        .item-card
-          %p.text-xl.mb-2 Комментарии
+            - if payment.comments.present?
+              .flex.flex-col
+                - payment.comments.decorate.each do |comment|
+                  .flex.flex-col.my-2.items-start
+                    .text-xs.mb-1
+                    - if comment.author_nickname.present?
+                      = comment.author_nickname
+                    - else
+                      = "#{comment.user.nickname} (#{comment.user.decorate.human_type})"
+                    .comment_item.px-4.py-2.rounded-lg.text-sm.border{
+                      class: comment.user&.support? ? 'bg-blue-100' : 'bg-slate-100'
+                    }
+                      .comment_item_text{ class: ('simbank-comment' if comment.author_nickname == Settings.simbank_nickname) }
+                        = comment.text.gsub("\n", '<br />').html_safe
+                    .text-xs.mt-1.text-gray-500
+                      = comment.formatted_created_at
 
-          - if payment.comments.present?
-            .flex.flex-col
-              - payment.comments.decorate.each do |comment|
-                .flex.flex-col.my-2.items-start
-                  .text-xs.mb-1
-                  - if comment.author_nickname.present?
-                    = comment.author_nickname
-                  - else
-                    = "#{comment.user.nickname} (#{comment.user.decorate.human_type})"
-                  .comment_item.px-4.py-2.rounded-lg.text-sm.border{
-                    class: comment.user&.support? ? 'bg-blue-100' : 'bg-slate-100'
-                  }
-                    .comment_item_text{ class: ('simbank-comment' if comment.author_nickname == Settings.simbank_nickname) }
-                      = comment.text.gsub("\n", '<br />').html_safe
-                  .text-xs.mt-1.text-gray-500
-                    = comment.formatted_created_at
-
-          .mt-4
-            = form_for Comment.new, url: payment_comments_path(payment_uuid: payment.uuid), remote: true do |f|
-              = f.text_area :text, class: 'form-input w-full h-16'
-              = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
+            .mt-4
+              = form_for Comment.new, url: payment_comments_path(payment_uuid: payment.uuid), remote: true do |f|
+                = f.text_area :text, class: 'form-input w-full h-16'
+                = f.submit 'Добавить комментарий', class: 'form-submit mt-4'
