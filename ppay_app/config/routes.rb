@@ -84,6 +84,10 @@ Rails.application.routes.draw do
     root 'payments#index', as: :merchants_root
   end
 
+  namespace :merchants do
+    resource :profile, only: %i[edit update]
+  end
+
   namespace :processers do
     resource :profile, only: %i[edit update]
   end
