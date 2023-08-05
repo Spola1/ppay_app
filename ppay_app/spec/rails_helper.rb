@@ -76,6 +76,8 @@ RSpec.configure do |config|
 
   config.include_context 'turn off UpdateCallbackJob'
   config.include_context 'payment means'
+
+  # config.before(:suite) { ActiveRecord::Base.logger = Logger.new(STDOUT) }
 end
 
 Shoulda::Matchers.configure do |config|

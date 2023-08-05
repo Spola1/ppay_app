@@ -45,7 +45,7 @@ module Admins
 
       def settings_params
         params.require(:merchant)
-              .permit(:nickname, :name, :check_required, :unique_amount, :account_number_required,
+              .permit(:nickname, :name, :check_required, :unique_amount, :any_bank, :account_number_required,
                       :account_number_title, :account_number_placeholder, commissions: {})
       end
     end

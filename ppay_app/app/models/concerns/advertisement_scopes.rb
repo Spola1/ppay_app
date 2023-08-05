@@ -20,7 +20,12 @@ module AdvertisementScopes
     scope :for_payment, lambda { |payment|
       join_active_payments
         .active
-        .by_payment_system(payment.payment_system)
+        .by_payment_system(
+          payment.payment_system.presence ||
+          payment.merchant.payment_systems
+            .where(merchant_methods: { direction: payment.type })
+            .pluck(:name)
+        )
         .group('advertisements.id')
     }
 

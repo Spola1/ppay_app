@@ -5,30 +5,12 @@ class Payment < ApplicationRecord
   include DateFilterable
   include Filterable
   include EnumValidatable
+  include Payments::Filterable
 
   audited
 
   default_scope { order(created_at: :desc, id: :desc) }
-  scope :filter_by_created_from, lambda { |created_from|
-    where('payments.created_at >= ?', created_from.in_time_zone.beginning_of_day)
-  }
-  scope :filter_by_created_to, lambda { |created_to|
-    where('payments.created_at <= ?', created_to.in_time_zone.end_of_day)
-  }
-  scope :filter_by_cancellation_reason, ->(cancellation_reason) { where(cancellation_reason:) }
-  scope :filter_by_payment_status, ->(payment_status) { where(payment_status:) }
-  scope :filter_by_payment_system, ->(payment_system) { where(payment_system:) }
-  scope :filter_by_national_currency, ->(national_currency) { where(national_currency:) }
-  scope :filter_by_uuid, ->(uuid) { where('uuid::text LIKE ?', "%#{uuid}%") }
-  scope :filter_by_external_order_id, ->(external_order_id) { where(external_order_id:) }
-  scope :filter_by_national_currency_amount_from,
-        ->(national_currency_amount) { where 'national_currency_amount >= ?', national_currency_amount }
-  scope :filter_by_national_currency_amount_to,
-        ->(national_currency_amount) { where 'national_currency_amount <= ?', national_currency_amount }
-  scope :filter_by_cryptocurrency_amount_from,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount >= ?', cryptocurrency_amount }
-  scope :filter_by_cryptocurrency_amount_to,
-        ->(cryptocurrency_amount) { where 'cryptocurrency_amount <= ?', cryptocurrency_amount }
+
   scope :expired_arbitration_not_paid, lambda {
     where(arbitration: true,
           arbitration_reason: :not_paid)
@@ -37,6 +19,7 @@ class Payment < ApplicationRecord
     where(autoconfirming: true, payment_status: :confirming)
       .where('status_changed_at <= ?', 3.minutes.ago)
   }
+  scope :finished, -> { where(payment_status: %w[cancelled completed]) }
 
   enum cancellation_reason: {
     by_client: 0,
@@ -90,7 +73,6 @@ class Payment < ApplicationRecord
   before_save :take_off_arbitration, if: -> { payment_status.in?(%w[cancelled completed]) && payment_status_changed? }
   before_save :update_status_changed_at, if: :payment_status_changed?
 
-  validates_presence_of :payment_system, if: :external?
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
   validates_presence_of :national_currency, :national_currency_amount, :callback_url
   validates_presence_of :redirect_url, if: :internal?

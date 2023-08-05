@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_04_200438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -115,7 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "requests_type", default: 0, null: false
-    t.decimal "amount", precision: 12, scale: 2
+    t.decimal "amount", precision: 128, scale: 64
     t.integer "status", default: 0, null: false
     t.string "crypto_address"
     t.text "short_comment"
@@ -269,7 +269,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
   create_table "not_found_payments", force: :cascade do |t|
     t.bigint "advertisement_id", null: false
     t.bigint "incoming_request_id", null: false
-    t.decimal "parsed_amount", precision: 12, scale: 2
+    t.decimal "parsed_amount", precision: 128, scale: 64
     t.string "parsed_card_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -305,9 +305,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.datetime "updated_at", null: false
     t.string "direction"
     t.string "cryptocurrency", default: "USDT", null: false
-    t.decimal "cryptocurrency_amount", precision: 12, scale: 2
+    t.decimal "cryptocurrency_amount", precision: 128, scale: 64
     t.string "national_currency"
-    t.decimal "national_currency_amount", precision: 12, scale: 2
+    t.decimal "national_currency_amount", precision: 128, scale: 64
     t.string "payment_system"
     t.string "payment_status"
     t.string "cancelled_on_status"
@@ -328,7 +328,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.integer "cancellation_reason"
     t.integer "unique_amount"
     t.integer "processing_type", default: 0
-    t.decimal "initial_amount", precision: 12, scale: 2
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
@@ -410,6 +410,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_073010) do
     t.boolean "account_number_required", default: false
     t.string "account_number_title"
     t.string "account_number_placeholder"
+    t.string "any_bank"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

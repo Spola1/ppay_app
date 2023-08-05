@@ -9,6 +9,7 @@ ru:
         account_number_required: Подтверждение по номеру счета
         account_number_title: Название поля для номера счета
         account_number_placeholder: Плейсхолдер для номера счета
+        any_bank: 'Название "Любого банка" в списке платёжных методов'
 
   users:
     sidebar:

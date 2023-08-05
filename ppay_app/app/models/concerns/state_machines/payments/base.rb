@@ -34,23 +34,21 @@ module StateMachines
         I18n.locale = I18n.default_locale
       end
 
+      def set_payment_system_by_advertisement
+        return if payment_system.present?
+
+        self.payment_system = advertisement.payment_system
+      end
+
       def valid_payment_system?(params)
         assign_params(params, %i[payment_system])
-
-        return unless validate_payment_system_presence
 
         validate_payment_system_availability
       end
 
-      def validate_payment_system_presence
-        return true if payment_system.present?
-
-        errors.add(:payment_system, :blank)
-        false
-      end
-
       def validate_payment_system_availability
         return true if payment_system.in?(merchant_payment_systems)
+        return true if payment_system.blank?
 
         errors.add(:payment_system, :invalid)
         false

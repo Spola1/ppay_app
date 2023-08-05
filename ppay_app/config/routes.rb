@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :incoming_requests
     resources :masks
     resources :not_found_payments, only: %i[index show destroy]
+    resource :dashboard, only: :show, controller: :dashboard
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -103,6 +104,7 @@ Rails.application.routes.draw do
         get :arbitration_by_check
       end
     end
+    resource :dashboard, only: :show, controller: :dashboard
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show update]
       resources :withdrawals, param: :uuid, only: %i[index show update]
@@ -127,6 +129,7 @@ Rails.application.routes.draw do
     end
     resources :not_found_payments, only: %i[index show destroy]
     resources :incoming_requests
+    resource :dashboard, only: :show, controller: :dashboard
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]

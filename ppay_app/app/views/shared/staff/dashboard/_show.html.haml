@@ -1,0 +1,39 @@
+%section.wrap
+  .mx-2.mt-8.w-full
+    %h1 Статистика
+  .filters-wrap
+    .item-card
+      %h1.mb-4.text-xl Фильтры
+      = render dashboard_filters_partial(current_user)
+  - @stats.each do |stats|
+    .card-wrap{ class: 'basis-1/2' }
+      .item-card.h-full
+        .flex.mb-4.items-center
+          .text-xl.flex-1= stats.processer.display_name
+        %table.item-card-table
+          %tbody
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Количество завершенных платежей',
+              value: stats.finished
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Количество успешных платежей',
+              value: stats.completed
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Количество отмененных платежей',
+              value: stats.cancelled
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Сумма успешных платежей',
+              value: stats.completed_sum,
+              currency: '$'
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Конверсия',
+              value: "#{stats.conversion}%",
+              value_color: conversion_color(stats.conversion)
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Среднее время подтверждения',
+              value: "#{stats.average_confirmation.round(2)} сек",
+              value_color: average_confirmation_color(stats.average_confirmation)
+            - stats.active_advertisements.each do |currency, advertisements|
+              = render 'shared/staff/stats/stats_tr',
+                title: "Активных карт #{currency}",
+                value: active_advertisements_list(advertisements)
