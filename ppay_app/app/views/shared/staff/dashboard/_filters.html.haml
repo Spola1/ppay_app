@@ -7,17 +7,8 @@
     = f.input :period, collection: periods_collection,
                        selected: payment_filters_params(:period),
                        include_blank: '- Не выбрано -',
-                       label: 'Выберите из списка, либо укажите даты от и до',
+                       label: 'Период',
                        required: false
-    = f.input :created_from, as: :date,
-                             html5: true,
-                             input_html:{ value: payment_filters_params(:created_from) },
-                             required: false
-    = f.input :created_to, as: :date,
-                           html5: true,
-                           input_html:{ value: payment_filters_params(:created_to) },
-                           required: false
-  .filters-grid.filters-grid-3
     = f.input :national_currency, collection: NationalCurrency.pluck(:name),
                                   include_blank: 'Все',
                                   selected: payment_filters_params(:national_currency),
