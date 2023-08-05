@@ -44,6 +44,8 @@ module Payments
           .completed
           .joins(:audits)
           .where("audits.audited_changes @> '{\"payment_status\": [\"transferring\",\"confirming\"]}'")
+          .where.not("audits.audited_changes @> '{\"arbitration\": [\"false\",\"true\"]}'")
+          .distinct
           .average('payments.status_changed_at - audits.created_at') || 0
       end
 

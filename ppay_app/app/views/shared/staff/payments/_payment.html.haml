@@ -78,7 +78,7 @@
               %td.item-card-td.item-card-td-label Кол-во криптовалюты
               %td.item-card-td
                 - if payment.cryptocurrency_amount
-                  = "#{payment.cryptocurrency_amount}"
+                  = "#{payment.cryptocurrency_four_digits}"
                 - else
                   = "? (ещё не рассчитано)"
 

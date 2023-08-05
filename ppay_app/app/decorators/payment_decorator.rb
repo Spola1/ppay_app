@@ -137,6 +137,10 @@ class PaymentDecorator < ApplicationDecorator
     formatted_amount(cryptocurrency_amount)
   end
 
+  def cryptocurrency_four_digits
+    cryptocurrency_amount&.round(4)
+  end
+
   def cryptocurrency_commission_amount
     commission_amount&.to_f
   end
