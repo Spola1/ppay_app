@@ -6,7 +6,7 @@ require 'date'
 module TelegramNotification
   class ProcessersService < BaseService
     attr_reader :payment, :national_currency_amount, :card_number, :national_currency, :external_order_id,
-                :payment_status, :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid
+                :payment_status, :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid, :chats
 
     def initialize(payment)
       super()
@@ -21,6 +21,7 @@ module TelegramNotification
       @status_changed_at = payment.status_changed_at
       @uuid = payment.uuid
       @payment = payment
+      @chats = payment&.chats&.last&.text
     end
 
     def send_new_payment_notification_to_user(user)
@@ -46,6 +47,25 @@ module TelegramNotification
       message += "Сумма: #{@national_currency_amount} #{@national_currency}\n"
       message += "Банк: #{@payment_system}\n"
       message += "Номер карты: #{@type == 'Deposit' ? @advertisement_card_number : @card_number}\n"
+      message += "Ссылка на платёж: \n"
+      message += "#{PaymentUrlUtility.new(payment).url}\n"
+
+      send_message_to_user(user, message) unless user.nil?
+    end
+
+    def send_new_comment_notification_to_user(user)
+      allowed_users = [
+        payment.support.telegram_id,
+        payment.processer.telegram_id,
+        payment.merchant.telegram_id
+      ]
+
+      return if allowed_users.include?(user)
+
+      message = "Добавлен новый комментарий по арбитражу\n\n"
+
+      message += "uuid: #{@uuid}\n"
+      message += "Комментарий: #{@chats}\n"
       message += "Ссылка на платёж: \n"
       message += "#{PaymentUrlUtility.new(payment).url}\n"
 

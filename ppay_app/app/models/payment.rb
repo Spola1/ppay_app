@@ -116,8 +116,6 @@ class Payment < ApplicationRecord
 
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
-  after_update_commit :send_arbitration_notification, if: :saved_change_to_arbitration?
-
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
@@ -209,10 +207,16 @@ class Payment < ApplicationRecord
     )
   end
 
+  after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
+
+  def arbitration_changed_to_true?
+    arbitration? && attribute_was(:arbitration)
+  end
+
   private
 
   def send_arbitration_notification
-    Payments::TelegramNotificationJob.perform_async(id) if arbitration?
+    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil)
   end
 
   def validate_arbitration_fields
@@ -275,7 +279,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    Payments::TelegramNotificationJob.perform_async(id)
+    Payments::TelegramNotificationJob.perform_async(id, false, nil)
 
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
