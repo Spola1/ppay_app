@@ -103,6 +103,8 @@ class Payment < ApplicationRecord
                                          valid_values: unique_amounts.keys.join(', ') }
   validatable_enum :unique_amount
 
+  validate :validate_arbitration_fields, on: :merchant
+
   after_update_commit :complete_transactions, if: -> {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
   }
@@ -114,6 +116,7 @@ class Payment < ApplicationRecord
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
+    broadcast_replace_payment_to_merchant
   }
 
   after_update_commit lambda {
@@ -151,6 +154,10 @@ class Payment < ApplicationRecord
                .or(withdrawals.transferring)
                .or(withdrawals.arbitration)
                .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, status_changed_at DESC")))
+  }
+
+  scope :arbitration_by_check, lambda {
+    where(payment_status: 'cancelled', arbitration_reason: [5, 6])
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }
@@ -200,6 +207,15 @@ class Payment < ApplicationRecord
     )
   end
 
+  def broadcast_replace_payment_to_merchant
+    broadcast_replace_later_to(
+      "merchant_payment_#{uuid}",
+      partial: 'merchants/payments/show_turbo_frame',
+      locals: { payment: decorate, signature: nil, role_namespace: 'merchants', can_manage_payment?: true },
+      target: "merchants_payment_#{uuid}"
+    )
+  end
+
   def broadcast_replace_payment_to_support
     broadcast_replace_later_to(
       "supports_payment_#{uuid}",
@@ -210,6 +226,13 @@ class Payment < ApplicationRecord
   end
 
   private
+
+  def validate_arbitration_fields
+    return unless arbitration?
+
+    errors.add(:arbitration_reason, "can't be blank") if arbitration_reason.blank?
+    errors.add(:image, "can't be blank") if image.blank?
+  end
 
   def set_locale_from_currency
     self.locale = currency_to_locale(national_currency) if locale.blank?

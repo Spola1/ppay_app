@@ -60,7 +60,11 @@ Rails.application.routes.draw do
   end
 
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do
-    resources :payments, only: :index
+    resources :payments, only: :index do
+      collection do
+        get :arbitration_by_check
+      end
+    end
     resources :balance_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show create update new] do
@@ -94,7 +98,11 @@ Rails.application.routes.draw do
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
     resources :balance_requests
-    resources :payments, param: :uuid, only: %i[index update show]
+    resources :payments, param: :uuid, only: %i[index update show] do 
+      collection do
+        get :arbitration_by_check
+      end
+    end
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show update]
       resources :withdrawals, param: :uuid, only: %i[index show update]
@@ -112,7 +120,11 @@ Rails.application.routes.draw do
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
     resources :advertisements, except: %i[new create]
     resources :balance_requests
-    resources :payments, param: :uuid, only: %i[index update show]
+    resources :payments, param: :uuid, only: %i[index update show] do
+      collection do
+        get :arbitration_by_check
+      end
+    end
     resources :not_found_payments, only: %i[index show destroy]
     resources :incoming_requests
     namespace :payments do

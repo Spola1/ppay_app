@@ -10,14 +10,12 @@ module Merchants
         @payments = @payments.decorate
       end
 
-      def show
-        render 'supports/payments/show'
-      end
+      def show; end
 
       def update
-        @payment.update(payment_params)
+        @payment.assign_attributes(payment_params)
 
-        render 'supports/payments/show'
+        render :show if @payment.save(context: :merchant)
       end
 
       def new
@@ -49,7 +47,8 @@ module Merchants
       def payment_params
         params.require(:deposit).permit(:national_currency_amount, :national_currency, :direction, :redirect_url,
                                         :callback_url, :external_order_id, :locale,
-                                        :arbitration, :arbitration_reason, :image).merge(merchant_id: current_user.id)
+                                        :arbitration, :arbitration_reason, :image, :cancellation_reason
+                                       ).merge(merchant_id: current_user.id)
       end
     end
   end

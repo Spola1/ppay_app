@@ -14,17 +14,21 @@
           - if payment.arbitration
             .badge
               На арбитраже
+          - if payment.arbitration?
+            .badge
+              = arbitration_reason_translation(payment.arbitration_reason)
 
-      - unless payment.arbitration
+
+      - unless payment.arbitration || role_namespace != 'merchants'
         .mt-9.mb-2.font-medium
           %span{style: "white-space: nowrap;"}
             Выберите причину и загрузите изображение чека, чтобы отправить платеж
             %span.text-red-600
               на Арбитраж
 
-      .flex
-        - if local_assigns[:can_manage_payment?]
-          = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+        .flex
+          - if local_assigns[:can_manage_payment?]
+            = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
 
       .mt-4.mb-8.image-processer-block
         = render 'shared/staff/payments/image', payment:
@@ -56,7 +60,7 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус
               %td.item-card-td
-                - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled])
+                - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled]) && role_namespace != 'merchants'
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - else
                   = payment.human_payment_status
@@ -188,9 +192,10 @@
             = render 'shared/chat_content', payment:
 
       .card-wrap
-        - if payment_status_partial_exists?(payment, 'processers')
+        - if payment_status_partial_exists?(payment, 'processers') && role_namespace != 'merchants'
           = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
 
+      - unless role_namespace == 'merchants'
         .item-card
           %p.text-xl.mb-2 Комментарии
 

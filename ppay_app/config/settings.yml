@@ -34,6 +34,8 @@ navbar:
       path: new_payments_deposit_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Арбитражи по чеку
+      path: arbitration_by_check_payments_path
   processer:
     - name: Все платежи
       path: payments_path
@@ -47,6 +49,8 @@ navbar:
       path: edit_processers_profile_path
     - name: Обработка
       path: flow_advertisements_path
+    - name: Арбитражи по чеку
+      path: arbitration_by_check_payments_path
   support:
     - name: Все платежи
       path: payments_path
@@ -58,3 +62,5 @@ navbar:
       path: balance_requests_path
     - name: Реестр
       path: not_found_payments_path
+    - name: Арбитражи по чеку
+      path: arbitration_by_check_payments_path
