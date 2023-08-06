@@ -55,6 +55,8 @@ class Payment < ApplicationRecord
 
   has_many :transactions, as: :transactionable
 
+  has_many :payment_receipts, dependent: :destroy
+
   # в каждый платеж прикрепляем курс на данный момент
   # это обязательно
   belongs_to :rate_snapshot, optional: true
