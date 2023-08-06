@@ -5,7 +5,9 @@ module Payments
     before_action :find_payment
 
     def create
-      @payment.payment_receipts.create!(payment_receipt_params)
+      payment_receipt = @payment.payment_receipts.create!(payment_receipt_params)
+
+      @payment.update(arbitration: true) if payment_receipt.save
     end
 
     private

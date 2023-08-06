@@ -15,8 +15,6 @@
               = link_to payment.image, target: '_blank' do
                 = image_tag payment.image, class: 'max-h-96 inline-block', width: '150px'
             %td.items-list-td
-              - if payment.arbitration_reason.present?
-                = translate_arbitration_reason(payment.arbitration_reason)
             %td.items-list-td
           
         - payment.payment_receipts.each do |receipt|
