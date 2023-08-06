@@ -130,5 +130,4 @@ RSpec.describe TelegramNotification::ProcessersService do
       service.send_new_comment_notification_to_user(payment.merchant.telegram_id)
     end
   end
-  
 end
