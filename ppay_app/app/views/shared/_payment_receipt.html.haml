@@ -1,0 +1,7 @@
+= simple_form_for PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+  = f.file_field :image
+  = f.submit 'Добавить скриншот', class: 'form-submit mt-4'
+
+
+
+

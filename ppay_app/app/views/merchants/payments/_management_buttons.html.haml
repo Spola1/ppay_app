@@ -1,28 +1,49 @@
-- unless payment.arbitration
+- if !payment.arbitration
   .flex
     %span{style: "white-space: nowrap;"}
       Выберите причину и загрузите изображение чека, чтобы отправить платеж
       %span.text-red-600
         на Арбитраж
-      = simple_form_for payment, url: payment_path(payment), action: :update,
-                data: { turbo_confirm: 'Вы уверены, что хотите отправить платёж на арбитраж?' } do |f|
-        = f.hidden_field :arbitration, value: true
-        .flex.space-x-3.mt-2
-          .flex-1
-            .mb-1.text-xs
-              = f.label :arbitration_reason, 'Выберите причину арбитража'
-              %span.text-red-500.ml-1
-                *
-            = f.select :arbitration_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[40px] text-xs'
-          .flex-1
-            .mb-1.text-xs
-              = f.label :image, 'Загрузите чек'
-              %span.text-red-500.ml-1
-                *
-            .file-field-container.flex.items-center
-              = f.file_field :image, class: 'hidden', id: 'file-field'
-              %label.btn.btn-secondary.btn-sm{ for: 'file-field', class: 'cursor-pointer grayy-button h-[40px] w-[200px] text-xs flex items-center justify-center' }
-                = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
-                %span.inline-block PDF/JPG/PNG
-          .flex-shrink-0.mt-auto
-            = f.submit 'На арбитраж', class: 'red-button h-[40px] text-xs'
+  = simple_form_for payment, url: payment_path(payment), action: :update,
+            data: { turbo_confirm: 'Вы уверены, что хотите отправить платёж на арбитраж?' } do |f|
+    = f.hidden_field :arbitration, value: true
+    .flex.space-x-3.mt-2
+      .flex-1
+        .mb-1.text-xs
+          = f.label :arbitration_reason, 'Выберите причину арбитража'
+          %span.text-red-500
+            *
+        = f.select :arbitration_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[40px] text-xs'
+      .flex-1
+        .mb-1.text-xs
+          = f.label :image, 'Загрузите чек'
+          %span.text-red-500
+            *
+        .file-field-container.flex.items-center
+          = f.file_field :image, class: 'hidden', id: 'file-field'
+          %label.btn.btn-secondary.btn-sm{ for: 'file-field', class: 'cursor-pointer grayy-button h-[40px] w-[200px] text-xs flex items-center justify-center' }
+            = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
+            %span.inline-block PDF/JPG/PNG
+      .mt-auto
+        = f.submit 'На арбитраж', class: 'red-button h-[40px] text-xs'
+- else
+  = simple_form_for PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+    .flex.space-x-3.mt-2
+      .flex-1
+        .mb-1.text-xs
+          = f.label :receipt_reason, 'Выберите причину чека'
+          %span.text-red-500
+            *
+        = f.select :receipt_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[40px] text-xs'
+      .flex-1
+        .mb-1.text-xs
+          = f.label :image, 'Загрузите чек'
+          %span.text-red-500
+            *
+        .file-field-container.flex.items-center
+          = f.file_field :image, class: 'hidden', id: 'file-field'
+          %label.btn.btn-secondary.btn-sm{ for: 'file-field', class: 'cursor-pointer grayy-button h-[40px] w-[200px] text-xs flex items-center justify-center' }
+            = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
+            %span.inline-block PDF/JPG/PNG
+      .flex.mt-auto
+        = f.submit 'Добавить чек', class: 'form-submit h-[40px] text-xs'

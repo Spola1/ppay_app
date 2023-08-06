@@ -3,4 +3,25 @@
 class PaymentReceipt < ApplicationRecord
   belongs_to :payment
   has_one_attached :image
+
+  validates :receipt_reason, presence: true
+  validates :image, presence: true
+
+  enum receipt_reason: {
+    duplicate_payment: 0,
+    fraud_attempt: 1,
+    incorrect_amount: 2,
+    not_paid: 3,
+    time_expired: 4,
+    check_by_check: 5,
+    incorrect_amount_check_by_check: 6
+  }, _prefix: true
+
+  after_create_commit :set_arbitration_reason_from_receipt
+
+  private
+
+  def set_arbitration_reason_from_receipt
+    payment.update(arbitration_reason: receipt_reason)
+  end
 end

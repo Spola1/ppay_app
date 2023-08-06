@@ -162,6 +162,7 @@ Rails.application.routes.draw do
   resources :payments, param: :uuid, only: [] do
     resources :comments, only: :create, controller: 'payments/comments'
     resources :chats, only: :create, controller: 'payments/chats'
+    resources :payment_receipts, only: :create, controller: 'payments/payment_receipts'
   end
 
   constraints(
