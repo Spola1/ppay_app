@@ -38,11 +38,19 @@ class Payment < ApplicationRecord
     check_by_check: 5,
     incorrect_amount_check_by_check: 6
   }, _prefix: true
-  enum processing_type: { internal: 0, external: 1 }
+  enum processing_type: {
+    internal: 0,
+    external: 1
+  }
   enum unique_amount: {
     none: 0,
     integer: 1,
     decimal: 2
+  }, _prefix: true
+  enum arbitration_method: {
+    merchant_dashboard: 0,
+    hpp_form: 1,
+    merchant_service: 2
   }, _prefix: true
 
   has_many :transactions, as: :transactionable
