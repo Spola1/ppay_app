@@ -25,10 +25,6 @@ module Supports
       render :show
     end
 
-    def arbitration_by_check
-      @pagy, @payments = pagy(Payment.includes(:merchant).arbitration_by_check.decorate)
-    end
-
     private
 
     def set_all_payments

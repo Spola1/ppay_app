@@ -61,11 +61,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do
-    resources :payments, only: :index do
-      collection do
-        get :arbitration_by_check
-      end
-    end
+    resources :payments, only: :index
     resources :balance_requests
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show create update new] do
@@ -96,6 +92,10 @@ Rails.application.routes.draw do
     resource :profile, only: %i[edit update]
   end
 
+  namespace :arbitration do
+    resources :payments, only: [:index]
+  end
+
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
     resources :advertisements do
       collection do
@@ -107,11 +107,7 @@ Rails.application.routes.draw do
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
     resources :balance_requests
-    resources :payments, param: :uuid, only: %i[index update show] do 
-      collection do
-        get :arbitration_by_check
-      end
-    end
+    resources :payments, param: :uuid, only: %i[index update show]
     resource :dashboard, only: :show, controller: :dashboard
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show update]
@@ -130,11 +126,7 @@ Rails.application.routes.draw do
   scope module: :supports, constraints: ->(request) { request.env['warden'].user&.support? } do
     resources :advertisements, except: %i[new create]
     resources :balance_requests
-    resources :payments, param: :uuid, only: %i[index update show] do
-      collection do
-        get :arbitration_by_check
-      end
-    end
+    resources :payments, param: :uuid, only: %i[index update show]
     resources :not_found_payments, only: %i[index show destroy]
     resources :incoming_requests
     resource :dashboard, only: :show, controller: :dashboard
