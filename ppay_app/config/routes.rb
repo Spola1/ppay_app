@@ -155,6 +155,7 @@ Rails.application.routes.draw do
       namespace :external_processing do
         concerns :payments_creatable
         patch 'payments/:uuid/statuses/:event', to: 'payments/statuses#update'
+        post 'payments/:uuid/payment_receipts', to: 'payments/payment_receipts#create'
       end
     end
   end

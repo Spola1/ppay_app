@@ -59,22 +59,22 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "8bbde4d1-dca3-4458-9149-dee9edba9b79",
+                    "id": "ae40752b-9e77-40c1-bde4-4b827a29b42c",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "8bbde4d1-dca3-4458-9149-dee9edba9b79",
+                      "uuid": "ae40752b-9e77-40c1-bde4-4b827a29b42c",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-08-04T21:39:59.940+03:00",
+                      "expiration_time": "2023-08-07T16:04:11.372+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "payment_system": "Sberbank",
                       "initial_amount": "100.0",
-                      "cryptocurrency_commission_amount": 0.0652,
-                      "national_currency_commission_amount": 3.996108,
+                      "cryptocurrency_commission_amount": 0.0652635013868494,
+                      "national_currency_commission_amount": 3.9999999999999996,
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--9f449cfcc81c49ec88b7ae4a3f10308056249961/c8aa510e9b5f6e3d8e558eebdb5ee14e.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBQUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5930760c7ff6de45947379512632c88e01c1ca47/30ca76e80ad331091b96a11f44c2d034.svg"
                     }
                   }
                 },
@@ -109,6 +109,134 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/external_processing_deposits_create_parameter_body_schema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/external_processing/payments/{uuid}/payment_receipts": {
+      "post": {
+        "summary": "Создание чека платежа с внешним процессингом",
+        "tags": [
+          "Платежи - H2H (оплата на стороне магазина)"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "description": "## Создание чека платежа\n\nДля отправки запроса нужно указать уникальный идентификатор платежа **uuid** в\nадресной строке POST-запроса\n`/api/v1/external_processing/payments/{uuid}/payment_receipts`.\n\nТакже в теле `multipart/form-data` запроса передать следующие параметры:\n\n| Параметр            | Название              | Тип     | Наличие     | Описание                                                                                                                                                                      |\n|---------------------|-----------------------|---------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n| `image`             | Изображение           | File    | Обязательно | Изображение чека                                                                                                                                                              |\n| `comment`           | Комментарий           | String  | Опционально | Комментарий к чеку                                                                                                                                                            |\n| `receipt_reason`    | Причина отправки чека | String  | Опционально | Может иметь значения: **duplicate_payment**, **fraud_attempt**, **incorrect_amount**, **not_paid**, **time_expired**, **check_by_check**, **incorrect_amount_check_by_check** |\n| `start_arbitration` | Открыть арбитраж      | Boolean | Опционально | **true** если необходимо открыть арбитраж для платежа                                                                                                                         |\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "чек успешно создан",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "properties": {
+                            "image_url": {
+                              "type": "string"
+                            },
+                            "comment": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "receipt_reason": {
+                              "type": "string",
+                              "enum": {
+                                "duplicate_payment": 0,
+                                "fraud_attempt": 1,
+                                "incorrect_amount": 2,
+                                "not_paid": 3,
+                                "time_expired": 4,
+                                "check_by_check": 5,
+                                "incorrect_amount_check_by_check": 6
+                              },
+                              "nullable": true
+                            },
+                            "start_arbitration": {
+                              "type": "boolean",
+                              "nullable": true
+                            },
+                            "source": {
+                              "type": "string",
+                              "enum": {
+                                "merchant_dashboard": 0,
+                                "hpp_form": 1,
+                                "merchant_service": 2
+                              },
+                              "nullable": true
+                            }
+                          },
+                          "required": [
+                            "image_url",
+                            "comment",
+                            "receipt_reason",
+                            "start_arbitration",
+                            "source"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "type"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "чек не создан"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "file"
+                  },
+                  "comment": {
+                    "type": "string"
+                  },
+                  "receipt_reason": {
+                    "type": "string"
+                  },
+                  "start_arbitration": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "image"
+                ]
               }
             }
           }
@@ -197,16 +325,16 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "94766c9b-f3c1-4150-8ac0-7e1d8e1e720a",
+                    "id": "bffb769e-d882-4ec6-9aa9-29849bd0a29a",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "94766c9b-f3c1-4150-8ac0-7e1d8e1e720a",
+                      "uuid": "bffb769e-d882-4ec6-9aa9-29849bd0a29a",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "payment_system": "Sberbank",
                       "initial_amount": "3000.0",
-                      "cryptocurrency_commission_amount": 1.958,
-                      "national_currency_commission_amount": 120.00582
+                      "cryptocurrency_commission_amount": 1.9579050416054822,
+                      "national_currency_commission_amount": 119.99999999999999
                     }
                   }
                 },
@@ -270,11 +398,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "d05e2030-a0a6-439e-be51-93ed821ee872",
+                    "id": "436ab00e-cad7-4cc1-b9fa-249f568f224b",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "d05e2030-a0a6-439e-be51-93ed821ee872",
-                      "url": "http://example.org/payments/deposits/d05e2030-a0a6-439e-be51-93ed821ee872?signature=7a25fe792ca290aaebdc79cba2f64d759ff54960683a702c2c3137b2828271e9"
+                      "uuid": "436ab00e-cad7-4cc1-b9fa-249f568f224b",
+                      "url": "http://example.org/payments/deposits/436ab00e-cad7-4cc1-b9fa-249f568f224b?signature=c4800e1bbe8d967abc7669c5f9957f600472d2dcccbf9060ea91743b0379d5ce"
                     }
                   }
                 },
@@ -338,11 +466,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "a59f0f87-aa93-4cb6-a850-3b3505b813dc",
+                    "id": "92aa7b70-5215-4bd1-9d1f-eb4798d12723",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "a59f0f87-aa93-4cb6-a850-3b3505b813dc",
-                      "url": "http://example.org/payments/withdrawals/a59f0f87-aa93-4cb6-a850-3b3505b813dc?signature=919f2c9b69bd1cef8ca5d6cf97711536cd27fba4043635c0053e5ef1d33c4188"
+                      "uuid": "92aa7b70-5215-4bd1-9d1f-eb4798d12723",
+                      "url": "http://example.org/payments/withdrawals/92aa7b70-5215-4bd1-9d1f-eb4798d12723?signature=144f61f2b722d4c7867590e620adbb3f67e7d4355cc15d217f0f10e53cdd3344"
                     }
                   }
                 },
@@ -792,7 +920,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "7c6b96c3-3e21-448c-bfa2-09120598e1b0"
+                    "example": "aba80a22-0cbe-4d9b-b8a0-79548feb86fa"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -800,7 +928,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-08-04T21:19:57.620+03:00"
+                    "example": "2023-08-07T15:44:09.192+03:00"
                   },
                   "national_currency": {
                     "type": "string",

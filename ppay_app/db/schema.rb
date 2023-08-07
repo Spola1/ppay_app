@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_06_102404) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_044241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -290,6 +290,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_06_102404) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "receipt_reason"
+    t.boolean "start_arbitration"
+    t.integer "arbitration_source"
     t.index ["payment_id"], name: "index_payment_receipts_on_payment_id"
   end
 
@@ -336,15 +338,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_06_102404) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.bigint "form_customization_id"
-    t.boolean "start_arbitration", default: false
-    t.integer "arbitration_method"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
     t.index ["support_id"], name: "index_payments_on_support_id"
