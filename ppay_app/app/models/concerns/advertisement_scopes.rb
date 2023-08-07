@@ -59,7 +59,7 @@ module AdvertisementScopes
     }
 
     scope :order_by_remaining_confirmation_time, lambda {
-      order(Arel.sql("SUM('#{Time.now.to_fs(:db)}' - payments.status_changed_at)"))
+      order(Arel.sql("SUM(extract(epoch from payments.status_changed_at)) ASC"))
     }
   end
 end

@@ -38,7 +38,7 @@ RSpec.describe 'Payment transactions commissions' do
   let(:cryptocurrency_amount) do
     number_with_precision(
       rate_snapshot.to_crypto(national_currency_amount),
-      precision: 2
+      precision: 64
     ).to_d
   end
 

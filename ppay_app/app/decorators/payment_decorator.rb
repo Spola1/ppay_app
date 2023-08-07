@@ -68,13 +68,13 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def show_merchant_logo
-    return unless form_customization.present? && form_customization.default? && form_customization&.logo
+    return unless form_customization&.logo.present?
 
-    form_customization.logo
+    form_customization&.logo
   end
 
   def logo_image_tag
-    return unless form_customization.present? && form_customization.default? && form_customization.logo.present?
+    return unless form_customization&.logo.present?
 
     h.content_tag(:div, class: 'show-logo') do
       h.content_tag(:div, class: 'logo_img') do
@@ -84,13 +84,13 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def background_color_style
-    return unless form_customization.present? && form_customization.default? && form_customization&.background_color
+    return unless form_customization&.background_color
 
     "background-color: #{form_customization.background_color};"
   end
 
   def button_color_style
-    return unless form_customization.present? && form_customization.default? && form_customization&.button_color
+    return unless form_customization&.button_color
 
     "background-color: #{form_customization.button_color};"
   end

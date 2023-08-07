@@ -78,6 +78,7 @@ RSpec.configure do |config|
   config.include_context 'payment means'
 
   # config.before(:suite) { ActiveRecord::Base.logger = Logger.new(STDOUT) }
+  ActiveStorage::Current.url_options = Rails.application.config.active_storage.url_options
 end
 
 Shoulda::Matchers.configure do |config|

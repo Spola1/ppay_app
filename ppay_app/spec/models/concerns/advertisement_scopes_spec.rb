@@ -43,10 +43,10 @@ RSpec.describe Advertisement, type: :model do
       create_list(:payment, 3, :transferring, advertisement: advertisement8, national_currency_amount: 250)
       create_list(:payment, 3, :transferring, advertisement: advertisement8, national_currency_amount: 10)
 
-      # advertisement 9 - меньше времени на подтверждение
+      # advertisement 9 - больше времени на подтверждение
       create_list(:payment, 8, :transferring, advertisement: advertisement9, status_changed_at: 1.day.ago)
 
-      # advertisement 10 - больше времени на подтверждение
+      # advertisement 10 - меньше времени на подтверждение
       create_list(:payment, 8, :transferring, advertisement: advertisement10, status_changed_at: 2.days.ago)
     end
 

@@ -119,8 +119,8 @@ RSpec.describe Payment, type: :model do
 
     describe '#ensure_unique_amount for deposits' do
       let(:advertisement) { create(:advertisement, :deposit) }
-      let(:unique_amount) { nil }
-      let(:merchant) { create :merchant }
+      let(:unique_amount) { :none }
+      let(:merchant) { create :merchant, unique_amount: }
       let(:payment1) do
         create(:payment, :deposit, :processer_search, advertisement:, unique_amount:,
                                                       merchant:,
