@@ -9,7 +9,7 @@ module Api
             class PaymentReceiptSerializer
               include JSONAPI::Serializer
 
-              attributes :image_url, :comment, :receipt_reason, :start_arbitration, :arbitration_source
+              attributes :image_url, :comment, :receipt_reason, :start_arbitration, :source
             end
           end
         end

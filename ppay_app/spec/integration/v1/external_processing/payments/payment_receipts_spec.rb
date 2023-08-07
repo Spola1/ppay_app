@@ -28,12 +28,18 @@ describe 'External processing payments receipts' do
         required: %w[image]
       }
 
-      let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
+      let(:arbitration_reason) { 'duplicate_payment' }
+      let(:payment) do
+        create :payment, :deposit, :transferring,
+               merchant:,
+               processing_type: :external,
+               arbitration_reason:
+      end
       let(:uuid) { payment.uuid }
 
       let(:image) { fixture_file_upload('spec/fixtures/test_files/sample.jpeg', 'image/jpeg') }
       let(:comment) { 'comment' }
-      let(:receipt_reason) { :duplicate_payment }
+      let(:receipt_reason) { 'fraud_attempt' }
       let(:start_arbitration) { true }
 
       let(:payment_receipt) do
@@ -60,9 +66,9 @@ describe 'External processing payments receipts' do
                          comment: { type: :string, nullable: true },
                          receipt_reason: { type: :string, enum: PaymentReceipt.receipt_reasons, nullable: true },
                          start_arbitration: { type: :boolean, nullable: true },
-                         arbitration_source: { type: :string, enum: PaymentReceipt.arbitration_sources, nullable: true }
+                         source: { type: :string, enum: PaymentReceipt.sources, nullable: true }
                        },
-                       required: %i[image_url comment receipt_reason start_arbitration arbitration_source]
+                       required: %i[image_url comment receipt_reason start_arbitration source]
                      }
                    },
                    required: %i[id type]
@@ -76,7 +82,7 @@ describe 'External processing payments receipts' do
             expect(response_body[:data][:attributes][:comment]).to eq comment
             expect(response_body[:data][:attributes][:receipt_reason]).to eq receipt_reason.to_s
             expect(response_body[:data][:attributes][:start_arbitration]).to eq start_arbitration
-            expect(response_body[:data][:attributes][:arbitration_source]).to eq 'merchant_service'
+            expect(response_body[:data][:attributes][:source]).to eq 'merchant_service'
           end
         end
 
@@ -92,6 +98,12 @@ describe 'External processing payments receipts' do
           }.from(false).to(true)
         end
 
+        it 'changes payment\'s arbitration_reason' do |example|
+          expect { submit_request(example.metadata) }.to change {
+            payment.reload.arbitration_reason
+          }.from(arbitration_reason).to(receipt_reason)
+        end
+
         context 'start_arbitration is false' do
           let(:start_arbitration) { false }
 
@@ -99,6 +111,12 @@ describe 'External processing payments receipts' do
             expect { submit_request(example.metadata) }.not_to change {
               payment.reload.arbitration
             }.from(false)
+          end
+
+          it 'does not change payment\'s arbitration_reason' do |example|
+            expect { submit_request(example.metadata) }.not_to change {
+              payment.reload.arbitration_reason
+            }.from(arbitration_reason)
           end
         end
       end

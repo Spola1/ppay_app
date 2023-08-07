@@ -11,8 +11,6 @@ module Api
             @payment_receipt = payment.payment_receipts.new(payment_receipt_params)
             @payment_receipt.save!
 
-            payment.update(arbitration: true) if @payment_receipt.start_arbitration
-
             render json: serialized_payment_receipt, status: :created
           rescue ActiveSupport::MessageVerifier::InvalidSignature
             raise ActionController::BadRequest
@@ -27,7 +25,7 @@ module Api
           def payment_receipt_params
             (params[:payment_receipt] ? params.require(:payment_receipt) : params)
               .permit(:image, :comment, :receipt_reason, :start_arbitration)
-              .merge(arbitration_source: :merchant_service)
+              .merge(source: :merchant_service)
           end
         end
       end
