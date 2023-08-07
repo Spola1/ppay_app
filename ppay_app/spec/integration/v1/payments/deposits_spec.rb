@@ -21,14 +21,12 @@ describe 'Deposits' do
                 schema: { '$ref': '#/components/schemas/deposits_create_parameter_body_schema' }
 
       let(:payment_type) { Deposit }
-      let(:unique_amount) { :integer }
 
       let(:params) do
         {
           national_currency: currency,
           national_currency_amount: 3000.0,
           external_order_id: '1234',
-          unique_amount:,
           redirect_url: FFaker::Internet.http_url,
           callback_url: FFaker::Internet.http_url
         }

@@ -45,22 +45,6 @@ shared_context 'invalid_response' do |type:|
         expect(response_body['errors']).to eq(expected_errors)
       end
     end
-
-    context 'unsupported unique_amount', if: type == :deposit do
-      let(:unique_amount) { :bool }
-
-      let(:expected_errors) do
-        [
-          { title: 'unique_amount', detail: unique_amount_error, code: 422 }.stringify_keys
-        ]
-      end
-
-      let(:unique_amount_error) { "Доступные значения #{Payment.unique_amounts.keys.join(', ')}" }
-
-      run_test! do |_response|
-        expect(response_body['errors']).to eq(expected_errors)
-      end
-    end
   end
 end
 
@@ -79,7 +63,7 @@ shared_context 'successful_creation_response' do |type:|
     it 'sets unique_amount', if: type == :deposit do |example|
       submit_request(example.metadata)
 
-      expect(merchant.deposits.last).to send("be_unique_amount_#{unique_amount}")
+      expect(merchant.deposits.last.unique_amount).to eq(merchant.unique_amount)
     end
   end
 end

@@ -62,7 +62,7 @@ class Payment < ApplicationRecord
   has_many :comments, as: :commentable
   has_many :chats
 
-  before_create :set_default_unique_amount, unless: :unique_amount
+  before_create :set_default_unique_amount
   before_create :set_initial_amount
   before_create :set_locale_from_currency
 
