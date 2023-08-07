@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_200438) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_044241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -284,6 +284,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_200438) do
     t.index ["payment_id", "not_found_payment_id"], name: "index_nfp_payments_on_p_id_and_nfp_id"
   end
 
+  create_table "payment_receipts", force: :cascade do |t|
+    t.string "comment"
+    t.bigint "payment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "receipt_reason"
+    t.boolean "start_arbitration"
+    t.integer "arbitration_source"
+    t.index ["payment_id"], name: "index_payment_receipts_on_payment_id"
+  end
+
   create_table "payment_systems", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -330,9 +341,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_200438) do
     t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
-    t.bigint "form_customization_id"
     t.string "account_number"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
@@ -438,6 +449,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_200438) do
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
+  add_foreign_key "payment_receipts", "payments"
   add_foreign_key "payment_systems", "national_currencies"
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"

@@ -1,6 +1,29 @@
-Скриншот:
-- if payment.image.present?
-  = link_to payment.image, target: '_blank' do
-    = image_tag payment.image, class: 'max-h-96'
-- else
-  не приложен
+.mt-4.mb-8.image-processer-block
+  - if payment.payment_receipts.any? || payment.image.present?
+    %table.items-list-table
+      %thead.items-list-thead
+        %tr
+          %th.items-list-th Скриншот
+          %th.items-list-th Причина
+          %th.items-list-th Комментарий
+          %th.items-list-th Способ получения
+     
+      %tbody
+        - if payment.image.present?
+          %tr.items-list-tr
+            %td.items-list-td
+              = link_to payment.image, target: '_blank' do
+                = image_tag payment.image, class: 'max-h-96 inline-block', width: '150px'
+            %td.items-list-td
+            %td.items-list-td
+          
+        - payment.payment_receipts.each do |receipt|
+          %tr.items-list-tr
+            %td.items-list-td
+              = link_to receipt.image, target: '_blank' do
+                = image_tag receipt.image, class: 'max-h-96 inline-block', width: '150px'
+            %td.items-list-td= translate_receipt_reason(receipt.receipt_reason)
+            %td.items-list-td= receipt.comment
+
+  - else
+    Скриншот: не приложен

@@ -5,7 +5,8 @@ module PaymentsHelper
   AVAILABLE_CANCELLATION_REASONS_COLLECTION = %i[by_client duplicate_payment fraud_attempt incorrect_amount
                                                  not_paid].freeze
   AVAILABLE_ARBITRATION_REASONS_COLLECTION = %i[duplicate_payment fraud_attempt incorrect_amount not_paid].freeze
-  MANAGEMENT_NAMESPACES = %w[admins processers supports].freeze
+  AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_MERCHANTS = %i[check_by_check incorrect_amount_check_by_check].freeze
+  MANAGEMENT_NAMESPACES = %w[admins processers supports merchants].freeze
 
   def edit_payment_path(payment)
     public_send("edit_payments_#{payment.type.underscore}_path", uuid: payment.uuid)
@@ -41,6 +42,20 @@ module PaymentsHelper
 
   def support_payment_arbitration_reasons_collection
     AVAILABLE_ARBITRATION_REASONS_COLLECTION.map { |reason| [arbitration_reason_translation(reason), reason] }
+  end
+
+  def merchant_payment_arbitration_reasons_collection
+    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_MERCHANTS.map { |reason|
+      [arbitration_reason_translation(reason), reason]
+    }
+  end
+
+  def translate_arbitration_reason(reason)
+    I18n.t("activerecord.attributes.payment/arbitration_reason.#{reason}")
+  end
+
+  def translate_receipt_reason(reason)
+    I18n.t("activerecord.attributes.payment_receipt/receipt_reason.#{reason}")
   end
 
   def can_manage_payment?

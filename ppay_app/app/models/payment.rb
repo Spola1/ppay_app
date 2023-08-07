@@ -34,9 +34,14 @@ class Payment < ApplicationRecord
     fraud_attempt: 1,
     incorrect_amount: 2,
     not_paid: 3,
-    time_expired: 4
+    time_expired: 4,
+    check_by_check: 5,
+    incorrect_amount_check_by_check: 6
   }, _prefix: true
-  enum processing_type: { internal: 0, external: 1 }
+  enum processing_type: {
+    internal: 0,
+    external: 1
+  }
   enum unique_amount: {
     none: 0,
     integer: 1,
@@ -44,6 +49,8 @@ class Payment < ApplicationRecord
   }, _prefix: true
 
   has_many :transactions, as: :transactionable
+
+  has_many :payment_receipts, dependent: :destroy
 
   # в каждый платеж прикрепляем курс на данный момент
   # это обязательно
@@ -83,6 +90,8 @@ class Payment < ApplicationRecord
                                          valid_values: unique_amounts.keys.join(', ') }
   validatable_enum :unique_amount
 
+  validate :validate_arbitration_fields, on: :merchant
+
   after_update_commit :complete_transactions, if: -> {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
   }
@@ -94,6 +103,7 @@ class Payment < ApplicationRecord
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
+    broadcast_replace_payment_to_merchant
   }
 
   after_update_commit lambda {
@@ -131,6 +141,10 @@ class Payment < ApplicationRecord
                .or(withdrawals.transferring)
                .or(withdrawals.arbitration)
                .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, status_changed_at DESC")))
+  }
+
+  scope :arbitration_by_check, lambda {
+    where(arbitration: true, arbitration_reason: [5, 6])
   }
 
   scope :deposits,    -> { where(type: 'Deposit') }
@@ -180,6 +194,15 @@ class Payment < ApplicationRecord
     )
   end
 
+  def broadcast_replace_payment_to_merchant
+    broadcast_replace_later_to(
+      "merchant_payment_#{uuid}",
+      partial: 'merchants/payments/show_turbo_frame',
+      locals: { payment: decorate, signature: nil, role_namespace: 'merchants', can_manage_payment?: true },
+      target: "merchants_payment_#{uuid}"
+    )
+  end
+
   def broadcast_replace_payment_to_support
     broadcast_replace_later_to(
       "supports_payment_#{uuid}",
@@ -189,7 +212,24 @@ class Payment < ApplicationRecord
     )
   end
 
+  after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
+
+  def arbitration_changed_to_true?
+    arbitration? && attribute_was(:arbitration)
+  end
+
   private
+
+  def send_arbitration_notification
+    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil)
+  end
+
+  def validate_arbitration_fields
+    return unless arbitration?
+
+    errors.add(:arbitration_reason, "can't be blank") if arbitration_reason.blank?
+    errors.add(:image, "can't be blank") if image.blank?
+  end
 
   def set_locale_from_currency
     self.locale = currency_to_locale(national_currency) if locale.blank?
@@ -244,7 +284,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    Payments::TelegramNotificationJob.perform_async(id)
+    Payments::TelegramNotificationJob.perform_async(id, false, nil)
 
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",

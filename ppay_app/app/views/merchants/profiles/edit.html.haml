@@ -1,0 +1,14 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Редактировать профиль
+      .mt-8.my-4
+        = turbo_frame_tag 'profile_update_form' do
+          .success-notice
+            = flash[:notice]
+          = simple_form_for @user, url: merchants_profile_path, method: :patch do |f|
+            = f.input :telegram, hint: telegram_hint
+
+            = f.submit 'Сохранить', class: 'form-submit'

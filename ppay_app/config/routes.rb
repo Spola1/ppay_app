@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     resources :payments, only: :index
     resources :balance_requests
     namespace :payments do
-      resources :deposits, param: :uuid, only: %i[index show create new] do
+      resources :deposits, param: :uuid, only: %i[index show create update new] do
         member do
           get :display_link
         end
@@ -80,8 +80,20 @@ Rails.application.routes.draw do
     root 'payments#index', as: :merchants_root
   end
 
+  namespace :merchants do
+    resource :profile, only: %i[edit update]
+  end
+
   namespace :processers do
     resource :profile, only: %i[edit update]
+  end
+
+  namespace :supports do
+    resource :profile, only: %i[edit update]
+  end
+
+  namespace :arbitration do
+    resources :payments, only: [:index]
   end
 
   scope module: :processers, constraints: ->(request) { request.env['warden'].user&.processer? } do
@@ -143,6 +155,7 @@ Rails.application.routes.draw do
       namespace :external_processing do
         concerns :payments_creatable
         patch 'payments/:uuid/statuses/:event', to: 'payments/statuses#update'
+        post 'payments/:uuid/payment_receipts', to: 'payments/payment_receipts#create'
       end
     end
   end
@@ -150,6 +163,7 @@ Rails.application.routes.draw do
   resources :payments, param: :uuid, only: [] do
     resources :comments, only: :create, controller: 'payments/comments'
     resources :chats, only: :create, controller: 'payments/chats'
+    resources :payment_receipts, only: :create, controller: 'payments/payment_receipts'
   end
 
   constraints(

@@ -587,4 +587,18 @@ RSpec.describe Payment, type: :model do
       expect(Payment.expired_autoconfirming).not_to include(expired_autoconfirming_other_status)
     end
   end
+
+  describe '.arbitration_by_check' do
+    let!(:adv) { create(:advertisement, :deposit) }
+    let!(:payment1) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 5) }
+    let!(:payment2) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 2) }
+    let!(:payment3) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 6) }
+    let!(:payment4) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration_reason: 5) }
+
+    it 'returns payments in the arbitration by check' do
+      result = adv.payments.arbitration_by_check
+
+      expect(result).to eq([payment3, payment1])
+    end
+  end
 end
