@@ -47,11 +47,6 @@ class Payment < ApplicationRecord
     integer: 1,
     decimal: 2
   }, _prefix: true
-  enum arbitration_method: {
-    merchant_dashboard: 0,
-    hpp_form: 1,
-    merchant_service: 2
-  }, _prefix: true
 
   has_many :transactions, as: :transactionable
 
