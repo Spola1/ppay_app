@@ -130,7 +130,7 @@ class Payment < ApplicationRecord
   }
 
   scope :in_deposit_flow_hotlist, lambda {
-    deposits.confirming.where(autoconfirming: false)
+    deposits.confirming#.where(autoconfirming: false)
             .or(deposits.transferring)
             .or(deposits.arbitration)
             .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
