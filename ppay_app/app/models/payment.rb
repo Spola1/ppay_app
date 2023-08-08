@@ -215,7 +215,7 @@ class Payment < ApplicationRecord
   after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
 
   def arbitration_changed_to_true?
-    arbitration? && attribute_was(:arbitration)
+    saved_change_to_arbitration? && arbitration?
   end
 
   private
