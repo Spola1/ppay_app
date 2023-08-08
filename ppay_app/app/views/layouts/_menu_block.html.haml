@@ -2,4 +2,4 @@
   %ul.navbar-nav.flex.pl-0.list-style-none.mr-auto.text-sm.flex.flex-wrap
     - navbar_collection.each do |link|
       %li.nav-item.p-2
-        = link_with_arbitration_check(link)
+        = menu_links(link)

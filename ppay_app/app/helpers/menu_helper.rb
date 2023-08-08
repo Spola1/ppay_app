@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MenuHelper
-  def link_with_arbitration_check(link)
+  def menu_links(link)
     link_text = link.name
 
     link_text += " #{arbitration_count_text}" if link.name == 'Арбитражи по чеку'
