@@ -6,6 +6,7 @@ class PaymentReceipt < ApplicationRecord
 
   validates :image, presence: true
   validates :source, presence: true
+  validates :receipt_reason, presence: true
 
   enum receipt_reason: {
     duplicate_payment: 0,
