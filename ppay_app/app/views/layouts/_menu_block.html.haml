@@ -2,15 +2,4 @@
   %ul.navbar-nav.flex.pl-0.list-style-none.mr-auto.text-sm.flex.flex-wrap
     - navbar_collection.each do |link|
       %li.nav-item.p-2
-        - if link.name == 'Арбитражи по чеку'
-          = link_to public_send(link[:path]), class: 'hover:text-black' do
-            - if current_user.type == 'Support'
-              = link[:name]
-              %span.text-white.bg-red-600.py-1.5.px-1.rounded-md
-                = Payment.includes(:merchant).arbitration_by_check.size
-            - else
-              = link[:name]
-              %span.text-white.bg-red-600.py-1.5.px-1.rounded-md
-                = current_user.payments.arbitration_by_check.size
-        - else
-          = link_to link[:name], public_send(link[:path]), class: 'hover:text-black'
+        = link_with_arbitration_check(link)
