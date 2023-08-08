@@ -6,7 +6,6 @@ class PaymentReceipt < ApplicationRecord
 
   validates :image, presence: true
   validates :source, presence: true
-  #validates :receipt_reason, presence: true
 
   enum receipt_reason: {
     duplicate_payment: 0,
@@ -23,11 +22,19 @@ class PaymentReceipt < ApplicationRecord
     merchant_service: 2
   }, _prefix: true
 
-  after_create_commit :set_arbitration, if: :start_arbitration
+  after_create_commit :set_arbitration
 
   private
 
   def set_arbitration
-    payment.update(arbitration: true, arbitration_reason: receipt_reason)
+    if receipt_reason.present? && payment.arbitration?
+      payment.update(arbitration_reason: receipt_reason)
+    elsif receipt_reason.nil? && payment.arbitration?
+      payment.update(arbitration_reason: payment.arbitration_reason)
+    elsif receipt_reason.present? && !payment.arbitration?
+      payment.update(arbitration: true, arbitration_reason: receipt_reason)
+    else
+      payment.update(arbitration: true)
+    end
   end
 end

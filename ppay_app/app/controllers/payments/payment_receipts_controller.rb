@@ -7,15 +7,7 @@ module Payments
     def create
       payment_receipt = @payment.payment_receipts.create(payment_receipt_params)
 
-      if payment_receipt.save
-        if @payment.arbitration?
-          @payment.update(arbitration_reason: payment_receipt.receipt_reason)
-        else
-          @payment.update(arbitration: true, arbitration_reason: payment_receipt.receipt_reason)
-        end
-
-        render "#{role_namespace}/payments/show"
-      end
+      render "#{role_namespace}/payments/show" if payment_receipt.save
     end
 
     private

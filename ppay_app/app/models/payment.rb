@@ -121,6 +121,8 @@ class Payment < ApplicationRecord
 
   after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
 
+  after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
+
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
@@ -211,8 +213,6 @@ class Payment < ApplicationRecord
       target: "supports_payment_#{uuid}"
     )
   end
-
-  after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
 
   def arbitration_changed_to_true?
     saved_change_to_arbitration? && arbitration?
