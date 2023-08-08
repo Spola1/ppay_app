@@ -32,13 +32,18 @@ module Payments
 
     def cancel_expired_autoconfirming
       Payment.expired_autoconfirming.find_each do |payment|
-        # payment.update(cancellation_reason: :not_paid)
-        # payment.cancel!
-        payment.update(autoconfirming: false)
+        if payment.processer.autocancel
+          payment.update(cancellation_reason: :not_paid)
+          payment.cancel!
+          comment_text = 'Ждал 3 минуты. Сумма не поступила. Отменяю платеж'
+        else
+          payment.update(autoconfirming: false)
+          comment_text = 'Ждал 3 минуты. Сумма не поступила. Перевожу на ручное подтверждение'
+        end
         payment.comments.create(
           author_nickname: Settings.simbank_nickname,
           user_id: payment.processer.id,
-          text: 'Ждал 3 минуты. Сумма не поступила. Перевожу на ручное подтверждение'
+          text:
         )
         puts "Платёж #{payment.uuid} отменён"
       end
