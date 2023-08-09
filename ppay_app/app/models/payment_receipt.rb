@@ -28,6 +28,6 @@ class PaymentReceipt < ApplicationRecord
   private
 
   def set_arbitration
-    payment.update(arbitration_reason: receipt_reason) if receipt_reason.present? && payment.arbitration?
+    payment.update(arbitration_reason: receipt_reason, arbitration: true) if receipt_reason.present?
   end
 end
