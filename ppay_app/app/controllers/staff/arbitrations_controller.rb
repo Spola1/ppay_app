@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Arbitration
-  class PaymentsController < Staff::BaseController
+module Staff
+  class ArbitrationsController < Staff::BaseController
     def index
       if current_user.type == 'Support'
         @pagy, @payments = pagy(Payment.includes(:merchant).arbitration_by_check.decorate)

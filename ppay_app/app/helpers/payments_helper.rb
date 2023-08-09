@@ -65,6 +65,10 @@ module PaymentsHelper
     I18n.t("activerecord.attributes.payment_receipt/receipt_reason.#{reason}")
   end
 
+  def translate_receipt_source(source)
+    I18n.t("activerecord.attributes.payment_receipt/source.#{source}")
+  end
+
   def can_manage_payment?
     role_namespace.in?(MANAGEMENT_NAMESPACES)
   end
