@@ -916,4 +916,8 @@
     height: 300px;
     resize: both;
   }
+
+  .hidden {
+    display: none;
+  }
 }

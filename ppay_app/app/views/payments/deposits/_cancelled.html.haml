@@ -3,17 +3,33 @@
     .proc-head
       = render 'payments/merchant_logo', payment: payment
       .proc-text
-        = render 'payments/select_locale', payment:, signature:
+        = render 'payments/select_locale', payment: payment, signature: signature
 
-    .proc-payment-cancelled-block
-      .proc-payment-cancelled-img
-      = t('payments.payment_cancelled')
+    - if payment.cancellation_reason == 'not_paid'
+      .proc-payment-cancelled-block
+        .flex.flex-col.items-center.justify-center.h-full
+          .proc-payment-cancelled-img
+          = t('payments.your_payment_cancelled')
+          .mt-1.text-xs
+            = t('payments.arbitration_instruction')
+          %button#arbitration-button.mt-2.w-80.h-12{ type: "submit", class: "red-button" } 
+            = t('payments.open_arbitration')
+        .flex.items-center.justify-center.h-full
+          %button.mt-2.w-32.h-12.mr-1{ class: "grayy-button" } 
+            = t('payments.cancel')
+          %button.mt-2.w-48.h-12.grayy-button
+            - if payment.redirect_url.present?
+              = link_to t('payments.in_shop'), payment.redirect_url
+    - else
+      .proc-payment-cancelled-block
+        .proc-payment-cancelled-img
+        = t('payments.payment_cancelled')
 
-    .proc-payment-cancelled-links-block
-      - if payment.redirect_url.present?
-        = link_to t('payments.back_to_shop'), payment.redirect_url
+      .proc-payment-cancelled-links-block
+        - if payment.redirect_url.present?
+          = link_to t('payments.back_to_shop'), payment.redirect_url
 
-    = render 'payments/uuid', payment:, class: 'text-center'
+    = render 'payments/uuid', payment: payment
 
   - if payment.arbitration
-    = render 'shared/chat', payment:
+    = render 'shared/chat', payment: payment
