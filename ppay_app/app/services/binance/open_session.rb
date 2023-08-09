@@ -31,8 +31,6 @@ module Binance
 
       check_merchant(form_data_hash, advs_params)
 
-      specify_amount(form_data_hash, advs_params)
-
       res = send_request(form_data_hash)
 
       parse_response(res)
@@ -77,7 +75,7 @@ module Binance
         publisherType: nil,
         rows: 20,
         tradeType: advs_params[:trade_type]
-        # transAmount: advs_params[:trans_amount].to_s
+        transAmount: advs_params[:trans_amount].to_s
       }
     end
 
@@ -87,19 +85,6 @@ module Binance
         # false
       else
         form_data_hash[:merchantCheck] = advs_params[:merchant_check]
-      end
-    end
-
-    def specify_amount(form_data_hash, advs_params)
-      if advs_params[:trans_amount] == false
-        # если мы не хотим указывать сумму, то просто передаем
-        # false
-
-        # временный костыль для укр
-        form_data_hash[:transAmount] = 20_000 if advs_params[:fiat] == 'UAH'
-        form_data_hash[:transAmount] = 3_000 if advs_params[:fiat] == 'BYN'
-      else
-        form_data_hash[:transAmount] = advs_params[:trans_amount].to_s
       end
     end
 
