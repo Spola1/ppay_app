@@ -4,7 +4,7 @@
       .item-card
         .card-head
           %h1 Арбитражи по чеку
-        = render 'table', payments: @payments
+        = render "#{role_namespace}/payments/table", payments: @payments
 
         .card-wrap
           = render 'shared/pagination', pagy: @pagy

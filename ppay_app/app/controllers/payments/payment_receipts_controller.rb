@@ -5,9 +5,9 @@ module Payments
     before_action :find_payment
 
     def create
-      payment_receipt = @payment.payment_receipts.create!(payment_receipt_params)
+      payment_receipt = @payment.payment_receipts.create(payment_receipt_params)
 
-      @payment.update(arbitration: true) if payment_receipt.save
+      render "#{role_namespace}/payments/show" if payment_receipt.save
     end
 
     private
@@ -17,7 +17,7 @@ module Payments
     end
 
     def payment_receipt_params
-      params.require(:payment_receipt).permit(:image, :comment, :receipt_reason)
+      params.require(:payment_receipt).permit(:image, :comment, :receipt_reason).merge(source: :merchant_dashboard)
     end
   end
 end

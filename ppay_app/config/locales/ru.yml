@@ -61,10 +61,6 @@ ru:
         time_expired: Время оплаты истекло
         check_by_check: Проверка по чеку
         incorrect_amount_check: Перевели неверную сумму, проверить по чеку
-      payment/arbitration_method:
-        merchant_dashboard: Из кабинета мерчанта
-        hpp_form: Из формы HPP
-        merchant_service: Из сервиса мерчанта по H2H
       payment_receipt/receipt_reason:
         duplicate_payment: Задублированный платеж
         fraud_attempt: Попытка мошенничества
@@ -73,6 +69,10 @@ ru:
         time_expired: Время оплаты истекло
         check_by_check: Проверка по чеку
         incorrect_amount_check: Перевели неверную сумму, проверить по чеку
+      payment_receipt/source:
+        merchant_dashboard: Из кабинета мерчанта
+        hpp_form: Из формы HPP
+        merchant_service: Из сервиса мерчанта по H2H
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена
