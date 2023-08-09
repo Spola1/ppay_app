@@ -67,6 +67,14 @@ module StateMachines
 
             transitions from: %i[draft], to: :cancelled
           end
+
+          event :restore do
+            after :complete_transactions
+
+            transitions from: :cancelled, to: :completed,
+                        guard: proc { available_cancelled_transactions? },
+                        after: :restore_transactions
+          end
         end
       end
 

@@ -22,6 +22,8 @@ module Supports
     def update
       @payment.update(payment_params)
 
+      @payment.restore! if params[:restore]
+
       render :show
     end
 
