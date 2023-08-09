@@ -36,7 +36,8 @@ class Payment < ApplicationRecord
     not_paid: 3,
     time_expired: 4,
     check_by_check: 5,
-    incorrect_amount_check: 6
+    incorrect_amount_check: 6,
+    reason_in_chat: 7
   }, _prefix: true
   enum processing_type: {
     internal: 0,
