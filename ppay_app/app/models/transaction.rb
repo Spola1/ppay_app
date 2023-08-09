@@ -37,6 +37,10 @@ class Transaction < ApplicationRecord
     event :cancel do
       transitions from: :frozen, to: :cancelled, after: :unfreeze_funds
     end
+
+    event :restore do
+      transitions from: :cancelled, to: :frozen, before_enter: :freeze_funds
+    end
   end
 
   private
