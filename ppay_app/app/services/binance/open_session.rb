@@ -74,8 +74,8 @@ module Binance
         payTypes: [advs_params[:pay_types]],
         publisherType: nil,
         rows: 20,
-        tradeType: advs_params[:trade_type]
-        transAmount: advs_params[:trans_amount].to_s
+        tradeType: advs_params[:trade_type],
+        transAmount: advs_params[:trans_amount].presence
       }
     end
 
