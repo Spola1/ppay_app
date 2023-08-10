@@ -306,8 +306,6 @@ class Payment < ApplicationRecord
   def transactions_cannot_be_completed_or_cancelled
     return if transactions.pluck(:status).all?('frozen')
 
-    debugger
-
     errors.add(:transactions, 'already completed or cancelled')
   end
 end
