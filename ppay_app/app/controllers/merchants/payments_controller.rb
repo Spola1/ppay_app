@@ -10,7 +10,11 @@ module Merchants
         end
 
         format.xlsx do
-          render xlsx: 'payments', locals: { payments: current_user.payments.filter_by(filtering_params).decorate }
+          payments = current_user.payments
+                                 .includes(:advertisement, :transactions)
+                                 .filter_by(filtering_params)
+                                 .decorate
+          render xlsx: 'payments', locals: { payments: }
         end
       end
     end

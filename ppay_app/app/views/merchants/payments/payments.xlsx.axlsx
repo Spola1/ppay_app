@@ -31,7 +31,7 @@ wb.add_worksheet(name: 'payments') do |sheet|
   payments.each do |p|
     sheet.add_row [p.external_order_id, p.created_at, p.human_type, p.national_currency,
                    p.national_currency_amount, p.cryptocurrency, p.cryptocurrency_amount,
-                   p.transactions.main.present? ? p.transactions.main.first.amount : nil,
+                   p.transactions.filter { |t| t.transaction_type == 'main' }.last&.amount,
                    p.payment_system, p.uuid, p.human_payment_status, p.status_changed_at,
                    p.human_cancellation_reason]
   end

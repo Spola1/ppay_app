@@ -19,11 +19,14 @@ module RateSnapshots
         binance_session = Binance::OpenSession.new(advs_params)
 
         adv = binance_session.otc_advs_array[..(position_number - 1)].last
-        price_bin_otc = adv[:price].to_f
 
-        RateSnapshot.create(direction: action, cryptocurrency: crypto_asset,
-                            position_number:, exchange_portal_id: exchange_portal_id_for_binance,
-                            value: price_bin_otc, adv_amount: fiat_amount, payment_system_id:)
+        price_bin_otc = adv[:price]&.to_f if adv
+
+        if price_bin_otc
+          RateSnapshot.create(direction: action, cryptocurrency: crypto_asset,
+                              position_number:, exchange_portal_id: exchange_portal_id_for_binance,
+                              value: price_bin_otc, adv_amount: fiat_amount, payment_system_id:)
+        end
       end
     end
   end

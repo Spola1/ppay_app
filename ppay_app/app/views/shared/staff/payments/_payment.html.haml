@@ -17,15 +17,15 @@
           - if payment.arbitration? && payment.arbitration_reason?
             .badge.bg-gray-200.text-red.border.border-red-600
               = arbitration_reason_translation(payment.arbitration_reason)
-        
+
         - if role_namespace == 'supports' || role_namespace == 'processers'
           .flex
             - if local_assigns[:can_manage_payment?]
               = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
-      
+
       - if role_namespace == 'merchants'
         = render "merchants/payments/management_buttons", payment:
-  
+
       .mt-4.mb-8.image-processer-block
         = render 'shared/staff/payments/image', payment:
 
@@ -58,6 +58,11 @@
               %td.item-card-td
                 - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled]) && role_namespace != 'merchants'
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
+                - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'cancelled' && |
+                        payment.available_cancelled_transactions? && role_namespace == 'supports'       |
+                  .flex.flex-row.items-center.justify-between
+                    = payment.human_payment_status
+                    = f.submit 'Завершить', name: :restore, class: 'form-submit'
                 - else
                   = payment.human_payment_status
 
@@ -184,7 +189,7 @@
     .card-wrap
       - if payment_status_partial_exists?(payment, 'processers') && role_namespace != 'merchants' && role_namespace != 'supports'
         = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
-      
+
       .card-wrap.p-0
 
         .item-card{ class: 'min-w-[240px]' }
