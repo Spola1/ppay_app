@@ -1,20 +1,31 @@
 = simple_form_for PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
-  .flex.space-x-3.mt-2
-    .flex-1
+  .flex.mt-2
+    .flex-1.mr-2
       .mb-1.text-xs
         = f.label :receipt_reason, 'Выберите причину чека'
         %span.text-red-500
           *
-      = f.select :receipt_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[40px] text-xs'
+      = f.select :receipt_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[45px] w-full text-xs'
     .flex-1
       .mb-1.text-xs
         = f.label :image, 'Загрузите чек'
         %span.text-red-500
           *
       .file-field-container.flex.items-center
-        = f.file_field :image, class: 'hidden', id: 'file-field'
-        %label.btn.btn-secondary.btn-sm{ for: 'file-field', class: 'cursor-pointer grayy-button h-[40px] w-[200px] text-xs flex items-center justify-center' }
+        %label.btn.btn-secondary.btn-sm{ class: 'cursor-pointer grayy-button h-[45px] w-[100%] text-xs flex items-center justify-center', id: 'file-label' }
           = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
-          %span.inline-block PDF/JPG/PNG
-    .flex.mt-auto
-      = f.submit 'Добавить чек', class: 'form-submit h-[40px] text-xs'
+          = f.file_field :image, id: 'file-field', class: 'hidden', onchange: 'displayFileName(this)'
+          %span.inline-block{ id: 'file-text' } PDF/JPG/PNG
+    .flex-2.mt-auto.ml-2
+      = f.submit 'Добавить чек', class: 'form-submit h-[45px] text-xs'
+
+:javascript
+  function displayFileName(input) {
+    var fileText = document.getElementById('file-text');
+    if (input.files && input.files[0]) {
+      var fileName = input.files[0].name.slice(0, 30);
+      fileText.textContent = fileName + '...';
+    } else {
+      fileText.textContent = 'PDF/JPG/PNG';
+    }
+  }
