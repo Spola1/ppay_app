@@ -308,6 +308,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_163103) do
     t.integer "trans_amount_deposit"
     t.integer "trans_amount_withdrawal"
     t.bigint "payment_system_copy_id"
+    t.boolean "in_progress"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
     t.index ["payment_system_copy_id"], name: "index_payment_systems_on_payment_system_copy_id"
@@ -369,6 +370,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_163103) do
     t.boolean "receive_requests_enabled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "minutes_to_autocancel", default: 7, null: false
   end
 
   create_table "transactions", force: :cascade do |t|

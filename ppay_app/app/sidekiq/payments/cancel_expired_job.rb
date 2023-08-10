@@ -35,10 +35,11 @@ module Payments
         if payment.processer.autocancel
           payment.update(cancellation_reason: :not_paid)
           payment.cancel!
-          comment_text = 'Ждал 3 минуты. Сумма не поступила. Отменяю платеж'
+          comment_text = "Ждал #{Setting.last.minutes_to_autocancel} минут. Сумма не поступила. Отменяю платеж"
         else
           payment.update(autoconfirming: false)
-          comment_text = 'Ждал 3 минуты. Сумма не поступила. Перевожу на ручное подтверждение'
+          comment_text = "Ждал #{Setting.last.minutes_to_autocancel} минут. " \
+                         'Сумма не поступила. Перевожу на ручное подтверждение'
         end
         payment.comments.create(
           author_nickname: Settings.simbank_nickname,

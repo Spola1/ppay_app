@@ -163,7 +163,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.gsub(/\s/, '').to_d == payment.national_currency_amount.to_d
+    match.first.gsub(/\s/, '').gsub(/\,/, '.').to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
