@@ -186,10 +186,9 @@
         = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
       
       .card-wrap.p-0
-        .card-wrap
-          .item-card{ class: 'min-w-[240px]' }
-            = render 'shared/chat_content', payment:
 
+        .item-card{ class: 'min-w-[240px]' }
+          = render 'shared/chat_content', payment:
         - unless role_namespace == 'merchants'
           .item-card
             %p.text-xl.mb-2 Комментарии
