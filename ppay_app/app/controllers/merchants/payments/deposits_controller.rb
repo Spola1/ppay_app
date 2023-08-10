@@ -3,7 +3,7 @@
 module Merchants
   module Payments
     class DepositsController < PaymentsController
-      before_action :find_payment, only: %i[display_link update]
+      before_action :find_payment, only: %i[display_link update show]
 
       def index
         @pagy, @payments = pagy(current_user.deposits)
