@@ -7,6 +7,6 @@
 .mt-4
   = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
          data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
-    - unless current_user&.type == 'Processer'
+    - unless role_namespace == 'processers'
       = f.text_area :text, class: 'form-input w-full h-16'
       = f.submit 'Отправить', class: 'form-submit mt-4'

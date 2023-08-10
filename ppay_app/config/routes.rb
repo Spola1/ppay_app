@@ -70,7 +70,7 @@ Rails.application.routes.draw do
           get :display_link
         end
       end
-      resources :withdrawals, only: :index
+      resources :withdrawals, param: :uuid, only: %i[index show]
     end
 
     namespace :users do

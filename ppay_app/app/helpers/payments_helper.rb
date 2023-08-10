@@ -6,7 +6,7 @@ module PaymentsHelper
                                                  not_paid].freeze
   AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_PROCESSERS = %i[duplicate_payment fraud_attempt 
                                                                incorrect_amount not_paid].freeze
-  AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_SUPPORTS = %i[duplicate_payment incorrect_amount_check
+  AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_SUPPORTS = %i[check_by_check incorrect_amount_check duplicate_payment
                                                              fraud_attempt incorrect_amount reason_in_chat].freeze
   AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_MERCHANTS = %i[check_by_check incorrect_amount_check].freeze
   MANAGEMENT_NAMESPACES = %w[admins processers supports merchants].freeze

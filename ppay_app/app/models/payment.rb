@@ -105,6 +105,7 @@ class Payment < ApplicationRecord
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
     broadcast_replace_payment_to_merchant
+    broadcast_arbitrations_by_check_count if arbitration_previously_changed? || arbitration_reason_previously_changed?
   }
 
   after_update_commit lambda {
@@ -292,6 +293,27 @@ class Payment < ApplicationRecord
       partial: 'processers/notifications/notification',
       locals: { payment: decorate, role_namespace: 'processers', user: processer },
       target: "processer_#{processer.id}_notifications"
+    )
+  end
+
+  def broadcast_arbitrations_by_check_count
+    broadcast_replace_later_to(
+      "processer_#{processer.id}_arbitration_count",
+      partial: 'shared/arbitration_count_turbo_frame',
+      locals: { count: processer.payments.arbitration_by_check.count, user: processer },
+      target: "processer_#{processer.id}_arbitration_count"
+    ) if processer
+    broadcast_replace_later_to(
+      "merchant_#{merchant.id}_arbitration_count",
+      partial: 'shared/arbitration_count_turbo_frame',
+      locals: { count: merchant.payments.arbitration_by_check.count, user: merchant },
+      target: "merchant_#{merchant.id}_arbitration_count"
+    ) if merchant
+    broadcast_replace_later_to(
+      "support_arbitration_count",
+      partial: 'shared/support_arbitration_count_turbo_frame',
+      locals: { count: Payment.arbitration_by_check.count },
+      target: "support_arbitration_count"
     )
   end
 

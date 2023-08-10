@@ -17,7 +17,9 @@ module Supports
       end
     end
 
-    def show; end
+    def show
+      @payment_receipt = @payment.payment_receipts.new
+    end
 
     def update
       @payment.update(payment_params)

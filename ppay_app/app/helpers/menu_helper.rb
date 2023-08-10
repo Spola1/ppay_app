@@ -13,12 +13,17 @@ module MenuHelper
 
   def arbitration_count_text
     count = calculate_arbitration_count
-    content_tag(:span, count.to_s, class: 'text-white bg-red-600 py-1.5 px-1.5 rounded-md') if count.positive?
+
+    if current_user.support?
+      render('shared/support_arbitration_count', count:)
+    else
+      render('shared/arbitration_count', count:, user: current_user)
+    end
   end
 
   def calculate_arbitration_count
     if current_user.support?
-      Payment.includes(:merchant).arbitration_by_check.size
+      Payment.arbitration_by_check.size
     else
       current_user.payments.arbitration_by_check.size
     end

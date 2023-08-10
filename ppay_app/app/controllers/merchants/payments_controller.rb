@@ -2,6 +2,8 @@
 
 module Merchants
   class PaymentsController < Staff::BaseController
+    before_action :find_payment, only: :show
+
     def index
       respond_to do |format|
         format.html do
@@ -19,7 +21,15 @@ module Merchants
       end
     end
 
+    def show
+      @payment_receipt = @payment.payment_receipts.new
+    end
+
     private
+
+    def find_payment
+      @payment = current_user.payments.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
+    end
 
     def set_today_payments
       @today_deposits = current_user.deposits.today

@@ -65,7 +65,10 @@
                         payment.available_cancelled_transactions? && (role_namespace == 'supports' || role_namespace == 'processers') |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
-                    = f.submit 'Подтвердить платёж', name: :restore, class: 'green-button-payment-apply'
+                    = f.submit 'Подтвердить платёж',
+                      name: :restore,
+                      onclick: 'return confirm(\'Вы уверены, что полностью получили платёж и хотите его подтвердить?\');',
+                      class: 'green-button-payment-apply'
                 - else
                   = payment.human_payment_status
 
@@ -196,7 +199,7 @@
       .card-wrap.p-0
 
         .item-card{ class: 'min-w-[240px]' }
-          = render 'shared/chat_content', payment:
+          = render 'shared/chat_content', payment:, role_namespace:
         - unless role_namespace == 'merchants'
           .item-card
             %p.text-xl.mb-2 Комментарии

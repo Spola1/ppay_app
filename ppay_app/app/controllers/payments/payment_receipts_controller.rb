@@ -5,10 +5,13 @@ module Payments
     before_action :find_payment
 
     def create
-      payment_receipt = @payment.payment_receipts.create(payment_receipt_params)
-      payment_receipt.update(user: current_user)
+      @payment_receipt = @payment.payment_receipts.new(payment_receipt_params.merge(user: current_user))
 
-      render "#{role_namespace}/payments/show" if payment_receipt.save
+      if @payment_receipt.save
+        render "#{role_namespace}/payments/show"
+      else
+        render "#{role_namespace}/payments/show", status: :unprocessable_entity
+      end
     end
 
     private

@@ -8,8 +8,6 @@ module Supports
         @payments = @payments.decorate
       end
 
-      def show; end
-
       private
 
       def required_params
