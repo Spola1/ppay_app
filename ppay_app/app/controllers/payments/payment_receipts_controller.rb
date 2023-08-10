@@ -7,9 +7,6 @@ module Payments
     def create
       payment_receipt = @payment.payment_receipts.create(payment_receipt_params)
       payment_receipt.update(user: current_user)
-      payment_receipt.save
-
-      #debugger
 
       render "#{role_namespace}/payments/show" if payment_receipt.save
     end
