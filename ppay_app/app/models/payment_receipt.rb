@@ -20,7 +20,8 @@ class PaymentReceipt < ApplicationRecord
   enum source: {
     merchant_dashboard: 0,
     hpp_form: 1,
-    merchant_service: 2
+    merchant_service: 2,
+    support_dashboard: 3
   }, _prefix: true
 
   after_create_commit :set_arbitration

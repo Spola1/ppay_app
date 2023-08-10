@@ -22,9 +22,12 @@
           .flex
             - if local_assigns[:can_manage_payment?]
               = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+      
+      - if role_namespace == 'supports'
+        = render "supports/payments/upload_check_buttons", payment:, role_namespace:
 
       - if role_namespace == 'merchants'
-        = render "merchants/payments/management_buttons", payment:
+        = render "merchants/payments/management_buttons", payment:, role_namespace:
 
       .mt-4.mb-8.image-processer-block
         = render 'shared/staff/payments/image', payment:

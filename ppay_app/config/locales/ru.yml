@@ -76,6 +76,7 @@ ru:
         incorrect_amount_check: Перевели неверную сумму, проверить по чеку
       payment_receipt/source:
         merchant_dashboard: Из кабинета мерчанта
+        support_dashboard: Из кабинета саппорта
         hpp_form: Из формы HPP
         merchant_service: Из сервиса мерчанта по H2H
       transaction/status:

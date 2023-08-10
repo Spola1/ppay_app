@@ -17,7 +17,12 @@ module Payments
     end
 
     def payment_receipt_params
-      params.require(:payment_receipt).permit(:image, :comment, :receipt_reason).merge(source: :merchant_dashboard)
+      case role_namespace
+      when 'merchants'
+        params.require(:payment_receipt).permit(:image, :comment, :receipt_reason).merge(source: :merchant_dashboard)
+      when 'supports'
+        params.require(:payment_receipt).permit(:image, :comment, :receipt_reason).merge(source: :support_dashboard)
+      end
     end
   end
 end
