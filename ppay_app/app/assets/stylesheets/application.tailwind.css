@@ -121,6 +121,16 @@
       active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
   }
 
+  .w-200 {
+    width: 200px;
+  }
+
+  .green-button-payment-apply {
+    @apply w-200 px-6 py-2.5 h-10 bg-[#21a038] text-white text-sm rounded shadow-md
+      hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0
+      active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out;
+  }
+
   .button-submit {
     @apply px-6 h-8 bg-[#21a038] text-white text-sm rounded-xl shadow-md
       hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0

@@ -23,7 +23,13 @@ module Processers
     def show; end
 
     def update
-      @payment.update(payment_params)
+      if params[:restore]
+        @payment.update(params.permit(:arbitration, :arbitration_reason))
+
+        @payment.restore!
+      else
+        @payment.update(payment_params)
+      end
 
       render :show
     end

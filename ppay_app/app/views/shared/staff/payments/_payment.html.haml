@@ -59,10 +59,10 @@
                 - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled]) && role_namespace != 'merchants'
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'cancelled' && |
-                        payment.available_cancelled_transactions? && role_namespace == 'supports'       |
+                        payment.available_cancelled_transactions? && (role_namespace == 'supports' || role_namespace == 'processers') |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
-                    = f.submit 'Завершить', name: :restore, class: 'form-submit'
+                    = f.submit 'Подтвердить платёж', name: :restore, class: 'green-button-payment-apply'
                 - else
                   = payment.human_payment_status
 
