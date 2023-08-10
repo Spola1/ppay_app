@@ -17,7 +17,7 @@ class Payment < ApplicationRecord
   }
   scope :expired_autoconfirming, lambda {
     where(autoconfirming: true, payment_status: :confirming)
-      .where('status_changed_at <= ?', 3.minutes.ago)
+      .where('status_changed_at <= ?', Setting.minutes_to_autocancel.minutes.ago)
   }
   scope :finished, -> { where(payment_status: %w[cancelled completed]) }
 
