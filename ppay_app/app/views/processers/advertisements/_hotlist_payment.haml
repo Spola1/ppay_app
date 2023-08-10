@@ -6,6 +6,6 @@
       .flex.items-center
         .toast-header-time-text.font-firs.text-size-11.countdown{ data: { end_time: payment.decorate.countdown_end_time, 'countdown-target': 'countdown' } }
           = payment.decorate.countdown
-        - if payment.image.present? && !payment.arbitration
+        - if (payment.image.present? || payment.payment_receipts.joins(:image_attachment).any?) && !payment.arbitration
           .flex-grow
           = image_tag('/lightning.svg', class: 'inline-block align-middle mr-1', style: 'width: 15px; height: 15px;')

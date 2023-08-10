@@ -30,6 +30,7 @@ class PaymentReceipt < ApplicationRecord
   }, _prefix: true
 
   after_create_commit :set_arbitration
+  after_create_commit :broadcast_replace_ad_hotlist_to_processer
 
   private
 
@@ -39,5 +40,14 @@ class PaymentReceipt < ApplicationRecord
 
   def set_arbitration
     payment.update(arbitration_reason: receipt_reason, arbitration: true) if receipt_reason.present?
+  end
+
+  def broadcast_replace_ad_hotlist_to_processer
+    broadcast_replace_later_to(
+      "processer_#{payment.processer.id}_ad_hotlist",
+      partial: 'processers/advertisements/ad_hotlist',
+      locals: { role_namespace: 'processers', user: payment.processer },
+      target: "processer_#{payment.processer.id}_ad_hotlist"
+    )
   end
 end

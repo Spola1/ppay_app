@@ -4,8 +4,7 @@ module Payments
   module Transactions
     module Base
       def available_cancelled_transactions?
-        transactions.cancelled.map(&:transaction_type) ==
-          %w[main processer_commission working_group_commission agent_commission ppay_commission]
+        transactions.present? && transactions.pluck(:status).all?('cancelled')
       end
 
       private

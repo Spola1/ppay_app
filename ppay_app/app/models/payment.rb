@@ -102,10 +102,10 @@ class Payment < ApplicationRecord
 
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
+    broadcast_arbitrations_by_check_count if arbitration_previously_changed? || arbitration_reason_previously_changed?
     broadcast_replace_payment_to_processer
     broadcast_replace_payment_to_support
     broadcast_replace_payment_to_merchant
-    broadcast_arbitrations_by_check_count if arbitration_previously_changed? || arbitration_reason_previously_changed?
   }
 
   after_update_commit lambda {

@@ -25,7 +25,7 @@ module Api
           def payment_receipt_params
             (params[:payment_receipt] ? params.require(:payment_receipt) : params)
               .permit(:image, :comment, :receipt_reason, :start_arbitration)
-              .merge(source: :merchant_service)
+              .merge(source: :merchant_service, user: current_bearer)
           end
         end
       end
