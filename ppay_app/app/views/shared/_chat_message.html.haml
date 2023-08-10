@@ -1,7 +1,9 @@
 .flex.flex-col.my-2.items-start
   .text-xs.mb-1
-    - if chat.user_id?
+    - if !chat.user.merchant?
       #{chat.user.nickname} (#{chat.user.decorate.human_type})
+    - elsif chat.user.merchant?
+      #{chat.user.decorate.human_type}
     - else
       Client
   .chat_item.px-4.py-2.rounded-lg.text-sm.border{
