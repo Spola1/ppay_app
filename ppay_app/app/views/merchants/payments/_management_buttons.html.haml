@@ -1,1 +1,46 @@
-= render 'shared/payment_receipt', payment:
+- if !payment.arbitration
+  .flex
+    %span{style: "white-space: nowrap;"}
+      Выберите причину и загрузите изображение чека, чтобы отправить платеж
+      %span.text-red-600
+        на Арбитраж
+
+  = simple_form_for PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+    .flex.space-x-3.mt-2
+      .flex-1
+        .mb-1.text-xs
+          = f.label :receipt_reason, 'Выберите причину арбитража'
+          %span.text-red-500
+            *
+        = f.select :receipt_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[40px] text-xs'
+      .flex-1
+        .mb-1.text-xs
+          = f.label :image, 'Загрузите чек'
+          %span.text-red-500
+            *
+        .file-field-container.flex.items-center
+          = f.file_field :image, class: 'hidden', id: 'file-field'
+          %label.btn.btn-secondary.btn-sm{ for: 'file-field', class: 'cursor-pointer grayy-button h-[40px] w-[200px] text-xs flex items-center justify-center', id: 'file-label' }
+            = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
+            %span.inline-block{ id: 'file-text' } PDF/JPG/PNG
+      .flex.mt-auto
+        = f.submit 'На арбитраж', class: 'red-button h-[40px] text-xs'
+- else
+  = render 'shared/payment_receipt', payment:
+
+
+:javascript
+  document.addEventListener("DOMContentLoaded", function() {
+    const fileField = document.getElementById("file-field");
+    const fileText = document.getElementById("file-text");
+
+    fileField.addEventListener("change", function() {
+      const selectedFile = this.files[0];
+      if (selectedFile) {
+        const fileName = selectedFile.name.slice(0, 10);
+        fileText.textContent = fileName + "...";
+      } else {
+        fileText.textContent = "PDF/JPG/PNG";
+      }
+    });
+  });
