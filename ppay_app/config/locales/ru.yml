@@ -62,10 +62,6 @@ ru:
         check_by_check: Проверка по чеку
         incorrect_amount_check: Перевели неверную сумму, проверить по чеку
         reason_in_chat: Причина указана в чате
-      payment/arbitration_method:
-        merchant_dashboard: Из кабинета мерчанта
-        hpp_form: Из формы HPP
-        merchant_service: Из сервиса мерчанта по H2H
       payment_receipt/receipt_reason:
         duplicate_payment: Задублированный платеж
         fraud_attempt: Попытка мошенничества
