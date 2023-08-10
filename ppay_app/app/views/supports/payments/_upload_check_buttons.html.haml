@@ -6,6 +6,7 @@
         на Арбитраж
 
   = simple_form_for PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+    = f.hidden_field :start_arbitration, value: true
     .flex.mt-2
       .flex-1.mr-2
         .mb-1.text-xs
