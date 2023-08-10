@@ -1,33 +1,4 @@
-- if !payment.arbitration
-  .flex
-    %span{style: "white-space: nowrap;"}
-      Выберите причину и загрузите изображение чека, чтобы отправить платеж
-      %span.text-red-600
-        на Арбитраж
-
-  = simple_form_for PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
-    = f.hidden_field :start_arbitration, value: true
-    .flex.mt-2
-      .flex-1.mr-2
-        .mb-1.text-xs
-          = f.label :receipt_reason, 'Выберите причину арбитража'
-          %span.text-red-500
-            *
-        = f.select :receipt_reason, merchant_payment_arbitration_reasons_collection, { include_blank: true }, class: 'form-input-select h-[45px] w-full text-xs'
-      .flex-1
-        .mb-1.text-xs
-          = f.label :image, 'Загрузите чек'
-          %span.text-red-500
-            *
-        .file-field-container.flex.items-center
-          %label.btn.btn-secondary.btn-sm{ class: 'cursor-pointer grayy-button h-[45px] w-[100%] text-xs flex items-center justify-center', id: 'file-label' }
-            = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
-            = f.file_field :image, id: 'file-field', class: 'hidden', onchange: 'displayFileName(this)'
-            %span.inline-block{ id: 'file-text' } PDF/JPG/PNG
-      .flex-2.mt-auto.ml-2
-        = f.submit 'На арбитраж', class: 'red-button h-[45px] text-xs'
-- else
-  = render 'shared/payment_receipt', payment:, role_namespace:
+= render 'shared/payment_receipt', payment:, role_namespace:
 
 :javascript
   function displayFileName(input) {
