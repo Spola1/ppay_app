@@ -2,9 +2,13 @@
 
 class PaymentReceipt < ApplicationRecord
   belongs_to :payment
+  belongs_to :user
   has_one_attached :image
 
-  validates :image, presence: true
+  with_options unless: :user_support? do
+    validates :image, presence: true
+  end
+
   validates :source, presence: true
   validates :receipt_reason, presence: true, if: :start_arbitration?
 
@@ -28,6 +32,10 @@ class PaymentReceipt < ApplicationRecord
   after_create_commit :set_arbitration
 
   private
+
+  def user_support?
+    user&.support?
+  end
 
   def set_arbitration
     payment.update(arbitration_reason: receipt_reason, arbitration: true) if receipt_reason.present?
