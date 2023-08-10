@@ -29,6 +29,15 @@ module ApplicationHelper
                  .order('payment_system ASC')
   end
 
+  def payment_arbitration_reasons_collection(role_namespace)
+    case role_namespace
+    when 'supports'
+      support_payment_arbitration_reasons_collection
+    when 'merchants'
+      merchant_payment_arbitration_reasons_collection
+    end
+  end
+
   private
 
   def language_options

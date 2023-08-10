@@ -4,6 +4,6 @@
     = f.hidden_field :arbitration, value: true
     .flex
       .mt-auto.mr-1
-        = f.select :arbitration_reason, support_payment_arbitration_reasons_collection, {include_blank: true}, class: 'form-input-select h-[40px] text-xs'
+        = f.select :arbitration_reason, processer_payment_arbitration_reasons_collection, {include_blank: true}, class: 'form-input-select h-[40px] text-xs'
       .mt-auto
         = f.submit 'На арбитраж', class: 'red-button h-[40px] text-xs'

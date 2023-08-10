@@ -20,8 +20,9 @@
         - payment.payment_receipts.each do |receipt|
           %tr.items-list-tr
             %td.items-list-td
-              = link_to receipt.image, target: '_blank' do
-                = image_tag receipt.image, class: 'max-h-96 inline-block', width: '150px'
+              - if receipt.image.present?
+                = link_to receipt.image, target: '_blank' do
+                  = image_tag receipt.image, class: 'max-h-96 inline-block', width: '150px'
             %td.items-list-td= translate_receipt_reason(receipt.receipt_reason) unless receipt.receipt_reason.nil?
             %td.items-list-td= receipt.comment
             %td.items-list-td= translate_receipt_source(receipt.source) unless receipt.source.nil?

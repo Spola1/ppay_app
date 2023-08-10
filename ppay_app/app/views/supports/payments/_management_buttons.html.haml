@@ -3,5 +3,3 @@
              data: { turbo_confirm: 'Вы уверены, что хотите снять платёж с арбитража?' } do |f|
     = f.hidden_field :arbitration, value: false
     = f.submit 'Снять с арбитража', class: 'form-submit'
-- else
-  = render 'shared/staff/payments/to_arbitration_button', payment:, role_namespace:

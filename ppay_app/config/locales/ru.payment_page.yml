@@ -16,6 +16,11 @@ ru:
     back_to_shop: вернуться в магазин
     confirmation_transfer_cancellation: Вы уверены, что хотите отменить платёж?
     payment_cancelled: Платёж отменён!
+    your_payment_cancelled: ВАШ ПЛАТЕЖ ОТКЛОНЕН
+    arbitration_instruction: Если вы оплатили и платеж не зачислен, нажмите на кнопку, чтобы открыть Арбитраж
+    cancel: Отмена
+    in_shop: В магазин
+    open_arbitration: Открыть Арбитраж
     choise_language: Выбрать язык
     deposit:
       attributes:

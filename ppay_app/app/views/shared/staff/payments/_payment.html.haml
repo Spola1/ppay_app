@@ -22,9 +22,12 @@
           .flex
             - if local_assigns[:can_manage_payment?]
               = render "#{role_namespace}/payments/management_buttons", payment:, role_namespace:
+      
+      - if role_namespace == 'supports'
+        = render "supports/payments/upload_check_buttons", payment:, role_namespace:
 
       - if role_namespace == 'merchants'
-        = render "merchants/payments/management_buttons", payment:
+        = render "merchants/payments/management_buttons", payment:, role_namespace:
 
       .mt-4.mb-8.image-processer-block
         = render 'shared/staff/payments/image', payment:
@@ -59,10 +62,10 @@
                 - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled]) && role_namespace != 'merchants'
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
                 - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'cancelled' && |
-                        payment.available_cancelled_transactions? && role_namespace == 'supports'       |
+                        payment.available_cancelled_transactions? && (role_namespace == 'supports' || role_namespace == 'processers') |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
-                    = f.submit 'Завершить', name: :restore, class: 'form-submit'
+                    = f.submit 'Подтвердить платёж', name: :restore, class: 'green-button-payment-apply'
                 - else
                   = payment.human_payment_status
 
@@ -191,11 +194,9 @@
         = render payment_status_partial(payment, 'processers'), payment:, signature:, role_namespace:
 
       .card-wrap.p-0
-        - if payment.arbitration?
-          .card-wrap
-            .item-card{ class: 'min-w-[240px]' }
-              = render 'shared/chat_content', payment:
 
+        .item-card{ class: 'min-w-[240px]' }
+          = render 'shared/chat_content', payment:
         - unless role_namespace == 'merchants'
           .item-card
             %p.text-xl.mb-2 Комментарии

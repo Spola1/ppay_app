@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_10_102027) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_10_163103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -292,7 +292,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_102027) do
     t.integer "receipt_reason"
     t.boolean "start_arbitration", default: false, null: false
     t.integer "source"
+    t.bigint "user_id"
     t.index ["payment_id"], name: "index_payment_receipts_on_payment_id"
+    t.index ["user_id"], name: "index_payment_receipts_on_user_id"
   end
 
   create_table "payment_systems", force: :cascade do |t|
@@ -453,6 +455,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_102027) do
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_receipts", "payments"
+  add_foreign_key "payment_receipts", "users"
   add_foreign_key "payment_systems", "national_currencies"
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
