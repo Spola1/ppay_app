@@ -306,6 +306,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_102027) do
     t.integer "trans_amount_deposit"
     t.integer "trans_amount_withdrawal"
     t.bigint "payment_system_copy_id"
+    t.boolean "in_progress"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
     t.index ["payment_system_copy_id"], name: "index_payment_systems_on_payment_system_copy_id"
