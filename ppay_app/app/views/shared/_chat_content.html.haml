@@ -4,9 +4,51 @@
 .h-96.overflow-auto#chat-container
   = turbo_frame_tag :chats do
     = render partial: 'shared/chat_message', collection: payment.chats, as: :chat
-.mt-4
-  = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
-         data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
-    - unless role_namespace == 'processers'
-      = f.text_area :text, class: 'form-input w-full h-16'
-      = f.submit 'Отправить', class: 'form-submit mt-4'
+
+- if role_namespace != nil || payment.payment_receipts.present?
+  .mt-4
+    = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
+          data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
+      - unless role_namespace == 'processers'
+        = f.text_area :text, class: 'form-input w-full h-16'
+        = f.submit 'Отправить', class: 'form-submit mt-4'
+- else
+  = simple_form_for @payment_receipt || PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+    .flex.mt-2
+      .flex-1
+        .mb-1.text-xs.h-4
+          = f.label :image, 'Загрузите чек'
+          %span.text-red-500
+            *
+        .file-field-container.flex.items-center
+          %label.btn.btn-secondary.btn-sm{ class: 'cursor-pointer grayy-button h-[45px] w-[100%] text-xs flex items-center justify-center', id: 'file-label' }
+            = image_tag('/link.png', class: 'inline-block align-middle mr-1', style: 'width: 22px; height: 22px;')
+            = f.file_field :image, id: 'file-field', class: 'hidden', onchange: 'displayFileName(this)'
+            %span.inline-block{ id: 'file-text' } PDF/JPG/PNG
+        .text-red-500.text-xs
+          = f.error :image
+        .flex-2.mt-4
+          .flex.items-center
+            = f.submit 'Загрузить чек', class: 'red-button w-[100%] h-[45px] text-xs'
+
+:javascript
+  function toggleArbitrationForm() {
+    var arbitrationForm = document.getElementById("arbitration-form");
+    if (arbitrationForm.style.display === "none") {
+      arbitrationForm.style.display = "block";
+      localStorage.setItem("arbitrationFormVisible", "true");
+    } else {
+      arbitrationForm.style.display = "none";
+      localStorage.setItem("arbitrationFormVisible", "false");
+    }
+  };
+
+  function displayFileName(input) {
+    var fileText = document.getElementById('file-text');
+    if (input.files && input.files[0]) {
+      var fileName = input.files[0].name.slice(0, 30);
+      fileText.textContent = fileName + '...';
+    } else {
+      fileText.textContent = 'PDF/JPG/PNG';
+    }
+  }

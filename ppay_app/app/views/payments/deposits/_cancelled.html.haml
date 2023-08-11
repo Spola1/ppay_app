@@ -1,19 +1,71 @@
 .show-payment
   .show-payment-block
     .proc-head
-      = render 'payments/merchant_logo', payment: payment
+      = render 'payments/merchant_logo', payment:
       .proc-text
-        = render 'payments/select_locale', payment:, signature:
+        = render 'payments/select_locale', payment:, signature: signature
 
-    .proc-payment-cancelled-block
-      .proc-payment-cancelled-img
-      = t('payments.payment_cancelled')
+    - if payment.cancellation_reason == 'not_paid'
+      .proc-payment-cancelled-block
+        .flex.flex-col.items-center.justify-center.h-full
+          .proc-payment-cancelled-img
+          = t('payments.your_payment_cancelled')
+          .mt-1.text-xs
+            = t('payments.arbitration_instruction')
+          - if !payment.payment_receipts.present?
+            %button#arbitration-button.mt-2.w-80.h-12.red-button{ onclick: "toggleArbitrationForm()" }
+              = t('payments.open_arbitration')
 
-    .proc-payment-cancelled-links-block
-      - if payment.redirect_url.present?
-        = link_to t('payments.back_to_shop'), payment.redirect_url
+        .flex.items-center.justify-center.h-full
+          %button.mt-2.w-32.h-12.mr-1.grayy-button
+            = t('payments.cancel')
+          %button.mt-2.w-48.h-12.grayy-button
+            - if payment.redirect_url.present?
+              = link_to t('payments.in_shop'), payment.redirect_url
+    - else
+      .proc-payment-cancelled-block
+        .proc-payment-cancelled-img
+        = t('payments.payment_cancelled')
 
-    = render 'payments/uuid', payment:, class: 'text-center'
+      .proc-payment-cancelled-links-block
+        - if payment.redirect_url.present?
+          = link_to t('payments.back_to_shop'), payment.redirect_url
 
-  - if payment.arbitration
-    = render 'shared/chat', payment:
+    = render 'payments/uuid', payment: payment
+  - if !payment.payment_receipts.present?
+    #arbitration-form{:style => "display:none;"}
+      = render 'shared/chat', payment: payment
+  - elsif payment.payment_receipts.present?
+    = render 'shared/chat', payment: payment
+
+:javascript
+  document.addEventListener("DOMContentLoaded", function() {
+    var arbitrationFormVisible = localStorage.getItem("arbitrationFormVisible");
+    if (arbitrationFormVisible === null) {
+      localStorage.setItem("arbitrationFormVisible", "false");
+      arbitrationFormVisible = "false";
+    }
+    
+    var arbitrationForm = document.getElementById("arbitration-form");
+
+    if (arbitrationFormVisible === "true") {
+      arbitrationForm.style.display = "block";
+    } else {
+      arbitrationForm.style.display = "none";
+    }
+
+    window.addEventListener("beforeunload", function() {
+      localStorage.setItem("arbitrationFormVisible", arbitrationForm.style.display === "block" ? "true" : "false");
+    });
+  });
+
+  function toggleArbitrationForm() {
+    var arbitrationForm = document.getElementById("arbitration-form");
+    if (arbitrationForm.style.display === "none") {
+      arbitrationForm.style.display = "block";
+      localStorage.setItem("arbitrationFormVisible", "false");
+    } else {
+      arbitrationForm.style.display = "none";
+      localStorage.setItem("arbitrationFormVisible", "true");
+    }
+  };

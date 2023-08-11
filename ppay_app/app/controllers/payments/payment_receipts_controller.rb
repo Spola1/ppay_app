@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 module Payments
-  class PaymentReceiptsController < Staff::BaseController
+  class PaymentReceiptsController < ApplicationController
     before_action :find_payment
 
     def create
       @payment_receipt = @payment.payment_receipts.new(payment_receipt_params.merge(user: current_user))
 
-      if @payment_receipt.save
+      if @payment_receipt.save && @payment_receipt.user.present?
         render "#{role_namespace}/payments/show"
-      else
+      elsif !@payment_receipt.save && @payment_receipt.user.present?
         render "#{role_namespace}/payments/show", status: :unprocessable_entity
+      else
+        redirect_to "/payments/#{@payment.type.downcase}s/#{@payment.uuid}?signature=#{@payment.signature}"
       end
     end
 
@@ -26,6 +28,8 @@ module Payments
         params.require(:payment_receipt).permit(:image, :comment, :receipt_reason, :start_arbitration).merge(source: :merchant_dashboard)
       when 'supports'
         params.require(:payment_receipt).permit(:image, :comment, :receipt_reason, :start_arbitration).merge(source: :support_dashboard)
+      when nil
+        params.require(:payment_receipt).permit(:image, :comment, :receipt_reason, :start_arbitration).merge(source: :hpp_form)
       end
     end
   end

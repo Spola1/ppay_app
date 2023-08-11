@@ -220,7 +220,21 @@ class Payment < ApplicationRecord
     saved_change_to_arbitration? && arbitration?
   end
 
+  after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
+
   private
+
+  def create_initial_chat_message
+    text = "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n
+            \n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n \nПосле загрузки чека у Вас появится\n
+            возможность писать сообщения в чате"
+
+    Chat.create(payment_id: id, user_id: support_id, text:)
+  end
+
+  def not_paid_cancellation_reason_changed?
+    saved_change_to_cancellation_reason? && cancellation_reason == 'not_paid'
+  end
 
   def send_arbitration_notification
     Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil)
