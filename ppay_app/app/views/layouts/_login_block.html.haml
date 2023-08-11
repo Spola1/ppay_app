@@ -1,11 +1,23 @@
 .login_block.text-xs.font-light.py-2.px-8.flex.items-center.grow.justify-end
   - if user_signed_in?
-    .p-2.text-base
-      %span.whitespace-nowrap.text-right
+    .flex.flex-col
+      %span.whitespace-nowrap.text-right.text-sm
         Баланс:
         %span.font-medium
           = current_user.balance.decorate.amount_formatted
         = current_user.balance.currency
+      - if current_user.is_a?(Processer)
+        %span.whitespace-nowrap.text-right.text-xs
+          Заморожено:
+          %span.font-medium
+            = current_user.balance.decorate.frozen_amount_formatted
+          = current_user.balance.currency
+        %span.whitespace-nowrap.text-right.text-xs
+          Доход за сегодня:
+          %span.font-medium
+            = current_user.balance.decorate.today_income_formatted
+          = current_user.balance.currency
+
     .p-2.pl-4.text-right
       %div.whitespace-nowrap
         %span.font-medium
@@ -13,11 +25,14 @@
         = "(#{current_user.decorate.human_type})"
         %span.block
           = "(#{current_user.email})"
+
     - if current_user.is_a?(Processer) || current_user.is_a?(Merchant)
       .p-2.text-xl
         = link_to fa_icon('user'), users_settings_path
+
     .p-2.text-xl
       = button_to destroy_session_path(current_user), method: :delete, data: { turbo: false } do
         = fa_icon('sign-out')
+
   - else
     = link_to 'Войти', new_user_session_path, :class => 'navbar-link underline'
