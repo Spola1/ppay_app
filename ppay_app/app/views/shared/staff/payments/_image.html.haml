@@ -1,5 +1,5 @@
 .mt-4.mb-8.image-processer-block
-  - if payment.payment_receipts.any? || payment.image.present?
+  - if payment.payment_receipts.where.not(id: nil).any? || payment.image.present?
     %table.items-list-table
       %thead.items-list-thead
         %tr
