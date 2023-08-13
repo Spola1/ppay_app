@@ -14,7 +14,7 @@ RSpec.describe Payment, type: :model do
   it { is_expected.to belong_to(:advertisement).optional(true) }
 
   describe '.in_deposit_flow_hotlist' do
-    let(:adv) { create(:advertisement, :deposit) }
+    let(:adv) { create(:advertisement) }
     let(:payment1) { create(:payment, :deposit, :confirming, advertisement: adv) }
     let(:payment2) { create(:payment, :deposit, :transferring, advertisement: adv) }
     let(:payment3) { create(:payment, :deposit, :confirming, arbitration: true, advertisement: adv) }
@@ -118,7 +118,7 @@ RSpec.describe Payment, type: :model do
     end
 
     describe '#ensure_unique_amount for deposits' do
-      let(:advertisement) { create(:advertisement, :deposit) }
+      let(:advertisement) { create(:advertisement) }
       let(:unique_amount) { :none }
       let(:merchant) { create :merchant, unique_amount: }
       let(:payment1) do
@@ -233,7 +233,7 @@ RSpec.describe Payment, type: :model do
   end
 
   describe '#auditing' do
-    let(:payment) { create(:payment, :deposit, status_changed_at: nil) }
+    let(:payment) { create(:payment, :deposit) }
 
     before do
       payment.update(
@@ -245,22 +245,24 @@ RSpec.describe Payment, type: :model do
         national_currency_amount: 1000,
         cryptocurrency_amount: 2,
         cryptocurrency: 'BTC',
-        status_changed_at: Time.now.to_s
+        status_changed_at: Time.now
       )
     end
 
     it 'audits changes to the payment model' do
       expect(payment.audits.count).to eq(2)
       expect(payment.audits.last.action).to eq('update')
-      expect(payment.audits.last.audited_changes).to include('payment_status' => %w[created completed],
-                                                             'cancellation_reason' => [nil, 1],
-                                                             'unique_amount' => [0, 1],
-                                                             'payment_system' => %w[Sberbank Tinkoff],
-                                                             'national_currency' => %w[RUB IDR],
-                                                             'national_currency_amount' => ['100.0', '1000.0'],
-                                                             'cryptocurrency_amount' => ['1.0', '2.0'],
-                                                             'cryptocurrency' => %w[USDT BTC],
-                                                             'status_changed_at' => [nil, payment.status_changed_at])
+      expect(payment.audits.last.audited_changes).to include(
+        'payment_status' => %w[created completed],
+        'cancellation_reason' => [nil, 1],
+        'unique_amount' => [0, 1],
+        'payment_system' => %w[Sberbank Tinkoff],
+        'national_currency' => %w[RUB IDR],
+        'national_currency_amount' => ['100.0', '1000.0'],
+        'cryptocurrency_amount' => ['1.0', '2.0'],
+        'cryptocurrency' => %w[USDT BTC],
+        'status_changed_at' => [a_kind_of(String), payment.reload.status_changed_at.iso8601(3)]
+      )
     end
   end
 
@@ -553,16 +555,26 @@ RSpec.describe Payment, type: :model do
   end
 
   describe '.expired_arbitration_not_paid' do
-    let!(:not_expired_arbitration) { create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :not_paid, status_changed_at: 5.minutes.ago) }
-    let!(:expired_arbitration_not_paid) { create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :not_paid, status_changed_at: 15.minutes.ago) }
-    let!(:expired_arbitration_other_reason) { create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :fraud_attempt, status_changed_at: 15.minutes.ago) }
+    let!(:not_expired_arbitration) do
+      create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :not_paid,
+                       status_changed_at: 5.minutes.ago)
+    end
+    let!(:expired_arbitration_not_paid) do
+      create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :not_paid,
+                       status_changed_at: 15.minutes.ago)
+    end
+    let!(:expired_arbitration_other_reason) do
+      create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :fraud_attempt,
+                       status_changed_at: 15.minutes.ago)
+    end
 
     it 'includes expired arbitration with not_paid reason' do
       expect(Payment.expired_arbitration_not_paid).to include(expired_arbitration_not_paid)
     end
 
     it 'excludes not expired arbitration with not_paid reason' do
-      expect(Payment.expired_arbitration_not_paid).not_to include([not_expired_arbitration, expired_arbitration_other_reason])
+      expect(Payment.expired_arbitration_not_paid).not_to include([not_expired_arbitration,
+                                                                   expired_arbitration_other_reason])
     end
 
     it 'excludes expired arbitration with other reason' do
@@ -571,9 +583,15 @@ RSpec.describe Payment, type: :model do
   end
 
   describe '.expired_autoconfirming' do
-    let!(:not_expired_autoconfirming) { create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 2.minutes.ago) }
-    let!(:expired_autoconfirming) { create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 5.minutes.ago) }
-    let!(:expired_autoconfirming_other_status) { create(:payment, autoconfirming: true, payment_status: :transferring, status_changed_at: 5.minutes.ago) }
+    let!(:not_expired_autoconfirming) do
+      create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 2.minutes.ago)
+    end
+    let!(:expired_autoconfirming) do
+      create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 5.minutes.ago)
+    end
+    let!(:expired_autoconfirming_other_status) do
+      create(:payment, autoconfirming: true, payment_status: :transferring, status_changed_at: 5.minutes.ago)
+    end
 
     it 'includes expired autoconfirming with confirming status' do
       expect(Payment.expired_autoconfirming).to include(expired_autoconfirming)
@@ -589,10 +607,16 @@ RSpec.describe Payment, type: :model do
   end
 
   describe '.arbitration_by_check' do
-    let!(:adv) { create(:advertisement, :deposit) }
-    let!(:payment1) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 5) }
-    let!(:payment2) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 2) }
-    let!(:payment3) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 6) }
+    let!(:adv) { create(:advertisement) }
+    let!(:payment1) do
+      create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 5)
+    end
+    let!(:payment2) do
+      create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 2)
+    end
+    let!(:payment3) do
+      create(:payment, :deposit, :confirming, advertisement: adv, arbitration: true, arbitration_reason: 6)
+    end
     let!(:payment4) { create(:payment, :deposit, :confirming, advertisement: adv, arbitration_reason: 5) }
 
     it 'returns payments in the arbitration by check' do

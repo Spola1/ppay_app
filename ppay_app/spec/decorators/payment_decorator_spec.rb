@@ -7,7 +7,7 @@ RSpec.describe PaymentDecorator do
   let(:payment) do
     create(:payment, :processer_search, status_changed_at:, type:, advertisement:, form_customization:, merchant:)
   end
-  let(:advertisement) {create(:advertisement, :deposit)}
+  let(:advertisement) { create(:advertisement) }
   let(:time_now) { FFaker::Time.datetime }
   let(:status_changed_at) { time_now - 10.minutes }
   let(:type) { 'Withdrawal' }
@@ -34,26 +34,26 @@ RSpec.describe PaymentDecorator do
       expect(decorator.sbp_phone_number).to eq '+1234567890'
     end
   end
-  
-  describe "#formatted_card_number" do
+
+  describe '#formatted_card_number' do
     let(:payment) { create(:payment, :transferring, :deposit, advertisement:) }
     subject { payment.decorate }
 
-    context "when payment system is not ЕРИП БНБ" do
-      it "returns the original card number" do
-        expect(subject.formatted_card_number).to eq("1111 1111 1111 1111 ")
+    context 'when payment system is not ЕРИП БНБ' do
+      it 'returns the original card number' do
+        expect(subject.formatted_card_number).to eq('1111 1111 1111 1111 ')
       end
     end
 
-    context "when payment system is ЕРИП БНБ" do
-      let(:payment) { create(:payment, :transferring, :deposit, payment_system: "ЕРИП БНБ", advertisement:) }
+    context 'when payment system is ЕРИП БНБ' do
+      let(:payment) { create(:payment, :transferring, :deposit, payment_system: 'ЕРИП БНБ', advertisement:) }
 
       before do
-        payment.advertisement.card_number = "1234/2345/23452345"
+        payment.advertisement.card_number = '1234/2345/23452345'
       end
 
-      it "returns the formatted card number" do
-        expect(subject.formatted_card_number).to eq("1234/2345/23452345")
+      it 'returns the formatted card number' do
+        expect(subject.formatted_card_number).to eq('1234/2345/23452345')
       end
     end
   end
@@ -172,7 +172,7 @@ RSpec.describe PaymentDecorator do
       context 'when merchant has a logo' do
         let(:logo_url) { form_customization.logo.url }
         let(:expected_logo_html) do
-          /<div class=\"show-logo\"><div class=\"logo_img\"><img src=\".*sample.jpeg\" \/><\/div><\/div>/
+          %r{<div class="show-logo"><div class="logo_img"><img src=".*sample.jpeg" /></div></div>}
         end
 
         it 'returns the image tag with the logo' do

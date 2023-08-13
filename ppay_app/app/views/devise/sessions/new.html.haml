@@ -1,21 +1,48 @@
-%h2= t('.system_sign_in')
+- if Setting.instance.version == 2
+  - content_for :body_style, 'background-color: rgb(17 24 39);'
 
-= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-  = f.error_notification
+  %section.w-96.mx-auto.flex.bg-gray-50{ class: 'dark:bg-gray-900' }
+    .card-wrap
+      .item-card{ class: 'w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700' }
+        %section.py-4.px-8
+          = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+            .form-inputs.text-white
+              = f.input :email,
+                label: 'E-Mail',
+                required: false,
+                autofocus: true,
+                input_html: { autocomplete: "email", class: 'dark-input' }
 
-  .form-inputs
-    = f.input :email,
-      required: false,
-      autofocus: true,
-      input_html: { autocomplete: "email" }
+              = f.input :password,
+                required: false,
+                input_html: { autocomplete: "current-password", class: 'dark-input' }
 
-    = f.input :password,
-      required: false,
-      input_html: { autocomplete: "current-password" }
+              = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
 
-    = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+            .form-actions
+              = f.button :submit, t('.sign_in_2'), class: 'w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
 
-  .form-actions
-    = f.button :submit, t('.sign_in'), class: 'form-submit'
+          = render "devise/shared/links"
 
-= render "devise/shared/links"
+- else
+  %h2= t('.system_sign_in')
+
+  = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    = f.error_notification
+
+    .form-inputs
+      = f.input :email,
+        required: false,
+        autofocus: true,
+        input_html: { autocomplete: "email" }
+
+      = f.input :password,
+        required: false,
+        input_html: { autocomplete: "current-password" }
+
+      = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+
+    .form-actions
+      = f.button :submit, t('.sign_in'), class: 'form-submit'
+
+  = render "devise/shared/links"

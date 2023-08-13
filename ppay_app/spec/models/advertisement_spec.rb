@@ -52,8 +52,8 @@ RSpec.describe Advertisement, type: :model do
 
   describe 'scopes' do
     describe 'active scope' do
-      let!(:advertisement1) { create(:advertisement, :deposit, status: true) }
-      let!(:advertisement2) { create(:advertisement, :deposit, status: false) }
+      let!(:advertisement1) { create(:advertisement, status: true) }
+      let!(:advertisement2) { create(:advertisement, status: false) }
 
       it 'returns active advertisements' do
         expect(Advertisement.active).to include(advertisement1)
@@ -65,7 +65,7 @@ RSpec.describe Advertisement, type: :model do
     end
 
     describe '.by_payment_system' do
-      let!(:advertisement) { create(:advertisement, :deposit, payment_system: 'AlfaBank') }
+      let!(:advertisement) { create(:advertisement, payment_system: 'AlfaBank') }
 
       it 'returns advertisements by payment system' do
         expect(Advertisement.by_payment_system('AlfaBank')).to include(advertisement)
@@ -79,7 +79,7 @@ RSpec.describe Advertisement, type: :model do
     describe '.by_amount' do
       let(:max_summ) { 10_000 }
       let(:min_summ) { 10 }
-      let!(:advertisement) { create(:advertisement, :deposit, min_summ:, max_summ:) }
+      let!(:advertisement) { create(:advertisement, min_summ:, max_summ:) }
 
       it 'returns advertisements by amount' do
         expect(Advertisement.by_amount(max_summ)).to include(advertisement)
@@ -96,7 +96,7 @@ RSpec.describe Advertisement, type: :model do
     end
 
     describe '.by_processer_balance' do
-      let!(:advertisement) { create(:advertisement, :deposit, processer:) }
+      let!(:advertisement) { create(:advertisement, processer:) }
       let!(:processer) { create(:processer) }
 
       it 'returns advertisements by amount == processer_balance' do
@@ -115,7 +115,7 @@ RSpec.describe Advertisement, type: :model do
     describe '.by_direction' do
       subject { Advertisement.by_direction(direction) }
 
-      let!(:deposit_ad) { create(:advertisement, :deposit) }
+      let!(:deposit_ad) { create(:advertisement) }
       let!(:withdrawal_ad) { create(:advertisement, :withdrawal) }
 
       context 'on Deposit' do

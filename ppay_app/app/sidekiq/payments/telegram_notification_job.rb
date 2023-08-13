@@ -16,10 +16,10 @@ module Payments
         notify_service.send_new_comment_notification_to_user(payment.merchant.telegram_id)
       end
 
-      if arbitration_changed && chat_message == nil
+      if arbitration_changed && chat_message.nil?
         notify_service.send_new_arbitration_notification_to_user(payment.processer.telegram_id)
         notify_service.send_new_arbitration_notification_to_user(payment.support.telegram_id)
-      elsif !arbitration_changed && chat_message == nil
+      elsif !arbitration_changed && chat_message.nil?
         notify_service.send_new_payment_notification_to_user(payment.processer.telegram_id)
       end
     end

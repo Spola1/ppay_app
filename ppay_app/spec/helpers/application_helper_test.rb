@@ -16,8 +16,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '.deposit_hotlist_advertisements' do
     let!(:processer) { create(:processer) }
-    let!(:active_advertisement) { create(:advertisement, :deposit, processer:, status: true) }
-    let!(:inactive_advertisement) { create(:advertisement, :deposit, processer:, status: false) }
+    let!(:active_advertisement) { create(:advertisement, processer:, status: true) }
+    let!(:inactive_advertisement) { create(:advertisement, processer:, status: false) }
 
     context 'advertisements without payments' do
       it 'returns advertisements with active status' do

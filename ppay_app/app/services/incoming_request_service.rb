@@ -163,7 +163,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.gsub(/\s/, '').gsub(/\,/, '.').to_d == payment.national_currency_amount.to_d
+    match.first.gsub(/\s/, '').gsub(/,/, '.').to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
@@ -180,9 +180,7 @@ class IncomingRequestService
       parsed_card_number: @card_number
     )
 
-    if @advertisement.payments.for_simbank.present?
-      not_found_payment.payments << @advertisement.payments.for_simbank
-    end
+    not_found_payment.payments << @advertisement.payments.for_simbank if @advertisement.payments.for_simbank.present?
 
     not_found_payment.save!
   end

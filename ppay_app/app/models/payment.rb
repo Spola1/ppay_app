@@ -17,7 +17,7 @@ class Payment < ApplicationRecord
   }
   scope :expired_autoconfirming, lambda {
     where(autoconfirming: true, payment_status: :confirming)
-      .where('status_changed_at <= ?', Setting.minutes_to_autocancel.minutes.ago)
+      .where('status_changed_at <= ?', Setting.last.minutes_to_autocancel.minutes.ago)
   }
   scope :finished, -> { where(payment_status: %w[cancelled completed]) }
 
@@ -93,10 +93,10 @@ class Payment < ApplicationRecord
 
   validate :validate_arbitration_fields, on: :merchant
 
-  after_update_commit :complete_transactions, if: -> {
+  after_update_commit :complete_transactions, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
   }
-  after_update_commit :cancel_transactions, if: -> {
+  after_update_commit :cancel_transactions, if: lambda {
     payment_status.in?(%w[cancelled]) && payment_status_previously_changed?
   }
 
@@ -134,7 +134,7 @@ class Payment < ApplicationRecord
   }
 
   scope :in_deposit_flow_hotlist, lambda {
-    deposits.confirming#.where(autoconfirming: false)
+    deposits.confirming # .where(autoconfirming: false)
             .or(deposits.transferring)
             .or(deposits.arbitration)
             .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
@@ -297,23 +297,27 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_arbitrations_by_check_count
+    if processer
+      broadcast_replace_later_to(
+        "processer_#{processer.id}_arbitration_count",
+        partial: 'shared/arbitration_count_turbo_frame',
+        locals: { count: processer.payments.arbitration_by_check.count, user: processer },
+        target: "processer_#{processer.id}_arbitration_count"
+      )
+    end
+    if merchant
+      broadcast_replace_later_to(
+        "merchant_#{merchant.id}_arbitration_count",
+        partial: 'shared/arbitration_count_turbo_frame',
+        locals: { count: merchant.payments.arbitration_by_check.count, user: merchant },
+        target: "merchant_#{merchant.id}_arbitration_count"
+      )
+    end
     broadcast_replace_later_to(
-      "processer_#{processer.id}_arbitration_count",
-      partial: 'shared/arbitration_count_turbo_frame',
-      locals: { count: processer.payments.arbitration_by_check.count, user: processer },
-      target: "processer_#{processer.id}_arbitration_count"
-    ) if processer
-    broadcast_replace_later_to(
-      "merchant_#{merchant.id}_arbitration_count",
-      partial: 'shared/arbitration_count_turbo_frame',
-      locals: { count: merchant.payments.arbitration_by_check.count, user: merchant },
-      target: "merchant_#{merchant.id}_arbitration_count"
-    ) if merchant
-    broadcast_replace_later_to(
-      "support_arbitration_count",
+      'support_arbitration_count',
       partial: 'shared/support_arbitration_count_turbo_frame',
       locals: { count: Payment.arbitration_by_check.count },
-      target: "support_arbitration_count"
+      target: 'support_arbitration_count'
     )
   end
 

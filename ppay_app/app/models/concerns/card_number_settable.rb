@@ -5,7 +5,7 @@ module CardNumberSettable
 
   included do
     def card_number=(value)
-      super(value&.gsub(/[^\w\d\/]/, ''))
+      super(value&.gsub(%r{[^\w\d/]}, ''))
     end
   end
 end

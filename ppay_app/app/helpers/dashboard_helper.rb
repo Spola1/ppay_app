@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module DashboardHelper
-  GREEN_COLOR = 'text-green-500'.freeze
-  RED_COLOR = 'text-red-500'.freeze
+  GREEN_COLOR = 'text-green-500'
+  RED_COLOR = 'text-red-500'
 
   def conversion_color(value)
     value >= 50 ? GREEN_COLOR : RED_COLOR
@@ -33,8 +33,8 @@ module DashboardHelper
      ['Последние 12 часов', 'last_12_hours'],
      ['Последние 24 часа', 'last_day'],
      ['Последние 3 дня', 'last_3_days'],
-     ['Вчера', 'yesterday'],
-     ['Позавчера', 'before_yesterday']]
+     %w[Вчера yesterday],
+     %w[Позавчера before_yesterday]]
   end
 
   def dashboard_filters_partial(user)

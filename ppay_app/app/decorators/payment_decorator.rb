@@ -108,7 +108,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_card_number
-    if ["ЕРИП БНБ", "ЕРИП Альфа", "ЕРИП Белагро"].include?(payment_system)
+    if ['ЕРИП БНБ', 'ЕРИП Альфа', 'ЕРИП Белагро'].include?(payment_system)
       card_number
     else
       card_number&.gsub(/(.{4})/, '\1 ')
@@ -153,9 +153,9 @@ class PaymentDecorator < ApplicationDecorator
 
   def form_url
     if type == 'Deposit'
-      Rails.application.routes.url_helpers.payments_deposit_path(uuid: uuid, signature: signature)
+      Rails.application.routes.url_helpers.payments_deposit_path(uuid:, signature:)
     elsif type == 'Withdrawal'
-      Rails.application.routes.url_helpers.payments_withdrawal_path(uuid: uuid, signature: signature)
+      Rails.application.routes.url_helpers.payments_withdrawal_path(uuid:, signature:)
     end
   end
 

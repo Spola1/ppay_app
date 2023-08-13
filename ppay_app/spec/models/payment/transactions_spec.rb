@@ -32,7 +32,7 @@ RSpec.describe 'Payment transactions commissions' do
     end
   end
 
-  let(:advertisement) { create(:advertisement, :deposit) }
+  let(:advertisement) { create(:advertisement) }
 
   let(:national_currency_amount) { 100 }
   let(:cryptocurrency_amount) do

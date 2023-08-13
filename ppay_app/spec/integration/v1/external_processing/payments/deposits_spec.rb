@@ -7,7 +7,7 @@ describe 'External processing deposits' do
   let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:adv) { create :advertisement, :deposit, payment_system: payment_system.name, payment_link: }
+  let!(:adv) { create :advertisement, payment_system: payment_system.name, payment_link: }
   let!(:ppay) { create :user, :ppay }
 
   path '/api/v1/external_processing/payments/deposits' do

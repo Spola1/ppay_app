@@ -29,11 +29,13 @@ describe 'External processing payments receipts' do
       }
 
       let(:arbitration_reason) { 'duplicate_payment' }
+      let(:advertisement) { build(:advertisement, processer: build(:processer)) }
       let(:payment) do
         create :payment, :deposit, :transferring,
                merchant:,
                processing_type: :external,
-               arbitration_reason:
+               arbitration_reason:,
+               advertisement:
       end
       let(:uuid) { payment.uuid }
 

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 feature 'Client can select payment system', type: :feature do
   let!(:rate_snapshot) { create(:rate_snapshot) }
-  let!(:advertisement) { create(:advertisement, :deposit, payment_system: payment_system.name) }
+  let!(:advertisement) { create(:advertisement, payment_system: payment_system.name) }
   let!(:payment) { create(:payment, :deposit, :created, advertisement:) }
 
   before do

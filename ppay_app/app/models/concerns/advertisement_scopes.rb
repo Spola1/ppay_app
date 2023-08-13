@@ -9,7 +9,11 @@ module AdvertisementScopes
     scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_direction,         ->(direction) { where(direction:) }
-    scope :order_random,         -> { order('RANDOM()') }
+    scope :order_random,         lambda {
+      weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
+      order = Arel.sql("(RANDOM() * users.sort_weight / #{weights_sum}) DESC")
+      joins(:processer).order(order).group('users.sort_weight')
+    }
 
     scope :join_active_payments, lambda {
       joins('LEFT OUTER JOIN payments ON (payments.advertisement_id = advertisements.id AND ' \
@@ -59,7 +63,7 @@ module AdvertisementScopes
     }
 
     scope :order_by_remaining_confirmation_time, lambda {
-      order(Arel.sql("SUM(extract(epoch from payments.status_changed_at)) ASC"))
+      order(Arel.sql('SUM(extract(epoch from payments.status_changed_at)) DESC'))
     }
   end
 end

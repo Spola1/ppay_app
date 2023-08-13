@@ -264,6 +264,12 @@
     @apply form-input;
   }
 
+  .simple_form .form-inputs .input input.dark-input {
+    @apply bg-gray-50 border border-gray-900 text-gray-900 sm:text-sm rounded-lg focus:ring-gray-600
+      focus:border-gray-600 block w-full p-2.5 bg-gray-700 border-gray-600
+      placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 text-white;
+  }
+
   .simple_form .hint, .form_with .hint, .item-card .hint {
     @apply my-1 text-xs text-gray-500;
   }

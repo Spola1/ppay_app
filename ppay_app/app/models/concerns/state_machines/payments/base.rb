@@ -13,7 +13,7 @@ module StateMachines
       end
 
       def update_status_changed_at
-        self.status_changed_at = Time.zone.now
+        self.status_changed_at = Time.zone.now unless status_changed_at_changed?
       end
 
       def search_processer
