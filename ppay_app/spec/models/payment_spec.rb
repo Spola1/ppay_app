@@ -587,10 +587,10 @@ RSpec.describe Payment, type: :model do
       create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 2.minutes.ago)
     end
     let!(:expired_autoconfirming) do
-      create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 5.minutes.ago)
+      create(:payment, autoconfirming: true, payment_status: :confirming, status_changed_at: 8.minutes.ago)
     end
     let!(:expired_autoconfirming_other_status) do
-      create(:payment, autoconfirming: true, payment_status: :transferring, status_changed_at: 5.minutes.ago)
+      create(:payment, autoconfirming: true, payment_status: :transferring, status_changed_at: 8.minutes.ago)
     end
 
     it 'includes expired autoconfirming with confirming status' do

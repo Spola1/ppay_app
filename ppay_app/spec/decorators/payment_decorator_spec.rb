@@ -142,7 +142,7 @@ RSpec.describe PaymentDecorator do
     let(:payment) { create(:payment, :with_transactions) }
 
     it 'calculates amount of all commissions' do
-      is_expected.to eq(20)
+      is_expected.to eq(40)
     end
   end
 
@@ -160,7 +160,7 @@ RSpec.describe PaymentDecorator do
       let(:rate_snapshot) { create(:rate_snapshot, value: 10) }
 
       it 'calculates amount of all commissions and converts it to national currency' do
-        is_expected.to eq(200)
+        is_expected.to eq(400)
       end
     end
   end
