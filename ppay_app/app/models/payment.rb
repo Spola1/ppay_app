@@ -125,6 +125,8 @@ class Payment < ApplicationRecord
 
   after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
 
+  after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
+
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
@@ -219,8 +221,6 @@ class Payment < ApplicationRecord
   def arbitration_changed_to_true?
     saved_change_to_arbitration? && arbitration?
   end
-
-  after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
 
   private
 
