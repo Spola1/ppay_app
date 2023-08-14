@@ -3,6 +3,7 @@ en:
     sessions:
       new:
         system_sign_in: Log in
+        sign_in_2: Sign in
 
     registrations:
       edit:

@@ -120,7 +120,7 @@ label[for=withdrawal_card_number]{
   border-radius: 15px;
   width: 360px;
   color: black;
-  padding: 10px 31px
+  padding: 10px 31px;
 }
 
 .filepond--credits {

@@ -4,7 +4,7 @@ module PaymentsHelper
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
   AVAILABLE_CANCELLATION_REASONS_COLLECTION = %i[by_client duplicate_payment fraud_attempt incorrect_amount
                                                  not_paid].freeze
-  AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_PROCESSERS = %i[duplicate_payment fraud_attempt 
+  AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_PROCESSERS = %i[duplicate_payment fraud_attempt
                                                                incorrect_amount not_paid].freeze
   AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_SUPPORTS = %i[check_by_check incorrect_amount_check duplicate_payment
                                                              fraud_attempt incorrect_amount reason_in_chat].freeze
@@ -44,17 +44,21 @@ module PaymentsHelper
   end
 
   def processer_payment_arbitration_reasons_collection
-    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_PROCESSERS.map { |reason| [arbitration_reason_translation(reason), reason] }
+    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_PROCESSERS.map do |reason|
+      [arbitration_reason_translation(reason), reason]
+    end
   end
 
   def support_payment_arbitration_reasons_collection
-    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_SUPPORTS.map { |reason| [arbitration_reason_translation(reason), reason] }
+    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_SUPPORTS.map do |reason|
+      [arbitration_reason_translation(reason), reason]
+    end
   end
 
   def merchant_payment_arbitration_reasons_collection
-    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_MERCHANTS.map { |reason|
+    AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_MERCHANTS.map do |reason|
       [arbitration_reason_translation(reason), reason]
-    }
+    end
   end
 
   def translate_arbitration_reason(reason)

@@ -41,8 +41,7 @@ module Merchants
       def payment_params
         params.require(:deposit).permit(:national_currency_amount, :national_currency, :direction, :redirect_url,
                                         :callback_url, :external_order_id, :locale,
-                                        :arbitration, :arbitration_reason, :image, :cancellation_reason
-                                       ).merge(merchant_id: current_user.id)
+                                        :arbitration, :arbitration_reason, :image, :cancellation_reason).merge(merchant_id: current_user.id)
       end
     end
   end

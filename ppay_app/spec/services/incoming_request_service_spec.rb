@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe IncomingRequestService do
   let!(:processer) { create(:processer) }
-  let!(:advertisement) { create(:advertisement, :deposit, processer:) }
+  let!(:advertisement) { create(:advertisement, processer:) }
   let!(:amount_mask) { create(:mask, :amount, sender: incoming_request.from) }
   let!(:card_mask) { create(:mask, :card_number, sender: incoming_request.from) }
   let!(:payment) { create(:payment, :deposit, :transferring, advertisement:) }
@@ -82,7 +82,7 @@ RSpec.describe IncomingRequestService do
     end
 
     context 'with invalid advertisement' do
-      let!(:advertisement) { create(:advertisement, :deposit, processer:, simbank_card_number: '1111') }
+      let!(:advertisement) { create(:advertisement, processer:, simbank_card_number: '1111') }
 
       it 'returns correct find_matching_advertisement result' do
         expect(incoming_request.advertisement).to eq(nil)
@@ -113,7 +113,7 @@ RSpec.describe IncomingRequestService do
     end
 
     context 'when advertisement simbank_auto_confirmation disabled' do
-      let!(:advertisement) { create(:advertisement, :deposit, processer:, simbank_auto_confirmation: false) }
+      let!(:advertisement) { create(:advertisement, processer:, simbank_auto_confirmation: false) }
 
       it 'returns correct find_matching_advertisement result' do
         expect(incoming_request.advertisement).to eq(nil)

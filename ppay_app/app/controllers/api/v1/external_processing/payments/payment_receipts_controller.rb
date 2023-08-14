@@ -8,7 +8,7 @@ module Api
           def create
             raise ActionController::BadRequest unless payment.external?
 
-            @payment_receipt = payment.payment_receipts.new(payment_receipt_params)
+            @payment_receipt = payment.payment_receipts.new(prepared_payment_receipt_params)
             @payment_receipt.save!
 
             render json: serialized_payment_receipt, status: :created
@@ -18,6 +18,14 @@ module Api
 
           private
 
+          def prepared_payment_receipt_params
+            payment_receipt_params.merge(
+              source: :merchant_service,
+              user: current_bearer,
+              start_arbitration: ActiveModel::Type::Boolean.new.cast(payment_receipt_params[:start_arbitration])
+            )
+          end
+
           def serialized_payment_receipt
             PaymentReceipts::Create::PaymentReceiptSerializer.new(@payment_receipt.decorate)
           end
@@ -25,7 +33,6 @@ module Api
           def payment_receipt_params
             (params[:payment_receipt] ? params.require(:payment_receipt) : params)
               .permit(:image, :comment, :receipt_reason, :start_arbitration)
-              .merge(source: :merchant_service, user: current_bearer)
           end
         end
       end

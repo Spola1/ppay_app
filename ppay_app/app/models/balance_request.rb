@@ -2,6 +2,7 @@
 
 class BalanceRequest < ApplicationRecord
   include StateMachines::BalanceRequest
+  include Filterable
 
   has_one :balance_transaction, as: :transactionable, class_name: 'Transaction'
 
@@ -23,6 +24,8 @@ class BalanceRequest < ApplicationRecord
 
   validates_presence_of :crypto_address
   validates_numericality_of :amount, greater_than: 0
+
+  scope :filter_by_status, ->(status) { where(status:) }
 
   private
 

@@ -4,6 +4,7 @@ ru:
       new:
         system_sign_in: Вход в систему
         sign_in: Вход
+        sign_in_2: Войти
 
     registrations:
       edit:

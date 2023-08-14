@@ -3,6 +3,8 @@
 class Advertisement < ApplicationRecord
   include CardNumberSettable
   include AdvertisementScopes
+  audited
+  acts_as_paranoid
 
   has_many :payments
   has_many :deposits

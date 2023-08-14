@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_10_222427) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_13_213206) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -75,6 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_222427) do
     t.string "simbank_sender"
     t.string "sbp_phone_number"
     t.string "card_owner_name"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
@@ -371,6 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_222427) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "minutes_to_autocancel", default: 7, null: false
+    t.jsonb "settings", default: {}
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -427,6 +430,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_222427) do
     t.string "account_number_placeholder"
     t.string "any_bank"
     t.boolean "autocancel", default: false, null: false
+    t.float "sort_weight", default: 1.0, null: false
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

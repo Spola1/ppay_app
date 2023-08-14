@@ -29,7 +29,7 @@ class PaymentReceipt < ApplicationRecord
     support_dashboard: 3
   }, _prefix: true
 
-  after_create_commit :set_arbitration
+  after_create_commit :set_arbitration, if: :start_arbitration?
   after_create_commit :broadcast_replace_ad_hotlist_to_processer
 
   private
@@ -39,7 +39,7 @@ class PaymentReceipt < ApplicationRecord
   end
 
   def set_arbitration
-    payment.update(arbitration_reason: receipt_reason, arbitration: true) if receipt_reason.present?
+    payment.update(arbitration_reason: receipt_reason, arbitration: true)
   end
 
   def broadcast_replace_ad_hotlist_to_processer

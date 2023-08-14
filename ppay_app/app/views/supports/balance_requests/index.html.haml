@@ -3,6 +3,11 @@
     .item-card
       %h1.mb-4.text-xl Запросы баланса
 
+      .filters-wrap
+        .item-card
+          %h1.mb-4.text-xl Фильтры
+          = render 'shared/staff/balance_requests/filter'
+
       - if @balance_requests.present?
         %table.items-list-table
           %thead.item-list-thead

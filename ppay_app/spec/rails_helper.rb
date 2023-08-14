@@ -77,7 +77,7 @@ RSpec.configure do |config|
   config.include_context 'turn off UpdateCallbackJob'
   config.include_context 'payment means'
 
-  # config.before(:suite) { ActiveRecord::Base.logger = Logger.new(STDOUT) }
+  config.before(:suite) { Setting.create }
   ActiveStorage::Current.url_options = Rails.application.config.active_storage.url_options
 end
 

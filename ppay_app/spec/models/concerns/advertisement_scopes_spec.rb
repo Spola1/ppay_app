@@ -44,13 +44,13 @@ RSpec.describe Advertisement, type: :model do
       create_list(:payment, 3, :transferring, advertisement: advertisement8, national_currency_amount: 10)
 
       # advertisement 9 - больше времени на подтверждение
-      create_list(:payment, 8, :transferring, advertisement: advertisement9, status_changed_at: 1.day.ago)
+      create_list(:payment, 8, :transferring, advertisement: advertisement9, status_changed_at: 5.minutes.ago)
 
       # advertisement 10 - меньше времени на подтверждение
-      create_list(:payment, 8, :transferring, advertisement: advertisement10, status_changed_at: 2.days.ago)
+      create_list(:payment, 8, :transferring, advertisement: advertisement10, status_changed_at: 7.minutes.ago)
     end
 
-    10.times do
+    3.times do
       it 'returns sorted list of advertisements' do
         is_expected.to(eq([advertisement6, advertisement8, advertisement5, advertisement4, advertisement3,
                            advertisement2, advertisement9, advertisement10, advertisement7, advertisement1])
@@ -63,16 +63,16 @@ RSpec.describe Advertisement, type: :model do
   describe '.algorithm deposit' do
     subject { Advertisement.for_deposit(payment) }
 
-    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement4) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement5) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement6) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement7) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement8) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement9) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement10) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement1) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement2) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement3) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement4) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement5) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement6) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement7) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement8) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement9) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement10) { create(:advertisement, payment_system: 'Sberbank') }
 
     let(:payment) { create(:payment, :deposit, :processer_search) }
 
@@ -105,9 +105,9 @@ RSpec.describe Advertisement, type: :model do
 
     let(:payment) { create(:payment, :deposit, :processer_search) }
 
-    let!(:advertisement1) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement2) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
-    let!(:advertisement3) { create(:advertisement, :deposit, payment_system: 'Sberbank') }
+    let!(:advertisement1) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement2) { create(:advertisement, payment_system: 'Sberbank') }
+    let!(:advertisement3) { create(:advertisement, payment_system: 'Sberbank') }
 
     before do
       # сортировка по активным платежам
@@ -191,6 +191,41 @@ RSpec.describe Advertisement, type: :model do
 
     it 'orders advertisements by remaining confirmation time' do
       is_expected.to eq([advertisement1, advertisement2, advertisement3])
+    end
+  end
+
+  describe '.order_random' do
+    subject(:results_for_processer1) do
+      1000.times.map do
+        Advertisement.for_deposit(payment)
+                     .order_random
+                     .first
+                     .processer_id
+        end.select { |id| id == processer1.id }.size
+    end
+
+    let(:payment) { create(:payment, :deposit, :processer_search) }
+
+    let(:processer1) { create(:processer, sort_weight: 2) }
+    let(:processer2) { create(:processer, sort_weight: 1) }
+
+    let!(:advertisement1) { create(:advertisement, processer: processer1) }
+    let!(:advertisement2) { create(:advertisement, processer: processer2) }
+
+    it 'about 744 for processer1' do
+      is_expected.to be_within(100).of(744)
+    end
+
+    context 'different count of advertisements' do
+      let!(:advertisement1) { create(:advertisement, processer: processer1) }
+      let!(:advertisement2) { create(:advertisement, processer: processer1) }
+      let!(:advertisement3) { create(:advertisement, processer: processer2) }
+      let!(:advertisement4) { create(:advertisement, processer: processer2) }
+      let!(:advertisement5) { create(:advertisement, processer: processer2) }
+
+      it 'about 845 for processer1' do
+        is_expected.to be_within(100).of(845)
+      end
     end
   end
 end

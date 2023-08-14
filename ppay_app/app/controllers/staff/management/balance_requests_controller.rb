@@ -13,7 +13,7 @@ module Staff
       before_action :find_balance_request, except: %i[new index]
 
       def index
-        @pagy, @balance_requests = pagy(BalanceRequest.all.order(created_at: :desc))
+        @pagy, @balance_requests = pagy(BalanceRequest.filter_by(filtering_params).order(created_at: :desc))
       end
 
       def show; end
@@ -38,6 +38,10 @@ module Staff
 
       def balance_request_params
         params.require(:balance_request).permit(:id, :user_id, :requests_type, :amount, :crypto_address, :short_comment)
+      end
+
+      def filtering_params
+        params[:balance_request_filters]&.slice(:status)
       end
     end
   end

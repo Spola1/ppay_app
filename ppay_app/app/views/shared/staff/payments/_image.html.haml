@@ -1,5 +1,5 @@
 .mt-4.mb-8.image-processer-block
-  - if payment.payment_receipts.any? || payment.image.present?
+  - if payment.payment_receipts.where.not(id: nil).any? || payment.image.present?
     %table.items-list-table
       %thead.items-list-thead
         %tr
@@ -26,6 +26,3 @@
             %td.items-list-td= translate_receipt_reason(receipt.receipt_reason) unless receipt.receipt_reason.nil?
             %td.items-list-td= receipt.comment
             %td.items-list-td= translate_receipt_source(receipt.source) unless receipt.source.nil?
-
-  - else
-    Скриншот: не приложен

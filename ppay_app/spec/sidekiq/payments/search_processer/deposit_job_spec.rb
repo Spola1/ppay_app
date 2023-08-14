@@ -7,7 +7,7 @@ RSpec.describe Payments::SearchProcesser::DepositJob, type: :job do
 
   let!(:payment) { create(:payment, :deposit, :processer_search, payment_system: 'Sberbank') }
 
-  let!(:advertisement1) { create(:advertisement, :deposit) }
+  let!(:advertisement1) { create(:advertisement) }
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:ppay) { create(:user, :ppay) }
 
