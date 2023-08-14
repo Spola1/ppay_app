@@ -1,9 +1,9 @@
 - if Setting.instance.version == 2
   - content_for :body_style, 'background-color: rgb(17 24 39);'
 
-  %section.w-96.mx-auto.flex.bg-gray-50{ class: 'dark:bg-gray-900' }
+  %section.w-96.mx-auto.flex
     .card-wrap.bg-gray-900
-      .item-card{ class: 'w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700' }
+      .item-card{ class: 'w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700' }
         %section.py-4.px-8
           = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
             .form-inputs.text-white
