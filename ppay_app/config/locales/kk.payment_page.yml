@@ -15,6 +15,11 @@ kk:
     back_to_shop: Дүкенге оралу
     confirmation_transfer_cancellation: Сіз төлемді қайтарғыңыз келетініне сенімдісіз бе?
     payment_cancelled: Төлем тоқтатылды!
+    your_payment_cancelled:
+    arbitration_instruction:
+    cancel:
+    in_shop:
+    open_arbitration:
     choise_language: Тілді таңдаңыз
     deposit:
       attributes:
