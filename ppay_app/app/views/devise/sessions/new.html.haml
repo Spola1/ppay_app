@@ -1,6 +1,11 @@
 - if Setting.instance.version == 2
   - content_for :body_style, 'background-color: rgb(17 24 39);'
 
+  :css
+    .alert-block {
+      display: none;
+    }
+
   %section.w-96.mx-auto.flex
     .card-wrap.bg-gray-900
       .item-card{ class: 'w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700' }
