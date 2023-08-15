@@ -1,9 +1,9 @@
 .show-payment
   .show-payment-block
     .proc-head
-      = render 'payments/merchant_logo', payment:
+      = render 'payments/merchant_logo', payment: payment
       .proc-text
-        = render 'payments/select_locale', payment:, signature: signature
+        = render 'payments/select_locale', payment:, signature:
 
     - if payment.cancellation_reason == 'not_paid'
       .proc-payment-cancelled-block
