@@ -4,7 +4,7 @@
     %span.text-red-600
       на Арбитраж
 
-= simple_form_for @payment_receipt || PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+= simple_form_for @payment_receipt || PaymentReceipt.new, url: payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
   = f.hidden_field :start_arbitration, value: true
   .flex.mt-2
     .flex-1.mr-2

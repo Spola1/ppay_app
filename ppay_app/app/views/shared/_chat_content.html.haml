@@ -9,7 +9,7 @@
     = render partial: 'shared/chat_message', collection: payment.chats, as: :chat
 
 - if role_namespace == nil && !payment.payment_receipts.exists?(user_id: nil) && payment.cancellation_reason == 'not_paid'
-  = simple_form_for @payment_receipt || PaymentReceipt.new, url: payment_payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
+  = simple_form_for @payment_receipt || PaymentReceipt.new, url: payment_receipts_path(payment_uuid: payment.uuid), remote: true do |f|
     .flex.mt-2
       .flex-1
         .mb-1.text-xs.h-4
