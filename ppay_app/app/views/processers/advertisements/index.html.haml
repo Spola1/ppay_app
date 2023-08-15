@@ -35,7 +35,7 @@
 
         %tbody
           - @advertisements.each do |ad|
-            %tr.items-list-tr
+            %tr.items-list-tr{ class: ad.archived? ? 'opacity-30' : '' }
               %td.items-list-td-link= link_to ad.id, ad
               %td.items-list-td= ad.formatted_created_at
               %td.items-list-td{ class: "direction-#{ ad.direction.underscore }" }

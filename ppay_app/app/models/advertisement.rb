@@ -4,7 +4,7 @@ class Advertisement < ApplicationRecord
   include CardNumberSettable
   include AdvertisementScopes
   audited
-  acts_as_paranoid
+  acts_as_archival
 
   has_many :payments
   has_many :deposits

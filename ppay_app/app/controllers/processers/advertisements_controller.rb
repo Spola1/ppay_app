@@ -5,7 +5,7 @@ module Processers
     before_action :find_advertisement, only: %i[show edit update destroy]
 
     def index
-      @pagy, @advertisements = pagy(current_user.advertisements)
+      @pagy, @advertisements = pagy(current_user.advertisements.order(archived_at: :desc, status: :desc))
       @advertisements = @advertisements.decorate
     end
 
@@ -43,7 +43,7 @@ module Processers
     end
 
     def destroy
-      if @advertisement.delete
+      if @advertisement.update!(status: false) && @advertisement.archive!
         redirect_to advertisements_path, notice: 'Объявление успешно удалено'
       else
         redirect_to advertisements_path, alert: 'Ошибка удаления объявления'

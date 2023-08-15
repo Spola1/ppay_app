@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_13_213206) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_143910) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -76,6 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_13_213206) do
     t.string "sbp_phone_number"
     t.string "card_owner_name"
     t.datetime "deleted_at"
+    t.string "archive_number"
+    t.datetime "archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
