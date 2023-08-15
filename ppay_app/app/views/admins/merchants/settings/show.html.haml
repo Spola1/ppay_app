@@ -8,6 +8,7 @@
     = f.input :account_number_placeholder
     = f.input :check_required, as: :boolean
     = f.input :account_number_required, as: :boolean
+    = f.input :chat_enabled, as: :boolean
     = f.input :unique_amount, collection: [['Чек', 'none'], ['Целая уникализация суммы', 'integer'], ['Дробная уникализация суммы', 'decimal']], include_blank: false
     = f.input :any_bank, placeholder: I18n.t('payments.any_bank'), hint: 'Оставить пустым, если не используется'
 
