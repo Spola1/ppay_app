@@ -51,13 +51,13 @@ module Processers
     end
 
     def activate_all
-      current_user.advertisements.where(status: false).update_all(status: true)
+      current_user.advertisements.where(status: false).update(status: true)
 
       redirect_to advertisements_path
     end
 
     def deactivate_all
-      current_user.advertisements.where(status: true).update_all(status: false)
+      current_user.advertisements.where(status: true).update(status: false)
 
       redirect_to advertisements_path
     end

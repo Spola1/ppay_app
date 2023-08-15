@@ -51,13 +51,15 @@
               %td.items-list-td= ad.payments.active.count
 
               %td.items-list-td.px-1.w-0
-                = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
-                  .icon-button-red
-                    = fa_icon 'trash'
+                - unless ad.archived?
+                  = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
+                    .icon-button-red
+                      = fa_icon 'trash'
               %td.items-list-td.px-1.w-0
-                = link_to edit_advertisement_path(ad) do
-                  .icon-button
-                    = fa_icon 'pencil'
+                - unless ad.archived?
+                  = link_to edit_advertisement_path(ad) do
+                    .icon-button
+                      = fa_icon 'pencil'
               %td.items-list-td.px-1.w-0
                 = link_to ad do
                   .icon-button-gray
