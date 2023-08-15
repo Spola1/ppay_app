@@ -34,6 +34,11 @@
         = f.text_area :text, class: 'form-input w-full h-16'
         = f.submit 'Отправить', class: 'form-submit mt-4'
 
+- if @payment.payment_receipts.where(user_id: nil).exists?
+  %p.text-xl.mb-2.mt-4 Прикрепленный чек
+  = link_to @payment.payment_receipts.where(user_id: nil).last.image, target: '_blank' do
+    = image_tag @payment.payment_receipts.where(user_id: nil).last.image, class: 'max-h-96 inline-block w-full'
+
 :javascript
   function displayFileName(input) {
     var fileText = document.getElementById('file-text');
