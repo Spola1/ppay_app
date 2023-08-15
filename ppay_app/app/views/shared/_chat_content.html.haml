@@ -26,13 +26,22 @@
         .flex-2.mt-4
           .flex.items-center
             = f.submit 'Загрузить чек', class: 'red-button w-[100%] h-[45px] text-xs'
-- else
+- elsif payment.payment_receipts.exists?(user_id: nil) && payment.cancellation_reason == 'not_paid' && payment.merchant.chat_enabled?
   .mt-4
     = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
           data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
       - unless role_namespace == 'processers'
         = f.text_area :text, class: 'form-input w-full h-16'
         = f.submit 'Отправить', class: 'form-submit mt-4'
+- elsif payment.payment_receipts.exists?(user_id: nil) && payment.cancellation_reason == 'not_paid' && !payment.merchant.chat_enabled?
+  .mt-4
+- else
+  .mt-4
+  = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
+        data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
+    - unless role_namespace == 'processers'
+      = f.text_area :text, class: 'form-input w-full h-16'
+      = f.submit 'Отправить', class: 'form-submit mt-4'
 
 - if @payment.payment_receipts.where(user_id: nil).exists? && role_namespace.nil?
   %p.text-xl.mb-2.mt-4 Прикрепленный чек
