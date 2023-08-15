@@ -53,6 +53,8 @@ class Merchant < User
   end
 
   def telegram_id_presence
+    return unless telegram_changed?
+
     errors.add(:telegram, :not_found) unless telegram_id.present?
   end
 
