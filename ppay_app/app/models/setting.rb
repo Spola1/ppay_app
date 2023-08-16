@@ -2,6 +2,7 @@
 
 class Setting < ApplicationRecord
   store_accessor :settings, :version
+  store_accessor :settings, :commissions_version
 
   # Метод, который возвращает или создает новую запись настроек
   def self.instance

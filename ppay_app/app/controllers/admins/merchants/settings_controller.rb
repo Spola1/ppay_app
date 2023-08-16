@@ -14,7 +14,7 @@ module Admins
       def update
         @merchant.update(settings_params.except(:commissions))
 
-        grouped_commission = settings_params[:commissions]
+        grouped_commission = settings_params[:commissions].except('missing')
                              .to_h.map { { id: _1, commission: _2 } }
                              .index_by { _1[:id] }
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_15_143910) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_16_043654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
@@ -433,6 +433,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_15_143910) do
     t.string "any_bank"
     t.boolean "autocancel", default: false, null: false
     t.float "sort_weight", default: 1.0, null: false
+    t.decimal "processer_commission", precision: 15, scale: 10
+    t.decimal "working_group_commission", precision: 15, scale: 10
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
