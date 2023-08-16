@@ -18,6 +18,7 @@ u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', n
 u3 = Processer.create(email: 'processer1@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'VasiaBTC', name: 'Вася')
 u4 = Processer.create(email: 'processer2@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'IvanCrypto', name: 'Ваня')
 u5 = Support.create(email: 'support@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'Svetlana911', name: 'Светлана')
+u6 = Agent.create(email: 'agent@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'FreeAgent', name: 'Николай')
 pp = Ppay.create(email: 'ppay@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'PPay_acc', name: 'Ppay')
 
 u1 = User.find_by(email: 'admin@test.com')
