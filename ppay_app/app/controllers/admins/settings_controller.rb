@@ -21,7 +21,7 @@ module Admins
     end
 
     def settings_params
-      params.require(:setting).permit(:receive_requests_enabled)
+      params.require(:setting).permit(:receive_requests_enabled, :commissions_version)
     end
   end
 end
