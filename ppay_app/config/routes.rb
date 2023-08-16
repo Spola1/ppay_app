@@ -60,6 +60,12 @@ Rails.application.routes.draw do
     root 'payments#index', as: :admins_root
   end
 
+  scope module: :agents, constraints: ->(request) { request.env['warden'].user&.agent? } do
+    resources :turnover_stats, only: %i[index]
+
+    root 'turnover_stats#index', as: :agent_root
+  end
+
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do
     resources :payments, only: :index
     resources :balance_requests
