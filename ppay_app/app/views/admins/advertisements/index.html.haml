@@ -25,7 +25,7 @@
 
         %tbody
           - @advertisements.each do |ad|
-            %tr.items-list-tr
+            %tr.items-list-tr{ class: ad.archived? ? 'opacity-30' : '' }
               %td.items-list-td-link= link_to ad.id, ad
               %td.items-list-td= "#{ad.processer.name} (#{ad.processer.email})"
               %td.items-list-td= ad.processer_id
@@ -41,13 +41,15 @@
                 = ad.status ? 'Активно' : 'Неактивно'
 
               %td.items-list-td.px-1.w-0
-                = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
-                  .icon-button-red
-                    = fa_icon 'trash'
+                - unless ad.archived?
+                  = link_to ad, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
+                    .icon-button-red
+                      = fa_icon 'trash'
               %td.items-list-td.px-1.w-0
-                = link_to edit_advertisement_path(ad) do
-                  .icon-button
-                    = fa_icon 'pencil'
+                - unless ad.archived?
+                  = link_to edit_advertisement_path(ad) do
+                    .icon-button
+                      = fa_icon 'pencil'
               %td.items-list-td.px-1.w-0
                 = link_to ad do
                   .icon-button-gray

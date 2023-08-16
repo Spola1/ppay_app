@@ -25,7 +25,7 @@ module Staff
       end
 
       def destroy
-        if @advertisement.delete
+        if @advertisement.update!(status: false) && @advertisement.archive!
           redirect_to advertisements_path, notice: 'Объявление успешно удалено'
         else
           redirect_to advertisements_path, alert: 'Ошибка удаления объявления'
