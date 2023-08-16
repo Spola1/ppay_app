@@ -8,4 +8,6 @@ class Setting < ApplicationRecord
   def self.instance
     first_or_create(receive_requests_enabled: false)
   end
+
+  def commissions_version = super.to_i
 end
