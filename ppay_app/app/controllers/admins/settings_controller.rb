@@ -20,7 +20,13 @@ module Admins
       @setting = Setting.instance
     end
 
+    def commissions_version
+      params[:setting][:commissions_version]
+    end
+
     def settings_params
+      params[:setting][:commissions_version] = commissions_version.to_i if commissions_version.present?
+
       params.require(:setting).permit(:receive_requests_enabled, :commissions_version)
     end
   end
