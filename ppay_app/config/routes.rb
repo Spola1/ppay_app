@@ -62,8 +62,14 @@ Rails.application.routes.draw do
 
   scope module: :agents, constraints: ->(request) { request.env['warden'].user&.agent? } do
     resources :turnover_stats, only: %i[index]
+    resources :payments, param: :uuid, only: %i[index show]
 
-    root 'turnover_stats#index', as: :agent_root
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index show]
+      resources :withdrawals, param: :uuid, only: %i[index show]
+    end
+
+    root 'payments#index', as: :agents_root
   end
 
   scope module: :merchants, constraints: ->(request) { request.env['warden'].user&.merchant? } do

@@ -1,0 +1,51 @@
+# frozen_string_literal: true
+
+module Agents
+  class PaymentsController < Staff::BaseController
+    before_action :find_payment, only: %i[show]
+
+    def index
+      respond_to do |format|
+        format.html do
+          set_payments
+        end
+
+        format.xlsx do
+          payments = Payment.joins(merchant: :agent).where(users: { agent_id: current_user })
+                            .includes(:advertisement, :transactions)
+                            .filter_by(filtering_params)
+                            .decorate
+
+          render xlsx: 'payments', locals: { payments: }
+        end
+      end
+    end
+
+    def show; end
+
+    private
+
+    def set_payments
+      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.joins(merchant: :agent)
+                                                                       .where(users: { agent_id: current_user })
+                                                                       .arbitration)
+      @arbitration_payments = @arbitration_payments.decorate
+
+      @pagy, @payments = pagy(Payment.joins(merchant: :agent).where(users: { agent_id: current_user })
+                                                             .filter_by(filtering_params).order(created_at: :desc))
+      @payments = @payments.decorate
+    end
+
+    def find_payment
+      @payment = Payment.joins(merchant: :agent).where(users: { agent_id: current_user })
+                        .find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
+    end
+
+    def filtering_params
+      params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
+                                      :payment_system, :national_currency, :national_currency_amount_from,
+                                      :national_currency_amount_to, :cryptocurrency_amount_from,
+                                      :cryptocurrency_amount_to, :uuid, :external_order_id)
+    end
+  end
+end
