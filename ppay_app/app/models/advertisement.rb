@@ -9,6 +9,7 @@ class Advertisement < ApplicationRecord
   has_many :payments
   has_many :deposits
   has_many :withdrawals
+  has_many :advertisement_activities
   # STI модель - processer < user
   belongs_to :processer
 
@@ -20,8 +21,19 @@ class Advertisement < ApplicationRecord
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
 
   after_commit :set_payment_link_qr_code, if: -> { payment_link_previously_changed? }
+  after_commit :create_activity_on_activate, if: :saved_change_to_status?
+  after_commit :create_activity_on_deactivate, if: :saved_change_to_status?
 
   private
+
+  def create_activity_on_activate
+    advertisement_activities.create if status?
+  end
+
+  def create_activity_on_deactivate
+    last_activity = advertisement_activities.last
+    last_activity.update(deactivated_at: Time.now) if last_activity && !status?
+  end
 
   def set_payment_link_qr_code
     if payment_link.blank?
