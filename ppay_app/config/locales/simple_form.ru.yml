@@ -28,5 +28,8 @@ ru:
       stats_filters:
         created_from: 'Дата от:'
         created_to: 'Дата до:'
+      advertisement_filters:
+        status: 'Статус платежа:'
+        card_number: 'Номер карты:'
 
 
