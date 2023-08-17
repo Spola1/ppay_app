@@ -29,7 +29,7 @@ ru:
         created_from: 'Дата от:'
         created_to: 'Дата до:'
       advertisement_filters:
-        status: 'Статус платежа:'
+        status: 'Статус объявления:'
         card_number: 'Номер карты:'
 
 
