@@ -33,6 +33,10 @@ every 1.minute do
   runner 'Payments::CancelExpiredJob.perform_async'
 end
 
+every 5.minutes do
+  runner 'PgHero.capture_query_stats'
+end
+
 # не забываем:
 # Now, you need to update the scheduled jobs to system
 #

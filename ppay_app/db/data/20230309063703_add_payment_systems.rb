@@ -4,7 +4,8 @@ class AddPaymentSystems < ActiveRecord::Migration[7.0]
   class PaymentSystem < ApplicationRecord; end
 
   def up
-    PaymentSystem.create!(
+    nc = NationalCurrency.create(name: 'RUB')
+    nc.payment_systems.create!(
       [
         { name: 'Sberbank' },
         { name: 'Tinkoff' },

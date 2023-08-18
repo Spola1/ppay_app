@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   mount Sidekiq::Web => '/sidekiq'
+  authenticate :user, -> (user) { user.admin? } do
+    mount PgHero::Engine, at: "pghero"
+  end
 
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == Settings.basic_auth.username &&

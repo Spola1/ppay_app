@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_17_064548) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_18_183247) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -361,8 +362,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_064548) do
     t.string "account_number"
     t.bigint "form_customization_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
+    t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
+    t.index ["payment_status"], name: "index_payments_on_payment_status"
     t.index ["support_id"], name: "index_payments_on_support_id"
+  end
+
+  create_table "pghero_query_stats", force: :cascade do |t|
+    t.text "database"
+    t.text "user"
+    t.text "query"
+    t.bigint "query_hash"
+    t.float "total_time"
+    t.bigint "calls"
+    t.datetime "captured_at", precision: nil
+    t.index ["database", "captured_at"], name: "index_pghero_query_stats_on_database_and_captured_at"
   end
 
   create_table "rate_snapshots", force: :cascade do |t|
@@ -375,6 +389,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_064548) do
     t.decimal "value"
     t.decimal "adv_amount"
     t.bigint "payment_system_id"
+    t.index ["direction"], name: "index_rate_snapshots_on_direction"
     t.index ["payment_system_id"], name: "index_rate_snapshots_on_payment_system_id"
   end
 
