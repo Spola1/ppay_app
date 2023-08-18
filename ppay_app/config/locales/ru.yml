@@ -26,6 +26,10 @@ ru:
       type:
         deposit: Депозит
         withdrawal: Вывод
+      advertisement:
+        status:
+          true: Активно
+          false: Неактивно
       balance_request:
         requests_type: Тип
         amount: Сумма

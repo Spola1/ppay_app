@@ -104,7 +104,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def card_number
-    type == 'Deposit' ? advertisement.card_number : super
+    type == 'Deposit' ? advertisement&.card_number : super
   end
 
   def formatted_card_number
