@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_18_183247) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_18_233920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -363,9 +363,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_18_183247) do
     t.bigint "form_customization_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
+    t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"
+    t.index ["created_at"], name: "index_payments_on_created_at"
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
     t.index ["payment_status"], name: "index_payments_on_payment_status"
+    t.index ["status_changed_at"], name: "index_payments_on_status_changed_at"
     t.index ["support_id"], name: "index_payments_on_support_id"
+    t.index ["uuid"], name: "index_payments_on_uuid"
   end
 
   create_table "pghero_query_stats", force: :cascade do |t|
@@ -412,6 +416,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_18_183247) do
     t.string "transactionable_type"
     t.bigint "transactionable_id"
     t.decimal "national_currency_amount", precision: 12, scale: 2
+    t.index ["from_balance_id", "transaction_type"], name: "index_transactions_on_from_balance_id_and_transaction_type"
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
     t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
