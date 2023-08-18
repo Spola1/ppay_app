@@ -5,5 +5,6 @@
       = simple_form_for @setting, url: setting_path, method: :patch do |f|
         = f.label :receive_requests_enabled, 'Включить прием запросов'
         = f.check_box :receive_requests_enabled
+        = f.input :commissions_version
         .mt-3
           = f.submit 'Сохранить', class: 'form-submit'

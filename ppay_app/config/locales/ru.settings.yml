@@ -1,0 +1,5 @@
+ru:
+  activerecord:
+    attributes:
+      setting:
+        commissions_version: Версия расчёта комиссий

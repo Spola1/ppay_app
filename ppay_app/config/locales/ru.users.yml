@@ -2,7 +2,7 @@ ru:
   activerecord:
     attributes:
       user:
-        nickname: Техническое название мерчанта
+        nickname: Техническое название пользователя
         name: Отображаемое при оплате название
         check_required: Требуется загрузка чека
         unique_amount: Тип идентификации платежа
@@ -11,6 +11,8 @@ ru:
         account_number_placeholder: Плейсхолдер для номера счета
         any_bank: 'Название "Любого банка" в списке платёжных методов'
         chat_enabled: Активация арбитражного чата
+        processer_commission: Комиссия оператора
+        working_group_commission: Комиссия рабочей группы
 
   users:
     sidebar:

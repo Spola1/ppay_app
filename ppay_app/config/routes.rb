@@ -52,6 +52,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :processers, only: %i[index new create update] do
+      scope module: :processers do
+        resource :settings, only: %i[show update]
+      end
+    end
+
     resources :turnover_stats, only: %i[index]
 
     resources :payment_systems, only: :index

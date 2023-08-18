@@ -1,7 +1,6 @@
 basic_auth:
   username: ppay
   password: password
-ppay_commission: 4
 
 simbank_nickname: Симбанк
 
@@ -15,6 +14,8 @@ navbar:
       path: balance_requests_path
     - name: Мерчанты
       path: merchants_path
+    - name: Операторы
+      path: processers_path
     - name: Настройки
       path: edit_setting_path
     - name: Регулярки

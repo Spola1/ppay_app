@@ -1,0 +1,35 @@
+= turbo_frame_tag 'content' do
+  %section.wrap
+    .card-wrap
+      .item-card
+        .card-head
+          %h1 Добавить оператора
+
+        .card-body
+          = simple_form_for @processer, :url => processers_path, :method => :post do |f|
+            - if @processer.errors.any?
+              .flex.items-center
+                .text-xl.px-2
+                  = fa_icon 'exclamation-circle'
+                = f.error_notification
+
+            .form-inputs
+              = f.input :email,
+                required: true,
+                autofocus: true,
+                input_html: { autocomplete: "email" }
+
+              = f.input :password,
+                required: true,
+                hint: (t('devise.shared.minimum_password_length.many', count: @minimum_password_length) if @minimum_password_length),
+                input_html: { autocomplete: "new-password" }
+
+              = f.input :password_confirmation,
+                required: true,
+                input_html: { autocomplete: "new-password" }
+
+            .form-actions
+              = f.submit 'Добавить', class: 'form-submit'
+
+        .back-link
+          = link_to '<- К списку операторов', processers_path

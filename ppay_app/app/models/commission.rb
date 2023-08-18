@@ -16,10 +16,11 @@ class Commission < ApplicationRecord
     ppay: 0,
     processer: 1,
     working_group: 2,
-    agent: 3
+    agent: 3,
+    other: 4
   }
 
-  %i[ppay processer working_group agent].each do |commission_type|
+  %i[ppay processer working_group agent other].each do |commission_type|
     scope commission_type, -> { where(commission_type:) }
   end
 end

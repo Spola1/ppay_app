@@ -26,11 +26,19 @@ module Payments
       end
 
       def processer_commission
-        merchant_commissions.processer.first.commission
+        if Setting.instance.commissions_version == 2
+          processer.processer_commission
+        else
+          merchant_commissions.processer.first.commission
+        end
       end
 
       def working_group_commission
-        merchant_commissions.working_group.first.commission
+        if Setting.instance.commissions_version == 2
+          processer.working_group_commission
+        else
+          merchant_commissions.working_group.first.commission
+        end
       end
 
       def agent_commission
@@ -38,7 +46,14 @@ module Payments
       end
 
       def ppay_commission
-        merchant_commissions.ppay.first.commission
+        if Setting.instance.commissions_version == 2
+          [
+            merchant_commissions.other.first.commission - processer_commission - working_group_commission,
+            0
+          ].max
+        else
+          merchant_commissions.ppay.first.commission
+        end
       end
 
       def complete_transactions
