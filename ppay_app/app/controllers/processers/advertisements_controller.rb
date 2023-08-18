@@ -5,7 +5,9 @@ module Processers
     before_action :find_advertisement, only: %i[show edit update destroy]
 
     def index
-      @pagy, @advertisements = pagy(current_user.advertisements.order(archived_at: :desc, status: :desc))
+      @pagy, @advertisements = pagy(current_user.advertisements
+                                                .filter_by(filtering_params)
+                                                .order(archived_at: :desc, status: :desc))
       @advertisements = @advertisements.decorate
     end
 
@@ -75,6 +77,10 @@ module Processers
                                             :exchange_rate_source, :percent, :min_fix_price, :status, :hidden,
                                             :account_id, :simbank_auto_confirmation, :imei, :phone, :imsi,
                                             :simbank_card_number, :simbank_sender, :sbp_phone_number, :card_owner_name)
+    end
+
+    def filtering_params
+      params[:advertisement_filters]&.slice(:card_number, :status)
     end
   end
 end
