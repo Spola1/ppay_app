@@ -72,5 +72,10 @@ class Merchant < User
         %i[ppay processer working_group agent].map { { commission_type: _1 } }
       )
       .map { _1.inject(:merge) }
+      .concat(
+        [{ commission: 3, commission_type: :other }]
+          .product(merchant_methods.all.map { { merchant_method_id: _1.id } })
+          .map { _1.inject(:merge) }
+      )
   end
 end
