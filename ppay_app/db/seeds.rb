@@ -18,7 +18,10 @@ u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', n
 u3 = Processer.create(email: 'processer1@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'VasiaBTC', name: 'Вася')
 u4 = Processer.create(email: 'processer2@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'IvanCrypto', name: 'Ваня')
 u5 = Support.create(email: 'support@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'Svetlana911', name: 'Светлана')
+u6 = Agent.create(email: 'agent@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'FreeAgent', name: 'Николай')
 pp = Ppay.create(email: 'ppay@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'PPay_acc', name: 'Ppay')
+u7 = Merchant.create(email: 'merchant1@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet1',
+                     name: 'Александр Александрович')
 
 u1 = User.find_by(email: 'admin@test.com')
 u1.usdt_trc20_address = 'SaK2GZoEtevoAJq3NwhDbLyJDfjW73SSUt'
@@ -32,3 +35,6 @@ u3.save
 u4 = User.find_by(email: 'processer2@test.com')
 u4.usdt_trc20_address = 'SguJGZoEtevoAJq3NwXX1LyJDfjs99Pe2v'
 u4.save
+u7 = User.find_by(email: 'merchant1@test.com')
+u2.usdt_trc20_address = 'ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUq'
+u2.save
