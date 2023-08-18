@@ -75,3 +75,8 @@ navbar:
       path: arbitrations_path
     - name: Статистика
       path: dashboard_path
+  agent:
+    - name: Все платежи
+      path: payments_path
+    - name: Оборот
+      path: turnover_stats_path

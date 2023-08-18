@@ -142,5 +142,24 @@ RSpec.describe Advertisement, type: :model do
         end
       end
     end
+
+    describe 'filter scope' do
+      let!(:advertisement1) { create(:advertisement, status: true, card_number: '1111111111111111') }
+      let!(:advertisement2) { create(:advertisement, status: false, card_number: '1234123412341234') }
+      let!(:advertisement3) { create(:advertisement, status: true, card_number: '1111111111111111') }
+      let!(:advertisement4) { create(:advertisement, status: false, card_number: '1234123412341234') }
+
+      describe '.filter_by_status' do
+        subject(:advertisements) { Advertisement.filter_by_status('Aктивно') }
+        let(:correct_result) { [advertisement1, advertisement3] }
+        it { expect(advertisements.to_a).to eq(correct_result) }
+      end
+
+      describe '.filter_by_card_number' do
+        subject(:advertisements) { Advertisement.filter_by_card_number('1111111111111111') }
+        let(:correct_result) { [advertisement1, advertisement3] }
+        it { expect(advertisements.to_a).to eq(correct_result) }
+      end
+    end
   end
 end
