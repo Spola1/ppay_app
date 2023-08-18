@@ -1,0 +1,24 @@
+%table.items-list-table
+  %thead.items-list-thead
+    %tr
+      %th.items-list-th ID
+      %th.items-list-th Email
+      %th.items-list-th Создан
+      %th.items-list-th Название
+
+      %th.items-list-th
+
+  %tbody
+    - processers.each do |processer|
+      %tr.items-list-tr
+        %td.items-list-td-link
+          = link_to processer.id, processer_settings_path(processer), data: { turbo_action: :advance }
+        %td.items-list-td-link
+          = link_to processer.email, processer_settings_path(processer), data: { turbo_action: :advance }
+        %td.items-list-td= processer.formatted_created_at
+        %td.items-list-td= processer.decorate.display_name
+
+        %td.items-list-td.px-1.w-0
+          = link_to processer_settings_path(processer), data: { turbo_action: :advance } do
+            .icon-button-gray
+              = fa_icon 'search'

@@ -24,6 +24,15 @@
           %th.items-list-th Оператор
           %th.items-list-th Рабочая группа
           %th.items-list-th Агент
+          %th.items-list-th
+            .flex.flex-col
+              Остальные
+              %span.hint
+                Для новой версии рассчётов
+                %br
+                (сервис + оператор
+                %br
+                + рабочая группа)
           %th.items-list-th Общий процент
 
           %th.items-list-th
@@ -34,10 +43,13 @@
             %td.items-list-td= commissions.first.payment_system_name
             %td.items-list-td= commissions.first.national_currency_name
             %td.items-list-td= commissions.first.direction
-            - commissions.each do |commission|
-              %td.items-list-td
-                = text_field_tag "merchant[commissions][#{commission.id}]", commission.commission, size: 5
-            %td.items-list-td= commissions.sum(&:commission)
+            - commissions = commissions.group_by(&:commission_type).map { [_1, _2.first] }.to_h
+            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['ppay'].id}]", commissions['ppay'].commission, size: 5
+            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['processer'].id}]", commissions['processer'].commission, size: 5
+            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['working_group'].id}]", commissions['working_group'].commission, size: 5
+            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['agent'].id}]", commissions['agent'].commission, size: 5
+            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['other'].id}]", commissions['other'].commission, size: 5
+            %td.items-list-td= commissions.except('other').values.sum(&:commission)
             %td.items-list-td.px-1.w-0
               = link_to merchant_merchant_method_path(@merchant, merchant_method_id),
                         data: { turbo_confirm: 'Вы уверены что хотите удалить метод?', turbo_method: :delete }  do

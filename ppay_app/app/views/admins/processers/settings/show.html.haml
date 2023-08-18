@@ -1,0 +1,28 @@
+= turbo_frame_tag 'content' do
+  .card-wrap
+    .item-card
+      .card-head
+        %h1
+          Настройки оператора
+          = "#{@processer.display_name} (#{@processer.email})"
+
+      .card-body
+        .admins_processer_content
+          %section
+            .edit_content
+              .form
+                = simple_form_for(@processer, as: :processer, url: processer_settings_path(@processer), action: :update) do |f|
+                  = f.error_notification
+
+                  .form-inputs
+                    = f.input :nickname, autofocus: true
+                    = f.input :name
+                    = f.input :processer_commission
+                    = f.input :working_group_commission
+
+                  .form-actions
+                    = f.button :submit, t('buttons.submit'), class: 'form-submit'
+
+      .back-link
+        = link_to '<- К списку операторов', processers_path
+
