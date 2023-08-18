@@ -12,7 +12,7 @@ ru:
         any_bank: 'Название "Любого банка" в списке платёжных методов'
         chat_enabled: Активация арбитражного чата
         processer_commission: Комиссия оператора
-        working_group_commission: Комиссия рабочей группы
+        working_group_commission: Комиссия организатора команды
 
   users:
     sidebar:
