@@ -6,7 +6,19 @@ module Payments
       include Interactor
 
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
-               :average_confirmation, :completed_sum, :active_advertisements, to: :context
+               :average_confirmation, :completed_sum, :active_advertisements, :active_advertisements_period,
+               to: :context
+
+      PERIODS = {
+        'last_hour' => 1.hour.ago,
+        'last_3_hours' => 3.hours.ago,
+        'last_6_hours' => 6.hours.ago,
+        'last_12_hours' => 12.hours.ago,
+        'last_day' => 1.day.ago,
+        'last_3_days' => 3.days.ago,
+        'yesterday' => 1.day.ago.beginning_of_day,
+        'before_yesterday' => 2.days.ago.beginning_of_day
+      }.freeze
 
       def call
         set_default_params
@@ -15,6 +27,7 @@ module Payments
         set_average_confirmation
         set_completed_sum
         set_active_advertisements
+        set_active_advertisements_period
       end
 
       private
@@ -55,6 +68,47 @@ module Payments
 
       def set_active_advertisements
         context.active_advertisements = processer.advertisements.active.group_by(&:national_currency)
+      end
+
+      def set_active_advertisements_period
+        period = context.filtering_params[:period]
+        created_from = context.filtering_params[:created_from]
+        created_to = context.filtering_params[:created_to]
+
+        if period.present?
+          start_time, end_time = calculate_time_range_for_period(period)
+        elsif created_from.present? && created_to.present?
+          start_time, end_time = calculate_time_range_for_created(created_from, created_to)
+        end
+
+        if start_time && end_time
+          active_advertisements_period = fetch_active_advertisements_period(start_time, end_time)
+          context.active_advertisements_period = active_advertisements_period
+        end
+      end
+
+      def calculate_time_range_for_period(period)
+        if !['yesterday', 'before_yesterday'].include?(period)
+          [PERIODS[period], Time.now]
+        elsif period == 'yesterday'
+          [PERIODS[period], 1.day.ago.end_of_day]
+        elsif period == 'before_yesterday'
+          [PERIODS[period], 2.days.ago.end_of_day]
+        end
+      end
+
+      def calculate_time_range_for_created(created_from, created_to)
+        [created_from.in_time_zone.beginning_of_day, created_to.in_time_zone.end_of_day]
+      end
+
+      def fetch_active_advertisements_period(start_time, end_time)
+        context.processer.advertisements.joins(:advertisement_activities)
+          .where(
+            'advertisement_activities.created_at >= ? AND advertisement_activities.deactivated_at <= ?',
+            start_time, end_time
+          )
+          .distinct
+          .group_by(&:national_currency)
       end
     end
   end
