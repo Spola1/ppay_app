@@ -82,6 +82,7 @@ Rails.application.routes.draw do
     resources :payments, only: :index
     resources :balance_requests
     resources :arbitrations, only: [:index]
+    resources :payment_receipts, only: :create
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show create update new] do
         member do
@@ -147,6 +148,7 @@ Rails.application.routes.draw do
     resources :incoming_requests
     resource :dashboard, only: :show, controller: :dashboard
     resources :arbitrations, only: [:index]
+    resources :payment_receipts, only: :create
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
@@ -180,8 +182,9 @@ Rails.application.routes.draw do
   resources :payments, param: :uuid, only: [] do
     resources :comments, only: :create, controller: 'payments/comments'
     resources :chats, only: :create, controller: 'payments/chats'
-    resources :payment_receipts, only: :create, controller: 'payments/payment_receipts'
   end
+
+  resources :payment_receipts, only: :create
 
   constraints(
     lambda do |request|

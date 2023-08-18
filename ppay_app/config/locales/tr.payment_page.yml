@@ -15,6 +15,11 @@ tr:
     back_to_shop: Mağazaya geri dön
     confirmation_transfer_cancellation: Ödemeyi iptal etmek istediğinize emin misiniz?
     payment_cancelled: Ödeme iptal edildi!
+    your_payment_cancelled:
+    arbitration_instruction:
+    cancel:
+    in_shop:
+    open_arbitration:
     choise_language: Dil seç
     deposit:
       attributes:

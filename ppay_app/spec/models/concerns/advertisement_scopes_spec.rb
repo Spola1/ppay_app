@@ -201,7 +201,7 @@ RSpec.describe Advertisement, type: :model do
                      .order_random
                      .first
                      .processer_id
-        end.select { |id| id == processer1.id }.size
+      end.select { |id| id == processer1.id }.size
     end
 
     let(:payment) { create(:payment, :deposit, :processer_search) }

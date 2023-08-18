@@ -5,15 +5,28 @@
       .proc-text
         = render 'payments/select_locale', payment:, signature:
 
-    .proc-payment-cancelled-block
-      .proc-payment-cancelled-img
-      = t('payments.payment_cancelled')
+    - if payment.cancellation_reason == 'not_paid'
+      .proc-payment-cancelled-block
+        .flex.flex-col.items-center.justify-center.h-full
+          .proc-payment-cancelled-img
+          = t('payments.your_payment_cancelled')
+          %span.text-red-500.mt-4.mb-2
+            00:00:00
+          .mt-1.text-xs
+            = t('payments.arbitration_instruction')
+          %button.mt-2.w-80.h-12.grayy-button
+            - if payment.redirect_url.present?
+              = link_to t('payments.in_shop'), payment.redirect_url
+    - else
+      .proc-payment-cancelled-block
+        .proc-payment-cancelled-img
+        = t('payments.payment_cancelled')
 
-    .proc-payment-cancelled-links-block
-      - if payment.redirect_url.present?
-        = link_to t('payments.back_to_shop'), payment.redirect_url
+      .proc-payment-cancelled-links-block
+        - if payment.redirect_url.present?
+          = link_to t('payments.back_to_shop'), payment.redirect_url
 
-    = render 'payments/uuid', payment:, class: 'text-center'
+    = render 'payments/uuid', payment: payment
+  = render 'shared/chat', payment: payment
 
-  - if payment.arbitration
-    = render 'shared/chat', payment:
+

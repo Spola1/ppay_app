@@ -15,6 +15,11 @@ uz:
     back_to_shop: Do'konga qaytish
     confirmation_transfer_cancellation: To'lovni bekor qilishni xohlayotganingizga aminmisiz?
     payment_cancelled: To'lov bekor qilindi!
+    your_payment_cancelled:
+    arbitration_instruction:
+    cancel:
+    in_shop:
+    open_arbitration:
     choise_language: Tilni tanlang
     deposit:
       attributes:

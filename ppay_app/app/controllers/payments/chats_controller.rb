@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Payments
-  class ChatsController < Staff::BaseController
+  class ChatsController < ApplicationController
     before_action :find_payment
 
     def create

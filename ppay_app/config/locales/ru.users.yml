@@ -10,6 +10,7 @@ ru:
         account_number_title: Название поля для номера счета
         account_number_placeholder: Плейсхолдер для номера счета
         any_bank: 'Название "Любого банка" в списке платёжных методов'
+        chat_enabled: Активация арбитражного чата
         processer_commission: Комиссия оператора
         working_group_commission: Комиссия рабочей группы
 

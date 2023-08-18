@@ -15,6 +15,11 @@ tg:
     back_to_shop: Бозгашт ба мағоза
     confirmation_transfer_cancellation: Шумо мутмаин ҳастед, ки мехоҳед пардохтро бекор кунед?
     payment_cancelled: Пардохт бекор карда шуд!
+    your_payment_cancelled:
+    arbitration_instruction:
+    cancel:
+    in_shop:
+    open_arbitration:
     choise_language: Забонро интихоб кунед
     deposit:
       attributes:

@@ -13,5 +13,5 @@
 
     = render 'payments/uuid', payment:
 
-  - if payment.arbitration
+  - if payment.arbitration && payment.arbitration_reason != 'not_paid'
     = render 'shared/chat', payment:

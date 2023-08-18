@@ -15,6 +15,11 @@ id:
     back_to_shop: Kembali ke toko
     confirmation_transfer_cancellation: Apakah Anda yakin ingin membatalkan pembayaran?
     payment_cancelled: Pembayaran dibatalkan!
+    your_payment_cancelled:
+    arbitration_instruction:
+    cancel:
+    in_shop:
+    open_arbitration:
     deposit:
       attributes:
         shop: Toko

@@ -15,6 +15,11 @@ uk:
     back_to_shop: Повернутися в магазин
     confirmation_transfer_cancellation: Ви впевнені, що хочете скасувати платіж?
     payment_cancelled: Платіж скасовано!
+    your_payment_cancelled:
+    arbitration_instruction:
+    cancel:
+    in_shop:
+    open_arbitration:
     choise_language: Вибрати мову
     deposit:
       attributes:
