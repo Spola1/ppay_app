@@ -4,7 +4,7 @@ module Agents
   module Payments
     class DepositsController < PaymentsController
       def index
-        @pagy, @payments = pagy(Deposit.all)
+        @pagy, @payments = pagy(Deposit.joins(merchant: :agent).where(users: { agent_id: current_user }))
         @payments = @payments.decorate
       end
 
