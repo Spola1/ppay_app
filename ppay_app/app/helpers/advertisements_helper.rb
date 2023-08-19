@@ -19,7 +19,7 @@ module AdvertisementsHelper
 
   def advertisement_statuses_collection
     AVAILABLE_STATUSES_COLLECTION.map { |status|
-      [I18n.t("activerecord.attributes.advertisement.status.#{status}"), status]
+      [I18n.t("activerecord.attributes.advertisement/status.#{status}"), status]
     }
   end
 

@@ -4,7 +4,8 @@
   html: { class: 'filters'} do |f|
 
   .filters-grid
-    = f.input :status, collection: advertisement_statuses_collection, include_blank: 'Все'
+    = f.input :status, collection: advertisement_statuses_collection, include_blank: 'Все',
+                       selected: advertisement_filters_params(:status)
     = f.input :card_number, as: :string, input_html:{ value: advertisement_filters_params(:card_number) }
 
   = f.submit t('buttons.submit'), class: 'form-submit'
