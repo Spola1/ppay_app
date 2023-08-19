@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WorkingGroup < ApplicationRecord
+class WorkingGroup < User
   has_many :processers
   has_one :balance, as: :balanceable, dependent: :destroy
 
