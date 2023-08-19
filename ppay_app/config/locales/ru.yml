@@ -88,7 +88,7 @@ ru:
         ppay_commission: Комиссия сервиса
         processer_commission: Комиссия оператора
         agent_commission: Комиссия агента
-        working_group_commission: Комиссия рабочей группы
+        working_group_commission: Комиссия организатора
         deposit: Пополнение счёта
         withdraw: Вывод денег
       user/type:
