@@ -52,6 +52,7 @@ Rails.application.routes.draw do
         resource :account, only: %i[show update]
         resource :settings, only: %i[show update]
         resources :merchant_methods, only: %i[create destroy]
+        resource :whitelisted_processers, only: %i[show update]
       end
     end
 
