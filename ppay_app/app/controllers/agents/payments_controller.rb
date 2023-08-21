@@ -26,13 +26,12 @@ module Agents
     private
 
     def set_payments
-      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.joins(merchant: :agent)
-                                                                       .where(users: { agent_id: current_user })
-                                                                       .arbitration)
+      scope = Payment.joins(merchant: :agent).where(users: { agent_id: current_user })
+
+      @arbitration_payments_pagy, @arbitration_payments = pagy(scope.arbitration, page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
 
-      @pagy, @payments = pagy(Payment.joins(merchant: :agent).where(users: { agent_id: current_user })
-                                                             .filter_by(filtering_params).order(created_at: :desc))
+      @pagy, @payments = pagy(scope.filter_by(filtering_params))
       @payments = @payments.decorate
     end
 
