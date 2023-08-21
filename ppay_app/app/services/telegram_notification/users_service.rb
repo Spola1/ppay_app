@@ -4,9 +4,10 @@ require 'telegram/bot'
 require 'date'
 
 module TelegramNotification
-  class ProcessersService < BaseService
+  class UsersService < BaseService
     attr_reader :payment, :national_currency_amount, :card_number, :national_currency, :external_order_id,
-                :payment_status, :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid, :chats
+                :payment_status, :payment_system, :advertisement_card_number, :type, :status_changed_at, :uuid, :chat,
+                :comment
 
     def initialize(payment)
       super()
@@ -21,7 +22,8 @@ module TelegramNotification
       @status_changed_at = payment.status_changed_at
       @uuid = payment.uuid
       @payment = payment
-      @chats = payment&.chats&.last&.text
+      @chat = payment&.chats&.last
+      @comment = payment&.comments&.last
     end
 
     def send_new_payment_notification_to_user(user)
@@ -57,11 +59,30 @@ module TelegramNotification
       message = "Добавлен новый комментарий по арбитражу\n\n"
 
       message += "uuid: #{@uuid}\n"
-      message += "Комментарий: #{@chats}\n"
+      message += "Комментарий: #{@comment.text}\n"
       message += "Ссылка на платёж: \n"
       message += "#{PaymentUrlUtility.new(payment).url}\n"
 
-      send_message_to_user(user, message) unless user.nil?
+      sender_user = @comment.user
+
+      return unless sender_user && sender_user.telegram_id != user
+
+      send_message_to_user(user, message)
+    end
+
+    def send_new_chat_notification_to_user(user)
+      message = "Добавлено новое сообщение в чате по арбитражу\n\n"
+
+      message += "uuid: #{@uuid}\n"
+      message += "Сообщение: #{@chat.text}\n"
+      message += "Ссылка на платёж: \n"
+      message += "#{PaymentUrlUtility.new(payment).url}\n"
+
+      sender_user = @chat.user
+
+      return unless sender_user && sender_user.telegram_id != user
+
+      send_message_to_user(user, message)
     end
 
     private

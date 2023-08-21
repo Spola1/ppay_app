@@ -250,7 +250,7 @@ class Payment < ApplicationRecord
   end
 
   def send_arbitration_notification
-    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil)
+    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil, nil)
   end
 
   def validate_arbitration_fields
@@ -313,7 +313,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    Payments::TelegramNotificationJob.perform_async(id, false, nil)
+    Payments::TelegramNotificationJob.perform_async(id, false, nil, nil)
 
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
