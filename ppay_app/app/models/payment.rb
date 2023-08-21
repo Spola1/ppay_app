@@ -93,6 +93,8 @@ class Payment < ApplicationRecord
 
   validate :validate_arbitration_fields, on: :merchant
 
+  before_save :update_arbitration_start_time, if: :arbitration_changed?
+
   after_update_commit :complete_transactions, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
   }
@@ -223,6 +225,10 @@ class Payment < ApplicationRecord
   end
 
   private
+
+  def update_arbitration_start_time
+    arbitration? ? self.started_arbitration_at ||= Time.current : self.started_arbitration_at = nil
+  end
 
   def create_initial_chat_message
     text_with_active_arbitration_chat = "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n

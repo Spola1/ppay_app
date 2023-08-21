@@ -4,6 +4,7 @@
       %th.items-list-th
       %th.items-list-th ID
       %th.items-list-th создан
+      %th.items-list-th начало арбитража
       %th.items-list-th направление
       %th.items-list-th нац. валюта
       %th.items-list-th кол-во нац. валюты
@@ -26,6 +27,7 @@
         %td.items-list-td-link
           = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
         %td.items-list-td= payment.formatted_created_at
+        %td.items-list-td= payment.formatted_started_arbitration_at
         %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
         %td.items-list-td= payment.decorate.national_formatted
