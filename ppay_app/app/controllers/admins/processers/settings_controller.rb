@@ -20,7 +20,8 @@ module Admins
       end
 
       def settings_params
-        params.require(:processer).permit(:nickname, :name, :processer_commission, :working_group_commission)
+        params.require(:processer).permit(:nickname, :name, :processer_commission, :working_group_commission,
+                                          :processer_withdrawal_commission, :working_group_withdrawal_commission)
       end
     end
   end

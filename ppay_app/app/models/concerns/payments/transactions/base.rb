@@ -37,9 +37,13 @@ module Payments
         merchant_commissions.agent.first.commission
       end
 
+      def other_commission
+        merchant_commissions.other.first.commission
+      end
+
       def ppay_commission
         [
-          merchant_commissions.other.first.commission - processer_commission - working_group_commission,
+          other_commission - processer_commission - working_group_commission,
           0
         ].max
       end

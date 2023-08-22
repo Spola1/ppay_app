@@ -460,8 +460,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_104436) do
     t.boolean "autocancel", default: false, null: false
     t.float "sort_weight", default: 1.0, null: false
     t.boolean "chat_enabled", default: true
-    t.decimal "processer_commission", precision: 15, scale: 10
-    t.decimal "working_group_commission", precision: 15, scale: 10
+    t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
+    t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
