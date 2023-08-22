@@ -34,6 +34,9 @@
               value: "#{stats.average_confirmation.round(2)} сек",
               value_color: average_confirmation_color(stats.average_confirmation)
             = render 'shared/staff/stats/stats_tr',
+              title: 'Среднее время разрешения арбитражей по чеку',
+              value: "#{stats.average_arbitration_resolution_time.round(2)} сек"
+            = render 'shared/staff/stats/stats_tr',
               title: 'Текущий баланс',
               value: "#{stats.processer.balance.decorate.amount_formatted}",
               value_color: balance_color(stats.processer.balance.amount)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_21_071914) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_065343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -99,6 +99,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_071914) do
     t.datetime "updated_at", null: false
     t.index ["bearer_id", "bearer_type"], name: "index_api_keys_on_bearer_id_and_bearer_type"
     t.index ["token"], name: "index_api_keys_on_token", unique: true
+  end
+
+  create_table "arbitration_resolutions", force: :cascade do |t|
+    t.bigint "payment_id", null: false
+    t.integer "reason"
+    t.datetime "ended_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ended_at"], name: "index_arbitration_resolutions_on_ended_at"
+    t.index ["payment_id"], name: "index_arbitration_resolutions_on_payment_id"
   end
 
   create_table "audits", force: :cascade do |t|
@@ -354,13 +364,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_071914) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.bigint "form_customization_id"
     t.datetime "started_arbitration_at"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
@@ -481,6 +491,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_071914) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "advertisement_activities", "advertisements"
+  add_foreign_key "arbitration_resolutions", "payments"
   add_foreign_key "chats", "payments"
   add_foreign_key "chats", "users"
   add_foreign_key "commissions", "merchant_methods"

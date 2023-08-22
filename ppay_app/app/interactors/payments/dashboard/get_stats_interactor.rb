@@ -7,7 +7,7 @@ module Payments
 
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
                :average_confirmation, :completed_sum, :active_advertisements, :active_advertisements_period,
-               to: :context
+               :average_arbitration_resolution_time, to: :context
 
       PERIODS = {
         'last_hour' => 1.hour.ago,
@@ -28,6 +28,7 @@ module Payments
         set_completed_sum
         set_active_advertisements
         set_active_advertisements_period
+        set_average_arbitration_resolution_time
       end
 
       private
@@ -71,15 +72,7 @@ module Payments
       end
 
       def set_active_advertisements_period
-        period = context.filtering_params[:period]
-        created_from = context.filtering_params[:created_from]
-        created_to = context.filtering_params[:created_to]
-
-        if period.present?
-          start_time, end_time = calculate_time_range_for_period(period)
-        elsif created_from.present? && created_to.present?
-          start_time, end_time = calculate_time_range_for_created(created_from, created_to)
-        end
+        start_time, end_time = calculate_time_range
 
         if start_time && end_time
           active_advertisements_period = fetch_active_advertisements_period(start_time, end_time)
@@ -109,6 +102,43 @@ module Payments
           )
           .distinct
           .group_by(&:national_currency)
+      end
+
+      def calculate_time_range
+        period = context.filtering_params[:period]
+        created_from = context.filtering_params[:created_from]
+        created_to = context.filtering_params[:created_to]
+
+        if period.present?
+          calculate_time_range_for_period(period)
+        else
+          calculate_time_range_for_created(created_from, created_to)
+        end
+      end
+
+      def set_average_arbitration_resolution_time
+        start_time, end_time = calculate_time_range
+
+        total_resolution_time = 0
+        arbitration_resolutions_count = 0
+
+        context.processer.payments.each do |payment|
+          arbitration_resolutions =
+            payment.arbitration_resolutions
+                   .where(reason: [ArbitrationResolution.reasons[:check_by_check],
+                                   ArbitrationResolution.reasons[:incorrect_amount_check]])
+                   .completed
+                   .where('created_at >= ? AND ended_at IS NOT NULL', start_time)
+                   .where('ended_at <= ?', end_time)
+
+          arbitration_resolutions.each do |resolution|
+            total_resolution_time += resolution.ended_at - resolution.created_at
+            arbitration_resolutions_count += 1
+          end
+        end
+
+        context.average_arbitration_resolution_time =
+          arbitration_resolutions_count.positive? ? total_resolution_time / arbitration_resolutions_count.to_f : 0
       end
     end
   end
