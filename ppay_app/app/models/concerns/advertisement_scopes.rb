@@ -12,7 +12,7 @@ module AdvertisementScopes
     scope :order_random,         lambda {
       weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
       order = Arel.sql("(RANDOM() * users.sort_weight / #{weights_sum}) DESC")
-      joins(:processer).order(order).group('users.sort_weight')
+      joins(:processer).order(order).group('advertisements.id, users.sort_weight')
     }
 
     scope :join_active_payments, lambda {
