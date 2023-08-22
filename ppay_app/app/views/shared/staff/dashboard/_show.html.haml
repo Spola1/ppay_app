@@ -37,6 +37,9 @@
               title: 'Среднее время разрешения арбитражей по чеку',
               value: "#{stats.average_arbitration_resolution_time.round(2)} сек"
             = render 'shared/staff/stats/stats_tr',
+              title: 'Количество открытых арбитражей по чеку',
+              value: stats.arbitration_resolutions_count
+            = render 'shared/staff/stats/stats_tr',
               title: 'Текущий баланс',
               value: "#{stats.processer.balance.decorate.amount_formatted}",
               value_color: balance_color(stats.processer.balance.amount)

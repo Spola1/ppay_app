@@ -7,7 +7,7 @@ module Payments
 
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
                :average_confirmation, :completed_sum, :active_advertisements, :active_advertisements_period,
-               :average_arbitration_resolution_time, to: :context
+               :average_arbitration_resolution_time, :arbitration_resolutions_count, to: :context
 
       PERIODS = {
         'last_hour' => 1.hour.ago,
@@ -139,6 +139,7 @@ module Payments
 
         context.average_arbitration_resolution_time =
           arbitration_resolutions_count.positive? ? total_resolution_time / arbitration_resolutions_count.to_f : 0
+        context.arbitration_resolutions_count = arbitration_resolutions_count
       end
     end
   end
