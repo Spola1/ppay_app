@@ -24,6 +24,9 @@
                                           input_html:{ value: payment_filters_params(:cryptocurrency_amount_to) }
     = f.input :uuid, as: :string, input_html:{ value: payment_filters_params(:uuid) }
     = f.input :external_order_id, html5: true, input_html:{ value: payment_filters_params(:external_order_id) }
+    = f.input :card_number, as: :string, input_html: { value: payment_filters_params(:card_number) }
+    = f.input :advertisement_id, as: :string, input_html: { value: payment_filters_params(:advertisement_id) }
+
 
   = f.submit t('buttons.submit'), class: 'form-submit'
   = link_to t('buttons.reset'), payments_path, data: { turbo_action: :advance }, class: 'reset-button'
