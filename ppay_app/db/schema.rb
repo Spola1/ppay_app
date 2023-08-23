@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_22_104436) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_175220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -361,6 +361,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_104436) do
     t.boolean "autoconfirming", default: false
     t.string "account_number"
     t.bigint "form_customization_id"
+    t.integer "advertisement_not_found_reason"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"
