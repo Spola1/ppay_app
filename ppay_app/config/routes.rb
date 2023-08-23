@@ -182,6 +182,7 @@ Rails.application.routes.draw do
   scope module: :working_groups do
     resources :payments, param: :uuid, only: %i[index show]
     resource :dashboard, only: :show, controller: :dashboard
+    resources :balance_requests
 
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show]

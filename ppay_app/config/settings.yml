@@ -85,3 +85,5 @@ navbar:
       path: payments_path
     - name: Статистика
       path: dashboard_path
+    - name: Запросы баланса
+      path: balance_requests_path
