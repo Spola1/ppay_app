@@ -168,7 +168,7 @@ Rails.application.routes.draw do
     end
   end
 
-  scope module: :working_groups do
+  scope module: :working_groups, constraints: ->(request) { request.env['warden'].user&.working_group? } do
     resources :payments, param: :uuid, only: %i[index show]
     resource :dashboard, only: :show, controller: :dashboard
     resources :balance_requests

@@ -22,7 +22,7 @@ class User < ApplicationRecord
 
   # validates_presence_of :crypto_wallet
 
-  %i[admin agent merchant processer support].each do |role|
+  %i[admin agent merchant processer support working_group].each do |role|
     define_method("#{role}?") do
       type == role.to_s.camelize
     end
