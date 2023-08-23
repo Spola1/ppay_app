@@ -371,7 +371,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_065343) do
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.datetime "started_arbitration_at"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"

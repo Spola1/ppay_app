@@ -95,8 +95,6 @@ class Payment < ApplicationRecord
 
   validate :validate_arbitration_fields, on: :merchant
 
-  before_save :update_arbitration_start_time, if: :arbitration_changed?
-
   before_save :update_arbitration_resolutions_time, if: :arbitration_changed?
 
   after_update_commit :complete_transactions, if: lambda {
@@ -230,15 +228,9 @@ class Payment < ApplicationRecord
 
   private
 
-  def update_arbitration_start_time
-    arbitration? ? self.started_arbitration_at ||= Time.current : self.started_arbitration_at = nil
-  end
-
   def update_arbitration_resolutions_time
     if arbitration
-      if arbitration_reason_check_by_check? || arbitration_reason_incorrect_amount_check?
-        arbitration_resolutions.create(reason: arbitration_reason)
-      end
+      arbitration_resolutions.create(reason: arbitration_reason)
     else
       last_resolution = arbitration_resolutions.last
       last_resolution.update(ended_at: Time.current) if last_resolution.present?

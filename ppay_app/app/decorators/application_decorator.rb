@@ -10,7 +10,13 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def formatted_started_arbitration_at
-    formatted_date(started_arbitration_at)
+    if arbitration_resolutions.last&.ended_at.present?
+      nil
+    else
+      formatted_date(arbitration_resolutions.last&.created_at)
+    end
+
+    #debugger
   end
 
   private
