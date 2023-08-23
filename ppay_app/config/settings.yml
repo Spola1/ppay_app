@@ -83,3 +83,5 @@ navbar:
   working_group:
     - name: Все платежи
       path: payments_path
+    - name: Статистика
+      path: dashboard_path

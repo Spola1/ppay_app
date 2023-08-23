@@ -38,7 +38,7 @@ module DashboardHelper
   end
 
   def dashboard_filters_partial(user)
-    if user.processer?
+    if user.processer? || role_namespace == 'working_groups'
       'shared/staff/dashboard/filters'
     else
       'shared/staff/management/dashboard/filters'
