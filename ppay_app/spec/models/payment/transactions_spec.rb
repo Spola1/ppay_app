@@ -32,7 +32,7 @@ RSpec.describe 'Payment transactions commissions' do
     end
   end
 
-  let(:advertisement) { create(:advertisement) }
+  let(:advertisement) { create(:advertisement, processer:) }
 
   let(:national_currency_amount) { 100 }
   let(:cryptocurrency_amount) do
@@ -50,6 +50,10 @@ RSpec.describe 'Payment transactions commissions' do
            payment_system: payment_system.name
   end
 
+  let(:processer_commission) { 3 }
+  let(:working_group_commission) { 1.5 }
+  let(:processer) { create(:processer, processer_commission:, working_group_commission:) }
+
   context 'when payment binds to advertisement' do
     before { payment.bind! }
 
@@ -64,7 +68,7 @@ RSpec.describe 'Payment transactions commissions' do
 
     it 'processer transaction meets it\'s commission percent' do
       expect(payment.transactions.find_by(transaction_type: :processer_commission).amount)
-        .to eq(cryptocurrency_amount * commissions_values[1] / 100)
+        .to eq(cryptocurrency_amount * processer_commission / 100)
     end
 
     it 'agent transaction meets it\'s commission percent' do
@@ -74,7 +78,7 @@ RSpec.describe 'Payment transactions commissions' do
 
     it 'working_group transaction meets it\'s commission percent' do
       expect(payment.transactions.find_by(transaction_type: :working_group_commission).amount)
-        .to eq(cryptocurrency_amount * commissions_values[3] / 100)
+        .to eq(cryptocurrency_amount * working_group_commission / 100)
     end
   end
 end

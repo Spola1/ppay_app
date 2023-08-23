@@ -13,6 +13,10 @@ ru:
         chat_enabled: Активация арбитражного чата
         processer_commission: Комиссия оператора
         working_group_commission: Комиссия организатора команды
+        processer_withdrawal_commission: Комиссия оператора на выводы
+        working_group_withdrawal_commission: Комиссия организатора команды на выводы
+        working_group: Организатор
+        agent: Агент
 
   users:
     sidebar:

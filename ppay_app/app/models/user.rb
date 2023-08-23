@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   has_one :balance, as: :balanceable, dependent: :destroy
   has_one :crypto_wallet, dependent: :destroy
+  belongs_to :working_group, optional: true
+  belongs_to :agent, optional: true
 
   has_many :api_keys, as: :bearer
   has_many :comments

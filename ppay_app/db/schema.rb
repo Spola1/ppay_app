@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_08_22_065343) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_104436) do
+>>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -454,8 +458,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_065343) do
     t.string "type"
     t.integer "working_group_id"
     t.bigint "agent_id"
-    t.decimal "deposit_commission", precision: 15, scale: 10
-    t.decimal "withdrawal_commission", precision: 15, scale: 10
     t.string "usdt_trc20_address"
     t.boolean "check_required", default: true
     t.integer "unique_amount", default: 0
@@ -472,8 +474,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_065343) do
     t.boolean "autocancel", default: false, null: false
     t.float "sort_weight", default: 1.0, null: false
     t.boolean "chat_enabled", default: true
-    t.decimal "processer_commission", precision: 15, scale: 10
-    t.decimal "working_group_commission", precision: 15, scale: 10
+    t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
+    t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
+    t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
+    t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

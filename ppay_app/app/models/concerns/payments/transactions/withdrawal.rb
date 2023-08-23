@@ -93,7 +93,15 @@ module Payments
       end
 
       def full_percent
-        100 + processer_commission + working_group_commission + agent_commission + ppay_commission
+        100 + agent_commission + other_commission
+      end
+
+      def processer_commission
+        processer.processer_withdrawal_commission
+      end
+
+      def working_group_commission
+        processer.working_group_withdrawal_commission
       end
     end
   end
