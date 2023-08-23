@@ -364,13 +364,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_065343) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 128, scale: 64
+    t.integer "processing_type", default: 0
     t.string "locale"
-    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
+    t.bigint "form_customization_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"

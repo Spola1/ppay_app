@@ -15,8 +15,6 @@ class ApplicationDecorator < Draper::Decorator
     else
       formatted_date(arbitration_resolutions.last&.created_at)
     end
-
-    #debugger
   end
 
   private
