@@ -167,6 +167,29 @@ Rails.application.routes.draw do
     end
   end
 
+  # scope module: :agents, constraints: ->(request) { request.env['warden'].user&.agent? } do
+  #   resources :turnover_stats, only: %i[index]
+  #   resources :payments, param: :uuid, only: %i[index show]
+
+  #   namespace :payments do
+  #     resources :deposits, param: :uuid, only: %i[index show]
+  #     resources :withdrawals, param: :uuid, only: %i[index show]
+  #   end
+
+  #   root 'payments#index', as: :agents_root
+  # end
+
+  scope module: :working_groups do
+    resources :payments, param: :uuid, only: %i[index show]
+
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index show]
+      resources :withdrawals, param: :uuid, only: %i[index show]
+    end
+
+    root 'payments#index', as: :working_groups_root
+  end
+
   namespace :api do
     namespace :v1 do
       post '/simbank/requests', to: 'incoming_requests#create'

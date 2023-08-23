@@ -80,3 +80,6 @@ navbar:
       path: payments_path
     - name: Оборот
       path: turnover_stats_path
+  working_group:
+    - name: Все платежи
+      path: payments_path
