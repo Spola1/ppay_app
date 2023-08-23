@@ -5,6 +5,21 @@
     .item-card
       %h1.mb-4.text-xl Фильтры
       = render dashboard_filters_partial(current_user)
+  - if role_namespace != 'processers'
+    .filters-wrap
+      .item-card.h-full
+        .flex.mb-4.items-center
+          .text-xl.flex-1 Общая статистика
+        %table.item-card-table
+          %tbody
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Конверсия',
+              value: "#{@total_conversion}%",
+              value_color: conversion_color(@total_conversion)
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Среднее время подтверждения',
+              value: "#{@total_average_confirmation.round(2)} сек",
+              value_color: average_confirmation_color(@total_average_confirmation)
   - @stats.each do |stats|
     .card-wrap{ class: 'basis-1/2' }
       .item-card.h-full
