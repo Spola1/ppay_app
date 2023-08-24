@@ -37,9 +37,8 @@ module Processers
     private
 
     def mark_messages_as_read(messages)
-      messages.each do |message|
-        message.message_read_statuses.where(user: current_user).update(read: true)
-      end
+      message_ids = messages.map(&:id)
+      MessageReadStatus.where(user: current_user, message_id: message_ids).update_all(read: true)
     end
 
     def set_payments
