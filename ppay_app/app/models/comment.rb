@@ -3,17 +3,25 @@
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user, optional: true
+  has_many :message_read_statuses, as: :message
 
   validates_presence_of :text
 
   after_create_commit :broadcast_payment, if: -> { commentable.type.in?(%w[Deposit Withdrawal]) }
   after_create_commit :send_new_comment_notification
+  after_create_commit :create_message_read_statuses
 
   private
 
   def broadcast_payment
     commentable.broadcast_replace_payment_to_processer
     commentable.broadcast_replace_payment_to_support
+  end
+
+  def create_message_read_statuses
+    message_read_statuses.create(user: commentable.support)
+    message_read_statuses.create(user: commentable.merchant)
+    message_read_statuses.create(user: commentable.processer)
   end
 
   def send_new_comment_notification

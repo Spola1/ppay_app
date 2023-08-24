@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_22_175220) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_24_070432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -283,6 +283,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_175220) do
     t.index ["payment_system_id"], name: "index_merchant_methods_on_payment_system_id"
   end
 
+  create_table "message_read_statuses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "message_type", null: false
+    t.bigint "message_id", null: false
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_type", "message_id"], name: "index_message_read_statuses_on_message"
+    t.index ["user_id"], name: "index_message_read_statuses_on_user_id"
+  end
+
   create_table "national_currencies", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -364,13 +375,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_175220) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
@@ -502,6 +513,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_175220) do
   add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
+  add_foreign_key "message_read_statuses", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_receipts", "payments"

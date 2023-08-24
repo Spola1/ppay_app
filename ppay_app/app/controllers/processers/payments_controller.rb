@@ -36,6 +36,12 @@ module Processers
 
     private
 
+    def mark_messages_as_read(messages)
+      messages.each do |message|
+        message.message_read_statuses.where(user: current_user).update(read: true)
+      end
+    end
+
     def set_payments
       @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
                                                    .includes(:merchant)

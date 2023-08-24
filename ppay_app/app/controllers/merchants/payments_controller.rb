@@ -23,9 +23,17 @@ module Merchants
 
     def show
       @payment_receipt = @payment.payment_receipts.new
+
+      mark_messages_as_read(@payment.chats)
     end
 
     private
+
+    def mark_messages_as_read(messages)
+      messages.each do |message|
+        message.message_read_statuses.where(user: current_user).update(read: true)
+      end
+    end
 
     def find_payment
       @payment = current_user.payments.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate
