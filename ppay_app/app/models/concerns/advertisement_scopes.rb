@@ -12,7 +12,7 @@ module AdvertisementScopes
     scope :order_random,         lambda {
       weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
       order = Arel.sql("(RANDOM() * users.sort_weight / #{weights_sum}) DESC")
-      joins(:processer).order(order).group('users.sort_weight')
+      joins(:processer).order(order).group('advertisements.id, users.sort_weight')
     }
 
     scope :join_active_payments, lambda {
@@ -64,6 +64,11 @@ module AdvertisementScopes
 
     scope :order_by_remaining_confirmation_time, lambda {
       order(Arel.sql('SUM(extract(epoch from payments.status_changed_at)) DESC'))
+    }
+
+    scope :equal_amount_payments_limited, lambda { |national_currency_amount, limit|
+      having(Arel.sql("SUM(CASE WHEN payments.national_currency_amount
+        = #{national_currency_amount} THEN 1 ELSE 0 END) < #{limit}"))
     }
   end
 end

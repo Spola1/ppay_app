@@ -107,6 +107,14 @@ module StateMachines
         errors.add(:national_currency_amount, :insufficient_balance)
         false
       end
+
+      def valid_image?(params)
+        assign_params(params, %i[image])
+
+        return true unless merchant.check_required
+
+        validate_image
+      end
     end
   end
 end

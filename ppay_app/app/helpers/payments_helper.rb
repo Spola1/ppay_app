@@ -61,10 +61,6 @@ module PaymentsHelper
     end
   end
 
-  def translate_arbitration_reason(reason)
-    I18n.t("activerecord.attributes.payment/arbitration_reason.#{reason}")
-  end
-
   def translate_receipt_reason(reason)
     I18n.t("activerecord.attributes.payment_receipt/receipt_reason.#{reason}")
   end

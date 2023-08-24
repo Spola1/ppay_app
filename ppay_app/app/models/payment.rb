@@ -48,6 +48,10 @@ class Payment < ApplicationRecord
     integer: 1,
     decimal: 2
   }, _prefix: true
+  enum advertisement_not_found_reason: {
+    no_active_advertisements: 0,
+    equal_amount_payments_limit_exceeded: 1
+  }, _prefix: true
 
   has_many :transactions, as: :transactionable
 
@@ -170,6 +174,12 @@ class Payment < ApplicationRecord
     scope status, -> { where(payment_status: status) }
   end
 
+  def advertisement=(value)
+    super(value)
+
+    self.advertisement_not_found_reason = value.present? ? nil : :no_active_advertisements
+  end
+
   def signature
     data = { national_currency:, initial_amount:, external_order_id: }.to_json
 
@@ -220,6 +230,21 @@ class Payment < ApplicationRecord
 
   def arbitration_changed_to_true?
     saved_change_to_arbitration? && arbitration?
+  end
+
+  def advertisements_available?
+    Advertisement.for_payment(self).exists?
+  end
+
+  def equal_amount_limited_advertisements_available?
+    return advertisements_available? unless Setting.instance.equal_amount_payments_limit
+
+    Advertisement.for_payment(self)
+                 .equal_amount_payments_limited(
+                   national_currency_amount,
+                   Setting.instance.equal_amount_payments_limit
+                 )
+                 .exists?
   end
 
   private

@@ -46,6 +46,12 @@ class PaymentDecorator < ApplicationDecorator
     Payment.human_attribute_name("arbitration_reason.#{arbitration_reason}")
   end
 
+  def human_advertisement_not_found_reason
+    return unless advertisement_not_found_reason
+
+    Payment.human_attribute_name("advertisement_not_found_reason.#{advertisement_not_found_reason}")
+  end
+
   def fiat_amount_with_currency
     "#{fiat_amount} #{national_currency}"
   end

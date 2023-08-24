@@ -13,20 +13,6 @@ end
 shared_context 'invalid_response' do |type:|
   let(:currency) { 'RUB' }
 
-  response '201', 'успешное создание' do
-    schema '$ref': '#/components/schemas/payments_create_response_body_schema'
-
-    include_context 'generate_examples'
-
-    it 'создаст платеж мерчанту' do |example|
-      expect { submit_request(example.metadata) }.to change {
-        merchant.reload.public_send(payment_type.to_s.underscore.pluralize).count
-      }.from(0).to(1)
-
-      assert_response_matches_metadata(example.metadata)
-    end
-  end
-
   response '422', 'invalid' do
     include_context 'generate_examples'
 
@@ -50,7 +36,13 @@ end
 
 shared_context 'successful_creation_response' do |type:|
   response '201', 'успешное создание' do
+    schema '$ref': '#/components/schemas/payments_create_response_body_schema'
+
     include_context 'generate_examples'
+
+    context 'validates schema' do
+      run_test!
+    end
 
     it 'создаст платеж мерчанту' do |example|
       expect { submit_request(example.metadata) }.to change {
