@@ -65,6 +65,9 @@ ru:
         check_by_check: Проверка по чеку
         incorrect_amount_check: Перевели неверную сумму, проверить по чеку
         reason_in_chat: Причина указана в чате
+      payment/advertisement_not_found_reason:
+        no_active_advertisements: Нет активных объявлений
+        equal_amount_payments_limit_exceeded: Превышено максимальное число платежей с одинаковой суммой
       payment_receipt/receipt_reason:
         duplicate_payment: Задублированный платеж
         fraud_attempt: Попытка мошенничества
