@@ -25,7 +25,13 @@ module Payments
 
         while search_valid?(start_time)
           puts 'не найден'
-          payment.update(advertisement: selected_advertisement)
+          if payment.equal_amount_limited_advertisements_available?
+            payment.update(advertisement: selected_advertisement)
+          elsif payment.advertisements_available?
+            payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
+          else
+            payment.update(advertisement_not_found_reason: :no_active_advertisements)
+          end
           payment.bind! if payment.advertisement
           sleep 0.5
         end

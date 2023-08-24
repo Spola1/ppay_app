@@ -86,7 +86,10 @@ module StateMachines
       private
 
       def available_processer_search?(params)
-        valid_payment_system?(params) && rate_snapshot.present?
+        return unless valid_payment_system?(params)
+        return unless rate_snapshot.present?
+
+        true
       end
 
       def ensure_unique_amount

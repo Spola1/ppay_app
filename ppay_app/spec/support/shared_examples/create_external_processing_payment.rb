@@ -159,6 +159,30 @@ shared_examples 'create_external_processing_payment' do |type:|
         expect(response_body['errors']).to eq(expected_errors)
       end
     end
+
+    context 'equal amount payments limit exceeded', if: type == :deposit do
+      let(:expected_errors) do
+        [
+          { 'title' => 'advertisement', 'detail' => 'не найден', 'code' => 422 }
+        ]
+      end
+      let(:equal_amount_payments_limit) { 10 }
+
+      before do
+        Setting.instance.update(equal_amount_payments_limit:)
+        create_list(:payment, equal_amount_payments_limit, :transferring, advertisement: adv)
+      end
+
+      run_test! do |_response|
+        expect(response_body['errors']).to eq(expected_errors)
+      end
+
+      it 'sets advertisement_not_found_reason' do |example|
+        submit_request(example.metadata)
+
+        expect(merchant.deposits.last.advertisement_not_found_reason).to eq('equal_amount_payments_limit_exceeded')
+      end
+    end
   end
 
   response '401', 'unauthorized' do
