@@ -131,6 +131,15 @@
                 %td.item-card-td.item-card-td-label Причина арбитража
                 %td.item-card-td= "#{payment.human_arbitration_reason}"
 
+            - if payment.advertisement_not_found_reason
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label
+                  Причина не найденных
+                  %br
+                  объявлений
+                %td.item-card-td
+                  = payment.human_advertisement_not_found_reason
+
             - if payment.advertisement_id
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label ID объявления

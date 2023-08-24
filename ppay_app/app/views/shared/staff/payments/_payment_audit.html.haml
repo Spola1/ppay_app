@@ -7,6 +7,6 @@
         %b= audit.user.decorate.audit_user_info
         %br
       - audit.audited_changes.each do |attribute, values|
-        = "#{I18n.t("payments.attributes.#{attribute}")}:"
+        = %Q(#{I18n.t("payments.attributes.#{attribute}")}:)
         = formatted_changes(attribute, values)
         %br

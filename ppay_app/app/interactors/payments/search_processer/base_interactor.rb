@@ -11,7 +11,14 @@ module Payments
         @payment = Payment.find(context.payment_id)
 
         if payment.advertisement.blank? && payment.processer_search?
-          payment.update(advertisement: selected_advertisement)
+          if payment.equal_amount_limited_advertisements_available?
+            payment.update(advertisement: selected_advertisement)
+          elsif payment.advertisements_available?
+            payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
+          else
+            payment.update(advertisement_not_found_reason: :no_active_advertisements)
+          end
+
           payment.bind! if payment.advertisement
         end
 
