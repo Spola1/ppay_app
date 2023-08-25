@@ -1,0 +1,22 @@
+= turbo_frame_tag 'content' do
+  %section.wrap
+    .filters-wrap
+      .item-card
+        %h1.mb-4.text-xl Фильтры
+        = render 'shared/staff/payments/filter', payments: @payments
+    .card-wrap
+      .item-card
+        %h1.mb-4.text-xl На арбитраже
+        = render 'table', payments: @arbitration_payments
+
+        .card-wrap
+          = render 'shared/pagination', pagy: @arbitration_payments_pagy
+    .card-wrap
+      .item-card
+        .card-head
+          %h1 Все платежи
+          = link_to t('buttons.export_to_excel'), request.params.merge(format: :xlsx), class: 'form-submit'
+        = render 'table', payments: @payments
+
+        .card-wrap
+          = render 'shared/pagination', pagy: @pagy

@@ -3,3 +3,4 @@ ru:
     attributes:
       setting:
         commissions_version: Версия расчёта комиссий
+        equal_amount_payments_limit: Максимальное число платежей с одинаковой суммой для объявления

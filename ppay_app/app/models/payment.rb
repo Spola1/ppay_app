@@ -48,8 +48,14 @@ class Payment < ApplicationRecord
     integer: 1,
     decimal: 2
   }, _prefix: true
+  enum advertisement_not_found_reason: {
+    no_active_advertisements: 0,
+    equal_amount_payments_limit_exceeded: 1
+  }, _prefix: true
 
   has_many :transactions, as: :transactionable
+
+  has_many :arbitration_resolutions
 
   has_many :payment_receipts, dependent: :destroy
 
@@ -92,6 +98,8 @@ class Payment < ApplicationRecord
   validatable_enum :unique_amount
 
   validate :validate_arbitration_fields, on: :merchant
+
+  before_save :update_arbitration_resolutions_time, if: :arbitration_changed?
 
   after_update_commit :complete_transactions, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
@@ -170,6 +178,12 @@ class Payment < ApplicationRecord
     scope status, -> { where(payment_status: status) }
   end
 
+  def advertisement=(value)
+    super(value)
+
+    self.advertisement_not_found_reason = value.present? ? nil : :no_active_advertisements
+  end
+
   def signature
     data = { national_currency:, initial_amount:, external_order_id: }.to_json
 
@@ -222,7 +236,31 @@ class Payment < ApplicationRecord
     saved_change_to_arbitration? && arbitration?
   end
 
+  def advertisements_available?
+    Advertisement.for_payment(self).exists?
+  end
+
+  def equal_amount_limited_advertisements_available?
+    return advertisements_available? unless Setting.instance.equal_amount_payments_limit
+
+    Advertisement.for_payment(self)
+                 .equal_amount_payments_limited(
+                   national_currency_amount,
+                   Setting.instance.equal_amount_payments_limit
+                 )
+                 .exists?
+  end
+
   private
+
+  def update_arbitration_resolutions_time
+    if arbitration
+      arbitration_resolutions.create(reason: arbitration_reason)
+    else
+      last_resolution = arbitration_resolutions.last
+      last_resolution.update(ended_at: Time.current) if last_resolution.present?
+    end
+  end
 
   def create_initial_chat_message
     text_with_active_arbitration_chat = "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n
@@ -244,7 +282,7 @@ class Payment < ApplicationRecord
   end
 
   def send_arbitration_notification
-    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil)
+    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil, nil)
   end
 
   def validate_arbitration_fields
@@ -307,7 +345,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    Payments::TelegramNotificationJob.perform_async(id, false, nil)
+    Payments::TelegramNotificationJob.perform_async(id, false, nil, nil)
 
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",

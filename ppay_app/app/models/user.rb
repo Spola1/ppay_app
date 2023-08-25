@@ -16,13 +16,14 @@ class User < ApplicationRecord
   has_many :chats
   has_many :balance_requests
   has_many :incoming_requests
+  has_many :message_read_statuses
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key
 
   # validates_presence_of :crypto_wallet
 
-  %i[admin agent merchant processer support].each do |role|
+  %i[admin agent merchant processer support working_group ppay].each do |role|
     define_method("#{role}?") do
       type == role.to_s.camelize
     end

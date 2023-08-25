@@ -25,6 +25,8 @@ ru:
         cryptocurrency_amount_to: 'Кол-во криптовалюты до:'
         uuid: 'UUID:'
         external_order_id: 'Внешний номер заказа:'
+        card_number: 'Номер карты:'
+        advertisement_id: 'ID объявления:'
       stats_filters:
         created_from: 'Дата от:'
         created_to: 'Дата до:'

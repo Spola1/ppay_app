@@ -19,6 +19,9 @@ module Supports
 
     def show
       @payment_receipt = @payment.payment_receipts.new
+
+      mark_messages_as_read(@payment.comments)
+      mark_messages_as_read(@payment.chats)
     end
 
     def update
@@ -30,6 +33,11 @@ module Supports
     end
 
     private
+
+    def mark_messages_as_read(messages)
+      message_ids = messages.map(&:id)
+      MessageReadStatus.where(user: current_user, message_id: message_ids).update_all(read: true)
+    end
 
     def set_all_payments
       @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
@@ -51,11 +59,26 @@ module Supports
       params[:payment_filters]&.slice(:created_from, :created_to, :cancellation_reason, :payment_status,
                                       :payment_system, :national_currency, :national_currency_amount_from,
                                       :national_currency_amount_to, :cryptocurrency_amount_from,
-                                      :cryptocurrency_amount_to, :uuid, :external_order_id)
+                                      :cryptocurrency_amount_to, :uuid, :external_order_id, :card_number,
+                                      :advertisement_id)
     end
 
     def filtered_payments
-      Payment.arbitration.filter_by(filtering_params).includes(:merchant)
+      payments = Payment.arbitration.includes(:merchant, :advertisement)
+
+      if filtering_params.present?
+        if filtering_params[:card_number].present?
+          payments = payments.joins(:advertisement).where(advertisements: { card_number: filtering_params[:card_number] })
+        end
+
+        if filtering_params[:advertisement_id].present?
+          payments = payments.joins(:advertisement).where(advertisements: { id: filtering_params[:advertisement_id] })
+        end
+
+        payments = payments.filter_by(filtering_params)
+      end
+
+      payments
     end
   end
 end
