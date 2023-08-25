@@ -2,11 +2,7 @@
 
 module Admins
   module Merchants
-    class SettingsController < Staff::BaseController
-      before_action :find_merchant
-
-      layout 'admins/merchants/edit'
-
+    class SettingsController < BaseController
       def show
         set_commissions
       end
@@ -24,10 +20,6 @@ module Admins
       end
 
       private
-
-      def find_merchant
-        @merchant = Merchant.find_by_id(params[:merchant_id]).decorate
-      end
 
       def set_commissions
         @commissions =

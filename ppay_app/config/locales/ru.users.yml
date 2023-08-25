@@ -17,11 +17,13 @@ ru:
         working_group_withdrawal_commission: Комиссия организатора команды на выводы
         working_group: Организатор
         agent: Агент
+        only_whitelisted_processers: Доступны операторы только из белого списка
 
   users:
     sidebar:
       account: Учётная запись
       settings: Настройки
+      whitelisted_processers: Белый список операторов
 
   merchants:
     users:

@@ -21,8 +21,13 @@ module AdvertisementScopes
             "NOT (payments.payment_status = 'confirming' AND payments.arbitration = TRUE)))")
     }
 
+    scope :by_whitelisted_processers, lambda { |payment|
+      where(processer: payment.merchant.whitelisted_processers) if payment.merchant.only_whitelisted_processers
+    }
+
     scope :for_payment, lambda { |payment|
       join_active_payments
+        .by_whitelisted_processers(payment)
         .active
         .by_payment_system(
           payment.payment_system.presence ||

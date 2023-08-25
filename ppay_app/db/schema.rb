@@ -283,6 +283,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_24_070432) do
     t.index ["payment_system_id"], name: "index_merchant_methods_on_payment_system_id"
   end
 
+  create_table "merchant_processers", force: :cascade do |t|
+    t.bigint "merchant_id", null: false
+    t.bigint "processer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_merchant_processers_on_merchant_id"
+    t.index ["processer_id"], name: "index_merchant_processers_on_processer_id"
+  end
+
   create_table "message_read_statuses", force: :cascade do |t|
     t.bigint "user_id"
     t.string "message_type", null: false
@@ -486,6 +495,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_24_070432) do
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
+    t.boolean "only_whitelisted_processers", default: false, null: false
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -513,6 +523,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_24_070432) do
   add_foreign_key "incoming_requests", "payments"
   add_foreign_key "merchant_methods", "payment_systems"
   add_foreign_key "merchant_methods", "users", column: "merchant_id"
+  add_foreign_key "merchant_processers", "users", column: "merchant_id"
+  add_foreign_key "merchant_processers", "users", column: "processer_id"
   add_foreign_key "message_read_statuses", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"

@@ -18,6 +18,10 @@
                         = fa_icon 'user'
                         %span= t('users.sidebar.settings')
                     %li
+                      = link_to merchant_whitelisted_processers_path(@merchant), class: controller_active?('whitelisted_processers'), data: { turbo_action: :advance } do
+                        = fa_icon 'group'
+                        %span= t('users.sidebar.whitelisted_processers')
+                    %li
                       = link_to merchant_account_path(@merchant), class: controller_active?('accounts'), data: { turbo_action: :advance } do
                         = fa_icon 'key'
                         %span= t('users.sidebar.account')

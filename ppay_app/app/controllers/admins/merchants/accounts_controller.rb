@@ -2,11 +2,7 @@
 
 module Admins
   module Merchants
-    class AccountsController < Staff::BaseController
-      before_action :find_merchant
-
-      layout 'admins/merchants/edit'
-
+    class AccountsController < BaseController
       def index; end
 
       def update
@@ -21,10 +17,6 @@ module Admins
       end
 
       private
-
-      def find_merchant
-        @merchant = Merchant.find_by_id(params[:merchant_id]).decorate
-      end
 
       def merchant_params
         params.require(:merchant).permit(:email, :password)
