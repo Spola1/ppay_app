@@ -89,3 +89,6 @@ navbar:
       path: balance_requests_path
     - name: Статистика
       path: dashboard_path
+  ppay:
+    - name: Запросы баланса
+      path: balance_requests_path

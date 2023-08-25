@@ -181,6 +181,12 @@ Rails.application.routes.draw do
     root 'payments#index', as: :working_groups_root
   end
 
+  scope module: :ppays, constraints: ->(request) { request.env['warden'].user&.ppay? } do
+    resources :balance_requests
+
+    root 'balance_requests#index', as: :ppays_root
+  end
+
   namespace :api do
     namespace :v1 do
       post '/simbank/requests', to: 'incoming_requests#create'
