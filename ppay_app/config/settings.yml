@@ -12,6 +12,8 @@ navbar:
       path: advertisements_path
     - name: Запросы баланса
       path: balance_requests_path
+    - name: Телеграм Бот
+      path: edit_profile_path
     - name: Мерчанты
       path: merchants_path
     - name: Операторы
