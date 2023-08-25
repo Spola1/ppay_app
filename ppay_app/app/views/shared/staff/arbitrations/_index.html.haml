@@ -1,15 +1,14 @@
 = turbo_frame_tag 'content' do
   %section.wrap
-    .card-wrap
+    .filters-wrap
       .item-card
         %h1.mb-4.text-xl Фильтры
         = render 'shared/staff/payments/arbitration_filter', payments: @payments
-      
-      .card-wrap
-        .item-card
-          .card-head
-            %h1 Арбитражи по чеку
-          = render "#{role_namespace}/payments/table", payments: @payments
+
+    .card-wrap
+      .item-card
+        %h1.mb-4.text-xl Арбитражи по чеку
+        = render "#{role_namespace}/payments/table", payments: @payments
 
         .card-wrap
           = render 'shared/pagination', pagy: @pagy

@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :chats
   has_many :balance_requests
   has_many :incoming_requests
+  has_many :message_read_statuses
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key

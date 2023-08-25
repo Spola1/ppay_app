@@ -19,6 +19,9 @@ module Supports
 
     def show
       @payment_receipt = @payment.payment_receipts.new
+
+      mark_messages_as_read(@payment.comments)
+      mark_messages_as_read(@payment.chats)
     end
 
     def update
@@ -30,6 +33,11 @@ module Supports
     end
 
     private
+
+    def mark_messages_as_read(messages)
+      message_ids = messages.map(&:id)
+      MessageReadStatus.where(user: current_user, message_id: message_ids).update_all(read: true)
+    end
 
     def set_all_payments
       @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))

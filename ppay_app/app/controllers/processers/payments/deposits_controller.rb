@@ -8,7 +8,10 @@ module Processers
         @payments = @payments.decorate
       end
 
-      def show; end
+      def show
+        mark_messages_as_read(@payment.comments)
+        mark_messages_as_read(@payment.chats)
+      end
 
       private
 

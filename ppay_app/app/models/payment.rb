@@ -55,6 +55,8 @@ class Payment < ApplicationRecord
 
   has_many :transactions, as: :transactionable
 
+  has_many :arbitration_resolutions
+
   has_many :payment_receipts, dependent: :destroy
 
   # в каждый платеж прикрепляем курс на данный момент
@@ -96,6 +98,8 @@ class Payment < ApplicationRecord
   validatable_enum :unique_amount
 
   validate :validate_arbitration_fields, on: :merchant
+
+  before_save :update_arbitration_resolutions_time, if: :arbitration_changed?
 
   after_update_commit :complete_transactions, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
@@ -249,6 +253,15 @@ class Payment < ApplicationRecord
 
   private
 
+  def update_arbitration_resolutions_time
+    if arbitration
+      arbitration_resolutions.create(reason: arbitration_reason)
+    else
+      last_resolution = arbitration_resolutions.last
+      last_resolution.update(ended_at: Time.current) if last_resolution.present?
+    end
+  end
+
   def create_initial_chat_message
     text_with_active_arbitration_chat = "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n
             \n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n \nПосле загрузки чека у Вас появится\n
@@ -269,7 +282,7 @@ class Payment < ApplicationRecord
   end
 
   def send_arbitration_notification
-    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil)
+    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil, nil)
   end
 
   def validate_arbitration_fields
@@ -332,7 +345,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    Payments::TelegramNotificationJob.perform_async(id, false, nil)
+    Payments::TelegramNotificationJob.perform_async(id, false, nil, nil)
 
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",

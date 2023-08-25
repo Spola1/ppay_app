@@ -36,6 +36,11 @@ module Processers
 
     private
 
+    def mark_messages_as_read(messages)
+      message_ids = messages.map(&:id)
+      MessageReadStatus.where(user: current_user, message_id: message_ids).update_all(read: true)
+    end
+
     def set_payments
       @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
                                                    .includes(:merchant)
