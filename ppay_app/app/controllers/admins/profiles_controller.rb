@@ -11,7 +11,7 @@ module Admins
       @user.telegram_id = nil
 
       if @user.update(user_params)
-        redirect_to edit_processers_profile_path, notice: 'Профиль успешно обновлен'
+        redirect_to edit_admins_profile_path, notice: 'Профиль успешно обновлен'
       else
         render :edit, status: :unprocessable_entity
       end
@@ -20,7 +20,7 @@ module Admins
     private
 
     def user_params
-      params.require(:processer).permit(:telegram)
+      params.require(:admin).permit(:telegram)
     end
   end
 end

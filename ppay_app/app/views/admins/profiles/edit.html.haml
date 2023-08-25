@@ -8,7 +8,7 @@
         = turbo_frame_tag 'profile_update_form' do
           .success-notice
             = flash[:notice]
-          = simple_form_for @user, url: edit_profile_path, method: :patch do |f|
+          = simple_form_for @user, url: admins_profile_path, method: :patch do |f|
             = f.input :telegram, hint: telegram_hint
 
             = f.submit 'Сохранить', class: 'form-submit'
