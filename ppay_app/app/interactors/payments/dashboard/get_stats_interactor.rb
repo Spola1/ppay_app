@@ -96,12 +96,12 @@ module Payments
 
       def fetch_active_advertisements_period(start_time, end_time)
         context.processer.advertisements.joins(:advertisement_activities)
-          .where(
-            'advertisement_activities.created_at >= ? AND advertisement_activities.deactivated_at <= ?',
-            start_time, end_time
-          )
-          .distinct
-          .group_by(&:national_currency)
+               .where(
+                 'deactivated_at > :start_time AND advertisement_activities.created_at < :end_time',
+                 start_time:, end_time:
+               )
+               .distinct
+               .group_by(&:national_currency)
       end
 
       def calculate_time_range
