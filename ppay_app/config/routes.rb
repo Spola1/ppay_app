@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   scope module: :agents, constraints: ->(request) { request.env['warden'].user&.agent? } do
     resources :turnover_stats, only: %i[index]
     resources :payments, param: :uuid, only: %i[index show]
+    resources :balance_requests
 
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show]
@@ -166,6 +167,25 @@ Rails.application.routes.draw do
       resources :deposits,    only: :create
       resources :withdrawals, only: :create
     end
+  end
+
+  scope module: :working_groups, constraints: ->(request) { request.env['warden'].user&.working_group? } do
+    resources :payments, param: :uuid, only: %i[index show]
+    resource :dashboard, only: :show, controller: :dashboard
+    resources :balance_requests
+
+    namespace :payments do
+      resources :deposits, param: :uuid, only: %i[index show]
+      resources :withdrawals, param: :uuid, only: %i[index show]
+    end
+
+    root 'payments#index', as: :working_groups_root
+  end
+
+  scope module: :ppays, constraints: ->(request) { request.env['warden'].user&.ppay? } do
+    resources :balance_requests
+
+    root 'balance_requests#index', as: :ppays_root
   end
 
   namespace :api do

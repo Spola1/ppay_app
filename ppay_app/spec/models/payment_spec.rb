@@ -277,14 +277,26 @@ RSpec.describe Payment, type: :model do
   describe 'filter scope' do
     let!(:payment1) do
       create(:payment, :by_client, :cancelled, :Tinkoff, cryptocurrency_amount:, external_order_id:,
-                                                         created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow'))
+                                                         created_at: Time.parse('2023-09-03 23:53:42').in_time_zone('Moscow'),
+                                                         advertisement: advertisement1)
+
     end
     let!(:payment2) do
-      create(:payment, :IDR, created_at: Time.parse('2023-09-02 23:59:59').in_time_zone('Moscow'), uuid:)
+      create(:payment, :IDR, created_at: Time.parse('2023-09-02 23:59:59').in_time_zone('Moscow'), uuid:,
+                             advertisement: advertisement1)
     end
     let!(:payment3) do
       create(:payment, :by_client, :Tinkoff, national_currency_amount:,
-                                             created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow'))
+                                             created_at: Time.parse('2023-09-03 01:00:56').in_time_zone('Moscow'),
+                                             advertisement: advertisement2)
+    end
+
+    let!(:advertisement1) do
+      create(:advertisement, card_number: '1234123412341234', id: 1)
+    end
+
+    let!(:advertisement2) do
+      create(:advertisement, card_number: '1111111111111111', id: 2)
     end
 
     let(:national_currency_amount) { 1000 }
@@ -298,6 +310,28 @@ RSpec.describe Payment, type: :model do
         let(:correct_result) { [payment1, payment3] }
 
         it 'returns payments created from the specified date' do
+          expect(payments).to eq(correct_result)
+        end
+      end
+    end
+
+    describe 'filter_by_card_number' do
+      context 'when 1111111111111111' do
+        subject(:payments) { Payment.filter_by_card_number('1111111111111111') }
+        let(:correct_result) { [payment3] }
+        
+        it 'returns payments with 1111111111111111 card_number' do
+          expect(payments).to eq(correct_result)
+        end
+      end
+    end
+
+    describe 'filter_by_advertisement_id' do
+      context 'when id 1' do
+        subject(:payments) { Payment.filter_by_advertisement_id('1') }
+        let(:correct_result) { [payment1, payment2] }
+        
+        it 'returns payments with advertisement_id = 1' do
           expect(payments).to eq(correct_result)
         end
       end

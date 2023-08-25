@@ -78,5 +78,17 @@ navbar:
   agent:
     - name: Все платежи
       path: payments_path
+    - name: Запросы баланса
+      path: balance_requests_path
     - name: Оборот
       path: turnover_stats_path
+  working_group:
+    - name: Все платежи
+      path: payments_path
+    - name: Запросы баланса
+      path: balance_requests_path
+    - name: Статистика
+      path: dashboard_path
+  ppay:
+    - name: Запросы баланса
+      path: balance_requests_path

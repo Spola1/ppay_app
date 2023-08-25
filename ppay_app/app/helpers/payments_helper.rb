@@ -149,4 +149,22 @@ module PaymentsHelper
   def payment_prefixes(payment, prefix)
     [prefix, 'payments', payment.type.underscore.pluralize].compact
   end
+
+  def unread_comments_or_chats?(payment)
+    if ['supports', 'processers'].include?(role_namespace)
+      unread_comments = payment.comments.joins(:message_read_statuses)
+                               .where(message_read_statuses: { user_id: current_user, read: false })
+                               .exists?
+
+      unread_chats = payment.chats.joins(:message_read_statuses)
+                            .where(message_read_statuses: { user_id: current_user, read: false })
+                            .exists?
+
+      unread_comments || unread_chats
+    else
+      payment.chats.joins(:message_read_statuses)
+             .where(message_read_statuses: { user_id: current_user, read: false })
+             .exists?
+    end
+  end
 end
