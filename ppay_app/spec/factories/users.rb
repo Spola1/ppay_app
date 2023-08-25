@@ -8,5 +8,9 @@ FactoryBot.define do
     trait :ppay do
       type { 'Ppay' }
     end
+
+    trait :admin do
+      type { 'Admin' }
+    end
   end
 end
