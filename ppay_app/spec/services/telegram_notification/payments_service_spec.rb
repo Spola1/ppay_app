@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TelegramNotification::ProcessersService do
+RSpec.describe TelegramNotification::PaymentsService do
   describe '#send_new_payment_notification_to_user' do
     context 'when payment type is Deposit' do
       let(:payment) { create(:payment, :deposit) }

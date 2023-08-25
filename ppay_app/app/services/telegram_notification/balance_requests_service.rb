@@ -1,0 +1,53 @@
+# frozen_string_literal: true
+
+require 'telegram/bot'
+require 'date'
+
+module TelegramNotification
+  class BalanceRequestsService < BaseService
+    attr_reader :balance_request, :request_type, :amount, :status, :crypto_address, :short_comment, :user
+
+    def initialize(balance_request)
+      super()
+      @request_type = balance_request.requests_type
+      @amount = balance_request.amount
+      @status = balance_request.status
+      @crypto_address = balance_request.crypto_address
+      @short_comment = balance_request.short_comment
+      @balance_request = balance_request
+      @user = balance_request.user
+    end
+
+    def send_new_balance_request_to_admins(admin_ids)
+      message = "Создан новый запрос баланса\n\n"
+      message += "Тип запроса: #{type}\n"
+      message += "Сумма: #{@amount} USDT\n"
+      message += "Криптоадрес: #{@crypto_address}\n"
+      message += "Пользователь: #{balance_request_user}\n"
+      message += "Ссылка на запрос баланса: \n"
+      message += "#{BalanceRequestUrlUtility.new(balance_request).url}\n"
+
+      admin_ids.each do |admin_id|
+        send_message_to_user(admin_id, message)
+      end
+    end
+
+    private
+
+    def type
+      @request_type == 'deposit' ? 'Депозит' : 'Вывод'
+    end
+
+    def balance_request_user
+      "#{@user.type} #{@user.nickname} (#{@user.email})"
+    end
+
+    def send_message_to_user(user_id, message)
+      response
+
+      Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
+        bot.api.send_message(chat_id: user_id, text: message)
+      end
+    end
+  end
+end
