@@ -169,7 +169,7 @@ shared_examples 'create_external_processing_payment' do |type:|
       let(:equal_amount_payments_limit) { 10 }
 
       before do
-        Setting.instance.update(equal_amount_payments_limit:)
+        merchant.update(equal_amount_payments_limit:)
         create_list(:payment, equal_amount_payments_limit, :transferring, advertisement: adv)
       end
 

@@ -18,6 +18,7 @@ ru:
         working_group: Организатор
         agent: Агент
         only_whitelisted_processers: Доступны операторы только из белого списка
+        equal_amount_payments_limit: Максимальное число платежей с одинаковой суммой для объявления
 
   users:
     sidebar:

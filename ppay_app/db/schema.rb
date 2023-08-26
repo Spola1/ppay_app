@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_24_070432) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_26_110002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -496,6 +496,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_24_070432) do
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
+    t.integer "equal_amount_payments_limit"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

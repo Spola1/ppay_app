@@ -241,17 +241,18 @@ class Payment < ApplicationRecord
   end
 
   def equal_amount_limited_advertisements_available?
-    return advertisements_available? unless Setting.instance.equal_amount_payments_limit
+    return advertisements_available? unless merchant.equal_amount_payments_limit
 
-    Advertisement.for_payment(self)
-                 .equal_amount_payments_limited(
-                   national_currency_amount,
-                   Setting.instance.equal_amount_payments_limit
-                 )
-                 .exists?
+    advertisements_scope
+      .equal_amount_payments_limited(national_currency_amount, merchant.equal_amount_payments_limit)
+      .exists?
   end
 
   private
+
+  def advertisements_scope
+    Advertisement.public_send("for_#{type.downcase}", self)
+  end
 
   def update_arbitration_resolutions_time
     if arbitration

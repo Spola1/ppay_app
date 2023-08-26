@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class Setting < ApplicationRecord
-  store_accessor :settings, :version, :commissions_version,
-                 :equal_amount_payments_limit
+  store_accessor :settings, :version, :commissions_version
 
   # Метод, который возвращает или создает новую запись настроек
   def self.instance
@@ -10,10 +9,6 @@ class Setting < ApplicationRecord
   end
 
   def commissions_version=(value)
-    super(value.to_i)
-  end
-
-  def equal_amount_payments_limit=(value)
     super(value.to_i)
   end
 end
