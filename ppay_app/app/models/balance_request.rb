@@ -21,6 +21,7 @@ class BalanceRequest < ApplicationRecord
 
   before_validation :set_crypto_address, on: :create, if: -> { deposit? }
   after_create :create_transaction
+  after_create_commit :send_new_balance_request_notification
 
   validates_presence_of :crypto_address
   validates_numericality_of :amount, greater_than: 0
@@ -28,6 +29,10 @@ class BalanceRequest < ApplicationRecord
   scope :filter_by_status, ->(status) { where(status:) }
 
   private
+
+  def send_new_balance_request_notification
+    BalanceRequests::TelegramNotificationJob.perform_async(id)
+  end
 
   def create_transaction
     send("create_#{requests_type}_transaction")

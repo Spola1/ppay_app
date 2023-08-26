@@ -8,7 +8,7 @@ module Payments
     def perform(payment_id, arbitration_changed, chat_message, comment_message)
       payment = Payment.find(payment_id)
 
-      notify_service = TelegramNotification::UsersService.new(payment)
+      notify_service = TelegramNotification::PaymentsService.new(payment)
 
       if comment_message.present?
         notify_service.send_new_comment_notification_to_user(payment.support.telegram_id)
