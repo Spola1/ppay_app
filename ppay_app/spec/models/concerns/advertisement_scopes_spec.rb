@@ -228,4 +228,42 @@ RSpec.describe Advertisement, type: :model do
       end
     end
   end
+
+  describe '.by_whitelisted_processers' do
+    subject { Advertisement.by_whitelisted_processers(payment).order(id: :asc) }
+
+    let(:payment) { create(:payment, merchant:) }
+
+    let(:merchant) { create :merchant, only_whitelisted_processers: }
+
+    let(:processer1) { create :processer }
+    let(:processer2) { create :processer }
+    let(:processer3) { create :processer }
+
+    let!(:advertisement1) { create :advertisement, processer: processer1 }
+    let!(:advertisement2) { create :advertisement, processer: processer2 }
+    let!(:advertisement3) { create :advertisement, processer: processer3 }
+    let!(:advertisement4) { create :advertisement, processer: processer2 }
+    let!(:advertisement5) { create :advertisement, processer: processer1 }
+
+    before do
+      merchant.whitelisted_processers << processer1 << processer3
+    end
+
+    context 'merchant is set to select only whitelisted processers' do
+      let(:only_whitelisted_processers) { true }
+
+      it 'selects only whitelisted processers advertisements' do
+        is_expected.to eq([advertisement1, advertisement3, advertisement5])
+      end
+    end
+
+    context 'merchant is not set to select only whitelisted processers' do
+      let(:only_whitelisted_processers) { false }
+
+      it 'selects all advertisements' do
+        is_expected.to eq([advertisement1, advertisement2, advertisement3, advertisement4, advertisement5])
+      end
+    end
+  end
 end

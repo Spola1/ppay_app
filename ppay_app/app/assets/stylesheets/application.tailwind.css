@@ -320,6 +320,22 @@
     @apply w-full max-w-full;
   }
 
+  .multiple-select {
+    @apply border divide-y w-80 mb-4 p-2 overflow-y-auto max-h-96;
+  }
+
+  .multiple-select label {
+    @apply w-full;
+  }
+
+  .multiple-select label > span {
+    @apply inline-block p-2;
+  }
+
+  /* .multiple-select label > input:checked, .multiple-select label > input:checked + span { */
+  /*   @apply bg-blue-400; */
+  /* } */
+
   .error_notification {
     @apply text-xs;
   }

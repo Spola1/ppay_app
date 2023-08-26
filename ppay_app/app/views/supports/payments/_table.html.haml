@@ -4,6 +4,7 @@
       %th.items-list-th
       %th.items-list-th ID
       %th.items-list-th создан
+      %th.items-list-th.text-red начало арбитража
       %th.items-list-th направление
       %th.items-list-th нац. валюта
       %th.items-list-th кол-во нац. валюты
@@ -26,6 +27,7 @@
         %td.items-list-td-link
           = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
         %td.items-list-td= payment.formatted_created_at
+        %td.items-list-td.text-red= payment.formatted_started_arbitration_at
         %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
         %td.items-list-td= payment.decorate.national_formatted
@@ -36,7 +38,11 @@
         %td.items-list-td= payment.formatted_status_changed_at
         %td.items-list-td= payment.human_cancellation_reason
         %td.items-list-td= payment.processer&.decorate&.display_name
-        %td.items-list-td= payment.merchant.decorate.display_name
+        %td.items-list-td.relative
+          = payment.merchant.decorate.display_name
+          - if unread_comments_or_chats?(payment)
+            .text-xs.text-green-500.absolute.bottom-0.left-0.mb-1
+              Новые комментарии
 
         %td.items-list-td.px-1.w-0
           = link_to payment_path(payment), data: { turbo_action: :advance } do

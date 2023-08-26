@@ -1,0 +1,15 @@
+= simple_form_for(@merchant, as: :merchant, url: merchant_whitelisted_processers_path(@merchant), action: :update) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :only_whitelisted_processers, as: :boolean
+
+  .multiple-select.flex.flex-col
+    - Processer.find_each do |processer|
+      %label
+        = check_box_tag "merchant[whitelisted_processers][#{processer.id}]", |
+                        nil, @merchant.whitelisted_processer?(processer)     |
+        %span= processer.decorate.display_name
+
+  .form-actions
+    = f.button :submit, t('buttons.submit'), class: 'form-submit'

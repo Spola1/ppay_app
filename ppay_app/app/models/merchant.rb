@@ -12,6 +12,9 @@ class Merchant < User
   has_many :national_currencies, -> { distinct }, through: :payment_systems
   has_many :form_customizations
 
+  has_many :merchant_processers, foreign_key: :merchant_id
+  has_many :whitelisted_processers, through: :merchant_processers, source: :processer
+
   belongs_to :agent, optional: true
 
   before_validation :process_telegram, if: -> { telegram.present? }
@@ -40,6 +43,10 @@ class Merchant < User
     all_possible_methods(keywords).each do |method|
       merchant_methods.find_by(method)&.destroy
     end
+  end
+
+  def whitelisted_processer?(processer)
+    whitelisted_processers.include?(processer)
   end
 
   private

@@ -22,9 +22,6 @@
           %th.items-list-th Метод платежа
           %th.items-list-th Валюта
           %th.items-list-th Тип платежа
-          %th.items-list-th Сервис
-          %th.items-list-th Оператор
-          %th.items-list-th Организатор
           %th.items-list-th Агент
           %th.items-list-th
             .flex.flex-col
@@ -46,9 +43,6 @@
             %td.items-list-td= commissions.first.national_currency_name
             %td.items-list-td= commissions.first.direction
             - commissions = commissions.group_by(&:commission_type).map { [_1, _2.first] }.to_h
-            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['ppay'].id}]", commissions['ppay'].commission, size: 5
-            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['processer'].id}]", commissions['processer'].commission, size: 5
-            %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['working_group'].id}]", commissions['working_group'].commission, size: 5
             %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['agent'].id}]", commissions['agent'].commission, size: 5
             %td.items-list-td= text_field_tag "merchant[commissions][#{commissions['other'].id}]", commissions['other'].commission, size: 5
             %td.items-list-td= commissions.slice('agent', 'other').values.sum(&:commission)

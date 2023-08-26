@@ -5,18 +5,22 @@ module Payments
     include Sidekiq::Job
     sidekiq_options queue: 'default', tags: ['payments_telegram_notification']
 
-    def perform(payment_id, arbitration_changed, chat_message)
+    def perform(payment_id, arbitration_changed, chat_message, comment_message)
       payment = Payment.find(payment_id)
 
       notify_service = TelegramNotification::PaymentsService.new(payment)
 
-      if chat_message.present?
-        notify_service.send_new_comment_notification_to_user(payment.processer.telegram_id)
+      if comment_message.present?
         notify_service.send_new_comment_notification_to_user(payment.support.telegram_id)
-        notify_service.send_new_comment_notification_to_user(payment.merchant.telegram_id)
       end
 
-      if arbitration_changed && chat_message.nil?
+      if chat_message.present?
+        notify_service.send_new_chat_notification_to_user(payment.processer.telegram_id)
+        notify_service.send_new_chat_notification_to_user(payment.support.telegram_id)
+        notify_service.send_new_chat_notification_to_user(payment.merchant.telegram_id)
+      end
+
+      if arbitration_changed && chat_message.nil? && comment_message.nil?
         notify_service.send_new_arbitration_notification_to_user(payment.processer.telegram_id)
         notify_service.send_new_arbitration_notification_to_user(payment.support.telegram_id)
       elsif !arbitration_changed && chat_message.nil?

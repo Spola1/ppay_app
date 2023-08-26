@@ -4,6 +4,7 @@
       %tr
         %th.items-list-th номер заказа
         %th.items-list-th создан
+        %th.items-list-th.text-red начало арбитража
         %th.items-list-th направление
         %th.items-list-th нац. валюта
         %th.items-list-th кол-во нац. валюты
@@ -25,6 +26,7 @@
             - if payment.external_order_id.present?
               = link_to payment.external_order_id, payment_path(payment), data: { turbo_action: :advance }
           %td.items-list-td= payment.formatted_created_at
+          %td.items-list-td.text-red= payment.formatted_started_arbitration_at
           %td.items-list-td= payment.human_type
           %td.items-list-td= payment.national_currency
           %td.items-list-td= payment.decorate.national_formatted
@@ -39,6 +41,10 @@
             = payment.human_payment_status
           %td.items-list-td= payment.formatted_status_changed_at
           %td.items-list-td= payment.human_cancellation_reason
+          %td.items-list-td
+            - if unread_comments_or_chats?(payment)
+              .text-xs.text-green-500
+                Новые комментарии
 
 - else
   .empty-list-text

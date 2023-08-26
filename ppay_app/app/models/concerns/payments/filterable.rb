@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Payments
   module Filterable
     extend ActiveSupport::Concern
@@ -38,6 +40,10 @@ module Payments
             ->(merchant_id) { where(merchant_id:) }
       scope :filter_by_period,
             ->(period) { where(created_at: PERIOD[period].call) }
+      scope :filter_by_card_number, lambda { |card_number|
+            joins(:advertisement).where(advertisements: { card_number: }) }
+      scope :filter_by_advertisement_id, lambda { |advertisement_id|
+            joins(:advertisement).where(advertisements: { id: advertisement_id }) }
     end
   end
 end

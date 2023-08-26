@@ -9,6 +9,14 @@ class ApplicationDecorator < Draper::Decorator
     formatted_date(created_at.in_time_zone('Moscow'))
   end
 
+  def formatted_started_arbitration_at
+    if arbitration_resolutions.last&.ended_at.present?
+      nil
+    else
+      formatted_date(arbitration_resolutions.last&.created_at)
+    end
+  end
+
   private
 
   def formatted_date(date)

@@ -2,9 +2,7 @@
 
 module Admins
   module Merchants
-    class MerchantMethodsController < Staff::BaseController
-      before_action :find_merchant
-
+    class MerchantMethodsController < BaseController
       def create
         if params[:add_methods]
           @merchant.fill_in_commissions(keywords)
@@ -24,10 +22,6 @@ module Admins
       end
 
       private
-
-      def find_merchant
-        @merchant = Merchant.find_by_id(params[:merchant_id]).decorate
-      end
 
       def keywords
         return if params[:keywords].empty?
