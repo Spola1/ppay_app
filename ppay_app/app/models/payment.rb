@@ -272,9 +272,9 @@ class Payment < ApplicationRecord
             \n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n"
 
     if merchant.chat_enabled?
-      Chat.create(payment_id: id, user_id: support_id, text: text_with_active_arbitration_chat)
+      Chat.create(payment_id: id, user_id: support_id, text: text_with_active_arbitration_chat, create_notification: false)
     else
-      Chat.create(payment_id: id, user_id: support_id, text: text_without_active_arbitration_chat)
+      Chat.create(payment_id: id, user_id: support_id, text: text_without_active_arbitration_chat, create_notification: false)
     end
   end
 

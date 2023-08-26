@@ -158,7 +158,8 @@ class IncomingRequestService
     @payment.comments.create!(
       author_nickname: Settings.simbank_nickname,
       user_id: @payment.processer.id,
-      text:
+      text:,
+      create_notification: false
     )
   end
 

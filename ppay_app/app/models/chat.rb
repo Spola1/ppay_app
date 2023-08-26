@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class Chat < ApplicationRecord
+  attr_accessor :create_notification
+
   belongs_to :payment
   belongs_to :user, optional: true
   has_many :message_read_statuses, as: :message
 
   validates_presence_of :text
 
-  after_create_commit :send_new_chat_notification
-  after_create_commit :create_message_read_statuses
+  after_create_commit :send_new_chat_notification, if: :create_notification
+  after_create_commit :create_message_read_statuses, if: :create_notification
 
   private
 
