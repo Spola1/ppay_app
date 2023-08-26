@@ -130,14 +130,8 @@ module Payments
           .where('created_at >= ? AND ended_at IS NOT NULL', start_time)
           .where('ended_at <= ?', end_time)
 
-        arbitration_resolutions.each do |resolution|
-          total_resolution_time += resolution.ended_at - resolution.created_at
-          arbitration_resolutions_count += 1
-        end
-
-        context.average_arbitration_resolution_time =
-          arbitration_resolutions_count.positive? ? total_resolution_time / arbitration_resolutions_count.to_f : 0
-        context.arbitration_resolutions_count = arbitration_resolutions_count
+        context.average_arbitration_resolution_time = arbitration_resolutions.average('ended_at - created_at') || 0
+        context.arbitration_resolutions_count = arbitration_resolutions.count
       end
     end
   end
