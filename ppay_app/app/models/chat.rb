@@ -13,9 +13,11 @@ class Chat < ApplicationRecord
   private
 
   def create_message_read_statuses
-    message_read_statuses.create(user: payment.support)
-    message_read_statuses.create(user: payment.merchant)
-    message_read_statuses.create(user: payment.processer)
+    Support.find_each do |support|
+      message_read_statuses.create(user: support) unless user == support
+    end
+    message_read_statuses.create(user: payment.merchant) unless user == payment.merchant
+    message_read_statuses.create(user: payment.processer) unless user == payment.processer
   end
 
   def send_new_chat_notification

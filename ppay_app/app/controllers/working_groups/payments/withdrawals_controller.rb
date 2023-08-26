@@ -2,7 +2,7 @@
 
 module WorkingGroups
   module Payments
-    class WithdrwalsController < PaymentsController
+    class WithdrawalsController < PaymentsController
       def index
         @pagy, @payments = pagy(Withdrawl.where(processers: { working_group_id: current_user }))
         @payments = @payments.decorate

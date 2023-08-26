@@ -19,9 +19,11 @@ class Comment < ApplicationRecord
   end
 
   def create_message_read_statuses
-    message_read_statuses.create(user: commentable.support)
-    message_read_statuses.create(user: commentable.merchant)
-    message_read_statuses.create(user: commentable.processer)
+    Support.find_each do |support|
+      message_read_statuses.create(user: support) unless user == support
+    end
+    message_read_statuses.create(user: commentable.merchant) unless user == commentable.merchant
+    message_read_statuses.create(user: commentable.processer) unless user == commentable.processer
   end
 
   def send_new_comment_notification
