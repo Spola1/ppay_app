@@ -110,7 +110,7 @@ module StateMachines
           author_nickname: Settings.simbank_nickname,
           user_id: processer.id,
           text: 'Проверка по симбанку. Ждем 3 минуты',
-          create_notification: false
+          skip_notification: true
         )
       end
     end

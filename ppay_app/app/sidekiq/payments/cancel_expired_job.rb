@@ -45,7 +45,7 @@ module Payments
           author_nickname: Settings.simbank_nickname,
           user_id: payment.processer.id,
           text:,
-          create_notification: false
+          skip_notification: true
         )
         puts "Платёж #{payment.uuid} отменён"
       end

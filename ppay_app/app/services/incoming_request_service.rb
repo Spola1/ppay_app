@@ -159,7 +159,7 @@ class IncomingRequestService
       author_nickname: Settings.simbank_nickname,
       user_id: @payment.processer.id,
       text:,
-      create_notification: false
+      skip_notification: true
     )
   end
 

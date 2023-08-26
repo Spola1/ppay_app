@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Comment < ApplicationRecord
-  attr_accessor :create_notification
+  attr_accessor :skip_notification
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user, optional: true
@@ -10,8 +10,8 @@ class Comment < ApplicationRecord
   validates_presence_of :text
 
   after_create_commit :broadcast_payment, if: -> { commentable.type.in?(%w[Deposit Withdrawal]) }
-  after_create_commit :send_new_comment_notification, if: :create_notification
-  after_create_commit :create_message_read_statuses, if: :create_notification
+  after_create_commit :send_new_comment_notification, unless: :skip_notification
+  after_create_commit :create_message_read_statuses, unless: :skip_notification
 
   private
 
