@@ -237,7 +237,7 @@ class Payment < ApplicationRecord
   end
 
   def advertisements_available?
-    Advertisement.for_payment(self).exists?
+    advertisements_scope.exists?
   end
 
   def equal_amount_limited_advertisements_available?
