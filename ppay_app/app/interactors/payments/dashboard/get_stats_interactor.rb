@@ -122,19 +122,17 @@ module Payments
         total_resolution_time = 0
         arbitration_resolutions_count = 0
 
-        context.processer.payments.each do |payment|
-          arbitration_resolutions =
-            payment.arbitration_resolutions
-                   .where(reason: [ArbitrationResolution.reasons[:check_by_check],
-                                   ArbitrationResolution.reasons[:incorrect_amount_check]])
-                   .completed
-                   .where('created_at >= ? AND ended_at IS NOT NULL', start_time)
-                   .where('ended_at <= ?', end_time)
+        arbitration_resolutions = ArbitrationResolution
+          .completed
+          .where(payment: payments,
+                 reason: [ArbitrationResolution.reasons[:check_by_check],
+                          ArbitrationResolution.reasons[:incorrect_amount_check]].flatten)
+          .where('created_at >= ? AND ended_at IS NOT NULL', start_time)
+          .where('ended_at <= ?', end_time)
 
-          arbitration_resolutions.each do |resolution|
-            total_resolution_time += resolution.ended_at - resolution.created_at
-            arbitration_resolutions_count += 1
-          end
+        arbitration_resolutions.each do |resolution|
+          total_resolution_time += resolution.ended_at - resolution.created_at
+          arbitration_resolutions_count += 1
         end
 
         context.average_arbitration_resolution_time =
