@@ -54,16 +54,16 @@ wb.add_worksheet(name: 'payments') do |sheet|
 
           if merchant.balance.in_national_currency
             amount = national_currency_amount
-            processer_income = incomes[Transaction.transaction_types[:processer_commission]].first[1]
-            agent_income = incomes[Transaction.transaction_types[:agent_commission]].first[1]
-            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]].first[1]
-            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]].first[1]
+            processer_income = incomes[Transaction.transaction_types[:processer_commission]]&.first&.[](1) || 0
+            agent_income = incomes[Transaction.transaction_types[:agent_commission]]&.first&.[](1) || 0
+            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]]&.first&.[](1) || 0
+            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]]&.first&.[](1) || 0
           else
             amount = cryptocurrency_amount
-            processer_income = incomes[Transaction.transaction_types[:processer_commission]].first[2]
-            agent_income = incomes[Transaction.transaction_types[:agent_commission]].first[2]
-            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]].first[2]
-            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]].first[2]
+            processer_income = incomes[Transaction.transaction_types[:processer_commission]]&.first&.[](2) || 0
+            agent_income = incomes[Transaction.transaction_types[:agent_commission]]&.first&.[](2) || 0
+            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]]&.first&.[](2) || 0
+            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]]&.first&.[](2) || 0
           end
 
           next unless amount
