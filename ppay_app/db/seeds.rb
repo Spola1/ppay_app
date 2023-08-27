@@ -11,7 +11,9 @@ ExchangePortal.create(name: 'Binance P2P')
 
 100.times { CryptoWallet.create(address: SecureRandom.hex) }
 
-u1 = Admin.create(email: 'admin@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'SuperAdmin', role: 'superadmin',
+u0 = SuperAdmin.create(email: 'superadmin@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'SuperAdmin',
+                       role: 'superadmin')
+u1 = Admin.create(email: 'admin@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'Admin', role: 'admin',
                   name: 'Анатолий')
 u2 = Merchant.create(email: 'merchant@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet',
                      name: 'Петр Петрович')
@@ -23,7 +25,7 @@ pp = Ppay.create(email: 'ppay@test.com', password: 'NQg6By9QncR5KssZ', nickname:
 u7 = Merchant.create(email: 'merchant1@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'AvangardBet1',
                      name: 'Александр Александрович')
 u8 = WorkingGroup.create(email: 'wg@test.com', password: 'NQg6By9QncR5KssZ', nickname: 'WG',
-                     name: 'Александр Кириллович')
+                         name: 'Александр Кириллович')
 
 u1 = User.find_by(email: 'admin@test.com')
 u1.usdt_trc20_address = 'SaK2GZoEtevoAJq3NwhDbLyJDfjW73SSUt'
