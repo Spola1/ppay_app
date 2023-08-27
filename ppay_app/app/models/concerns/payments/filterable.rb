@@ -46,6 +46,8 @@ module Payments
                    card_number: "%#{card_number}%") }
       scope :filter_by_advertisement_id, lambda { |advertisement_id|
             joins(:advertisement).where(advertisements: { id: advertisement_id }) }
+      scope :filter_by_processer, lambda { |processer_id|
+            joins(:advertisement).where(advertisements: { processer_id: }) }
     end
   end
 end

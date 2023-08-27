@@ -7,24 +7,6 @@ module Payments
         transactions.present? && transactions.pluck(:status).all?('cancelled')
       end
 
-      private
-
-      def merchant_commissions
-        @merchant_commissions ||=
-          merchant.commissions.where(
-            merchant_methods:
-              {
-                direction: type,
-                payment_system: PaymentSystem.find_by(
-                  {
-                    name: payment_system.presence || rate_snapshot.payment_system.name,
-                    national_currency: NationalCurrency.find_by(name: national_currency)
-                  }
-                )
-              }
-          )
-      end
-
       def processer_commission
         processer.processer_commission
       end
@@ -46,6 +28,24 @@ module Payments
           other_commission - processer_commission - working_group_commission,
           0
         ].max
+      end
+
+      private
+
+      def merchant_commissions
+        @merchant_commissions ||=
+          merchant.commissions.where(
+            merchant_methods:
+              {
+                direction: type,
+                payment_system: PaymentSystem.find_by(
+                  {
+                    name: payment_system.presence || rate_snapshot.payment_system.name,
+                    national_currency: NationalCurrency.find_by(name: national_currency)
+                  }
+                )
+              }
+          )
       end
 
       def complete_transactions

@@ -1,0 +1,111 @@
+# frozen_string_literal: true
+
+wb = xlsx_package.workbook
+
+s = wb.styles
+head_style = s.add_style b: true, alignment: { horizontal: :center }
+date_style = s.add_style format_code: 'YYYY-MM-DD'
+align_right_style = s.add_style alignment: { horizontal: :right }
+currency_style = s.add_style format_code: '#,##0.00'
+fractional_currency_style = s.add_style format_code: '#,####0.0000'
+
+headers = [
+  'дата',
+  'аккаунт',
+  'агент клиента',
+
+  'оператор обработки',
+  'в чью рабочую группу входит',
+
+  'ед.измерения',
+  'направление',
+  'оборот',
+
+  'общий процент',
+  'процент оператора',
+  'процент агента',
+  'процент рук-ля раб группы',
+
+  'общая прибыль',
+  'прибыль оператора',
+  'прибыль агента',
+  'прибыль рук-ля раб группы',
+  'прибыль платформы'
+]
+
+wb.add_worksheet(name: 'payments') do |sheet|
+  sheet.add_row headers, style: head_style
+
+  (filtering_params[:created_from].to_date..filtering_params[:created_to].to_date).each do |day|
+    Merchant.find_each do |merchant|
+      Processer.find_each do |processer|
+        %w[Deposit Withdrawal].each do |type|
+          payments = Payment.filter_by({ merchant:, processer: })
+                            .where(type:).for_day(day).completed.reorder('')
+          next if payments.empty?
+
+          national_currency_amount, cryptocurrency_amount =
+            payments.pluck('sum(payments.national_currency_amount), sum(payments.cryptocurrency_amount)').first
+
+          incomes = payments
+            .joins(:transactions).group('transactions.transaction_type')
+            .pluck('transactions.transaction_type, sum(transactions.national_currency_amount), sum(transactions.amount)')
+            .group_by { _1[0] }
+
+          if merchant.balance.in_national_currency
+            amount = national_currency_amount
+            processer_income = incomes[Transaction.transaction_types[:processer_commission]].first[1]
+            agent_income = incomes[Transaction.transaction_types[:agent_commission]].first[1]
+            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]].first[1]
+            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]].first[1]
+          else
+            amount = cryptocurrency_amount
+            processer_income = incomes[Transaction.transaction_types[:processer_commission]].first[2]
+            agent_income = incomes[Transaction.transaction_types[:agent_commission]].first[2]
+            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]].first[2]
+            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]].first[2]
+          end
+
+          next unless amount
+
+          total_income = processer_income + agent_income + ppay_income + working_group_income
+
+          sheet.add_row [day, merchant.decorate.display_name, merchant.agent&.decorate&.display_name,
+                         processer.decorate.display_name, processer.working_group&.decorate&.display_name,
+                         merchant.balance.currency, type, amount,
+                         total_income / amount, processer_income / amount, agent_income / amount, working_group_income / amount,
+                         total_income, processer_income, agent_income, working_group_income, ppay_income]
+        end
+      end
+    end
+  end
+
+  sheet.col_style 0, date_style, row_offset: 1
+
+  sheet.col_style 1, align_right_style, row_offset: 1
+  sheet.col_style 2, align_right_style, row_offset: 1
+  sheet.col_style 3, align_right_style, row_offset: 1
+  sheet.col_style 4, align_right_style, row_offset: 1
+  sheet.col_style 5, align_right_style, row_offset: 1
+  sheet.col_style 6, align_right_style, row_offset: 1
+
+  sheet.col_style 7, currency_style, row_offset: 1
+
+  sheet.col_style 8,  fractional_currency_style, row_offset: 1
+  sheet.col_style 9, fractional_currency_style, row_offset: 1
+  sheet.col_style 11, fractional_currency_style, row_offset: 1
+  sheet.col_style 12, fractional_currency_style, row_offset: 1
+
+  sheet.col_style 13, currency_style, row_offset: 1
+  sheet.col_style 14, currency_style, row_offset: 1
+  sheet.col_style 15, currency_style, row_offset: 1
+  sheet.col_style 16, currency_style, row_offset: 1
+  sheet.col_style 17, currency_style, row_offset: 1
+
+
+  sheet.column_widths 12, 15, 20,
+                      20, 30,
+                      15, 15, 10,
+                      15, 20, 15, 30,
+                      20, 20, 20, 30, 25
+end

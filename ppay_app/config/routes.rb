@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   mount Sidekiq::Web => '/sidekiq'
-  authenticate :user, -> (user) { user.admin? } do
-    mount PgHero::Engine, at: "pghero"
+  authenticate :user, ->(user) { user.admin? } do
+    mount PgHero::Engine, at: 'pghero'
   end
 
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   end
 
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
-    resource :setting, only: [:edit, :update]
+    resource :setting, only: %i[edit update]
     resources :advertisements, except: %i[new create]
     resources :balance_requests
     resources :payments, param: :uuid, only: %i[index update show]
@@ -62,7 +62,11 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :turnover_stats, only: %i[index]
+    resources :turnover_stats, only: %i[index] do
+      collection do
+        get :all_stats
+      end
+    end
 
     resources :payment_systems, only: :index
     post :payment_systems, to: '/admins/payment_systems#update'
