@@ -9,6 +9,12 @@
     .card-wrap
       .item-card
         .card-head
+          %h1 Вся статистика
+          = link_to t('buttons.export_to_excel'), all_stats_turnover_stats_path(stats_filters: request.params[:stats_filters], format: :xlsx), class: 'form-submit'
+
+    .card-wrap
+      .item-card
+        .card-head
           %h1 Мерчанты
 
         = render 'table', merchants: @merchants, filtering_params: @filtering_params

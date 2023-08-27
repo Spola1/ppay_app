@@ -12,6 +12,7 @@ fractional_currency_style = s.add_style format_code: '#,####0.0000'
 headers = [
   'дата',
   'аккаунт',
+  'валюта аккаунта',
   'агент клиента',
 
   'оператор обработки',
@@ -44,37 +45,45 @@ wb.add_worksheet(name: 'payments') do |sheet|
                             .where(type:).for_day(day).completed.reorder('')
           next if payments.empty?
 
-          national_currency_amount, cryptocurrency_amount =
-            payments.pluck('sum(payments.national_currency_amount), sum(payments.cryptocurrency_amount)').first
+          cryptocurrency_amount = payments.pluck('sum(payments.cryptocurrency_amount)').first
 
-          incomes = payments
-            .joins(:transactions).group('transactions.transaction_type')
-            .pluck('transactions.transaction_type, sum(transactions.national_currency_amount), sum(transactions.amount)')
-            .group_by { _1[0] }
+          incomes = payments.joins(:transactions).group('transactions.transaction_type')
+                            .pluck('transactions.transaction_type, sum(transactions.amount)')
+                            .group_by { _1[0] }
 
-          if merchant.balance.in_national_currency
-            amount = national_currency_amount
-            processer_income = incomes[Transaction.transaction_types[:processer_commission]]&.first&.[](1) || 0
-            agent_income = incomes[Transaction.transaction_types[:agent_commission]]&.first&.[](1) || 0
-            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]]&.first&.[](1) || 0
-            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]]&.first&.[](1) || 0
-          else
-            amount = cryptocurrency_amount
-            processer_income = incomes[Transaction.transaction_types[:processer_commission]]&.first&.[](2) || 0
-            agent_income = incomes[Transaction.transaction_types[:agent_commission]]&.first&.[](2) || 0
-            ppay_income = incomes[Transaction.transaction_types[:ppay_commission]]&.first&.[](2) || 0
-            working_group_income = incomes[Transaction.transaction_types[:working_group_commission]]&.first&.[](2) || 0
-          end
+          amount = cryptocurrency_amount
+          processer_income = incomes[Transaction.transaction_types[:processer_commission]]&.first&.[](1) || 0
+          agent_income = incomes[Transaction.transaction_types[:agent_commission]]&.first&.[](1) || 0
+          ppay_income = incomes[Transaction.transaction_types[:ppay_commission]]&.first&.[](1) || 0
+          working_group_income = incomes[Transaction.transaction_types[:working_group_commission]]&.first&.[](1) || 0
 
           next unless amount
 
+          unless processer.working_group
+            ppay_income += working_group_income
+            working_group_income = 0
+          end
+
+          unless merchant.agent
+            ppay_income += agent_income
+            agent_income = 0
+          end
+
           total_income = processer_income + agent_income + ppay_income + working_group_income
 
-          sheet.add_row [day, merchant.decorate.display_name, merchant.agent&.decorate&.display_name,
-                         processer.decorate.display_name, processer.working_group&.decorate&.display_name,
-                         merchant.balance.currency, type, amount,
-                         total_income / amount, processer_income / amount, agent_income / amount, working_group_income / amount,
-                         total_income, processer_income, agent_income, working_group_income, ppay_income]
+          sheet.add_row [
+            day, merchant.decorate.display_name,
+            merchant.national_currencies.first.name, merchant.agent&.decorate&.display_name,
+
+            processer.decorate.display_name, processer.working_group&.decorate&.display_name,
+
+            'USDT', type, amount,
+
+            total_income / amount, processer_income / amount,
+            agent_income / amount, working_group_income / amount,
+
+            total_income, processer_income, agent_income, working_group_income, ppay_income
+          ]
         end
       end
     end
@@ -88,11 +97,12 @@ wb.add_worksheet(name: 'payments') do |sheet|
   sheet.col_style 4, align_right_style, row_offset: 1
   sheet.col_style 5, align_right_style, row_offset: 1
   sheet.col_style 6, align_right_style, row_offset: 1
+  sheet.col_style 7, align_right_style, row_offset: 1
 
-  sheet.col_style 7, currency_style, row_offset: 1
+  sheet.col_style 8, currency_style, row_offset: 1
 
-  sheet.col_style 8,  fractional_currency_style, row_offset: 1
   sheet.col_style 9, fractional_currency_style, row_offset: 1
+  sheet.col_style 10, fractional_currency_style, row_offset: 1
   sheet.col_style 11, fractional_currency_style, row_offset: 1
   sheet.col_style 12, fractional_currency_style, row_offset: 1
 
@@ -102,8 +112,7 @@ wb.add_worksheet(name: 'payments') do |sheet|
   sheet.col_style 16, currency_style, row_offset: 1
   sheet.col_style 17, currency_style, row_offset: 1
 
-
-  sheet.column_widths 12, 15, 20,
+  sheet.column_widths 12, 15, 20, 20,
                       20, 30,
                       15, 15, 10,
                       15, 20, 15, 30,

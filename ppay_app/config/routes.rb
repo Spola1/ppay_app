@@ -33,6 +33,16 @@ Rails.application.routes.draw do
     concerns :statuses_updatable
   end
 
+  scope module: :superadmins, constraints: ->(request) { request.env['warden'].user&.super_admin? } do
+    resources :turnover_stats, only: %i[index] do
+      collection do
+        get :all_stats
+      end
+    end
+
+    root 'turnover_stats#index', as: :superadmins_root
+  end
+
   scope module: :admins, constraints: ->(request) { request.env['warden'].user&.admin? } do
     resource :setting, only: %i[edit update]
     resources :advertisements, except: %i[new create]
@@ -62,11 +72,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :turnover_stats, only: %i[index] do
-      collection do
-        get :all_stats
-      end
-    end
+    resources :turnover_stats, only: %i[index]
 
     resources :payment_systems, only: :index
     post :payment_systems, to: '/admins/payment_systems#update'
