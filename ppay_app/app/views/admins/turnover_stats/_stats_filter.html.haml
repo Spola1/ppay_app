@@ -7,5 +7,6 @@
     = f.input :created_from, as: :date, html5: true, input_html:{ value: params.dig(:stats_filters, :created_from) }
     = f.input :created_to, as: :date, html5: true,  input_html:{ value: params.dig(:stats_filters, :created_to) }
 
-  = f.submit t('buttons.submit'), class: 'form-submit'
-  = link_to t('buttons.reset'), turnover_stats_path, data: { turbo_action: :advance }, class: 'reset-button'
+  .space-x-2
+    = f.submit t('buttons.submit'), class: 'form-submit'
+    = link_to t('buttons.reset'), turnover_stats_path, data: { turbo_action: :advance }, class: 'reset-button'
