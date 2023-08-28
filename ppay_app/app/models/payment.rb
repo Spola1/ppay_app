@@ -99,7 +99,7 @@ class Payment < ApplicationRecord
 
   validate :validate_arbitration_fields, on: :merchant
 
-  before_save :update_arbitration_resolutions_time, if: :arbitration_changed?
+  before_update :update_arbitration_resolutions_time, if: :arbitration_changed?
 
   after_update_commit :complete_transactions, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
