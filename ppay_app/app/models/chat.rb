@@ -25,6 +25,8 @@ class Chat < ApplicationRecord
   def send_new_chat_notification
     return unless payment.arbitration_changed? || payment.arbitration?
 
-    Payments::TelegramNotificationJob.perform_async(payment.id, payment.arbitration_was, text, nil)
+    Payments::Processers::NewChatNotificationJob.perform_async(payment.id)
+    Payments::Merchants::NewChatNotificationJob.perform_async(payment.id)
+    Payments::Supports::NewChatNotificationJob.perform_async(payment.id)
   end
 end
