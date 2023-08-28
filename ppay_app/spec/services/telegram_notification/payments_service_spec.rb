@@ -68,7 +68,6 @@ RSpec.describe TelegramNotification::PaymentsService do
     let(:payment) { create(:payment, :deposit, arbitration: true, advertisement: ad, support:) }
     let(:ad) { create(:advertisement) }
     let(:support) { create(:support) }
-    let(:arbitration_resolution) { payment.arbitration_resolutions.create!(reason: 'incorrect_amount') }
 
     before do
       payment.processer.telegram_id = 123_123_123
