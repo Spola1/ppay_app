@@ -19,6 +19,7 @@ ru:
         agent: Агент
         only_whitelisted_processers: Доступны операторы только из белого списка
         equal_amount_payments_limit: Максимальное число платежей с одинаковой суммой для объявления
+        fee_percentage: Процент, добавляемый к курсу обмена
 
   users:
     sidebar:
