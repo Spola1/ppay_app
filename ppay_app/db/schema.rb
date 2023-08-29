@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_29_083659) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -345,7 +345,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_083659) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "national_currency_id", null: false
-    t.string "binance_name"
+    t.string "exchange_name"
     t.integer "adv_position_deposit", default: 10
     t.integer "adv_position_withdrawal", default: 5
     t.integer "trans_amount_deposit"

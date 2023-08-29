@@ -9,16 +9,16 @@ module RateSnapshots
 
     def perform
       PaymentSystem.includes(:national_currency).each do |payment_system|
-        next if payment_system.payment_system_copy || payment_system.binance_name.blank?
+        next if payment_system.payment_system_copy || payment_system.exchange_name.blank?
 
         GetBinanceP2pRatesJob.perform_async(
           {
             crypto_asset: 'USDT',
             fiat: payment_system.national_currency.name,
             payment_system_id: payment_system.id,
-            payment_method: payment_system.binance_name,
+            payment_method: payment_system.exchange_name,
             merchant_check: false,
-            exchange_portal_id_for_binance: BINANCE_EXCHANGE_PORTAL_ID
+            exchange_portal_id_for_binance: payment_system.exchange_portal_id
           }.stringify_keys
         )
       end
