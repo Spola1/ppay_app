@@ -15,7 +15,7 @@ module Admins
 
     def payment_systems_params
       params.require(:payment_systems)
-            .permit(payment_systems: %i[id binance_name payment_system_copy_id national_currency_id
+            .permit(payment_systems: %i[id exchange_portal_id binance_name payment_system_copy_id national_currency_id
                                         adv_position_deposit adv_position_withdrawal
                                         trans_amount_deposit trans_amount_withdrawal])
     end
