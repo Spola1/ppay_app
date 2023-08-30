@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Garantex
   class OtcTrade
     attr_accessor :asset, :fiat, :fiat_amount, :trade_type

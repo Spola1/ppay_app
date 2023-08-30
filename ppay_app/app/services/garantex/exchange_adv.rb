@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Garantex
   class ExchangeAdv
     attr_accessor :amount, :price, :volume, :factor, :price_type

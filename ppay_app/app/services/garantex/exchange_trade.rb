@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Garantex
   class ExchangeTrade
     attr_accessor :asset, :fiat, :fiat_amount, :trade_type
@@ -27,7 +29,6 @@ module Garantex
       all_advs_hash = @garantex_account.get_exchange_bids_and_asks(market_name)
       # puts "all_advs_hash: \n\n#{all_advs_hash}"
       # учитываем, что у нас в хэше и покупка и продажа
-      direction = ''
       direction = case @trade_type
                   when 'sell'
                     'asks'

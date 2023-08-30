@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Garantex
   class Member
     # поиск по nickname: Konstantin1349

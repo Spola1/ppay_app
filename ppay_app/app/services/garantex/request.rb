@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Garantex
   module GarantexRequest
     def self.send_get(token, link, form_data_hash)

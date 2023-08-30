@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Garantex
   class Adv
     attr_accessor :adv_id, :user_nick, :min_amount, :max_amount, :payment_method_text, :description, :price, :currency,
@@ -38,25 +40,13 @@ module Garantex
       stop_words = ['КЭШИН', 'CASH IN', 'CASH-IN', 'CASH', 'КЕШИН', 'CASHIN', 'Кешин', 'QR', 'Qr', 'qr', 'куар', '✅cash', 'nfc',
                     'NFC', 'нфс', 'НФС', 'кеш ин', 'КЕШ ИН', 'Кэшин', 'я у банкомата', 'НЕ ПЕРЕВД', 'НЕ ПЕРЕВОД', '💵Кэшин', 'Кэшин']
       r = /#{stop_words.join("|")}/i
-      if r === description || r === payment_method_text
-        # puts "содержит"
-        true
-      else
-        # puts "не содержит"
-        false
-      end
+      r === description || r === payment_method_text
     end
 
     def suitable_amount?(my_amount)
       # проверяем - попадаем ли мы в лимиты,
       # которые выставил человек в объявлении
-      if (@min_amount <= my_amount) && (my_amount <= @max_amount)
-        # puts "попадаем"
-        true
-      else
-        # puts "не попадаем"
-        false
-      end
+      (@min_amount <= my_amount) && (my_amount <= @max_amount)
     end
   end
 end
