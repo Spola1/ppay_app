@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_26_110002) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_30_073846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -384,13 +384,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_110002) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
@@ -497,9 +497,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_110002) do
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
+    t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.bigint "payment_id"
+    t.string "ip"
+    t.text "user_agent"
+    t.string "cookie"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payment_id"], name: "index_visits_on_payment_id"
   end
 
   create_table "working_groups", force: :cascade do |t|
@@ -535,4 +547,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_26_110002) do
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
+  add_foreign_key "visits", "payments"
 end

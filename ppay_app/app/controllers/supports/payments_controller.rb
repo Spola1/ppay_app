@@ -22,6 +22,15 @@ module Supports
 
       mark_messages_as_read(@payment.comments)
       mark_messages_as_read(@payment.chats)
+
+      @visit = @payment.visits.create(
+        ip: request.remote_ip,
+        user_agent: request.user_agent,
+        cookie: request.cookies.to_h.to_s,
+        url: request.original_url
+        # Добавьте другие данные о посещении
+      )
+      debugger
     end
 
     def update

@@ -7,6 +7,8 @@ class Payment < ApplicationRecord
   include EnumValidatable
   include Payments::Filterable
 
+  has_many :visits
+
   audited
 
   default_scope { order(created_at: :desc, id: :desc) }
