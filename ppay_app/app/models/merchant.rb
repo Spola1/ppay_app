@@ -28,6 +28,11 @@ class Merchant < User
     decimal: 2
   }, _prefix: true
 
+  enum balance_freeze_type: {
+    short: 0,
+    long: 1
+  }
+
   after_create :fill_in_commissions
 
   def fill_in_commissions(keywords = nil)

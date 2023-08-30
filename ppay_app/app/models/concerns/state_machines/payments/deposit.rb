@@ -104,6 +104,7 @@ module StateMachines
       end
 
       def add_simbank_comment
+        debugger
         return unless autoconfirming
 
         comments.create(
