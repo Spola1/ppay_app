@@ -19,6 +19,10 @@ ru:
         agent: Агент
         only_whitelisted_processers: Доступны операторы только из белого списка
         equal_amount_payments_limit: Максимальное число платежей с одинаковой суммой для объявления
+        balance_freeze_type: Тип заморозки баланса
+        long_freeze_percentage: Процент от суммы для длинной заморозки
+        long_freeze_days: Количество дней длинной заморозки
+        short_freeze_days: Количество дней короткой заморозки
 
   users:
     sidebar:

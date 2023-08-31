@@ -22,6 +22,10 @@ class Merchant < User
   validates :telegram, format: { with: /\A@?\w+\z/ }, allow_blank: true
   validate :telegram_id_presence, if: -> { telegram.present? }
 
+  validates :short_freeze_days, presence: true, if: -> { balance_freeze_type == 'short' }
+  validates :long_freeze_percentage, :long_freeze_days, presence: true, if: -> { balance_freeze_type == 'long' }
+  validates :short_freeze_days, :long_freeze_days, :long_freeze_percentage, numericality: { greater_than: 0 }, allow_nil: true
+
   enum unique_amount: {
     none: 0,
     integer: 1,

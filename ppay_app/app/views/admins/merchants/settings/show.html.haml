@@ -13,6 +13,10 @@
     = f.input :any_bank, placeholder: I18n.t('payments.any_bank'), hint: 'Оставить пустым, если не используется'
     = f.input :equal_amount_payments_limit
     = f.association :agent
+    = f.input :balance_freeze_type, collection: [['Длинная заморозка', 'long'], ['Короткая заморозка', 'short']]
+    = f.input :long_freeze_days
+    = f.input :long_freeze_percentage
+    = f.input :short_freeze_days
 
   .py-4
     %h2 Комиссии
