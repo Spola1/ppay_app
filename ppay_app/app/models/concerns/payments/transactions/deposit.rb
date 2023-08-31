@@ -20,13 +20,31 @@ module Payments
       end
 
       def create_freeze_balance_transaction
+        return if merchant.balance_freeze_type.nil?
+
         transactions.create(
           from_balance: merchant.balance,
           to_balance: merchant.balance,
-          amount: main_transaction_amount,
-          national_currency_amount: national_currency_transaction_amount,
+          amount: freeze_crypto_amount,
+          national_currency_amount: freeze_national_currency_amount,
           transaction_type: :freeze_balance
         )
+      end
+
+      def freeze_crypto_amount
+        if merchant.balance_freeze_type == 'short'
+          main_transaction_amount
+        else
+          main_transaction_amount * merchant.long_freeze_percentage / 100
+        end
+      end
+
+      def freeze_national_currency_amount
+        if merchant.balance_freeze_type == 'short'
+          national_currency_transaction_amount
+        else
+          national_currency_transaction_amount * merchant.long_freeze_percentage / 100
+        end
       end
 
       def create_main_transaction

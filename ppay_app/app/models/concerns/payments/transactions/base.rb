@@ -49,9 +49,7 @@ module Payments
       end
 
       def complete_transactions
-        #transactions.each(&:complete!)
         transactions.where.not(transaction_type: :freeze_balance).each(&:complete!)
-        #debugger
       end
 
       def cancel_transactions
