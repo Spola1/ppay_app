@@ -15,6 +15,20 @@ module Payments
         create_ppay_transaction
       end
 
+      def freeze_balance
+        create_freeze_balance_transaction
+      end
+
+      def create_freeze_balance_transaction
+        transactions.create(
+          from_balance: merchant.balance,
+          to_balance: merchant.balance,
+          amount: main_transaction_amount,
+          national_currency_amount: national_currency_transaction_amount,
+          transaction_type: :freeze_balance
+        )
+      end
+
       def create_main_transaction
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: merchant.balance,
