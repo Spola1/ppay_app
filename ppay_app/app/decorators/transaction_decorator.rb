@@ -18,4 +18,12 @@ class TransactionDecorator < ApplicationDecorator
   def amount_formatted
     formatted_amount(amount)
   end
+
+  def crypto_currency
+    transactionable.cryptocurrency
+  end
+
+  def national_currency
+    transactionable.national_currency
+  end
 end

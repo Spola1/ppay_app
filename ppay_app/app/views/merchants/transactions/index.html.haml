@@ -1,0 +1,10 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .card-head
+        %h1 Замороженные средства
+
+      = render 'table', freeze_transactions: @freeze_transactions
+ 
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy

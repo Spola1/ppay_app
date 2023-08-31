@@ -1,0 +1,21 @@
+%table.items-list-table
+  %thead.items-list-thead
+    %tr
+      %th.items-list-th нац. валюта
+      %th.items-list-th кол-во нац. валюты
+      %th.items-list-th криптовалюта
+      %th.items-list-th кол-во криптовалюты
+      %th.items-list-th заморожены
+      %th.items-list-th будут разморожены
+
+      %th.items-list-th
+
+  %tbody
+    - freeze_transactions.each do |transaction|
+      %tr.items-list-tr
+        %td.items-list-td= transaction.decorate.national_currency
+        %td.items-list-td= transaction.decorate.national_formatted
+        %td.items-list-td= transaction.decorate.crypto_currency
+        %td.items-list-td= transaction.decorate.amount_formatted
+        %td.items-list-td= transaction.decorate.formatted_created_at_moscow
+        %td.items-list-td test
