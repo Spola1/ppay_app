@@ -13,7 +13,7 @@ module StateMachines
 
         aasm whiny_transitions: false, column: :payment_status, requires_lock: true do
           state :created, initial: true
-          state :draft, :processer_search, :transferring, :confirming, :completed, :cancelled
+          state :draft, :processer_search, :transferring, :completed, :cancelled
 
           # show_selection_page
           event :show do
@@ -48,18 +48,12 @@ module StateMachines
           end
 
           # make_deposit
-          event :check do
-            before :set_locale
-            transitions from: :transferring, to: :confirming,
-                        guard: proc { |params| valid_image?(params) }
-          end
-
-          # show_confirmation
           event :confirm do
             before :set_locale
             after :complete_transactions
 
-            transitions from: :confirming, to: :completed
+            transitions from: :transferring, to: :completed,
+                        guard: proc { |params| valid_image?(params) }
           end
 
           event :cancel do
