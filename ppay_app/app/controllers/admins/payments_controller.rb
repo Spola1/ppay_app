@@ -3,7 +3,6 @@
 module Admins
   class PaymentsController < Staff::BaseController
     before_action :find_payment, only: %i[update show]
-    after_action :create_visit, only: %i[show]
 
     def index
       @pagy, @payments = pagy(Payment.includes(:merchant).order(created_at: :desc))

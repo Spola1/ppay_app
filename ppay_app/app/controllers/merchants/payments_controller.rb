@@ -3,7 +3,6 @@
 module Merchants
   class PaymentsController < Staff::BaseController
     before_action :find_payment, only: :show
-    after_action :create_visit, only: %i[show]
 
     def index
       respond_to do |format|
@@ -29,6 +28,11 @@ module Merchants
     end
 
     private
+
+    def mark_messages_as_read(messages)
+      message_ids = messages.map(&:id)
+      MessageReadStatus.where(user: current_user, message_id: message_ids).update_all(read: true)
+    end
 
     def find_payment
       @payment = current_user.payments.find_by(uuid: params[:uuid]).becomes(model_class.constantize).decorate

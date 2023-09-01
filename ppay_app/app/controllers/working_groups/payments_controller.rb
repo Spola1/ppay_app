@@ -3,7 +3,6 @@
 module WorkingGroups
   class PaymentsController < Staff::BaseController
     before_action :find_payment, only: %i[show]
-    after_action :create_visit, only: %i[show]
 
     def index
       respond_to do |format|
