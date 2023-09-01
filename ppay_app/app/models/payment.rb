@@ -7,8 +7,6 @@ class Payment < ApplicationRecord
   include EnumValidatable
   include Payments::Filterable
 
-  has_many :visits
-
   audited
 
   default_scope { order(created_at: :desc, id: :desc) }
@@ -60,6 +58,8 @@ class Payment < ApplicationRecord
   has_many :arbitration_resolutions
 
   has_many :payment_receipts, dependent: :destroy
+
+  has_many :visits
 
   # в каждый платеж прикрепляем курс на данный момент
   # это обязательно

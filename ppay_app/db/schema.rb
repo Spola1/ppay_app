@@ -497,7 +497,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_30_073846) do
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
-    t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
