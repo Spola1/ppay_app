@@ -507,8 +507,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_30_073846) do
     t.bigint "payment_id"
     t.string "ip"
     t.text "user_agent"
-    t.string "cookie"
+    t.text "cookie"
     t.string "url"
+    t.string "method"
+    t.text "headers"
+    t.text "query_parameters"
+    t.text "request_parameters"
+    t.text "session"
+    t.text "env"
+    t.boolean "ssl"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["payment_id"], name: "index_visits_on_payment_id"

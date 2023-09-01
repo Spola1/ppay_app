@@ -3,6 +3,7 @@
 module Processers
   class PaymentsController < Staff::BaseController
     before_action :find_payment, only: %i[update show]
+    after_action :create_visit, only: %i[show]
 
     def index
       respond_to do |format|
@@ -35,11 +36,6 @@ module Processers
     end
 
     private
-
-    def mark_messages_as_read(messages)
-      message_ids = messages.map(&:id)
-      MessageReadStatus.where(user: current_user, message_id: message_ids).update_all(read: true)
-    end
 
     def set_payments
       @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
