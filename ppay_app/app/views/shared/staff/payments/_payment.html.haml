@@ -197,10 +197,6 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
-            - if role_namespace == 'supports' || role_namespace == 'admins'
-              %tr.item-card-tr
-                %td.item-card-td.item-card-td-label Количество посещений
-                %td.item-card-td= "#{payment.visits.size}"
             - if role_namespace == 'supports'
               = render 'shared/staff/payments/payment_audit', payment:
 
