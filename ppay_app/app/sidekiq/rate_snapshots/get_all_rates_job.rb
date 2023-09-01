@@ -8,20 +8,24 @@ module RateSnapshots
     BINANCE_EXCHANGE_PORTAL_ID = 1
 
     def perform
-      PaymentSystem.includes(:national_currency).each do |payment_system|
+      PaymentSystem.includes(:national_currency, :exchange_portal).each do |payment_system|
         next if payment_system.payment_system_copy || payment_system.exchange_name.blank?
 
-        GetBinanceP2pRatesJob.perform_async(
+        get_rates_job(payment_system.exchange_portal.name)&.perform_async(
           {
             crypto_asset: 'USDT',
             fiat: payment_system.national_currency.name,
             payment_system_id: payment_system.id,
             payment_method: payment_system.exchange_name,
             merchant_check: false,
-            exchange_portal_id_for_binance: payment_system.exchange_portal_id
+            exchange_portal_id: payment_system.exchange_portal_id
           }.stringify_keys
         )
       end
+    end
+
+    def get_rates_job(portal_name)
+      "::RateSnapshots::Get#{portal_name.parameterize.underscore.camelize}RatesJob".camelize.constantize
     end
   end
 end

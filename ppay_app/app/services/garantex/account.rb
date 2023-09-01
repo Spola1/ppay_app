@@ -1,25 +1,31 @@
 # frozen_string_literal: true
 
+require 'jwt'
+require 'net/http'
+require 'securerandom'
+
 module Garantex
   class Account
-    include GarantexRequest
+    include ::Garantex::GarantexRequest
 
-    def initialize(private_key, uid)
-      @private_key = private_key
-      @uid = uid
+    def initialize(private_key = nil, uid = nil)
+      @private_key = private_key || ENV.fetch('GARANTEX_PRIVATE_KEY', nil)
+      @uid = uid || ENV.fetch('GARANTEX_UID', nil)
       @token = nil
     end
 
     attr_accessor :token
 
     def generate_new_token
-      host = 'garantex.io'
+      host = 'garantex.org'
       secret_key = OpenSSL::PKey.read(Base64.urlsafe_decode64(@private_key))
       payload = {
         exp: 1.hours.from_now.to_i, # JWT Request TTL in seconds since epoch
         jti: SecureRandom.hex(12).upcase
       }
+
       jwt_token = JWT.encode(payload, secret_key, 'RS256')
+
       uri = URI.parse("https://dauth.#{host}/api/v1/sessions/generate_jwt")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -27,9 +33,7 @@ module Garantex
       request.body = { kid: @uid, jwt_token: }.to_json
       response = http.start { |h| h.request(request) }
       data = JSON.parse response.body
-      token = data['token']
-      # puts token
-      @token = token
+      @token = data['token']
     end
 
     def get_otc_member_profile(nickname)
@@ -73,11 +77,6 @@ module Garantex
       form_data_hash = { market: }
       GarantexRequest.send_get(@token, link, form_data_hash)
 
-      # ask_1 = asks_and_bids_hash["asks"][0]
-      # bid_1 = asks_and_bids_hash["bids"][0]
-      # puts "\nask 1: = #{ask_1}\n"
-      # puts "\nbid 1: = #{bid_1}\n"
-
       # {
       #   'timestamp' => 1659332301,
       #   'asks' => [
@@ -109,31 +108,10 @@ module Garantex
       #
     end
 
-    def get_otc_bids_and_asks(currency, direction, payment_method)
+    def get_otc_bids_and_asks(currency, direction, payment_method, amount = nil)
       link = 'otc/ads'
-      form_data_hash = { currency:, direction:, payment_method: }
-      advs_hash = GarantexRequest.send_get(@token, link, form_data_hash)
-      # puts "\n\n\n----- advs_hash 123: -----"
-      # puts advs_hash
-      # return advs_hash
-
-      # adv_1 = advs_hash[0]
-      # adv_2 = advs_hash[1]
-      # puts  "\n\n-=- 1ое объявление (#{currency} #{direction} #{payment_method}): #{adv_1}\n\n"
-      # puts  "\n\n-=- 2ое объявление (#{currency} #{direction} #{payment_method}): #{adv_2}\n\n"
-
-      result_array = []
-      advs_hash.each do |item|
-        result_array << item
-      end
-      # puts "result_array size: #{result_array.size}"
-
-      result_array
-
-      # nickname = advs_hash[0]["member"]
-      # puts "nickname: #{nickname}"
-      # member_profile = self.get_otc_member_profile(nickname)
-      # puts member_profile
+      form_data_hash = { currency:, direction:, payment_method:, amount: }.compact
+      GarantexRequest.send_get(@token, link, form_data_hash)
 
       # {
       #   'id' => 32_240,
@@ -156,7 +134,6 @@ module Garantex
       # покупатель: Yalla (2133)
       # цена: -0.07% (вы доплачиваете)
       # сумма: 120 000.00 - 1 149 859.90 RUB
-      #
     end
   end
 end
