@@ -26,4 +26,8 @@ class TransactionDecorator < ApplicationDecorator
   def national_currency
     transactionable.national_currency
   end
+
+  def formatted_unfreeze_time_moscow
+    formatted_date(unfreeze_time&.in_time_zone('Moscow'))
+  end
 end
