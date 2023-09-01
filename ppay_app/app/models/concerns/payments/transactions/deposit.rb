@@ -27,8 +27,17 @@ module Payments
           to_balance: merchant.balance,
           amount: freeze_crypto_amount,
           national_currency_amount: freeze_national_currency_amount,
-          transaction_type: :freeze_balance
+          transaction_type: :freeze_balance,
+          unfreeze_time: calculate_unfreeze_time
         )
+      end
+
+      def calculate_unfreeze_time
+        if merchant.balance_freeze_type == 'short'
+          Time.now + merchant.short_freeze_days.days
+        else
+          Time.now + merchant.long_freeze_days.days
+        end
       end
 
       def freeze_crypto_amount
