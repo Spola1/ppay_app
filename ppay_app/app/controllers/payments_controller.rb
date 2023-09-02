@@ -4,12 +4,29 @@ class PaymentsController < ApplicationController
   before_action :find_payment
   before_action :authenticate_signature
   before_action :set_locale
+  before_action :create_visit, only: %i[show]
 
   def show
     @payment.show! if @payment.may_show?
   end
 
   private
+
+  def create_visit
+    @payment.visits.create(
+      ip: request.remote_ip,
+      user_agent: request.user_agent,
+      cookie: request.cookies.to_h.to_s,
+      url: request.original_url,
+      method: request.method,
+      headers: request.headers.to_h.to_s,
+      query_parameters: request.query_parameters.to_json,
+      request_parameters: request.request_parameters.to_json,
+      session: request.session.to_json,
+      env: request.env.to_s,
+      ssl: request.ssl?
+    )
+  end
 
   def set_locale
     I18n.locale = @payment.locale.to_sym if @payment.locale.present?
