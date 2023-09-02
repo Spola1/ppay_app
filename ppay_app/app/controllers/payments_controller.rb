@@ -13,6 +13,8 @@ class PaymentsController < ApplicationController
   private
 
   def create_visit
+    return unless role_namespace.nil?
+
     @payment.visits.create(
       ip: request.remote_ip,
       user_agent: request.user_agent,
