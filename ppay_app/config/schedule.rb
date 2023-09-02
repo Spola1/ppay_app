@@ -35,6 +35,7 @@ end
 
 every 5.minutes do
   runner 'PgHero.capture_query_stats'
+  runner 'Transactions::TransactionUnfreezeJob.perform_async'
 end
 
 # не забываем:

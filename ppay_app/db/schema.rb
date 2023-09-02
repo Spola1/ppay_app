@@ -450,6 +450,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_111114) do
     t.string "transactionable_type"
     t.bigint "transactionable_id"
     t.decimal "national_currency_amount", precision: 12, scale: 2
+    t.datetime "unfreeze_time"
     t.index ["from_balance_id", "transaction_type"], name: "index_transactions_on_from_balance_id_and_transaction_type"
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
@@ -501,6 +502,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_111114) do
     t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
     t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
+    t.integer "short_freeze_days"
+    t.integer "long_freeze_days"
+    t.decimal "long_freeze_percentage", precision: 5, scale: 2, default: "0.0"
+    t.integer "balance_freeze_type"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

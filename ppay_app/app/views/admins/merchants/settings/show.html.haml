@@ -14,6 +14,10 @@
     = f.input :equal_amount_payments_limit
     = f.input :fee_percentage
     = f.association :agent
+    = f.input :balance_freeze_type, collection: [['Длинная заморозка', 'long'], ['Короткая заморозка', 'short']]
+    = f.input :long_freeze_days
+    = f.input :long_freeze_percentage
+    = f.input :short_freeze_days
 
   .py-4
     %h2 Комиссии
