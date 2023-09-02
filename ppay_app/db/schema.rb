@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_02_111114) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -511,6 +511,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_111114) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "visits", force: :cascade do |t|
+    t.bigint "payment_id"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "cookie"
+    t.string "url"
+    t.string "method"
+    t.text "headers"
+    t.text "query_parameters"
+    t.text "request_parameters"
+    t.text "session"
+    t.text "env"
+    t.boolean "ssl"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payment_id"], name: "index_visits_on_payment_id"
+  end
+
   create_table "working_groups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -545,4 +563,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_111114) do
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
+  add_foreign_key "visits", "payments"
 end
