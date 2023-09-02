@@ -1,0 +1,24 @@
+.show-payment
+  .show-payment-block
+    .proc-head
+      = render 'payments/merchant_logo', payment: payment
+      .proc-text
+        = render 'payments/select_locale', payment:, signature:
+
+    .mt-10
+      .select-payment-system
+        = t('payments.withdraw.attributes.transfer_confirmation')
+        = form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid, signature:), action: :update,
+          data: { turbo_confirm: t('payments.withdraw.attributes.confirmation_receipt_of_money') } do |f|
+          = hidden_field_tag :event, 'confirm'
+          .mt-4
+            = f.submit t('payments.confirm'), confirm: t('payments.confirmation_transfer_cancellation'),
+            class: "green-button", style: payment.button_color_style
+
+    = render 'payments/uuid', payment:
+
+  - if payment.arbitration
+    = render 'shared/chat', payment:
+
+  :javascript
+    window.paymentLanguage = "#{j payment.language_from_locale}";
