@@ -353,6 +353,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
     t.bigint "payment_system_copy_id"
     t.boolean "in_progress"
     t.bigint "exchange_portal_id", default: 1, null: false
+    t.decimal "extra_percent_deposit", precision: 15, scale: 10, default: "0.0"
+    t.decimal "extra_percent_withdrawal", precision: 15, scale: 10, default: "0.0"
     t.index ["exchange_portal_id"], name: "index_payment_systems_on_exchange_portal_id"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"

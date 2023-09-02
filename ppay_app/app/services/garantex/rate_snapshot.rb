@@ -12,9 +12,10 @@ module Garantex
       in_progress_lock do
         break unless otc_price.positive? && exchange_rate.positive?
 
+        value = exchange_rate * otc_price * rate_factor
+
         ::RateSnapshot.create!(direction: action, cryptocurrency: crypto_asset, position_number:,
-                               exchange_portal_id:, value: (exchange_rate * otc_price),
-                               adv_amount: fiat_amount, payment_system_id:)
+                               exchange_portal_id:, value:, adv_amount: fiat_amount, payment_system_id:)
       end
     end
 
@@ -73,6 +74,14 @@ module Garantex
       @garantex_account = Garantex::Account.new
       @garantex_account.generate_new_token
       @garantex_account
+    end
+
+    def rate_factor
+      if params[:action] == 'buy'
+        1 + (payment_system.extra_percent_deposit / 100)
+      else
+        1 - (payment_system.extra_percent_withdrawal / 100)
+      end
     end
   end
 end
