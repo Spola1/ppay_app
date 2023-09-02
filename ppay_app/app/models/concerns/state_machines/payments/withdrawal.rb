@@ -48,11 +48,18 @@ module StateMachines
           end
 
           # make_deposit
+          event :check do
+            before :set_locale
+            transitions from: :transferring, to: :confirming,
+                        guard: proc { |params| valid_image?(params) }
+          end
+
+          # show_confirmation
           event :confirm do
             before :set_locale
             after :complete_transactions
 
-            transitions from: :transferring, to: :completed,
+            transitions from: %i[transferring confirming], to: :completed,
                         guard: proc { |params| valid_image?(params) }
           end
 
