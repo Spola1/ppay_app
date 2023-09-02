@@ -507,7 +507,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
     t.integer "short_freeze_days"
     t.integer "long_freeze_days"
     t.decimal "long_freeze_percentage", precision: 5, scale: 2, default: "0.0"
-    t.integer "balance_freeze_type"
+    t.integer "balance_freeze_type", default: 0
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

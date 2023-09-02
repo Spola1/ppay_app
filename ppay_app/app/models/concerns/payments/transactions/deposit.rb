@@ -16,7 +16,7 @@ module Payments
       end
 
       def freeze_balance
-        create_freeze_balance_transaction
+        # create_freeze_balance_transaction
       end
 
       def create_freeze_balance_transaction

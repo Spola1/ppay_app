@@ -30,9 +30,10 @@ class Merchant < User
   }, _prefix: true
 
   enum balance_freeze_type: {
-    short: 0,
-    long: 1
-  }
+    none: 0,
+    short: 1,
+    long: 2
+  }, _prefix: true
 
   after_create :fill_in_commissions
 
