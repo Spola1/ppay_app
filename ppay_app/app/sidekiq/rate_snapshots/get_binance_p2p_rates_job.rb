@@ -35,35 +35,32 @@ module RateSnapshots
     end
 
     def get_binance_p2p_rates(params)
-      case params.symbolize_keys
-      in {crypto_asset:, fiat:, payment_system_id:, payment_method:, merchant_check:,
-          exchange_portal_id_for_binance:, action:, fiat_amount:, position_number:}
-        begin
-          payment_system.with_lock do
-            return if payment_system.in_progress
+      params.symbolize_keys in {crypto_asset:, fiat:, payment_system_id:, payment_method:, merchant_check:,
+                                exchange_portal_id:, action:, fiat_amount:, position_number:}
 
-            payment_system.update(in_progress: true)
-          end
+      payment_system.with_lock do
+        return if payment_system.in_progress
 
-          return if too_recent_rate_snapshot?(action)
-
-          advs_params = { asset: crypto_asset, fiat:, merchant_check:, pay_types: payment_method,
-                          trade_type: action, trans_amount: fiat_amount || false }
-          binance_session = Binance::OpenSession.new(advs_params)
-
-          adv = binance_session.otc_advs_array[..(position_number - 1)].last
-          price_bin_otc = adv[:price]&.to_f if adv
-
-          if price_bin_otc
-            RateSnapshot.create!(direction: action, cryptocurrency: crypto_asset,
-                                 position_number:, exchange_portal_id: exchange_portal_id_for_binance,
-                                 value: price_bin_otc, adv_amount: fiat_amount, payment_system_id:)
-
-          end
-        ensure
-          payment_system.update(in_progress: false)
-        end
+        payment_system.update(in_progress: true)
       end
+
+      return if too_recent_rate_snapshot?(action)
+
+      advs_params = { asset: crypto_asset, fiat:, merchant_check:, pay_types: payment_method,
+                      trade_type: action, trans_amount: fiat_amount || false }
+      binance_session = Binance::OpenSession.new(advs_params)
+
+      adv = binance_session.otc_advs_array[..(position_number - 1)].last
+      price_bin_otc = adv[:price]&.to_f if adv
+
+      if price_bin_otc
+        RateSnapshot.create!(direction: action, cryptocurrency: crypto_asset,
+                             position_number:, exchange_portal_id:,
+                             value: price_bin_otc, adv_amount: fiat_amount, payment_system_id:)
+
+      end
+    ensure
+      payment_system.update(in_progress: false)
     end
 
     def recent_snapshot(action)
