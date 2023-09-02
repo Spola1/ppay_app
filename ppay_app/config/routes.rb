@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         get :all_stats
       end
     end
+    resources :balances, only: %i[index]
 
     root 'turnover_stats#index', as: :superadmins_root
   end

@@ -7,6 +7,10 @@ class BalanceDecorator < ApplicationDecorator
     formatted_amount(amount)
   end
 
+  def amount_with_currency
+    "#{amount_formatted} #{currency}"
+  end
+
   def frozen_amount_formatted
     formatted_amount(from_transactions.payment_transactions.frozen.sum(:amount))
   end
