@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_08_29_083207) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
+>>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -345,13 +349,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_083207) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "national_currency_id", null: false
-    t.string "binance_name"
+    t.string "exchange_name"
     t.integer "adv_position_deposit", default: 10
     t.integer "adv_position_withdrawal", default: 5
     t.integer "trans_amount_deposit"
     t.integer "trans_amount_withdrawal"
     t.bigint "payment_system_copy_id"
     t.boolean "in_progress"
+    t.bigint "exchange_portal_id", default: 1, null: false
+    t.index ["exchange_portal_id"], name: "index_payment_systems_on_exchange_portal_id"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
     t.index ["payment_system_copy_id"], name: "index_payment_systems_on_payment_system_copy_id"
@@ -532,6 +538,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_083207) do
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_receipts", "payments"
   add_foreign_key "payment_receipts", "users"
+  add_foreign_key "payment_systems", "exchange_portals"
   add_foreign_key "payment_systems", "national_currencies"
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"

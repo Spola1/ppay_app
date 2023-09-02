@@ -29,7 +29,7 @@
   %br
 
   = simple_form_for payment, url: payments_statuses_withdrawal_path(uuid: payment.uuid), action: :update do |f|
-    = hidden_field_tag :event, 'check'
+    = hidden_field_tag :event, 'confirm'
 
     = f.label :image, 'Добавьте изображение чека:'
     %br

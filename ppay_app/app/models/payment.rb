@@ -99,7 +99,7 @@ class Payment < ApplicationRecord
 
   validate :validate_arbitration_fields, on: :merchant
 
-  before_save :update_arbitration_resolutions_time, if: :arbitration_changed?
+  before_update :update_arbitration_resolutions_time, if: :arbitration_changed?
 
   after_update_commit :complete_transactions, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed?
@@ -283,7 +283,8 @@ class Payment < ApplicationRecord
   end
 
   def send_arbitration_notification
-    Payments::TelegramNotificationJob.perform_async(id, attribute_was(:arbitration), nil, nil)
+    Payments::Processers::NewArbitrationNotificationJob.perform_async(id)
+    Payments::Supports::NewArbitrationNotificationJob.perform_async(id)
   end
 
   def validate_arbitration_fields
@@ -346,7 +347,7 @@ class Payment < ApplicationRecord
   end
 
   def broadcast_append_notification_to_processer
-    Payments::TelegramNotificationJob.perform_async(id, false, nil, nil)
+    Payments::Processers::NewPaymentNotificationJob.perform_async(id)
 
     broadcast_append_later_to(
       "processer_#{processer.id}_notifications",
