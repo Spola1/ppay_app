@@ -1,0 +1,10 @@
+%section.flex.flex-col
+  .card-wrap
+    .item-card
+      .card-head
+        %h1 Балансы
+
+      = render 'table', balances: @balances
+
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy

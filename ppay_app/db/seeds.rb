@@ -7,7 +7,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-ExchangePortal.create(name: 'Binance P2P')
+ExchangePortal.create([{name: 'Binance P2P'}, {name: 'Garantex P2P'}])
 
 100.times { CryptoWallet.create(address: SecureRandom.hex) }
 

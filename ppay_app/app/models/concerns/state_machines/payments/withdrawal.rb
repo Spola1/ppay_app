@@ -59,7 +59,8 @@ module StateMachines
             before :set_locale
             after :complete_transactions
 
-            transitions from: :confirming, to: :completed
+            transitions from: %i[transferring confirming], to: :completed,
+                        guard: proc { |params| valid_image?(params) }
           end
 
           event :cancel do

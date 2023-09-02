@@ -40,7 +40,7 @@ module Admins
               .permit(:nickname, :name, :check_required, :unique_amount, :any_bank, :account_number_required,
                       :account_number_title, :account_number_placeholder, :chat_enabled, :agent_id,
                       :equal_amount_payments_limit, :short_freeze_days, :long_freeze_days,
-                      :long_freeze_percentage, :balance_freeze_type, commissions: {})
+                      :long_freeze_percentage, :balance_freeze_type, :fee_percentage, commissions: {})
       end
     end
   end

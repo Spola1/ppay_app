@@ -23,6 +23,7 @@ ru:
         long_freeze_percentage: Процент от суммы для длинной заморозки
         long_freeze_days: Количество дней длинной заморозки
         short_freeze_days: Количество дней короткой заморозки
+        fee_percentage: Процент, добавляемый к курсу обмена
 
   users:
     sidebar:

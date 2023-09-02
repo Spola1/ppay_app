@@ -12,6 +12,7 @@
     = f.input :unique_amount, collection: [['Чек', 'none'], ['Целая уникализация суммы', 'integer'], ['Дробная уникализация суммы', 'decimal']], include_blank: false
     = f.input :any_bank, placeholder: I18n.t('payments.any_bank'), hint: 'Оставить пустым, если не используется'
     = f.input :equal_amount_payments_limit
+    = f.input :fee_percentage
     = f.association :agent
     = f.input :balance_freeze_type, collection: [['Длинная заморозка', 'long'], ['Короткая заморозка', 'short']]
     = f.input :long_freeze_days

@@ -8,6 +8,8 @@ navbar:
   super_admin:
     - name: Оборот
       path: turnover_stats_path
+    - name: Балансы
+      path: balances_path
   admin:
     - name: Все платежи
       path: payments_path
