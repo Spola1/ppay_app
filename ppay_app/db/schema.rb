@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_02_111114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -394,6 +394,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
     t.string "account_number"
     t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
+    t.decimal "adjusted_rate"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"
@@ -499,6 +500,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
+    t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

@@ -39,7 +39,7 @@ module Admins
         params.require(:merchant)
               .permit(:nickname, :name, :check_required, :unique_amount, :any_bank, :account_number_required,
                       :account_number_title, :account_number_placeholder, :chat_enabled, :agent_id,
-                      :equal_amount_payments_limit, commissions: {})
+                      :equal_amount_payments_limit, :fee_percentage, commissions: {})
       end
     end
   end
