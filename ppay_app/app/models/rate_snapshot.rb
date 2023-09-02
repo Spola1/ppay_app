@@ -26,6 +26,10 @@ class RateSnapshot < ApplicationRecord
     amount / (value + ((value / 100) * fee_percentage))
   end
 
+  def adjust_rate(fee_percentage)
+    value + (value / 100 * fee_percentage)
+  end
+
   def to_national_currency(amount)
     amount * value
   end
