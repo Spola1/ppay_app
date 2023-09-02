@@ -394,6 +394,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
     t.string "account_number"
     t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
+    t.decimal "adjusted_rate"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"
@@ -449,6 +450,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
     t.string "transactionable_type"
     t.bigint "transactionable_id"
     t.decimal "national_currency_amount", precision: 12, scale: 2
+    t.datetime "unfreeze_time"
     t.index ["from_balance_id", "transaction_type"], name: "index_transactions_on_from_balance_id_and_transaction_type"
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
@@ -499,6 +501,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
+    t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
+    t.integer "short_freeze_days"
+    t.integer "long_freeze_days"
+    t.decimal "long_freeze_percentage", precision: 5, scale: 2, default: "0.0"
+    t.integer "balance_freeze_type"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

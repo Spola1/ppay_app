@@ -15,6 +15,23 @@ module Payments
         create_ppay_transaction
       end
 
+      def freeze_balance
+        create_freeze_balance_transaction
+      end
+
+      def create_freeze_balance_transaction
+        return if merchant.balance_freeze_type.nil?
+
+        transactions.create(
+          from_balance: merchant.balance,
+          to_balance: merchant.balance,
+          amount: freeze_crypto_amount,
+          national_currency_amount: freeze_national_currency_amount,
+          transaction_type: :freeze_balance,
+          unfreeze_time: calculate_unfreeze_time
+        )
+      end
+
       def create_main_transaction
         transactions.create(from_balance: advertisement.processer.balance,
                             to_balance: merchant.balance,

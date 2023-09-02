@@ -22,8 +22,12 @@ class RateSnapshot < ApplicationRecord
 
   scope :by_cryptocurrency, ->(currency) { where(cryptocurrency: currency) }
 
-  def to_crypto(amount)
-    amount / value
+  def to_crypto(amount, fee_percentage)
+    amount / (value + ((value / 100) * fee_percentage))
+  end
+
+  def adjust_rate(fee_percentage)
+    value + (value / 100 * fee_percentage)
   end
 
   def to_national_currency(amount)

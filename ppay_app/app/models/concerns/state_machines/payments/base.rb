@@ -86,7 +86,10 @@ module StateMachines
       end
 
       def set_cryptocurrency_amount
-        self.cryptocurrency_amount = rate_snapshot.to_crypto(national_currency_amount)
+        merchant_fee_percentage = merchant.fee_percentage
+
+        self.cryptocurrency_amount = rate_snapshot.to_crypto(national_currency_amount, merchant_fee_percentage)
+        self.adjusted_rate = rate_snapshot.adjust_rate(merchant_fee_percentage)
       end
 
       def set_cancellation_reason

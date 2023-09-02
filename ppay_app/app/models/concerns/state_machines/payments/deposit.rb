@@ -61,7 +61,7 @@ module StateMachines
           # show_confirmation
           event :confirm do
             before :set_locale
-            after :complete_transactions
+            after :complete_transactions, :freeze_balance
 
             transitions from: %i[transferring confirming], to: :completed
           end

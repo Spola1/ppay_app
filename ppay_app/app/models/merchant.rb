@@ -19,11 +19,20 @@ class Merchant < User
 
   belongs_to :agent, optional: true
 
+  validates :short_freeze_days, presence: true, if: -> { balance_freeze_type == 'short' }
+  validates :long_freeze_percentage, :long_freeze_days, presence: true, if: -> { balance_freeze_type == 'long' }
+  validates :short_freeze_days, :long_freeze_days, :long_freeze_percentage, numericality: { greater_than: 0 }, allow_nil: true
+
   enum unique_amount: {
     none: 0,
     integer: 1,
     decimal: 2
   }, _prefix: true
+
+  enum balance_freeze_type: {
+    short: 0,
+    long: 1
+  }
 
   after_create :fill_in_commissions
 

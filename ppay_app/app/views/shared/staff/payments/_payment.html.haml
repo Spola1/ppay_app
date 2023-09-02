@@ -166,7 +166,7 @@
               %td.item-card-td.item-card-td-label Снимок курса
               %td.item-card-td
                 - if payment.rate_snapshot
-                  = "#{payment.rate_snapshot.value}"
+                  = "#{payment.adjusted_rate}"
                   %br
                   подробнее:
                   %br
