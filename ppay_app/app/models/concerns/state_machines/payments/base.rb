@@ -74,6 +74,7 @@ module StateMachines
 
       def bind_rate_snapshot
         self.rate_snapshot = rate_snapshots_scope
+                             .where(created_at: 2.weeks.ago..)
                              .by_payment_system(PaymentSystem.find_by(name: payment_system))
                              .by_cryptocurrency(cryptocurrency)
                              .order(created_at: :asc)
