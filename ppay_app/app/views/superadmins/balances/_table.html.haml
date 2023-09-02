@@ -1,0 +1,18 @@
+%table.items-list-table
+  %thead.items-list-thead
+    %tr
+      %th.items-list-th Никнейм
+      %th.items-list-th Email
+      %th.items-list-th Имя
+      %th.items-list-th Роль
+      %th.items-list-th Баланс
+
+  %tbody
+    - balances.each do |balance|
+      %tr.items-list-tr
+        %td.items-list-td= balance.balanceable.nickname
+        %td.items-list-td= balance.balanceable.email
+        %td.items-list-td= balance.balanceable.name
+        %td.items-list-td= balance.balanceable.type
+        %td.items-list-td= balance.decorate.amount_with_currency
+        

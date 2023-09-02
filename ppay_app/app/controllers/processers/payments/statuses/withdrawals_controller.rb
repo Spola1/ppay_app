@@ -7,7 +7,7 @@ module Processers
         private
 
         def allowed_events
-          %i[check cancel]
+          %i[confirm cancel]
         end
 
         def payment_params

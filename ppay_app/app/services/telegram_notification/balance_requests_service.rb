@@ -20,7 +20,7 @@ module TelegramNotification
 
     def send_new_balance_request_to_admins(admin_ids)
       message = "Создан новый запрос баланса\n\n"
-      message += "Тип запроса: #{type}\n"
+      message += "Тип запроса: #{balance_request_type}\n"
       message += "Сумма: #{@amount} USDT\n"
       message += "Криптоадрес: #{@crypto_address}\n"
       message += "Пользователь: #{balance_request_user}\n"
@@ -34,20 +34,12 @@ module TelegramNotification
 
     private
 
-    def type
+    def balance_request_type
       @request_type == 'deposit' ? 'Депозит' : 'Вывод'
     end
 
     def balance_request_user
       "#{@user.type} #{@user.nickname} (#{@user.email})"
-    end
-
-    def send_message_to_user(user_id, message)
-      response
-
-      Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-        bot.api.send_message(chat_id: user_id, text: message)
-      end
     end
   end
 end

@@ -80,7 +80,7 @@ module TelegramNotification
 
       sender_user = @chat.user
 
-      return unless sender_user && sender_user.telegram_id != user
+      return unless (!sender_user.present? || sender_user.present?) && sender_user&.telegram_id != user
 
       send_message_to_user(user, message)
     end
@@ -96,14 +96,6 @@ module TelegramNotification
       new_datetime = datetime + Rational(20, 1440)
 
       new_datetime.strftime('%d-%m-%Y %H:%M:%S')
-    end
-
-    def send_message_to_user(user_id, message)
-      response
-
-      Telegram::Bot::Client.run(TELEGRAM_BOT_TOKEN.to_s) do |bot|
-        bot.api.send_message(chat_id: user_id, text: message)
-      end
     end
   end
 end

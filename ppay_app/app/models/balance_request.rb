@@ -31,7 +31,7 @@ class BalanceRequest < ApplicationRecord
   private
 
   def send_new_balance_request_notification
-    BalanceRequests::TelegramNotificationJob.perform_async(id)
+    BalanceRequests::Admins::NewBalanceRequestNotificationJob.perform_async(id)
   end
 
   def create_transaction

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         get :all_stats
       end
     end
+    resources :balances, only: %i[index]
 
     root 'turnover_stats#index', as: :superadmins_root
   end
@@ -98,6 +99,7 @@ Rails.application.routes.draw do
     resources :balance_requests
     resources :arbitrations, only: [:index]
     resources :payment_receipts, only: :create
+    resources :transactions, only: [:index]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index show create update new] do
         member do

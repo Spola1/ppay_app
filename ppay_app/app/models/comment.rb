@@ -31,6 +31,6 @@ class Comment < ApplicationRecord
   def send_new_comment_notification
     return unless commentable.arbitration? && commentable.support != user
 
-    Payments::TelegramNotificationJob.perform_async(commentable.id, commentable.arbitration_was, nil, text)
+    Payments::Supports::NewCommentNotificationJob.perform_async(commentable.id)
   end
 end
