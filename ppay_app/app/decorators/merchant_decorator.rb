@@ -5,19 +5,35 @@ class MerchantDecorator < UserDecorator
 
   def turnover(filtering_params)
     if balance.in_national_currency
-      national_currency_turnover(filtering_params)
+      full_currency_turnover(filtering_params, :national_currency)
     else
-      cryptocurrency_turnover(filtering_params)
+      full_currency_turnover(filtering_params, :cryptocurrency)
+    end
+  end
+
+  def deposits_turnover(filtering_params)
+    if balance.in_national_currency
+      currency_turnover(filtering_params, :deposits, :national_currency)
+    else
+      currency_turnover(filtering_params, :deposits, :cryptocurrency)
+    end
+  end
+
+  def withdrawals_turnover(filtering_params)
+    if balance.in_national_currency
+      currency_turnover(filtering_params, :withdrawals, :national_currency)
+    else
+      currency_turnover(filtering_params, :withdrawals, :cryptocurrency)
     end
   end
 
   private
 
-  def cryptocurrency_turnover(filtering_params)
-    payments.filter_by(filtering_params).completed.sum(:cryptocurrency_amount).to_f
+  def full_currency_turnover(filtering_params, currency)
+    payments.filter_by(filtering_params).completed.sum("#{currency}_amount").to_f
   end
 
-  def national_currency_turnover(filtering_params)
-    payments.filter_by(filtering_params).completed.sum(:national_currency_amount).to_f
+  def currency_turnover(filtering_params, payment_type, currency)
+    public_send(payment_type).filter_by(filtering_params).completed.sum("#{currency}_amount").to_f
   end
 end
