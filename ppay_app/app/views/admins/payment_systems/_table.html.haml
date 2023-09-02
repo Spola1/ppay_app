@@ -10,6 +10,8 @@
         %th.items-list-th Позиция объявления по умолчанию (снятие)
         %th.items-list-th Сумма для мониторинга (депозит)
         %th.items-list-th Сумма для мониторинга (снятие)
+        %th.items-list-th Доп. процент (депозит)
+        %th.items-list-th Доп. процент (снятие)
 
     %tbody
       - payment_systems.each do |payment_system|
@@ -20,7 +22,7 @@
           %td.items-list-td
             = select_tag "payment_systems[payment_systems][][exchange_portal_id]",
                          options_from_collection_for_select(ExchangePortal.all, :id, :name, payment_system.exchange_portal_id),
-                         class: 'w-72'
+                         class: 'w-36'
           %td.items-list-td
             = text_field_tag "payment_systems[payment_systems][][exchange_name]", payment_system.exchange_name, size: 15
           %td.items-list-td
@@ -35,6 +37,10 @@
             = text_field_tag "payment_systems[payment_systems][][trans_amount_deposit]", payment_system.trans_amount_deposit, size: 5
           %td.items-list-td
             = text_field_tag "payment_systems[payment_systems][][trans_amount_withdrawal]", payment_system.trans_amount_withdrawal, size: 5
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][extra_percent_deposit]", payment_system.extra_percent_deposit, size: 5
+          %td.items-list-td
+            = text_field_tag "payment_systems[payment_systems][][extra_percent_withdrawal]", payment_system.extra_percent_withdrawal, size: 5
 
   .mt-4
     = f.submit t('buttons.submit'), class: 'form-submit'

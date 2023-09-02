@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_02_112605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -353,6 +353,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_102050) do
     t.bigint "payment_system_copy_id"
     t.boolean "in_progress"
     t.bigint "exchange_portal_id", default: 1, null: false
+    t.decimal "extra_percent_deposit", precision: 15, scale: 10, default: "0.0"
+    t.decimal "extra_percent_withdrawal", precision: 15, scale: 10, default: "0.0"
     t.index ["exchange_portal_id"], name: "index_payment_systems_on_exchange_portal_id"
     t.index ["name", "national_currency_id"], name: "index_payment_systems_uniqueness", unique: true
     t.index ["national_currency_id"], name: "index_payment_systems_on_national_currency_id"
