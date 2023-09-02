@@ -14,7 +14,7 @@ module Payments
     private
 
     def cancel_expired
-      Payment.transferring.expired.find_each do |payment|
+      Deposit.transferring.expired.find_each do |payment|
         payment.update(cancellation_reason: :time_expired)
         payment.cancel!
         puts "Платёж #{payment.uuid} отменён"
@@ -22,7 +22,7 @@ module Payments
     end
 
     def cancel_expired_arbitration
-      Payment.expired_arbitration_not_paid.find_each do |payment|
+      Deposit.expired_arbitration_not_paid.find_each do |payment|
         payment.update(cancellation_reason: :not_paid)
         payment.cancel!
         payment.update(arbitration: false)
@@ -31,7 +31,7 @@ module Payments
     end
 
     def cancel_expired_autoconfirming
-      Payment.expired_autoconfirming.find_each do |payment|
+      Deposit.expired_autoconfirming.find_each do |payment|
         if payment.processer.autocancel
           payment.update(cancellation_reason: :not_paid)
           payment.cancel!
