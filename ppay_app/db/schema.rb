@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -506,7 +506,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_132523) do
     t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.integer "short_freeze_days"
     t.integer "long_freeze_days"
-    t.decimal "long_freeze_percentage", precision: 5, scale: 2, default: "0.0"
+    t.decimal "long_freeze_percentage", precision: 5, scale: 2
     t.integer "balance_freeze_type", default: 0
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true

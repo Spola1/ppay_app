@@ -35,10 +35,10 @@ module Payments
         if payment.processer.autocancel
           payment.update(cancellation_reason: :not_paid)
           payment.cancel!
-          comment_text = "Ждал #{Setting.last.minutes_to_autocancel} минут. Сумма не поступила. Отменяю платеж"
+          text = "Ждал #{Setting.last.minutes_to_autocancel} минут. Сумма не поступила. Отменяю платеж"
         else
           payment.update(autoconfirming: false)
-          comment_text = "Ждал #{Setting.last.minutes_to_autocancel} минут. " \
+          text = "Ждал #{Setting.last.minutes_to_autocancel} минут. " \
                          'Сумма не поступила. Перевожу на ручное подтверждение'
         end
         payment.comments.create(
