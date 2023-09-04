@@ -8,7 +8,7 @@ module AuditsHelper
   end
 
   def formatted_date_string(date)
-    date.to_datetime.strftime('%Y-%m-%d %H:%M')
+    date.to_datetime.strftime('%Y-%m-%d %H:%M:%S')
   end
 
   private

@@ -20,7 +20,7 @@ class ApplicationDecorator < Draper::Decorator
   private
 
   def formatted_date(date)
-    l(date, format: :short) if date
+    l(date, format: '%Y-%m-%d %H:%M:%S') if date
   end
 
   def formatted_amount(amount)
