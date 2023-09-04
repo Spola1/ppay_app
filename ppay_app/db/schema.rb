@@ -388,13 +388,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
     t.decimal "adjusted_rate"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
@@ -499,9 +499,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
+    t.boolean "only_whitelisted_processers", default: false, null: false
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
-    t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
     t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.integer "short_freeze_days"

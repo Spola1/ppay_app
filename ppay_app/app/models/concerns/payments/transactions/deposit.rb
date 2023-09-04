@@ -16,19 +16,41 @@ module Payments
       end
 
       def freeze_balance
-        # create_freeze_balance_transaction
+        case merchant.balance_freeze_type
+        when 'short', 'long'
+          create_freeze_balance_transaction(
+            freeze_crypto_amount,
+            freeze_national_currency_amount,
+            calculate_unfreeze_time
+          )
+        when 'mixed'
+          freeze_amounts = freeze_crypto_amount
+          unfreeze_times = calculate_unfreeze_time
+
+          create_freeze_balance_transaction(
+            freeze_amounts[:long],
+            freeze_national_currency_amount[:long],
+            unfreeze_times[:long]
+          )
+
+          create_freeze_balance_transaction(
+            freeze_amounts[:short],
+            freeze_national_currency_amount[:short],
+            unfreeze_times[:short]
+          )
+        end
       end
 
-      def create_freeze_balance_transaction
-        return if merchant.balance_freeze_type.nil?
+      def create_freeze_balance_transaction(crypto_freeze_amount, national_currency_freeze_amount, time)
+        return if merchant.balance_freeze_type == 'none'
 
         transactions.create(
           from_balance: merchant.balance,
           to_balance: merchant.balance,
-          amount: freeze_crypto_amount,
-          national_currency_amount: freeze_national_currency_amount,
+          amount: crypto_freeze_amount,
+          national_currency_amount: national_currency_freeze_amount,
           transaction_type: :freeze_balance,
-          unfreeze_time: calculate_unfreeze_time
+          unfreeze_time: time
         )
       end
 

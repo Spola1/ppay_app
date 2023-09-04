@@ -61,27 +61,45 @@ module Payments
       end
 
       def calculate_unfreeze_time
-        if merchant.balance_freeze_type == 'short'
-          Time.now + merchant.short_freeze_days.days
-        else
-          Time.now + merchant.long_freeze_days.days
-        end
+        unfreeze_times = {
+          'short' => -> { Time.now + merchant.short_freeze_days.days },
+          'long' => -> { Time.now + merchant.long_freeze_days.days },
+          'mixed' => lambda do
+            short_unfreeze_time = Time.now + merchant.short_freeze_days.days
+            long_unfreeze_time = Time.now + merchant.long_freeze_days.days
+            { short: short_unfreeze_time, long: long_unfreeze_time }
+          end
+        }
+
+        unfreeze_times[merchant.balance_freeze_type].call
       end
 
       def freeze_crypto_amount
-        if merchant.balance_freeze_type == 'short'
-          main_transaction_amount
-        else
-          main_transaction_amount * merchant.long_freeze_percentage / 100
-        end
+        freeze_amounts = {
+          'short' => main_transaction_amount,
+          'long' => main_transaction_amount * merchant.long_freeze_percentage / 100,
+          'mixed' => lambda do
+            long_freeze_amount = main_transaction_amount * merchant.long_freeze_percentage / 100
+            short_freeze_amount = main_transaction_amount - long_freeze_amount
+            { short: short_freeze_amount, long: long_freeze_amount }
+          end
+        }
+
+        freeze_amounts[merchant.balance_freeze_type].respond_to?(:call) ? freeze_amounts[merchant.balance_freeze_type].call : freeze_amounts[merchant.balance_freeze_type]
       end
 
       def freeze_national_currency_amount
-        if merchant.balance_freeze_type == 'short'
-          national_currency_transaction_amount
-        else
-          national_currency_transaction_amount * merchant.long_freeze_percentage / 100
-        end
+        freeze_amounts = {
+          'short' => national_currency_transaction_amount,
+          'long' => national_currency_transaction_amount * merchant.long_freeze_percentage / 100,
+          'mixed' => lambda do
+            long_freeze_amount = national_currency_transaction_amount * merchant.long_freeze_percentage / 100
+            short_freeze_amount = national_currency_transaction_amount - long_freeze_amount
+            { short: short_freeze_amount, long: long_freeze_amount }
+          end
+        }
+
+        freeze_amounts[merchant.balance_freeze_type].respond_to?(:call) ? freeze_amounts[merchant.balance_freeze_type].call : freeze_amounts[merchant.balance_freeze_type]
       end
     end
   end
