@@ -106,7 +106,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_status_changed_at
-    formatted_date(status_changed_at)
+    formatted_payment_date(status_changed_at)
   end
 
   def card_number
