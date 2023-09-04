@@ -11,11 +11,6 @@ AllCops:
     - 'config/**/*'
     - 'Gemfile'
     - 'lib/tasks/*'
-    - 'app/services/binance/**/*'
-
-Metrics/ParameterLists:
-  Exclude:
-    - 'app/sidekiq/rate_snapshots/get_binance_p2p_rates_job.rb'
 
 Metrics/BlockLength:
   Exclude:
