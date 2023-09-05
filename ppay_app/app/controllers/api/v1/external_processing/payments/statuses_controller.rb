@@ -14,7 +14,7 @@ module Api
           private
 
           def payment_params
-            params.permit(:account_number)
+            params.require(:status).permit(:account_number) if params[:status].present?
           end
 
           def deposit_allowed_events

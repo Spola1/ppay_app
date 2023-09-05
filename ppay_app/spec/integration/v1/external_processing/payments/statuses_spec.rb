@@ -13,8 +13,7 @@ describe 'External processing payments statuses' do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/external_processing/payments/' \
-                                            'statuses.md'))
+      description_erb 'external_processing/payments/statuses.md.erb'
       parameter name: :uuid, in: :path, type: :string, required: true
       parameter name: :event, in: :path, type: :string, required: true
       parameter name: :params,
@@ -24,7 +23,7 @@ describe 'External processing payments statuses' do
       let(:payment) { create :payment, :deposit, :transferring, merchant:, processing_type: :external }
       let(:uuid) { payment.uuid }
       let(:event) { 'check' }
-      let(:params) { { account_number: '1234' } }
+      let(:params) { nil }
 
       response '204', 'статус успешно обновлен' do
         %w[check cancel].each do |event|
@@ -44,10 +43,17 @@ describe 'External processing payments statuses' do
           let(:event) { 'confirm' }
           run_test!
         end
+
+        context 'merchant requires account_number' do
+          let(:account_number_required) { true }
+          let(:params) { { account_number: '1234' } }
+
+          run_test!
+        end
       end
 
       response '422', 'ошибка валидации' do
-        before { payment.merchant.update(account_number_required: true) }
+        let(:account_number_required) { true }
         let(:params) { { account_number: '' } }
         let(:expected_errors) do
           [
