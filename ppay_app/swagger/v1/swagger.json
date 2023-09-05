@@ -59,12 +59,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "ca4671f0-6b08-4ff3-9477-fe330882d135",
+                    "id": "14012051-b2c0-4e85-999d-b44af3abe30a",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "ca4671f0-6b08-4ff3-9477-fe330882d135",
+                      "uuid": "14012051-b2c0-4e85-999d-b44af3abe30a",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-09-06T12:53:44.619+03:00",
+                      "expiration_time": "2023-09-12T21:44:55.020+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "payment_system": "Sberbank",
@@ -74,7 +74,7 @@
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBEUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--7341d56825b0d3d8207aceaaea17f9a979fee59f/378326215491114bb752ec6724eb5a9f.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbllCIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--428046ee5faa7a10917bb07f934332d3be9a2063/d189b53e7f382a3fbf29416251f737f7.svg"
                     }
                   }
                 },
@@ -127,7 +127,7 @@
             }
           }
         ],
-        "description": "## Создание чека платежа\n\nДля отправки запроса нужно указать уникальный идентификатор платежа **uuid** в\nадресной строке POST-запроса\n`/api/v1/external_processing/payments/{uuid}/payment_receipts`.\n\nТакже в теле `multipart/form-data` запроса передать следующие параметры:\n\n| Параметр            | Название              | Тип     | Наличие     | Описание                                                                                                                                                                      |\n|---------------------|-----------------------|---------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n| `image`             | Изображение           | File    | Обязательно | Изображение чека                                                                                                                                                              |\n| `comment`           | Комментарий           | String  | Опционально | Комментарий к чеку                                                                                                                                                            |\n| `receipt_reason`    | Причина отправки чека | String  | Опционально | Может иметь значения: **check_by_check** - Проверить по чеку, **incorrect_amount_check** - Перевели неверную сумму, проверить по чеку |\n| `start_arbitration` | Открыть арбитраж      | Boolean | Опционально | **true** если необходимо открыть арбитраж для платежа                                                                                                                         |\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "description": "## Создание чека платежа\n\nДля отправки запроса нужно указать уникальный идентификатор платежа **uuid** в\nадресной строке POST-запроса\n`/api/v1/external_processing/payments/{uuid}/payment_receipts`.\n\nВ теле `multipart/form-data` запроса передать следующие параметры:\n\n| Параметр            | Название              | Тип     | Наличие     | Описание                                                                                                                              |\n|---------------------|-----------------------|---------|-------------|---------------------------------------------------------------------------------------------------------------------------------------|\n| `image`             | Изображение           | File    | Обязательно | Изображение чека                                                                                                                      |\n| `comment`           | Комментарий           | String  | Опционально | Комментарий к чеку                                                                                                                    |\n| `receipt_reason`    | Причина отправки чека | String  | Опционально | Может иметь значения: **check_by_check** - Проверить по чеку, **incorrect_amount_check** - Перевели неверную сумму, проверить по чеку |\n| `start_arbitration` | Открыть арбитраж      | Boolean | Опционально | **true** если необходимо открыть арбитраж для платежа                                                                                 |\n\n<br>\n\n## Примеры использования\n\nВозможны два основных сценария использования.\n\n<details>\n<summary><h3>Ускорение обработки платежа</h3></summary>\n\nЕсли клиент хочет ускорить проведение платежа с помощью чека, для этого надо\nпросто загрузить чек и указать параметр `start_arbitration: false`, причину\nотправки `receipt_reason` указывать не нужно.\n\nКомментарий опционально — можно добавить, но необязательно.\n\nПример:\n\n| Параметр            | Значение                  |\n|---------------------|---------------------------|\n| `image`             | Прикреплённое изображение |\n| `comment`           | `\"Перевод на карту 3000\"` |\n| `start_arbitration` | `false`                   |\n\n</details>\n\n<details>\n<summary><h3>Оспаривание, открытие диспута/арбитража.</h3></summary>\n\nЕсли платёж был отменён и клиент хочет это оспорить, надо загрузить чек, указать\nпараметр `start_arbitration: true` и причину отправки чека `receipt_reason`.\n\nКомментарий опционально — можно добавить, но необязательно.\n\nПример:\n\n| Параметр            | Значение                  |\n|---------------------|---------------------------|\n| `image`             | Прикреплённое изображение |\n| `receipt_reason`    | `\"check_by_check\"`        |\n| `start_arbitration` | `true`                    |\n\n</details>\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
         "parameters": [
           {
             "name": "uuid",
@@ -327,10 +327,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "e1d18fb8-513b-40ea-84c6-7ecee6e598bb",
+                    "id": "60ff52bd-9e11-4111-9a8d-cc2c15c8c93f",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "e1d18fb8-513b-40ea-84c6-7ecee6e598bb",
+                      "uuid": "60ff52bd-9e11-4111-9a8d-cc2c15c8c93f",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "payment_system": "Sberbank",
@@ -400,11 +400,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "deb4525c-4b6e-4e02-a50a-fc6a94e6689a",
+                    "id": "8ba5397a-370a-4ade-9593-2ef90b889834",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "deb4525c-4b6e-4e02-a50a-fc6a94e6689a",
-                      "url": "http://example.org/payments/deposits/deb4525c-4b6e-4e02-a50a-fc6a94e6689a?signature=b108c6b159f3f0b8151a357528ef0e2916e3724a7fc5546a4f6b9125084bcfb8"
+                      "uuid": "8ba5397a-370a-4ade-9593-2ef90b889834",
+                      "url": "http://example.org/payments/deposits/8ba5397a-370a-4ade-9593-2ef90b889834?signature=cb59bc53377c48f171b0455a7944aa79060e6536b5a4f4edbae196896b336712"
                     }
                   }
                 },
@@ -468,11 +468,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "d4d29a98-3689-42e2-b058-8aab69bc3642",
+                    "id": "1adddd55-94eb-4673-8b72-1672700ac52c",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "d4d29a98-3689-42e2-b058-8aab69bc3642",
-                      "url": "http://example.org/payments/withdrawals/d4d29a98-3689-42e2-b058-8aab69bc3642?signature=bd8650d96881141d78944f98b5f7bd679fd7e3f3b22984f43ddd63dd1cafbf4a"
+                      "uuid": "1adddd55-94eb-4673-8b72-1672700ac52c",
+                      "url": "http://example.org/payments/withdrawals/1adddd55-94eb-4673-8b72-1672700ac52c?signature=17fbf223dda47e690d3a6154caa431bc975d7be88066168bd08982d1b1d49eed"
                     }
                   }
                 },
@@ -914,7 +914,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "3dc38cd8-4bcb-4aeb-a3f7-7cca42f68d54"
+                    "example": "5d8ef6b3-e43f-4f7b-8154-c15675e5fdd5"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -922,7 +922,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-09-06T12:33:43.472+03:00"
+                    "example": "2023-09-12T21:24:52.038+03:00"
                   },
                   "national_currency": {
                     "type": "string",

@@ -11,6 +11,8 @@ module Api
             @payment_receipt = payment.payment_receipts.new(prepared_payment_receipt_params)
             @payment_receipt.save!
 
+            payment.check! if payment.transferring?
+
             render json: serialized_payment_receipt, status: :created
           rescue ActiveSupport::MessageVerifier::InvalidSignature
             raise ActionController::BadRequest
@@ -31,7 +33,7 @@ module Api
           end
 
           def payment_receipt_params
-            (params[:payment_receipt] ? params.require(:payment_receipt) : params)
+            (params[:payment_receipt].present? ? params.require(:payment_receipt) : params)
               .permit(:image, :comment, :receipt_reason, :start_arbitration)
           end
         end
