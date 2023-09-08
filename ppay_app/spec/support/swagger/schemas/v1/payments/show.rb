@@ -31,6 +31,7 @@ module Swagger
                           created_at: { type: :string, example: Time.zone.now.as_json },
                           national_currency: { type: :string, example: 'RUB' },
                           national_currency_amount: { type: :string, example: '3000.0' },
+                          initial_amount: { type: :string, example: '3000.0' },
                           cryptocurrency: { type: :string, example: 'USDT' },
                           payment_system: { type: :string, example: 'Sberbank' },
                           payment_status: { type: :string, example: 'cancelled' },

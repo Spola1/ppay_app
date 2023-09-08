@@ -77,11 +77,7 @@ module Garantex
     end
 
     def rate_factor
-      if params[:action] == 'buy'
-        1 + (payment_system.extra_percent_deposit / 100)
-      else
-        1 - (payment_system.extra_percent_withdrawal / 100)
-      end
+      1 + (payment_system.extra_percent_deposit / 100)
     end
   end
 end

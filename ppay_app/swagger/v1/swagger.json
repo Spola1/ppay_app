@@ -59,12 +59,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "f1d6480d-85e6-4fa6-b455-484e76dd997c",
+                    "id": "ca4671f0-6b08-4ff3-9477-fe330882d135",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "f1d6480d-85e6-4fa6-b455-484e76dd997c",
+                      "uuid": "ca4671f0-6b08-4ff3-9477-fe330882d135",
                       "card_number": "1111111111111111",
-                      "expiration_time": "2023-08-08T01:01:56.006+03:00",
+                      "expiration_time": "2023-09-06T12:53:44.619+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "payment_system": "Sberbank",
@@ -74,7 +74,7 @@
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBEUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--dc398b87b9cc62d00d6145bad095004ffa986927/5dfd68e418ed860d328bdd6cc9a7ba4a.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBEUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--7341d56825b0d3d8207aceaaea17f9a979fee59f/378326215491114bb752ec6724eb5a9f.svg"
                     }
                   }
                 },
@@ -91,8 +91,8 @@
                 "example": {
                   "errors": [
                     {
-                      "title": "check_required",
-                      "detail": "Для создания платежей с внешним управлением Вам нужно отключить требование проверки.",
+                      "title": "advertisement",
+                      "detail": "не найден",
                       "code": 422
                     }
                   ]
@@ -174,7 +174,8 @@
                                 "not_paid": 3,
                                 "time_expired": 4,
                                 "check_by_check": 5,
-                                "incorrect_amount_check": 6
+                                "incorrect_amount_check": 6,
+                                "reason_in_chat": 7
                               },
                               "nullable": true
                             },
@@ -187,7 +188,8 @@
                               "enum": {
                                 "merchant_dashboard": 0,
                                 "hpp_form": 1,
-                                "merchant_service": 2
+                                "merchant_service": 2,
+                                "support_dashboard": 3
                               },
                               "nullable": true
                             }
@@ -325,10 +327,10 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "22298b04-5bf1-4126-82fb-87f4fa3e5d49",
+                    "id": "e1d18fb8-513b-40ea-84c6-7ecee6e598bb",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "22298b04-5bf1-4126-82fb-87f4fa3e5d49",
+                      "uuid": "e1d18fb8-513b-40ea-84c6-7ecee6e598bb",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "payment_system": "Sberbank",
@@ -398,11 +400,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "4679f39f-f6ec-4561-be96-638b6cb76177",
+                    "id": "deb4525c-4b6e-4e02-a50a-fc6a94e6689a",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "4679f39f-f6ec-4561-be96-638b6cb76177",
-                      "url": "http://example.org/payments/deposits/4679f39f-f6ec-4561-be96-638b6cb76177?signature=0e0acbda3472e50a008f8be671622d5d0fc743ebee21efddf604cab16660f2e2"
+                      "uuid": "deb4525c-4b6e-4e02-a50a-fc6a94e6689a",
+                      "url": "http://example.org/payments/deposits/deb4525c-4b6e-4e02-a50a-fc6a94e6689a?signature=b108c6b159f3f0b8151a357528ef0e2916e3724a7fc5546a4f6b9125084bcfb8"
                     }
                   }
                 },
@@ -466,11 +468,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "dcfc058e-30a4-448a-be50-a60b89ab3511",
+                    "id": "d4d29a98-3689-42e2-b058-8aab69bc3642",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "dcfc058e-30a4-448a-be50-a60b89ab3511",
-                      "url": "http://example.org/payments/withdrawals/dcfc058e-30a4-448a-be50-a60b89ab3511?signature=4bcd0abdd770517661f3c8e2e0e4953e5b04e6e33ab982e072b9221aa18a1829"
+                      "uuid": "d4d29a98-3689-42e2-b058-8aab69bc3642",
+                      "url": "http://example.org/payments/withdrawals/d4d29a98-3689-42e2-b058-8aab69bc3642?signature=bd8650d96881141d78944f98b5f7bd679fd7e3f3b22984f43ddd63dd1cafbf4a"
                     }
                   }
                 },
@@ -912,7 +914,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "8776b460-2e11-493f-ba0f-dff58ac783d3"
+                    "example": "3dc38cd8-4bcb-4aeb-a3f7-7cca42f68d54"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -920,13 +922,17 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-08-08T00:41:53.596+03:00"
+                    "example": "2023-09-06T12:33:43.472+03:00"
                   },
                   "national_currency": {
                     "type": "string",
                     "example": "RUB"
                   },
                   "national_currency_amount": {
+                    "type": "string",
+                    "example": "3000.0"
+                  },
+                  "initial_amount": {
                     "type": "string",
                     "example": "3000.0"
                   },
