@@ -1,19 +1,27 @@
 = simple_form_for @balance_request, html: { 'data-controller': 'balance_requests' } do |f|
+  = hidden_field_tag :balance_requests_commission, balance_requests_commission,
+                     'data-balance_requests-target': 'balanceRequestsCommission'
 
   = f.input :requests_type, collection: [["Внесение", :deposit], ["Снятие", :withdraw]],
                             include_blank: '-выбрать-',
-                            input_html: { 'data-action': 'balance_requests#toggleCryptoAddress',
+                            input_html: { 'data-action': 'balance_requests#toggleWithdraw',
                                           'data-balance_requests-target': 'type' }
 
-  - if national_balance?
-    = f.input :amount, hint: "Пожалуйста, введите сумму в #{current_user.balance.currency}", 
-                            input_html: { min: 0 }
-  - else
-    = f.input :amount, input_html: { min: 0 }
+  = f.input :amount, input_html: { min: 0,
+                                   'data-balance_requests-target': 'amount',
+                                   'data-action': 'balance_requests#inputAmount' },
+                     hint: "Пожалуйста, введите сумму в #{current_user.balance.currency}"
 
-  = f.input :crypto_address, label: crypto_address_label,
-                             hint: crypto_address_hint,
-                             wrapper_html: { 'data-balance_requests-target': 'cryptoAddress',
-                                              class: 'hidden' }
+  .hidden{'data-balance_requests-target': 'withdraw'}
+    .input
+      = f.input :amount_minus_commission,
+                input_html: { min: 0,
+                              'data-balance_requests-target': 'amountMinusCommission',
+                              'data-action': 'balance_requests#inputAmountMinusCommission' },
+                hint: "Сумма снятия за вычетом комиссии #{balance_requests_commission.round(2)} #{current_user.balance.currency}"
+
+    = f.input :crypto_address, label: crypto_address_label,
+                               hint: crypto_address_hint,
+                               wrapper_html: { 'data-balance_requests-target': 'cryptoAddress' }
 
   = f.submit 'Сохранить', class: 'form-submit'

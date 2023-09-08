@@ -10,6 +10,13 @@
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Сумма
         %td.item-card-td= "#{ @balance_request.amount } #{ @balance_request.user.balance.currency }"
+      - if @balance_request.amount_minus_commission.present?
+        %tr.items-list-tr
+          %td.item-card-td.item-card-td-label= role_namespace == 'admins' ? 'Нужно перевести' : 'Вы получите'
+          %td.item-card-td= "#{ @balance_request.amount_minus_commission } #{ @balance_request.user.balance.currency }"
+        %tr.items-list-tr
+          %td.item-card-td.item-card-td-label Комиссия
+          %td.item-card-td= "#{ @balance_request.amount - @balance_request.amount_minus_commission } #{ @balance_request.user.balance.currency }"
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Статус
         %td.item-card-td= @balance_request.status
@@ -23,4 +30,3 @@
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Пользователь
         %td.item-card-td= @balance_request.user.decorate.audit_user_info
-        

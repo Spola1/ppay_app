@@ -32,9 +32,11 @@ ru:
       balance_request:
         requests_type: Тип
         amount: Сумма
+        amount_minus_commission: Вы получите
         crypto_address: Криптоадрес USDT TRC20
         card_number: Номер карты
         status: Статус
+        real_commission: Реальная комиссия при переводе
         short_comment: Комментарий
       payment:
         payment_system: Платёжная система

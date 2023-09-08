@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_07_120157) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -142,6 +142,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
     t.integer "status", default: 0, null: false
     t.string "crypto_address"
     t.text "short_comment"
+    t.decimal "amount_minus_commission", precision: 128, scale: 64
+    t.decimal "real_commission", precision: 128, scale: 64
   end
 
   create_table "balances", force: :cascade do |t|
