@@ -11,7 +11,7 @@ module Api
           prepend_before_action :authenticate_with_api_key!
 
           def create
-            return render_check_required_error if current_bearer.check_required?
+            return render_check_required_error if check_required?
 
             check_other_banks
             set_object
@@ -33,6 +33,12 @@ module Api
 
           def serializer
             "Api::V1::ExternalProcessing::Payments::Create::#{model_class}Serializer".classify.constantize
+          end
+
+          def check_required?
+            return if permitted_params[:advertisement_id]
+
+            current_bearer.check_required?
           end
 
           def render_check_required_error

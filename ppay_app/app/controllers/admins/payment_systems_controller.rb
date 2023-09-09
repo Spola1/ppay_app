@@ -17,7 +17,8 @@ module Admins
       params.require(:payment_systems)
             .permit(payment_systems: %i[id exchange_portal_id exchange_name payment_system_copy_id national_currency_id
                                         adv_position_deposit adv_position_withdrawal
-                                        trans_amount_deposit trans_amount_withdrawal])
+                                        trans_amount_deposit trans_amount_withdrawal
+                                        extra_percent_deposit extra_percent_withdrawal])
     end
   end
 end
