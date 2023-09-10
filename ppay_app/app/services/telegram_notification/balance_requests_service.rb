@@ -10,7 +10,7 @@ module TelegramNotification
     def initialize(balance_request)
       super()
       @request_type = balance_request.requests_type
-      @amount = balance_request.amount
+      @amount = balance_request.amount_minus_commission || balance_request.amount
       @status = balance_request.status
       @crypto_address = balance_request.crypto_address
       @short_comment = balance_request.short_comment
@@ -20,12 +20,13 @@ module TelegramNotification
 
     def send_new_balance_request_to_admins(admin_ids)
       message = "Создан новый запрос баланса\n\n"
+      message += "Дата создания: #{balance_request.created_at}\n"
       message += "Тип запроса: #{balance_request_type}\n"
       message += "Сумма: #{@amount} USDT\n"
       message += "Криптоадрес: #{@crypto_address}\n"
       message += "Пользователь: #{balance_request_user}\n"
       message += "Ссылка на запрос баланса: \n"
-      message += "#{BalanceRequestUrlUtility.new(balance_request).url}\n"
+      message += "#{url}\n"
 
       admin_ids.each do |admin_id|
         send_message_to_user(admin_id, message)
@@ -40,6 +41,10 @@ module TelegramNotification
 
     def balance_request_user
       "#{@user.type} #{@user.nickname} (#{@user.email})"
+    end
+
+    def url
+      BalanceRequestUrlUtility.new(balance_request).url
     end
   end
 end
