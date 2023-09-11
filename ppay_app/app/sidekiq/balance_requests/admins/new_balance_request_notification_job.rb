@@ -11,8 +11,12 @@ module BalanceRequests
 
         notify_service = TelegramNotification::BalanceRequestsService.new(balance_request)
 
-        admin_ids_with_telegram = Admin.where.not(telegram_id: nil).pluck(:telegram_id)
-        notify_service.send_new_balance_request_to_admins(admin_ids_with_telegram)
+        telegram_ids =
+          Admin.joins(:telegram_setting)
+               .where.not(telegram_id: nil)
+               .where(telegram_settings: { "balance_request_#{balance_request.requests_type}": true })
+               .pluck(:telegram_id)
+        notify_service.send_new_balance_request_to_users(telegram_ids)
       end
     end
   end

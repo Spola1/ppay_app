@@ -18,7 +18,7 @@ module TelegramNotification
       @user = balance_request.user
     end
 
-    def send_new_balance_request_to_admins(admin_ids)
+    def send_new_balance_request_to_users(telegram_ids)
       message = "Создан новый запрос баланса\n\n"
       message += "Дата создания: #{balance_request.created_at}\n"
       message += "Тип запроса: #{balance_request_type}\n"
@@ -28,8 +28,8 @@ module TelegramNotification
       message += "Ссылка на запрос баланса: \n"
       message += "#{url}\n"
 
-      admin_ids.each do |admin_id|
-        send_message_to_user(admin_id, message)
+      telegram_ids.each do |telegram_id|
+        send_message_to_user(telegram_id, message)
       end
     end
 

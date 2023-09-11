@@ -84,6 +84,9 @@ ru:
         support_dashboard: Из кабинета саппорта
         hpp_form: Из формы HPP
         merchant_service: Из сервиса мерчанта по H2H
+      telegram_setting:
+        balance_request_deposit: Уведомлять о запросе на пополнение баланса
+        balance_request_withdraw: Уведомлять о запросе на снятие с баланса
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена
