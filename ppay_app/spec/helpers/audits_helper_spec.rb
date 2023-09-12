@@ -31,7 +31,7 @@ RSpec.describe AuditsHelper, type: :helper do
         let(:values) { '2023-02-02TO2:46:30.352+03:00' }
 
         it 'returns formatted datetime' do
-          expect(subject).to eq('2023-02-02 02:46')
+          expect(subject).to eq('2023-02-02 02:46:30')
         end
       end
 
@@ -39,7 +39,7 @@ RSpec.describe AuditsHelper, type: :helper do
         let(:values) { ['2023-02-02TO2:46:30.352+03:00', '2023-02-13T19:59:17.202+03:00'] }
 
         it 'returns formatted datetimes' do
-          expect(subject).to eq('2023-02-02 02:46 -> 2023-02-13 19:59')
+          expect(subject).to eq('2023-02-02 02:46:30 -> 2023-02-13 19:59:17')
         end
       end
     end
@@ -50,7 +50,7 @@ RSpec.describe AuditsHelper, type: :helper do
     subject { formatted_date_string(date) }
 
     it 'formats date correctly' do
-      expect(subject).to eq('2023-02-02 02:46')
+      expect(subject).to eq('2023-02-02 02:46:30')
     end
   end
 end

@@ -2,8 +2,9 @@
 
 shared_context 'authorization' do
   let!(:payment_system) { create :payment_system }
-  let!(:merchant) { create :merchant, check_required: }
+  let!(:merchant) { create :merchant, check_required:, account_number_required: }
   let(:check_required) { true }
+  let(:account_number_required) { false }
 
   let(:valid_merchant_token) { merchant.api_keys.first.token }
   let(:invalid_merchant_token) { Base64.strict_encode64('bogus:bogus') }
