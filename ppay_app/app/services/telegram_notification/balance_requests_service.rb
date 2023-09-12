@@ -22,8 +22,8 @@ module TelegramNotification
       message = "Создан новый запрос баланса\n\n"
       message += "Дата создания: #{balance_request.created_at}\n"
       message += "Тип запроса: #{balance_request_type}\n"
-      message += "Сумма: #{@amount} USDT\n"
-      message += "Криптоадрес: #{@crypto_address}\n"
+      message += "Сумма: #{amount} #{user.balance.currency}\n"
+      message += "#{balance_request_address}: #{@crypto_address}\n"
       message += "Пользователь: #{balance_request_user}\n"
       message += "Ссылка на запрос баланса: \n"
       message += "#{url}\n"
@@ -39,8 +39,12 @@ module TelegramNotification
       @request_type == 'deposit' ? 'Депозит' : 'Вывод'
     end
 
+    def balance_request_address
+      user.balance.in_national_currency? ? 'Номер карты' : 'Криптоадрес'
+    end
+
     def balance_request_user
-      "#{@user.type} #{@user.nickname} (#{@user.email})"
+      "#{user.type} #{user.nickname} (#{user.email})"
     end
 
     def url
