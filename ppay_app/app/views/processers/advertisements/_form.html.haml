@@ -6,7 +6,7 @@
 
   = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: '-выбрать-', input_html: { id: 'advertisement_payment_system' }
 
-  = f.input :card_number, input_html: { data: { 'inputmask--card-number-target': 'input' } }
+  = f.input :card_number#, input_html: { data: { 'inputmask--card-number-target': 'input' } }
 
   = f.input :card_owner_name
 
