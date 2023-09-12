@@ -74,7 +74,7 @@ module StateMachines
           end
 
           event :restore do
-            after :complete_transactions
+            after :complete_transactions, :freeze_balance
 
             transitions from: :cancelled, to: :completed,
                         guard: proc { available_cancelled_transactions? },
