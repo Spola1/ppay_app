@@ -2,7 +2,7 @@
 
 module Garantex
   class RateSnapshot
-    attr_reader :payment_system, :params
+    include RateSnapshotable
 
     def initialize(params)
       @params = params.with_indifferent_access
@@ -19,31 +19,7 @@ module Garantex
       end
     end
 
-    def in_progress_lock
-      payment_system.with_lock do
-        return if payment_system.in_progress
-
-        payment_system.update(in_progress: true)
-      end
-
-      return if too_recent_rate_snapshot?
-
-      yield
-    ensure
-      payment_system.update(in_progress: false)
-    end
-
-    def recent_snapshot
-      @recent_snapshot ||=
-        ::RateSnapshot.where(direction: params[:action])
-                      .by_payment_system(payment_system)
-                      .order(created_at: :desc)
-                      .first
-    end
-
-    def too_recent_rate_snapshot?
-      recent_snapshot ? (Time.zone.now - recent_snapshot.created_at) < 55.seconds : false
-    end
+    private
 
     def otc_price
       @otc_price ||=
@@ -74,10 +50,6 @@ module Garantex
       @garantex_account = Garantex::Account.new
       @garantex_account.generate_new_token
       @garantex_account
-    end
-
-    def rate_factor
-      1 + (payment_system.extra_percent_deposit / 100)
     end
   end
 end
