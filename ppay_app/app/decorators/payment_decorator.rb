@@ -106,7 +106,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_status_changed_at
-    formatted_payment_date(status_changed_at)
+    formatted_date(status_changed_at)
   end
 
   def card_number
@@ -166,6 +166,10 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   private
+
+  def formatted_date(date)
+    l(date, format: '%Y-%m-%d %H:%M:%S') if date
+  end
 
   def commission_amount
     return unless transactions.any?

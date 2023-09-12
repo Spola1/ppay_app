@@ -5,19 +5,15 @@ class ApplicationDecorator < Draper::Decorator
     formatted_date(created_at)
   end
 
-  def formatted_payment_created_at
-    formatted_payment_date(created_at)
-  end
-
   def formatted_created_at_moscow
-    formatted_payment_date(created_at.in_time_zone('Moscow'))
+    formatted_date(created_at.in_time_zone('Moscow'))
   end
 
   def formatted_started_arbitration_at
     if arbitration_resolutions.last&.ended_at.present?
       nil
     else
-      formatted_payment_date(arbitration_resolutions.last&.created_at)
+      formatted_date(arbitration_resolutions.last&.created_at)
     end
   end
 
@@ -25,10 +21,6 @@ class ApplicationDecorator < Draper::Decorator
 
   def formatted_date(date)
     l(date, format: :short) if date
-  end
-
-  def formatted_payment_date(date)
-    l(date, format: '%Y-%m-%d %H:%M:%S') if date
   end
 
   def formatted_amount(amount)

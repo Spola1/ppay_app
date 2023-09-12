@@ -25,7 +25,7 @@
             .badge А
         %td.items-list-td-link
           = link_to payment.id, payment_path(payment), data: { turbo_action: :advance }
-        %td.items-list-td= payment.formatted_payment_created_at
+        %td.items-list-td= payment.formatted_created_at
         %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
         %td.items-list-td= payment.decorate.national_formatted     
