@@ -33,5 +33,7 @@ ru:
       advertisement_filters:
         status: 'Статус объявления:'
         card_number: 'Номер карты:'
+      balance_request_filters:
+        status: 'Статус:'
 
 
