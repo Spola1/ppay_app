@@ -59,30 +59,6 @@ module Payments
       def restore_transactions
         transactions.each(&:restore!)
       end
-
-      def calculate_unfreeze_time
-        if merchant.balance_freeze_type == 'short'
-          Time.now + merchant.short_freeze_days.days
-        else
-          Time.now + merchant.long_freeze_days.days
-        end
-      end
-
-      def freeze_crypto_amount
-        if merchant.balance_freeze_type == 'short'
-          main_transaction_amount
-        else
-          main_transaction_amount * merchant.long_freeze_percentage / 100
-        end
-      end
-
-      def freeze_national_currency_amount
-        if merchant.balance_freeze_type == 'short'
-          national_currency_transaction_amount
-        else
-          national_currency_transaction_amount * merchant.long_freeze_percentage / 100
-        end
-      end
     end
   end
 end

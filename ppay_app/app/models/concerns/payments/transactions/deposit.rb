@@ -15,20 +15,45 @@ module Payments
         create_ppay_transaction
       end
 
-      def freeze_balance
-        # create_freeze_balance_transaction
+      def short_freeze_time = (merchant.short_freeze_days || 0).days.from_now
+      def long_freeze_time = (merchant.long_freeze_days || 0).days.from_now
+
+      def short_freeze_amount = main_transaction_amount
+      def long_freeze_amount = main_transaction_amount * (merchant.long_freeze_percentage || 0) / 100
+      def mixed_short_freeze_amount = short_freeze_amount - long_freeze_amount
+
+      def short_freeze_national_currency_amount = national_currency_transaction_amount
+
+      def long_freeze_national_currency_amount
+        national_currency_transaction_amount * (merchant.long_freeze_percentage || 0) / 100
       end
 
-      def create_freeze_balance_transaction
-        return if merchant.balance_freeze_type.nil?
+      def mixed_short_freeze_national_currency_amount
+        short_freeze_national_currency_amount - long_freeze_national_currency_amount
+      end
 
+      def freeze_balance
+        case merchant.balance_freeze_type
+        when 'short'
+          create_freeze_balance_transaction(short_freeze_amount, short_freeze_national_currency_amount,
+                                            short_freeze_time)
+        when 'long'
+          create_freeze_balance_transaction(long_freeze_amount, long_freeze_national_currency_amount, long_freeze_time)
+        when 'mixed'
+          create_freeze_balance_transaction(long_freeze_amount, long_freeze_national_currency_amount, long_freeze_time)
+          create_freeze_balance_transaction(mixed_short_freeze_amount, mixed_short_freeze_national_currency_amount,
+                                            short_freeze_time)
+        end
+      end
+
+      def create_freeze_balance_transaction(amount, national_currency_amount, unfreeze_time)
         transactions.create(
           from_balance: merchant.balance,
           to_balance: merchant.balance,
-          amount: freeze_crypto_amount,
-          national_currency_amount: freeze_national_currency_amount,
+          amount:,
+          national_currency_amount:,
           transaction_type: :freeze_balance,
-          unfreeze_time: calculate_unfreeze_time
+          unfreeze_time:
         )
       end
 
