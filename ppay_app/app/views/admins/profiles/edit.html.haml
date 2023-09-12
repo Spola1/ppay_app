@@ -10,5 +10,8 @@
             = flash[:notice]
           = simple_form_for @user, url: admins_profile_path, method: :patch do |f|
             = f.input :telegram, hint: telegram_hint
+            = f.simple_fields_for :telegram_setting, @user.telegram_setting do |ts|
+              = ts.input :balance_request_deposit
+              = ts.input :balance_request_withdraw
 
             = f.submit 'Сохранить', class: 'form-submit'

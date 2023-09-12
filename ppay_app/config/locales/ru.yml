@@ -32,9 +32,11 @@ ru:
       balance_request:
         requests_type: Тип
         amount: Сумма
+        amount_minus_commission: Вы получите
         crypto_address: Криптоадрес USDT TRC20
         card_number: Номер карты
         status: Статус
+        real_commission: Реальная комиссия при переводе
         short_comment: Комментарий
       payment:
         payment_system: Платёжная система
@@ -82,6 +84,9 @@ ru:
         support_dashboard: Из кабинета саппорта
         hpp_form: Из формы HPP
         merchant_service: Из сервиса мерчанта по H2H
+      telegram_setting:
+        balance_request_deposit: Уведомлять о запросе на пополнение баланса
+        balance_request_withdraw: Уведомлять о запросе на снятие с баланса
       transaction/status:
         frozen: Заморожена
         completed: Успешно завершена

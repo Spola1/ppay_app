@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_10_143340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -142,6 +142,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
     t.integer "status", default: 0, null: false
     t.string "crypto_address"
     t.text "short_comment"
+    t.decimal "amount_minus_commission", precision: 128, scale: 64
+    t.decimal "real_commission", precision: 128, scale: 64
+    t.string "transaction_hash"
   end
 
   create_table "balances", force: :cascade do |t|
@@ -441,6 +444,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
     t.jsonb "settings", default: {}
   end
 
+  create_table "telegram_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "balance_request_deposit", default: true
+    t.boolean "balance_request_withdraw", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_telegram_settings_on_user_id"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.decimal "amount"
     t.bigint "from_balance_id", default: 0
@@ -565,5 +577,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_02_222409) do
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
+  add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
 end

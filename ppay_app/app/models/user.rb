@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   has_one :balance, as: :balanceable, dependent: :destroy
   has_one :crypto_wallet, dependent: :destroy
+  has_one :telegram_setting, dependent: :destroy
+
   belongs_to :working_group, optional: true
   belongs_to :agent, optional: true
 
@@ -17,6 +19,8 @@ class User < ApplicationRecord
   has_many :balance_requests
   has_many :incoming_requests
   has_many :message_read_statuses
+
+  accepts_nested_attributes_for :telegram_setting
 
   before_create :set_crypto_wallet
   after_create :create_balance, :create_api_key
@@ -31,6 +35,10 @@ class User < ApplicationRecord
 
   def token
     api_keys.last.token
+  end
+
+  def telegram_setting
+    super || create_telegram_setting
   end
 
   private
