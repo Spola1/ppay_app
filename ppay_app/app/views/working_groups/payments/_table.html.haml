@@ -14,9 +14,10 @@
       %th.items-list-th статус изменен
       %th.items-list-th причина отмены
       %th.items-list-th мерчант
+      %th.items-list-th оператор
 
       %th.items-list-th
-  
+
   %tbody
     - payments.each do |payment|
       %tr.items-list-tr
@@ -28,7 +29,7 @@
         %td.items-list-td= payment.formatted_created_at
         %td.items-list-td= payment.human_type
         %td.items-list-td= payment.national_currency
-        %td.items-list-td= payment.decorate.national_formatted     
+        %td.items-list-td= payment.national_formatted
         %td.items-list-td= payment.cryptocurrency
         %td.items-list-td= payment.cryptocurrency_formatted
         %td.items-list-td= payment.payment_system
@@ -37,6 +38,7 @@
         %td.items-list-td= payment.formatted_status_changed_at
         %td.items-list-td= payment.human_cancellation_reason
         %td.items-list-td= payment.merchant.decorate.display_name
+        %td.items-list-td= payment.processer&.decorate&.display_name
 
         %td.items-list-td.px-1.w-0
           = link_to payment_path(payment), data: { turbo_action: :advance } do
