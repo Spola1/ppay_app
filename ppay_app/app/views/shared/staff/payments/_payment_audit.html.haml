@@ -1,6 +1,6 @@
 %tr.item-card-tr
   %td.item-card-td.item-card-td-label События по платежу
-  %td.item-card-td.max-w-0.overflow-hidden.text-xs
+  %td.item-card-td.max-w-0.overflow-hidden.text-xs.break-words.whitespace-normal
 
     - payment.audits.find_each do |audit|
       - if audit.user.present?
