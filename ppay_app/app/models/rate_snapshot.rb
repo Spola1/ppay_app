@@ -33,4 +33,11 @@ class RateSnapshot < ApplicationRecord
   def to_national_currency(amount)
     amount * value
   end
+
+  def self.recent_buy_by_national_currency_name(name)
+    rates = RateSnapshot.buy.by_national_currency(NationalCurrency.find_by(name:))
+
+    rates.where(created_at: 2.minutes.ago..).order(value: :desc).first(5).last ||
+      rates.order(created_at: :asc).last
+  end
 end

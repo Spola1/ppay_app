@@ -45,7 +45,7 @@ module Staff
     end
 
     def balance_request_params
-      params.require(:balance_request).permit(:requests_type, :amount, :crypto_address)
+      params.require(:balance_request).permit(:requests_type, :amount, :crypto_address, :amount_minus_commission)
     end
   end
 end

@@ -7,7 +7,7 @@ describe 'Payments' do
 
   path '/api/v1/payments/{uuid}' do
     get 'Получение информации по платежу' do
-      tags 'Платежи - HPP (оплата с переходом по ссылке на наш сайт)'
+      tags 'Платежи - H2H, HPP'
       produces 'application/json'
       security [bearerAuth: {}]
 

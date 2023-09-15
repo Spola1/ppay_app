@@ -29,7 +29,7 @@ describe 'External processing payments receipts' do
       }
 
       let(:arbitration_reason) { 'duplicate_payment' }
-      let(:advertisement) { build(:advertisement, processer: build(:processer)) }
+      let(:advertisement) { create :advertisement }
       let(:payment) do
         create :payment, :deposit, :transferring,
                merchant:,
@@ -92,6 +92,12 @@ describe 'External processing payments receipts' do
           expect { submit_request(example.metadata) }.to change {
             payment.payment_receipts.count
           }.from(0).to(1)
+        end
+
+        it 'changes the payment status to confirming' do |example|
+          expect { submit_request(example.metadata) }.to change {
+            payment.reload.payment_status
+          }.from('transferring').to('confirming')
         end
 
         it 'sets payment in an arbitration' do |example|

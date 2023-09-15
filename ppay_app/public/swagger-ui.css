@@ -40,3 +40,22 @@ summary:has(h3) {
 .renderedMarkdown table td {
   padding: 10px 5px 0 !important;
 }
+
+.renderedMarkdown table {
+  width: auto !important;
+}
+
+.renderedMarkdown p {
+  line-height: 1.7em;
+}
+
+.renderedMarkdown code {
+  padding: 2px 4px !important;
+}
+
+.renderedMarkdown blockquote {
+  margin-inline-start: 20px;
+  border-inline-start: 3px solid;
+  padding-inline-start: 20px;
+}
+

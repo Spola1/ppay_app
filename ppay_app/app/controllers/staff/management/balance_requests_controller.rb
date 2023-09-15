@@ -37,7 +37,9 @@ module Staff
       end
 
       def balance_request_params
-        params.require(:balance_request).permit(:id, :user_id, :requests_type, :amount, :crypto_address, :short_comment)
+        params.require(:balance_request).permit(:id, :user_id, :requests_type, :amount,
+                                                :crypto_address, :short_comment, :real_commission,
+                                                :transaction_hash)
       end
 
       def filtering_params

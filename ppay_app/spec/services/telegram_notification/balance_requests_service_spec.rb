@@ -24,7 +24,7 @@ RSpec.describe TelegramNotification::BalanceRequestsService do
       expect(service).to receive(:send_message_to_user)
         .with(user.telegram_id, message)
 
-      service.send_new_balance_request_to_admins([user.telegram_id])
+      service.send_new_balance_request_to_users([user.telegram_id])
     end
   end
 end

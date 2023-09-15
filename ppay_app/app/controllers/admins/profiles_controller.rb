@@ -20,7 +20,11 @@ module Admins
     private
 
     def user_params
-      params.require(:admin).permit(:telegram)
+      params.require(:admin).permit(
+        :telegram,
+        telegram_setting_attributes: %i[balance_request_deposit
+                                        balance_request_withdraw]
+      )
     end
   end
 end
