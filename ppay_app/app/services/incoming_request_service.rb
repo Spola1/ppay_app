@@ -134,7 +134,7 @@ class IncomingRequestService
 
         next unless match.present? && sum_matched?(payment, match)
 
-        @payments << { payment:, mask:, amount: match.first&.to_d }
+        @payments << { payment:, mask:, amount: match.first&.gsub(/[\s\xC2\xA0]/, '')&.gsub(/,/, '.')&.to_d }
 
         break if @payments.size > 1
       end
