@@ -536,6 +536,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_062256) do
     t.integer "long_freeze_days"
     t.decimal "long_freeze_percentage", precision: 5, scale: 2
     t.integer "balance_freeze_type", default: 0
+    t.boolean "can_edit_summ", default: true
     t.string "otp_secret"
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login"

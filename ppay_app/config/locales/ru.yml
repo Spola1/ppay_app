@@ -23,6 +23,8 @@ ru:
         simbank_sender: Отправитель SMS или PUSH
         sbp_phone_number: Номер телефона СБП
         card_owner_name: ФИО владельца карты
+        min_summ: Минимальная сумма 
+        max_summ: Максимальная сумма 
       type:
         deposit: Депозит
         withdrawal: Вывод
