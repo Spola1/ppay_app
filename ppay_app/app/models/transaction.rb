@@ -27,6 +27,7 @@ class Transaction < ApplicationRecord
   scope :commission_transactions, -> { where(transaction_type: COMMISSION_TYPES) }
   scope :balance_transactions, ->    { where(transaction_type: BALANCE_TYPES) }
 
+  undef_method :frozen?
   aasm whiny_transitions: false, column: :status, requires_lock: true do
     state :frozen, initial: true, before_enter: :freeze_funds
     state :completed, :cancelled

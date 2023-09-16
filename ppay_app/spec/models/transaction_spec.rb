@@ -16,7 +16,8 @@ RSpec.describe Transaction, type: :model do
                      agent_commission: 3,
                      working_group_commission: 4,
                      deposit: 5,
-                     withdraw: 6)
+                     withdraw: 6,
+                     freeze_balance: 7)
     }
   end
 end

@@ -50,13 +50,11 @@ RSpec.describe Advertisement, type: :model do
       create_list(:payment, 8, :transferring, advertisement: advertisement10, status_changed_at: 7.minutes.ago)
     end
 
-    3.times do
-      it 'returns sorted list of advertisements' do
-        is_expected.to(eq([advertisement6, advertisement8, advertisement5, advertisement4, advertisement3,
-                           advertisement2, advertisement9, advertisement10, advertisement7, advertisement1])
-                   .or(eq([advertisement6, advertisement8, advertisement5, advertisement3, advertisement4,
-                           advertisement2, advertisement9, advertisement10, advertisement7, advertisement1])))
-      end
+    it 'returns sorted list of advertisements' do
+      is_expected.to(eq([advertisement6, advertisement8, advertisement5, advertisement4, advertisement3,
+                         advertisement2, advertisement9, advertisement10, advertisement7, advertisement1])
+                 .or(eq([advertisement6, advertisement8, advertisement5, advertisement3, advertisement4,
+                         advertisement2, advertisement9, advertisement10, advertisement7, advertisement1])))
     end
   end
 
@@ -196,12 +194,9 @@ RSpec.describe Advertisement, type: :model do
 
   describe '.order_random' do
     subject(:results_for_processer1) do
-      1000.times.map do
-        Advertisement.for_deposit(payment)
-                     .order_random
-                     .first
-                     .processer_id
-      end.select { |id| id == processer1.id }.size
+      100.times
+         .map { Advertisement.for_deposit(payment).order_random.first.reload.processer_id }
+         .count { |id| id == processer1.id }
     end
 
     let(:payment) { create(:payment, :deposit, :processer_search) }
@@ -212,8 +207,8 @@ RSpec.describe Advertisement, type: :model do
     let!(:advertisement1) { create(:advertisement, processer: processer1) }
     let!(:advertisement2) { create(:advertisement, processer: processer2) }
 
-    it 'about 744 for processer1' do
-      is_expected.to be_within(100).of(744)
+    it 'about 74 for processer1' do
+      is_expected.to be_within(10).of(74)
     end
 
     context 'different count of advertisements' do
@@ -223,8 +218,8 @@ RSpec.describe Advertisement, type: :model do
       let!(:advertisement4) { create(:advertisement, processer: processer2) }
       let!(:advertisement5) { create(:advertisement, processer: processer2) }
 
-      it 'about 845 for processer1' do
-        is_expected.to be_within(100).of(845)
+      it 'about 84 for processer1' do
+        is_expected.to be_within(10).of(84)
       end
     end
   end

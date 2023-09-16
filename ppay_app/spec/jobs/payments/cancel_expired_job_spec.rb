@@ -7,8 +7,11 @@ RSpec.describe Payments::CancelExpiredJob, type: :job do
     let!(:payment) { create(:payment, :transferring) }
 
     before do
+      silence_output
       allow(Payment).to receive_message_chain(:transferring, :expired).and_return(Payment.where(id: payment.id))
     end
+
+    after { restore_output }
 
     it 'cancels expired payments and setup cancellation reason to time expired' do
       described_class.new.perform

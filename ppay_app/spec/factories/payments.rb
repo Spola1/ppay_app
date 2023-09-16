@@ -14,7 +14,7 @@ FactoryBot.define do
     initial_amount { 100.0 }
     cryptocurrency_amount { 1 }
     cryptocurrency { 'USDT' }
-    payment_system { 'Sberbank' }
+    payment_system { PaymentSystem.first.name }
     callback_url { FFaker::Internet.http_url }
     redirect_url { FFaker::Internet.http_url }
     uuid { SecureRandom.uuid }
