@@ -10,7 +10,7 @@ module Garantex
       @payment_system = params[:payment_system]
 
       in_progress_lock do
-        break unless otc_price.positive? && exchange_rate.positive?
+        break unless otc_price&.positive? && exchange_rate&.positive?
 
         value = exchange_rate * otc_price * rate_factor
 
