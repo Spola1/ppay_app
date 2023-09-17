@@ -11,7 +11,7 @@ module Binance
       @payment_system = params[:payment_system]
 
       in_progress_lock do
-        break unless otc_price.positive?
+        break unless otc_price&.positive?
 
         value = otc_price * rate_factor
 
