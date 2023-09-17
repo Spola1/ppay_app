@@ -11,7 +11,7 @@ module WorkingGroups
         end
 
         format.xlsx do
-          payments = Payment.joins(advertisement: { processer: :working_group })
+          payments = current_user.payments.joins(advertisement: { processer: :working_group })
                             .includes(:advertisement, :transactions)
                             .filter_by(filtering_params)
                             .decorate
@@ -26,7 +26,7 @@ module WorkingGroups
     private
 
     def set_payments
-      scope = Payment.joins(advertisement: { processer: :working_group })
+      scope = current_user.payments.joins(advertisement: { processer: :working_group })
 
       @arbitration_payments_pagy, @arbitration_payments = pagy(scope.arbitration, page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
@@ -36,7 +36,7 @@ module WorkingGroups
     end
 
     def find_payment
-      @payment = Payment.joins(advertisement: { processer: :working_group })
+      @payment = current_user.payments.joins(advertisement: { processer: :working_group })
                         .find_by(uuid: params[:uuid])
                         .becomes(model_class.constantize)
                         .decorate
