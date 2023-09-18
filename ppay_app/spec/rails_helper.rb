@@ -73,11 +73,12 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include JsonApiHelper
   config.include ActionView::Helpers::NumberHelper
+  config.include SilenceOutputHelper
 
   config.include_context 'turn off UpdateCallbackJob'
   config.include_context 'payment means'
 
-  config.before(:suite) { Setting.create }
+  config.before(:suite) { Setting.instance.update(balance_requests_commission: 3) }
   ActiveStorage::Current.url_options = Rails.application.config.active_storage.url_options
 end
 

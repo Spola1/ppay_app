@@ -40,7 +40,7 @@ feature 'Processor can confirm withdrawal', type: :feature do
 
       payment.reload
 
-      expect(payment.payment_status).to eq('confirming')
+      expect(payment.payment_status).to eq('completed')
     end
   end
 
@@ -60,7 +60,7 @@ feature 'Processor can confirm withdrawal', type: :feature do
 
       payment.reload
 
-      expect(payment.payment_status).to eq('confirming')
+      expect(payment.payment_status).to eq('completed')
     end
   end
 end

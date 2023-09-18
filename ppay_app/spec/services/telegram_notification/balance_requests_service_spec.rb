@@ -14,6 +14,7 @@ RSpec.describe TelegramNotification::BalanceRequestsService do
     it 'sends a notification message to the user' do
       service = described_class.new(balance_request)
       message = "Создан новый запрос баланса\n\n" \
+                "Дата создания: #{balance_request.created_at}\n" \
                 "Тип запроса: Депозит\n" \
                 "Сумма: 1.0 USDT\n" \
                 "Криптоадрес: MyString\n" \
