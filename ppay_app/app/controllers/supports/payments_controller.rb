@@ -25,9 +25,13 @@ module Supports
     end
 
     def update
-      @payment.update(payment_params)
-
-      @payment.restore! if params[:restore]
+      if params[:fire_event]
+        @payment.aasm.fire!(params[:event]) if params[:event].present?
+      elsif params[:restore]
+        @payment.restore!
+      else
+        @payment.update(payment_params)
+      end
 
       render :show
     end
@@ -52,7 +56,7 @@ module Supports
     end
 
     def payment_params
-      required_params.permit(:payment_status, :arbitration, :cancellation_reason, :arbitration_reason)
+      required_params.permit(:arbitration, :cancellation_reason, :arbitration_reason)
     end
 
     def filtering_params
