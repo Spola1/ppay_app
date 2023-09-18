@@ -80,7 +80,7 @@ module Processers
     end
 
     def filtering_params
-      params[:advertisement_filters]&.slice(:card_number, :status)
+      params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system, :processer)
     end
   end
 end

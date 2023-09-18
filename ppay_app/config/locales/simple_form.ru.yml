@@ -33,6 +33,10 @@ ru:
       advertisement_filters:
         status: 'Статус объявления:'
         card_number: 'Номер карты:'
+        national_currency: 'Нац. валюта:'
+        payment_system: 'Платежная система:'
+        direction: 'Направление:'
+        processer: 'Оператор:'
       balance_request_filters:
         status: 'Статус:'
 
