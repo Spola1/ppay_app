@@ -39,6 +39,19 @@ module PaymentsHelper
     AVAILABLE_STATUSES_COLLECTION.map { |status| [state_translation(status), status] }
   end
 
+  def payment_permitted_transitions_collection(payment)
+    payment.aasm.permitted_transitions
+           .map { |transition| [state_translation(transition[:state]), transition[:event]] }
+           .prepend([state_translation(payment.payment_status), nil])
+  end
+
+  def support_payment_permitted_transitions_collection(payment)
+    payment.aasm.permitted_transitions
+           .select { |transition| transition[:state].in? AVAILABLE_STATUSES_COLLECTION }
+           .map { |transition| [state_translation(transition[:state]), transition[:event]] }
+           .prepend([state_translation(payment.payment_status), nil])
+  end
+
   def support_payment_cancellation_reasons_collection
     AVAILABLE_CANCELLATION_REASONS_COLLECTION.map { |reason| [cancellation_reason_translation(reason), reason] }
   end
@@ -151,7 +164,7 @@ module PaymentsHelper
   end
 
   def unread_comments_or_chats?(payment)
-    if ['supports', 'processers'].include?(role_namespace)
+    if %w[supports processers].include?(role_namespace)
       unread_comments = payment.comments.joins(:message_read_statuses)
                                .where(message_read_statuses: { user_id: current_user, read: false })
                                .exists?
