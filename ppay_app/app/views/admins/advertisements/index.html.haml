@@ -11,6 +11,7 @@
       %table.items-list-table
         %thead.item-list-thead
           %tr
+            %th.items-list-th
             %th.items-list-th ID
             %th.items-list-th оператор
             %th.items-list-th id аккаунта
@@ -31,6 +32,7 @@
         %tbody
           - @advertisements.each do |ad|
             %tr.items-list-tr{ class: ad.archived? ? 'opacity-30' : '' }
+              %td.items-list-td= render 'shared/staff/advertisements/activate_deactivate_button', ad: ad
               %td.items-list-td-link= link_to ad.id, ad
               %td.items-list-td= "#{ad.processer.name} (#{ad.processer.email})"
               %td.items-list-td= ad.processer_id
