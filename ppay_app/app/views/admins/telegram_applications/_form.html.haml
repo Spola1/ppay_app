@@ -2,11 +2,11 @@
   .form-inputs
     = f.input :api_id
     = f.input :api_hash
-    = f.input :phone_number
     = f.input :session_name
+    = f.input :phone_number
     = f.input :code
-    = f.input :processer_id, collection: @processers.map { |processer| [processer.nickname, processer.id] }, prompt: 'Выберите процессора'
+    = f.input :processer_id, collection: @processers.map { |processer| [processer.nickname, processer.id] }, prompt: 'Выберите оператора'
 
 
   .form-actions
-    = f.button :submit, 'Создать приложение', class: 'form-submit'
+    = f.button :submit, 'Сохранить', class: 'form-submit'

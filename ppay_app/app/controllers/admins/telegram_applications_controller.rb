@@ -2,9 +2,30 @@
 
 module Admins
   class TelegramApplicationsController < ApplicationController
-    before_action :set_processers, only: %i[new create]
+    before_action :set_processers, only: %i[new create edit]
+    before_action :find_telegram_application, only: %i[edit show destroy update]
 
     def show; end
+
+    def edit; end
+
+    def destroy
+      if @telegram_application.destroy
+        redirect_to telegram_applications_path, notice: 'Приложение успешно удалено'
+      else
+        redirect_to telegram_applications_path, alert: 'Ошибка удаления приложения'
+      end
+    end
+
+    def update
+      @telegram_application.update(telegram_application_params)
+
+      if @telegram_application.save
+        redirect_to telegram_applications_path
+      else
+        render :edit
+      end
+    end
 
     def index
       set_all_telegram_applications
@@ -26,6 +47,10 @@ module Admins
 
     private
 
+    def find_telegram_application
+      @telegram_application = TelegramApplication.find(params[:id])
+    end
+
     def set_processers
       @processers = Processer.all
     end
@@ -36,7 +61,7 @@ module Admins
     end
 
     def telegram_application_params
-      params.require(:telegram_application).permit(:api_id, :api_hash, :phone_number, :code, :session_name, 
+      params.require(:telegram_application).permit(:api_id, :api_hash, :phone_number, :code, :session_name,
                                                    :processer_id)
     end
   end

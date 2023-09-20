@@ -4,10 +4,10 @@
       %th.items-list-th-mask-id ID
       %th.items-list-th api_id
       %th.items-list-th-mask-type api_hash
-      %th.items-list-th session_name
-      %th.items-list-th phone_number
-      %th.items-list-th code
-      %th.items-list-th processer
+      %th.items-list-th название сессии
+      %th.items-list-th номер телефона
+      %th.items-list-th код подтверждения
+      %th.items-list-th оператор
       %th.items-list-th
   %tbody
     - @telegram_applications.each do |telegram_application|
@@ -20,3 +20,16 @@
         %td.items-list-td= telegram_application.phone_number
         %td.items-list-td= telegram_application.code
         %td.items-list-td= telegram_application.processer.decorate.display_name
+        
+        %td.items-list-td.px-1.w-0
+          = link_to telegram_application, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
+            .icon-button-red
+              = fa_icon 'trash'
+        %td.items-list-td.px-1.w-0
+          = link_to edit_telegram_application_path(telegram_application) do
+            .icon-button
+              = fa_icon 'pencil'
+        %td.items-list-td.px-1.w-0
+          = link_to telegram_application do
+            .icon-button-gray
+              = fa_icon 'search'

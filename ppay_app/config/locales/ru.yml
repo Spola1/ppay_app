@@ -9,7 +9,7 @@ ru:
         phone_number: Номер телефона
         session_name: Название сессии
         code: Код подтверждения
-        processer_id: Процессор
+        processer_id: Оператор
       mask:
         sender: Отправитель
         regexp_type: Тип регулярного выражения
