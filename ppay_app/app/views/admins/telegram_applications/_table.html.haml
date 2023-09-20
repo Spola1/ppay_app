@@ -1,0 +1,22 @@
+%table.items-list-table
+  %thead.items-list-thead
+    %tr
+      %th.items-list-th-mask-id ID
+      %th.items-list-th api_id
+      %th.items-list-th-mask-type api_hash
+      %th.items-list-th session_name
+      %th.items-list-th phone_number
+      %th.items-list-th code
+      %th.items-list-th processer
+      %th.items-list-th
+  %tbody
+    - @telegram_applications.each do |telegram_application|
+      %tr
+        %td.items-list-td-link
+          = link_to telegram_application.id, telegram_application_path(telegram_application), data: { turbo_action: :advance }
+        %td.items-list-td= telegram_application.api_id            
+        %td.items-list-td= telegram_application.api_hash
+        %td.items-list-td= telegram_application.session_name
+        %td.items-list-td= telegram_application.phone_number
+        %td.items-list-td= telegram_application.code
+        %td.items-list-td= telegram_application.processer.decorate.display_name

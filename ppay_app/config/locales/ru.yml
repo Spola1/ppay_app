@@ -3,6 +3,13 @@ ru:
     models:
       payment: Платёж
     attributes:
+      telegram_application:
+        api_id: Api_id
+        api_hash: Api_hash
+        phone_number: Номер телефона
+        session_name: Название сессии
+        code: Код подтверждения
+        processer_id: Процессор
       mask:
         sender: Отправитель
         regexp_type: Тип регулярного выражения

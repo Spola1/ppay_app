@@ -464,6 +464,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
     t.jsonb "settings", default: {}
   end
 
+  create_table "telegram_applications", force: :cascade do |t|
+    t.bigint "processer_id", null: false
+    t.string "api_id"
+    t.string "api_hash"
+    t.string "phone_number"
+    t.string "code"
+    t.string "session_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["processer_id"], name: "index_telegram_applications_on_processer_id"
+  end
+
   create_table "telegram_settings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.boolean "balance_request_deposit", default: true
@@ -603,6 +615,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
+  add_foreign_key "telegram_applications", "users", column: "processer_id"
   add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
 end

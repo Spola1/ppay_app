@@ -1,0 +1,11 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .card-head
+        %h1 Приложения
+        = link_to '+ Создать приложение', new_telegram_application_path, class: 'form-submit'
+
+      = render 'table', telegram_applications: @telegram_applications
+
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy

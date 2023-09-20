@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     resources :masks
     resources :not_found_payments, only: %i[index show destroy]
     resource :dashboard, only: :show, controller: :dashboard
+    resources :telegram_applications, only: [:index, :new, :create, :show]
     namespace :payments do
       resources :deposits, param: :uuid, only: %i[index update show edit]
       resources :withdrawals, param: :uuid, only: %i[index update show edit]

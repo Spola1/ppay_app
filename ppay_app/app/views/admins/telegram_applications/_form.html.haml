@@ -1,0 +1,12 @@
+= simple_form_for @telegram_application do |f|
+  .form-inputs
+    = f.input :api_id
+    = f.input :api_hash
+    = f.input :phone_number
+    = f.input :session_name
+    = f.input :code
+    = f.input :processer_id, collection: @processers.map { |processer| [processer.nickname, processer.id] }, prompt: 'Выберите процессора'
+
+
+  .form-actions
+    = f.button :submit, 'Создать приложение', class: 'form-submit'
