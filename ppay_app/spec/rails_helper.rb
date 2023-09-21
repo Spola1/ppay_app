@@ -75,7 +75,7 @@ RSpec.configure do |config|
   config.include ActionView::Helpers::NumberHelper
   config.include SilenceOutputHelper
 
-  config.include_context 'turn off UpdateCallbackJob'
+  config.include_context 'turn off some jobs'
   config.include_context 'payment means'
 
   config.before(:suite) { Setting.instance.update(balance_requests_commission: 3) }

@@ -200,8 +200,8 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label first_user_agent
               %td.item-card-td= "#{payment.first_user_agent}"
-            - if role_namespace == 'supports'
-              = render 'shared/staff/payments/payment_audit', payment:
+            - if role_namespace.in?(%w[supports processers])
+              = render "#{role_namespace}/payments/payment_audit", payment:
 
   - if local_assigns[:can_manage_payment?]
     .card-wrap
