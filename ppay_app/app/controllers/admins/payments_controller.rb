@@ -16,7 +16,11 @@ module Admins
     def show; end
 
     def update
-      @payment.update(payment_params)
+      if params[:fire_event]
+        @payment.aasm.fire!(params[:event]) if params[:event].present?
+      else
+        @payment.update(payment_params)
+      end
 
       render :show
     end
@@ -28,7 +32,7 @@ module Admins
     end
 
     def payment_params
-      required_params.permit(:payment_status, :arbitration, :cancellation_reason)
+      required_params.permit(:arbitration, :cancellation_reason)
     end
   end
 end

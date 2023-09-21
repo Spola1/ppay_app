@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_10_143340) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_112328) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -126,8 +126,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_10_143340) do
     t.string "remote_address"
     t.string "request_uuid"
     t.datetime "created_at"
+    t.string "user_agent"
+    t.string "bearer_user_type"
+    t.bigint "bearer_user_id"
     t.index ["associated_type", "associated_id"], name: "associated_index"
     t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["bearer_user_type", "bearer_user_id"], name: "index_audits_on_bearer_user"
     t.index ["created_at"], name: "index_audits_on_created_at"
     t.index ["request_uuid"], name: "index_audits_on_request_uuid"
     t.index ["user_id", "user_type"], name: "user_index"

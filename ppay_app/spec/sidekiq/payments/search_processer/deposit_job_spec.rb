@@ -11,6 +11,9 @@ RSpec.describe Payments::SearchProcesser::DepositJob, type: :job do
   let!(:rate_snapshot) { create(:rate_snapshot) }
   let!(:ppay) { create(:user, :ppay) }
 
+  before { silence_output }
+  after { restore_output }
+
   it 'finds an advertisement' do
     call
 

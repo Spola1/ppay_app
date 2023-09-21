@@ -1,0 +1,28 @@
+%tr.item-card-tr
+  %td.item-card-td.item-card-td-label События по платежу
+  %td.item-card-td.max-w-0.overflow-hidden.text-xs.break-words.whitespace-normal.divide-y
+    - payment.audits.find_each do |audit|
+      .mt-2.mb-2.pt-2
+        - if audit.user.present?
+          %p.font-bold= audit.user.decorate.audit_user_info
+
+        - if audit.bearer_user.present?
+          %p.font-bold= audit.bearer_user.decorate.audit_user_info
+
+        - if audit.bearer_user.blank? && audit.user.blank?
+          - if audit.remote_address.present?
+            %p.font-bold Неизвестный пользователь
+
+          - else
+            %p.font-bold Система
+
+        - if audit.remote_address.present?
+          %p= "IP: #{audit.remote_address}"
+
+        - if audit.user_agent.present?
+          %p.pb-2= "User Agent: #{audit.user_agent}"
+
+        - audit.audited_changes.each do |attribute, values|
+          = %Q(#{I18n.t("payments.attributes.#{attribute}")}:)
+          = formatted_changes(attribute, values)
+          %br
