@@ -40,7 +40,7 @@ module Payments
                 direction: type,
                 payment_system: PaymentSystem.find_by(
                   {
-                    name: payment_system.presence || merchant.payment_systems.sample,
+                    name: payment_system.presence || merchant.payment_systems.sample.name,
                     national_currency: NationalCurrency.find_by(name: national_currency)
                   }
                 )
