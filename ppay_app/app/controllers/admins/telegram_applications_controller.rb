@@ -21,7 +21,9 @@ module Admins
       @telegram_application.update(telegram_application_params)
 
       if @telegram_application.save
-        redirect_to telegram_applications_path
+        send_data_to_microservice(@telegram_application)
+
+        redirect_to telegram_applications_path, notice: 'Приложение успешно обновлено.'
       else
         render :edit
       end
@@ -39,13 +41,37 @@ module Admins
       @telegram_application = TelegramApplication.new(telegram_application_params)
 
       if @telegram_application.save
-        redirect_to telegram_applications_path, notice: 'Telegram Application успешно создан.'
+        send_data_to_microservice(@telegram_application)
+
+        redirect_to telegram_applications_path, notice: 'Приложение успешно создано.'
       else
         render :new
       end
     end
 
     private
+
+    def send_data_to_microservice(telegram_application)
+      data_to_send = {
+        api_id: telegram_application.api_id,
+        api_hash: telegram_application.api_hash,
+        session_name: telegram_application.session_name,
+        phone_number: telegram_application.phone_number,
+        code: telegram_application.code,
+        main_application_id: telegram_application.id
+      }
+
+      send_request_to_microservice(data_to_send, 'create_telegram_application') if action_name == 'create'
+      send_request_to_microservice(data_to_send, 'update_telegram_application') if action_name == 'update'
+    end
+
+    def send_request_to_microservice(data_to_send, endpoint)
+      HTTParty.post(
+        "http://localhost:3001/api/v1/#{endpoint}",
+        body: data_to_send.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    end
 
     def find_telegram_application
       @telegram_application = TelegramApplication.find(params[:id])

@@ -1,0 +1,2 @@
+class TelegramApplication < ApplicationRecord
+end
