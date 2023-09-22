@@ -66,8 +66,15 @@ module Admins
     end
 
     def send_request_to_microservice(data_to_send, endpoint)
+      protocol = ENV.fetch('TA_PROTOCOL')
+      address = ENV.fetch('TA_ADDRESS')
+      port = ENV.fetch('TA_PORT', nil)
+      path = ENV.fetch('TA_PATH')
+
+      url = "#{protocol}://#{address}#{port}/#{path}/#{endpoint}"
+
       HTTParty.post(
-        "http://localhost:3001/api/v1/#{endpoint}",
+        url,
         body: data_to_send.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
