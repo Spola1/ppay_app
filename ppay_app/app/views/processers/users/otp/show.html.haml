@@ -3,8 +3,8 @@
 = form_with url: users_otp_path, data: { turbo: 'false' },
   action: :update, method: :patch, class: 'simple_form' do |f|
 
-
   - if current_user.otp_secret.blank?
+    = f.hidden_field :create_otp_secret
     = f.submit 'Создать секретный код', class: 'form-submit'
 
   - else
@@ -25,6 +25,3 @@
     = f.submit 'Применить', class: 'form-submit'
 
 
-.mt-2
-  - unless current_user.otp_required_for_login?
-    = raw RQRCode::QRCode.new(@provisioning_uri, :svg, :level => :l, :unit => 2).as_svg

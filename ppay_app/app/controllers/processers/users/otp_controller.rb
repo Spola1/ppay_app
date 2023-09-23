@@ -5,14 +5,12 @@ module Processers
     class OtpController < Staff::BaseController
       layout 'processers/users'
 
-      def show
-        issuer = request.domain
-
-        @provisioning_uri = current_user.otp_provisioning_uri(current_user.email, issuer:)
-      end
-
       def update
-        if current_user.validate_and_consume_otp!(params[:otp_attempt])
+        if current_user.otp_secret.blank? && params[:create_otp_secret]
+          current_user.otp_secret = User.generate_otp_secret
+          current_user.save!
+          @provisioning_uri = current_user.otp_provisioning_uri(current_user.email, issuer: request.domain)
+        elsif current_user.validate_and_consume_otp!(params[:otp_attempt])
           current_user.otp_required_for_login = params[:otp_required_for_login]
           current_user.otp_payment_confirm = params[:otp_payment_confirm]
           current_user.save!

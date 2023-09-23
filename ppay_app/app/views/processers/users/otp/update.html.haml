@@ -1,5 +1,5 @@
 %h2= t('.title')
 
-%p.mt-2
-  В приложении аутентификации одноразовыми паролями отсканируйте QR код:
+.mt-2
+  = raw RQRCode::QRCode.new(@provisioning_uri, :svg, :level => :l, :unit => 2).as_svg
 
