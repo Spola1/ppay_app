@@ -4,9 +4,7 @@ module Users
   class OtpController < ApplicationController
     before_action :authenticate_user!, except: %i[show verify]
 
-    def show
-      # render
-    end
+    def show; end
 
     def verify
       verifier = Rails.application.message_verifier(:otp_session)

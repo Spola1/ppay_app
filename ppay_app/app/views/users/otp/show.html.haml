@@ -1,10 +1,10 @@
 %h2 Enter OTP
 
-= form_tag verify_user_otp_path, method: :post do
-  .field
+= form_tag verify_user_otp_path, method: :post, class: 'simple-form' do
+  .input
     = label_tag :otp_attempt, "OTP Code"
     %br
     = text_field_tag :otp_attempt
 
-  .actions
-    = submit_tag 'Verify'
+  .input.mt-2
+    = submit_tag 'Verify', class: 'form-submit'

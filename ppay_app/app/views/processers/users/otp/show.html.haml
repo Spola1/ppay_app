@@ -1,0 +1,28 @@
+%h2= t('.title')
+
+= form_with url: users_otp_path, data: { turbo: 'false' },
+  action: :update, method: :patch, class: 'simple_form' do |f|
+
+
+  - if current_user.otp_secret.blank?
+    = f.submit 'Создать секретный код', class: 'form-submit'
+
+  - else
+    -# .input
+    -#   %label
+    -#     = f.check_box :otp_required_for_login, { class: 'form-check-input', checked: current_user.otp_required_for_login? }
+    -#     %span.form-check-label Использовать для входа в систему
+
+    -# .input
+    -#   %label
+    -#     = f.check_box :otp_required_for_payment_confirm, { class: 'form-check-input', checked: current_user.otp_required_for_payment_confirm? }
+    -#     %span.form-check-label Использовать для подтверждения крупных платежей
+
+    %p
+
+    .input
+      %span Код подтверждения
+      = f.text_field :otp_attempt
+
+
+    = f.submit 'Применить', class: 'form-submit'
