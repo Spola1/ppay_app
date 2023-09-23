@@ -22,7 +22,7 @@
   }
 
   .with-sidebar section {
-    @apply w-4/5 px-2;
+    @apply w-4/5 px-2 pt-5;
   }
 
   .with-sidebar aside .sticky-menu {
@@ -280,6 +280,12 @@
 
   .simple_form .input input[type=checkbox] {
     @apply inline-block mr-2;
+  }
+
+  .simple_form .input label .form-check-label {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
   }
 
   .simple_form .input label abbr[title] {
@@ -926,7 +932,7 @@
   .text-green {
     color: #057A17;
   }
-  
+
   .text-blue {
     color: #0656CD;
   }

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Setting < ApplicationRecord
-  store_accessor :settings, :version, :commissions_version, :balance_requests_commission
+  store_accessor :settings, :version, :commissions_version, :balance_requests_commission,
+                 :otp_payment_confirm_amount
 
   # Метод, который возвращает или создает новую запись настроек
   def self.instance

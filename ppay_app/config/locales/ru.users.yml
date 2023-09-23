@@ -29,6 +29,7 @@ ru:
     sidebar:
       account: Учётная запись
       settings: Настройки
+      otp: Аутентификация OTP
       whitelisted_processers: Белый список операторов
 
   merchants:
@@ -42,3 +43,8 @@ ru:
       settings:
         title: Настройки оператора
         update: Обновить
+      otp:
+        show:
+          title: Аутентификация OTP (одноразовый код)
+        update:
+          title: Аутентификация OTP

@@ -5,10 +5,13 @@
         %ul
           %li
             = link_to users_settings_path, class: action_active?('settings') do
-              = fa_icon 'user'
+              = fa_icon 'user', class: 'align-middle'
               %span= t('users.sidebar.settings')
+          %li
+            = link_to users_otp_path, class: controller_active?('otp') do
+              = inline_svg_tag('otp-authenticator.svg', class: 'inline-block align-middle', style: 'width: 16px; height: 16px;')
+              %span= t('users.sidebar.otp')
     %section
-      .devise_container
-        = yield
+      = yield
 
 = render template: 'layouts/application'

@@ -15,9 +15,9 @@ Rails.application.routes.draw do
       password == Settings.basic_auth.password
   end
 
-  devise_for :users # , controllers: {
-  #   registrations: 'users/registrations'
-  # }
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
 
   concern :statuses_updatable do
     namespace :statuses do
@@ -156,6 +156,7 @@ Rails.application.routes.draw do
 
     namespace :users do
       get :settings
+      resource :otp, only: %i[show update], controller: :otp
     end
 
     root 'payments#index', as: :processers_root
@@ -226,11 +227,14 @@ Rails.application.routes.draw do
 
   resources :payment_receipts, only: :create
 
+  get 'users/otp', to: 'users/otp#show', as: :user_otp
+  post 'users/otp', to: 'users/otp#verify', as: :verify_user_otp
+
   constraints(
     lambda do |request|
       request.env['warden'].user.blank? &&
         request.path[
-          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|payment_systems|$)}
+          %r{^/(advertisement|merchant|balance_request|payment|rate_snapshot|exchange_portal|payment_systems|users|$)}
         ].present?
     end
   ) do
