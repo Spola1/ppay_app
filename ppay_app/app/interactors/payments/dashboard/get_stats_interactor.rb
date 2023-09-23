@@ -2,7 +2,7 @@
 
 module Payments
   module Dashboard
-    class GetStatsInteractor
+    class GetStatsProcesser
       include Interactor
 
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
@@ -133,6 +133,57 @@ module Payments
         context.average_arbitration_resolution_time = arbitration_resolutions.average('ended_at - created_at') || 0
         context.arbitration_resolutions_count = arbitration_resolutions.count
       end
+    end
+
+
+    class GetStatsGeneral
+      include Interactor
+
+      def call
+        set_national_currencies
+        set_average_payments_release_time
+        set_payments_bandwith
+      end
+
+      private
+      def set_average_payments_release_time
+        context.avg_release_time = Hash.new
+        context.national_currencies.each do |currency|
+          payments = get_most_frequent_amount_payments(currency)
+          if payments
+            context.avg_release_time[currency] = (payments[1].map { |payment| (payment.status_changed_at - payment.created_at) / 60}.sum / payments[1].count).round(2)
+          end
+        end 
+      end
+
+      def set_payments_bandwith
+        context.payments_bandwith = Hash.new
+        context.national_currencies.each do |currency|
+          ad_count = Advertisement.where(national_currency: currency, status: true).count
+          avg_release_time = context.avg_release_time[currency]
+          if ad_count && avg_release_time
+            context.payments_bandwith[currency] = (avg_release_time / ad_count).round(2)
+          end
+        end
+      end
+
+      def get_most_frequent_amount_payments(national_currency)
+        Payment.where('created_at >= ?', 1.hour.ago)
+          .where(payment_status: %w[cancelled completed],
+                 national_currency: national_currency)
+          .group_by(&:national_currency_amount)
+          .max_by(&:count)
+      end 
+
+      def set_national_currencies
+        context.national_currencies = NationalCurrency.pluck(:name)
+      end
+    end
+
+    class GetStatsInteractor
+      include Interactor::Organizer
+
+      organize GetStatsProcesser, GetStatsGeneral
     end
   end
 end
