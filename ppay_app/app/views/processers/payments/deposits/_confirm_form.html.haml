@@ -5,7 +5,7 @@
     data: { turbo_confirm: 'Вы уверены, что полностью получили платёж и хотите его подтвердить?' } do |f|
     = hidden_field_tag :event, 'confirm'
 
-    - if payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0)
+    - if otp_payment_confirm?(payment)
       = text_field_tag :otp_attempt
 
     = f.submit 'Подтвердить', confirm: 'Вы уверены, что хотите подтвердить платёж?',

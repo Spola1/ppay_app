@@ -65,6 +65,8 @@
                         payment.available_cancelled_transactions? && role_namespace.in?(%w[supports processers]) |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
+                    - if otp_payment_confirm?(payment)
+                      = text_field_tag :otp_attempt
                     = f.submit 'Подтвердить платёж',
                       name: :restore,
                       onclick: 'return confirm(\'Вы уверены, что полностью получили платёж и хотите его подтвердить?\');',
