@@ -6,5 +6,7 @@
         = f.label :receive_requests_enabled, 'Включить прием запросов'
         = f.check_box :receive_requests_enabled
         = f.input :commissions_version
+        = f.input :otp_payment_confirm_amount,
+          hint: 'Платежи выше этой суммы можно будет подтвердить только с помощью OTP-кода'
         .mt-3
           = f.submit 'Сохранить', class: 'form-submit'

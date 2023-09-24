@@ -12,4 +12,8 @@ class Setting < ApplicationRecord
   def commissions_version=(value)
     super(value.to_i)
   end
+
+  def otp_payment_confirm_amount=(value)
+    super(value.to_f)
+  end
 end

@@ -3,3 +3,4 @@ ru:
     attributes:
       setting:
         commissions_version: Версия расчёта комиссий
+        otp_payment_confirm_amount: Порог суммы для подтверждения OTP-кодом (в USD)
