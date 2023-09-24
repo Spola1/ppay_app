@@ -24,9 +24,7 @@ module Processers
 
     def update
       if params[:restore]
-        @payment.update(params.permit(:arbitration, :arbitration_reason))
-
-        @payment.restore!
+        payment_restore
       else
         @payment.update(payment_params)
       end
@@ -35,6 +33,17 @@ module Processers
     end
 
     private
+
+    def payment_restore
+      return if current_user.otp_payment_confirm? &&
+                @payment.type == 'Deposit' &&
+                @payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0) &&
+                !current_user.validate_and_consume_otp!(params[:otp_attempt])
+
+      @payment.update(params.permit(:arbitration, :arbitration_reason))
+
+      @payment.restore!
+    end
 
     def mark_messages_as_read(messages)
       message_ids = messages.map(&:id)

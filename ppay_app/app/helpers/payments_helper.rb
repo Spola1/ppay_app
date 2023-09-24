@@ -180,4 +180,10 @@ module PaymentsHelper
              .exists?
     end
   end
+
+  def otp_payment_confirm?(payment)
+    payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0) &&
+      current_user.otp_payment_confirm? &&
+      current_user.otp_secret.present?
+  end
 end
