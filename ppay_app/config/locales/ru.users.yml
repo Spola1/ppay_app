@@ -24,6 +24,7 @@ ru:
         long_freeze_days: Количество дней длинной заморозки
         short_freeze_days: Количество дней короткой заморозки
         fee_percentage: Процент, добавляемый к курсу обмена
+        otp_payment_confirm: Подтверждение кодом OTP для крупных платежей
 
   users:
     sidebar:
@@ -45,6 +46,6 @@ ru:
         update: Обновить
       otp:
         show:
-          title: Аутентификация OTP (одноразовый код)
+          title: Аутентификация OTP
         update:
           title: Аутентификация OTP

@@ -87,6 +87,10 @@
     @apply form-submit bg-red-600 hover:bg-red-700 focus:bg-red-700 active:bg-red-800;
   }
 
+  .form-submit-gray {
+    @apply form-submit bg-gray-600 hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-800;
+  }
+
   .default-nav {
     @apply relative flex items-center bg-slate-50 text-gray-900 shadow-lg shadow-slate-200;
   }
