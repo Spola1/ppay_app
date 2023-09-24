@@ -8,5 +8,7 @@ class Processer < User
   has_many :deposits, through: :advertisements
   has_many :withdrawals, through: :advertisements
 
+  has_many :merchant_processers, dependent: :destroy
+
   belongs_to :working_group, optional: true
 end

@@ -13,11 +13,9 @@ module Users
 
       if user.validate_and_consume_otp!(params[:otp_attempt])
         sign_in(:user, user)
-        redirect_to root_path, notice: 'Logged in successfully!'
+        redirect_to root_path, notice: 'Вход в систему выполнен.'
       else
-        flash[:alert] = 'Invalid OTP code.'
-
-        redirect_to new_user_session_path
+        redirect_back fallback_location: new_user_session_path, alert: 'Не верный код подтверждения.'
       end
     end
   end

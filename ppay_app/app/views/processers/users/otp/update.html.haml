@@ -1,5 +1,22 @@
 %h2= t('.title')
 
-.mt-2
-  = raw RQRCode::QRCode.new(@provisioning_uri, :svg, :level => :l, :unit => 2).as_svg
+- if params[:create_otp_secret]
 
+  %p.mt-2 Отсканируйте OTP ключ в приложении.
+
+  .mt-5{style: 'width: 200px; height: 200px;'}
+    = raw RQRCode::QRCode.new(@provisioning_uri, :svg, :level => :l, :unit => 2).as_svg(viewbox: true)
+
+  .mt-5
+    = form_with url: users_otp_path,
+      action: :update, method: :patch, class: 'simple_form' do |f|
+
+      = f.hidden_field :otp_secret, value: current_user.otp_secret
+
+      .input
+        %label Код подтверждения
+        =f.text_field :otp_attempt
+
+      .mt-5.space-x-2
+        = f.submit 'Сохранить', class: 'form-submit'
+        = link_to 'Отменить', users_otp_path, class: 'form-submit-gray'
