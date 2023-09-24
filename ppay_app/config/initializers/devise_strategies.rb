@@ -10,7 +10,7 @@ Warden::Strategies.add(:password_authenticatable) do
     if resource && resource.valid_password?(params['user']['password'])
       success!(resource)
     else
-      fail!('Invalid email or password.')
+      fail!('Неправильный Email или пароль.')
     end
   end
 end

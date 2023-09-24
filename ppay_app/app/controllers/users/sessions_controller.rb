@@ -38,7 +38,7 @@ module Users
       end
 
       # If user authentication failed
-      flash[:alert] = 'Invalid email or password.'
+      flash[:alert] = 'Неправильный Email или пароль.'
       redirect_to new_user_session_path
     end
 
