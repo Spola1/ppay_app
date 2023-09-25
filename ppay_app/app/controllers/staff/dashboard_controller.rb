@@ -7,7 +7,7 @@ module Staff
         Payments::Dashboard::GetStatsInteractor.call(processer:, filtering_params:)
       end.sort_by(&:finished).reverse
 
-      calculate_total_stats
+      calculate_total_stats 
     end
 
     private

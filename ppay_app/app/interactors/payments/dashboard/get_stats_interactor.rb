@@ -149,9 +149,11 @@ module Payments
       def set_average_payments_release_time
         context.avg_release_time = Hash.new
         context.national_currencies.each do |currency|
-          payments = get_most_frequent_amount_payments(currency)
+          payments = get_most_frequent_amount_payments(currency)[1]
           if payments
-            context.avg_release_time[currency] = (payments[1].map { |payment| (payment.status_changed_at - payment.created_at) / 60}.sum / payments[1].count).round(2)
+            context.avg_release_time[currency] = (payments.map { |payment| (payment.status_changed_at - payment.created_at) / 60}.sum / payments.count).round(2)
+          else
+            context.avg_release_time[currency] = 0 
           end
         end 
       end
@@ -163,6 +165,8 @@ module Payments
           avg_release_time = context.avg_release_time[currency]
           if ad_count && avg_release_time
             context.payments_bandwith[currency] = (avg_release_time / ad_count).round(2)
+          else
+            context.payments_bandwith[currency] = 0
           end
         end
       end
@@ -172,7 +176,7 @@ module Payments
           .where(payment_status: %w[cancelled completed],
                  national_currency: national_currency)
           .group_by(&:national_currency_amount)
-          .max_by(&:count)
+          .max_by(&:count) || []
       end 
 
       def set_national_currencies
