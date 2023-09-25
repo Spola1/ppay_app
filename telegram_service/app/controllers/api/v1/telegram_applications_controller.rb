@@ -9,6 +9,9 @@ module Api
         telegram_application = TelegramApplication.new(telegram_application_params)
 
         if telegram_application.save
+
+          TelegramApplicationJob.perform_async(telegram_application.id)
+
           render json: { status: 'success', message: 'Приложение успешно создано' }, status: :created
         else
           render json: { status: 'error', message: 'Ошибка создания приложения' }, status: :unprocessable_entity

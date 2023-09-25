@@ -13,9 +13,10 @@ gem 'puma', '~> 5.0'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'turbo-rails'
 gem 'redis', '~> 4.0'
-gem 'sidekiq'
+gem 'sidekiq', '6.5.7'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
+gem 'open3'
 
 group :development, :test do
   gem 'byebug', '~> 11.1'
