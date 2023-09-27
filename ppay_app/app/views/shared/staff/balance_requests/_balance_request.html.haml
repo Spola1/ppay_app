@@ -15,15 +15,21 @@
           %td.item-card-td.item-card-td-label= role_namespace == 'admins' ? 'Нужно перевести' : 'Вы получите'
           %td.item-card-td= "#{ @balance_request.amount_minus_commission } #{ @balance_request.user.balance.currency }"
         %tr.items-list-tr
-          %td.item-card-td.item-card-td-label Комиссия
+          %td.item-card-td.item-card-td-label Расход на оплату газа
           %td.item-card-td= "#{ @balance_request.amount - @balance_request.amount_minus_commission } #{ @balance_request.user.balance.currency }"
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Статус
         %td.item-card-td= @balance_request.status
+      %tr.items-list-tr
+        %td.item-card-td.item-card-td-label Хэш транзакции
+        %td.item-card-td= @balance_request.transaction_hash
       - if role_namespace == 'admins'
         %tr.items-list-tr
           %td.item-card-td.item-card-td-label Комментарий
           %td.item-card-td= @balance_request.short_comment
+        %tr.items-list-tr
+          %td.item-card-td.item-card-td-label Реальная комиссия
+          %td.item-card-td= @balance_request.real_commission
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Криптоадрес
         %td.item-card-td= @balance_request.crypto_address

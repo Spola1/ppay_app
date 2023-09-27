@@ -18,7 +18,7 @@
                 input_html: { min: 0,
                               'data-balance_requests-target': 'amountMinusCommission',
                               'data-action': 'balance_requests#inputAmountMinusCommission' },
-                hint: "Сумма снятия за вычетом комиссии #{balance_requests_commission.round(2)} #{current_user.balance.currency}"
+                hint: "Сумма снятия за вычетом расхода на газ #{balance_requests_commission.round(2)} #{current_user.balance.currency}"
 
     = f.input :crypto_address, label: crypto_address_label,
                                hint: crypto_address_hint,
