@@ -3,7 +3,7 @@
 module RateSnapshots
   class GetAllRatesJob
     include Sidekiq::Job
-    sidekiq_options queue: 'high', tags: ['get_all_rates']
+    sidekiq_options queue: 'low', tags: ['get_all_rates']
 
     BINANCE_EXCHANGE_PORTAL_ID = 1
 

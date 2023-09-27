@@ -3,7 +3,7 @@
 module RateSnapshots
   class GetBinanceP2pRatesJob
     include Sidekiq::Job
-    sidekiq_options queue: 'high', tags: ['binance_p2p_rates']
+    sidekiq_options queue: 'low', tags: ['binance_p2p_rates']
 
     # crypto_asset = 'USDT'
     # fiat = 'RUB'

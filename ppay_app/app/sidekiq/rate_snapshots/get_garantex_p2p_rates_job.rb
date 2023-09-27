@@ -3,7 +3,7 @@
 module RateSnapshots
   class GetGarantexP2pRatesJob
     include Sidekiq::Job
-    sidekiq_options queue: 'high', tags: ['garantex_p2p_rates']
+    sidekiq_options queue: 'low', tags: ['garantex_p2p_rates']
 
     attr_reader :payment_system
 
