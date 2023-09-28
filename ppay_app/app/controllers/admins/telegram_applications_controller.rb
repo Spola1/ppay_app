@@ -52,13 +52,16 @@ module Admins
     private
 
     def send_data_to_microservice(telegram_application)
+      bot_names = telegram_application.telegram_bots.pluck(:name)
+
       data_to_send = {
         api_id: telegram_application.api_id,
         api_hash: telegram_application.api_hash,
         session_name: telegram_application.session_name,
         phone_number: telegram_application.phone_number,
         code: telegram_application.code,
-        main_application_id: telegram_application.id
+        main_application_id: telegram_application.id,
+        bot_names:
       }
 
       send_request_to_microservice(data_to_send, 'create_telegram_application') if action_name == 'create'
@@ -95,7 +98,7 @@ module Admins
 
     def telegram_application_params
       params.require(:telegram_application).permit(:api_id, :api_hash, :phone_number, :code, :session_name,
-                                                   :processer_id)
+                                                   :processer_id, telegram_bot_ids: [])
     end
   end
 end

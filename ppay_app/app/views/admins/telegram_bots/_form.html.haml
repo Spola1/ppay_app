@@ -1,0 +1,13 @@
+= simple_form_for @telegram_bot do |f|
+  - if @telegram_bot.errors.any?
+    .flex.items-center
+      .text-xl.px-2
+        = fa_icon 'exclamation-circle'
+      = f.error_notification
+  
+  .form-inputs.flex
+    .col-span-1
+      = f.input :name, label: 'Имя бота', hint: 'Обязательно с символом "@". Например: @test_bot'
+
+  .form-actions
+    = f.button :submit, 'Сохранить', class: 'form-submit'

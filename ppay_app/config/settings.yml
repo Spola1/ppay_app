@@ -43,6 +43,8 @@ navbar:
       path: dashboard_path
     - name: Телеграм приложения
       path: telegram_applications_path
+    - name: Телеграм боты
+      path: telegram_bots_path
   merchant:
     - name: Все платежи
       path: payments_path

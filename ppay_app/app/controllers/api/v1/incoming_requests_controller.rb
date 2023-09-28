@@ -47,10 +47,18 @@ module Api
         end
       end
 
+      def find_api_key(data)
+        return unless data['app'] == 'Telegram'
+
+        app = TelegramApplication.find(data['main_application_id'])
+
+        app.processer.token
+      end
+
       def incoming_request_params(data)
         {
           app: data['app'],
-          api_key: data['api_key'],
+          api_key: data['api_key'] || find_api_key(data),
           request_type: data['type'],
           request_id: data['id'],
           from: data['from'],
@@ -61,13 +69,14 @@ module Api
           imsi: data['imsi'] || data.dig('identifier', 'imsi'),
           imei: data['imei'] || data.dig('identifier', 'imei'),
           phone: data.dig('identifier', 'phone'),
+          telegram_phone: data['telegram_phone'],
           com: data['com'],
           simno: data['simno'],
           softwareid: data['softwareid'],
           custmemo: data['custmemo'],
           sendstat: data['sendstat'],
           user_agent: data['user_agent'],
-          user: user(data['api_key']),
+          user: user(data['api_key'] || find_api_key(data)),
           initial_params: request.raw_post
         }
       end

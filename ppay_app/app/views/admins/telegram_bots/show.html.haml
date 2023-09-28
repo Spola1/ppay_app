@@ -1,0 +1,15 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Телеграм бот (ID: #{@telegram_bot.id})"
+        .flex.text-right
+          = link_to edit_telegram_bot_path(@telegram_bot), class: 'icon-button' do
+            .flex
+              .mr-2
+                = fa_icon 'pencil'
+              Редактировать
+      .mt-8.my-4
+        = render @telegram_bot
+      .back-link
+        = link_to '<- К списку ботов', telegram_bots_path

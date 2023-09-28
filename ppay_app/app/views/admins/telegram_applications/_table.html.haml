@@ -22,7 +22,7 @@
         %td.items-list-td= telegram_application.processer.decorate.display_name
         
         %td.items-list-td.px-1.w-0
-          = link_to telegram_application, data: { turbo_confirm: 'Вы уверены что хотите удалить объявление?', turbo_method: :delete }  do
+          = link_to telegram_application, data: { turbo_confirm: 'Вы уверены что хотите удалить приложение?', turbo_method: :delete }  do
             .icon-button-red
               = fa_icon 'trash'
         %td.items-list-td.px-1.w-0
