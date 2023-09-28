@@ -87,7 +87,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
-    t.string "telegram_phone"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
@@ -265,7 +264,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
     t.jsonb "initial_params"
     t.bigint "user_id"
     t.text "error"
-    t.string "telegram_phone"
     t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
     t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
     t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
@@ -397,8 +395,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 128, scale: 64
+    t.integer "processing_type", default: 0
     t.string "locale"
     t.bigint "form_customization_id"
     t.integer "arbitration_reason"
@@ -448,31 +446,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
     t.datetime "updated_at", null: false
     t.integer "minutes_to_autocancel", default: 7, null: false
     t.jsonb "settings", default: {}
-  end
-
-  create_table "telegram_applications", force: :cascade do |t|
-    t.bigint "processer_id", null: false
-    t.string "api_id"
-    t.string "api_hash"
-    t.string "phone_number"
-    t.string "code"
-    t.string "session_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["processer_id"], name: "index_telegram_applications_on_processer_id"
-  end
-
-  create_table "telegram_applications_bots", id: false, force: :cascade do |t|
-    t.bigint "telegram_application_id", null: false
-    t.bigint "telegram_bot_id", null: false
-    t.index ["telegram_application_id", "telegram_bot_id"], name: "index_ta_tb_on_ta_id_and_tb_id"
-    t.index ["telegram_bot_id", "telegram_application_id"], name: "index_tb_ta_on_tb_id_and_ta_id"
-  end
-
-  create_table "telegram_bots", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "telegram_settings", force: :cascade do |t|
@@ -542,9 +515,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
-    t.boolean "only_whitelisted_processers", default: false, null: false
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
+    t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
     t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.integer "short_freeze_days"
