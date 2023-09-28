@@ -201,7 +201,8 @@ class Payment < ApplicationRecord
       'id' => 'id-id',
       'kk' => 'kk-kk',
       'tr' => 'tr-tr',
-      'ky' => 'ky-ky'
+      'ky' => 'ky-ky',
+      'azn' => 'azn-azn'
     }
 
     language_mapping[locale] || 'ru-ru'

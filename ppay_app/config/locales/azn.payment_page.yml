@@ -1,0 +1,57 @@
+azn:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M:%S"
+  payments:
+    payment_preparation: Ödəniş hazırlanır
+    payment processing: Emal gedir
+    expectation: Xahiş edirəm gözləyin...
+    order: Sifariş
+    choise: Seçin
+    confirm: Təsdiq edin
+    success: Uğurla!
+    payment_completed: Ödəniş tamamlandı!
+    cancellation_payment: Ödənişi ləğv edin
+    back_to_shop: mağazaya qayıt
+    confirmation_transfer_cancellation: Ödənişi ləğv etmək istədiyinizə əminsiniz?
+    payment_cancelled: Ödəniş ləğv edildi!
+    deposit:
+      attributes:
+        shop: Dükan
+        choosing_payment_system: Ödəniş sistemini seçin
+        request: Zəhmət olmasa siyahıdan yalnız kartınız olan və ödəməyi planlaşdırdığınız Bankı seçin!
+        attention: Diqqət
+        paragraph_1: Nağd pul göndərərkən tətbiqdə mesaj yazmaq qəti qadağandır
+        paragraph_2: Ödəniş, Bütün onluq yerlər daxil olmaqla, göstərilən məbləğdə tam olaraq edilməlidir
+        paragraph_3: Vəsaitlər bankdaxili köçürmə yolu ilə ciddi şəkildə göndərilməlidir, göndərən bank və alıcı Bank eyni olmalıdır. Əks təqdirdə, ödəniş kreditinə zəmanət verilmir
+        qr_manual_1: Davam etmək üçün kameranı QR koduna yönəldin
+        qr_manual_2: telefondan
+        time_for_payment: Siz ərzində ödəyə bilər
+        make_transfer: Göstərilən məbləği aşağıda göstərilən kart nömrəsi ilə köçürün
+        add_receipt_image: Çek şəkli əlavə edin
+        click_payment_completed_button: Köçürdükdən sonra "ödəniş tamamlandı"düyməsini basın
+        payment_completed: Ödəniş tamamlandı
+        copy_deposit_amount: Depozitin dəqiq məbləğini kopyalayın
+        changing_amount: Ödənişinizi müəyyənləşdirmək və daha sürətli işləmək üçün məbləği dəyişdirdik
+        continue_payment: Ödəməyə davam edin
+    withdraw:
+      attributes:
+        merchant: Tacir
+        amount: Məbləğ
+        choosing_bank_card: Zəhmət olmasa vəsaiti çıxarmaq istədiyiniz kartı göstərin
+        bank: Bank
+        card_number: Kart nömrəsi
+        money_transfer: Pul köçürürük...
+        transfer_confirmation: Pul almısan?
+        confirmation_receipt_of_money: Ödənişi tam aldığınızdan əminsiniz və onu təsdiqləmək istəyirsiniz?
+        confirmation_payment_cancellation: Ödənişi ləğv etmək istədiyinizə əminsiniz?
+    locale:
+      ru: Russian
+      uz: Uzbek
+      tg: Tajik
+      id: Indonesian
+      kk: Kazakh
+      uk: Ukrainian
+      tr: Turkish
+      ky: Kyrgyz
+      azn: Azerbaijani

@@ -25,7 +25,8 @@
                                                               ["Индонезийский", "id"],
                                                               ["Украинский", "uk"],
                                                               ["Турецкий", "tr"],
-                                                              ["Киргизский", "ky"]], include_blank: '-выбрать-', hint: 'например: Русский', required: false
+                                                              ["Киргизский", "ky"], 
+                                                              ["Азербайджанский", "azn"]], include_blank: '-выбрать-', hint: 'например: Русский', required: false
         = f.input :redirect_url, label: 'Ссылка, которая будет указана для клиента  на странице после оплаты', hint: 'например: https://google.com', required: true
         
         = f.hidden_field :callback_url, value: 'https://google.com'
