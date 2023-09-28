@@ -183,7 +183,7 @@ module PaymentsHelper
 
   def otp_payment_confirm?(payment)
     payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0) &&
-      payment.processer.otp_payment_confirm? &&
-      payment.processer.otp_secret.present?
+      payment.processer&.otp_payment_confirm? &&
+      payment.processer&.otp_secret&.present?
   end
 end
