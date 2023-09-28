@@ -1,12 +1,12 @@
 = simple_form_for @telegram_application do |f|
   .form-inputs.flex
     .col-span-1
-      = f.input :api_id, label: 'API ID'
-      = f.input :api_hash, label: 'API Hash'
-      = f.input :session_name, label: 'Session Name'
-      = f.input :phone_number, label: 'Phone Number'
-      = f.input :code, label: 'Code'
-      = f.input :processer_id, collection: @processers.map { |processer| [processer.nickname, processer.id] }, label: 'Operator'
+      = f.input :api_id
+      = f.input :api_hash
+      = f.input :session_name
+      = f.input :phone_number
+      = f.input :code
+      = f.input :processer_id, collection: @processers.map { |processer| [processer.nickname, processer.id] }
 
     .ml-6.mt-4
       = label_tag 'telegram_application[telegram_bot_ids][]', 'Выберите ботов:'
