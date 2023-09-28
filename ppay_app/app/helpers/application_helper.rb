@@ -49,7 +49,8 @@ module ApplicationHelper
       I18n.t('payments.locale.kk') => :kk,
       I18n.t('payments.locale.uk') => :uk,
       I18n.t('payments.locale.tr') => :tr,
-      I18n.t('payments.locale.ky') => :ky
+      I18n.t('payments.locale.ky') => :ky,
+      I18n.t('payments.locale.azn') => :azn
     }
   end
 
