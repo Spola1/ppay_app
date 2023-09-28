@@ -71,7 +71,7 @@ module StateMachines
                              .order(created_at: :asc)
                              .last
       end
-!!!!!!!!!!!!!!
+
       def bind_rate_snapshot
         return if rate_snapshot
 
