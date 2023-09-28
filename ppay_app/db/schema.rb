@@ -398,10 +398,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
     t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
     t.string "locale"
-    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
+    t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
     t.decimal "adjusted_rate"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
@@ -585,7 +585,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_080054) do
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
-  add_foreign_key "telegram_applications", "users", column: "processer_id"
   add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
 end
