@@ -5,10 +5,15 @@ import sys
 api_id = int(sys.argv[1])
 api_hash = sys.argv[2]
 session_name = sys.argv[3]
+main_application_id = sys.argv[4]
+phone_number = sys.argv[5]
+telegram_bots = sys.argv[6]
+telegram_bots_list = telegram_bots.split('@')
+telegram_bots_list = [bot for bot in telegram_bots_list if bot]
 
 client = TelegramClient(session_name, api_id, api_hash)
 
-chats_to_listen = ['@bot_ppay_bot']
+chats_to_listen = ['@' + bot for bot in telegram_bots_list]
 
 client.start()
 
@@ -21,15 +26,13 @@ async def normal_handler(event):
 def send_message_to_rails(message_text):
     url = 'http://localhost:3000/api/v1/simbank/requests'
     data = {
-        'message': message_text
+        'message': message_text,
+        'app': 'Telegram',
+        'main_application_id': main_application_id,
+        'telegram_phone': phone_number,
+        'type': 'telegram_message',
+        'from': 'Telegram'
     }
     response = requests.post(url, json=data)
-
-    print(response.status_code)
-
-    if response.status_code == 201:
-        print('Сообщение успешно отправлено в Rails-приложение')
-    else:
-        print('Ошибка при отправке сообщения в Rails-приложение')
 
 client.run_until_disconnected()

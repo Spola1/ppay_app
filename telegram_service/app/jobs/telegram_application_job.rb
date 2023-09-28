@@ -13,9 +13,12 @@ class TelegramApplicationJob
     api_hash = telegram_application.api_hash
     session_name = telegram_application.session_name
     phone_number = telegram_application.phone_number
+    main_application_id = telegram_application.main_application_id
     code = telegram_application.code
+    telegram_bots = telegram_application.bot_names
+    telegram_bots_str = telegram_bots.join("")
 
-    script_command = "python3 tg.py #{api_id} #{api_hash} #{session_name} #{phone_number}"
+    script_command = "python3 tg.py #{api_id} #{api_hash} #{session_name} #{main_application_id} #{phone_number} #{telegram_bots_str}"
     stdin, stdout, _stderr, wait_thr = Open3.popen3(script_command)
 
     puts stdout.readpartial(4096)
@@ -29,14 +32,15 @@ class TelegramApplicationJob
     stdin.puts(phone_number)
     stdin.flush
 
-    loop { stdin.puts gets.chomp }
-    wait_thr.join
-
     sleep(30)
 
     telegram_application.reload
 
+    # не записывается автоматически
     stdin.puts(code)
     stdin.flush
+
+    loop { stdin.puts gets.chomp }
+    wait_thr.join
   end
 end

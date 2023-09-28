@@ -36,8 +36,8 @@ module Api
       private
 
       def telegram_application_params
-        params.delete(:telegram_application)
-        params.permit(:api_id, :api_hash, :phone_number, :code, :session_name, :main_application_id)
+        params.require(:telegram_application).permit(:api_id, :api_hash, :phone_number, :code, :session_name,
+                                                     :main_application_id, bot_names: [])
       end
     end
   end
