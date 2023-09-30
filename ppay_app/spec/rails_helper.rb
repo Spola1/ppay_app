@@ -74,6 +74,7 @@ RSpec.configure do |config|
   config.include JsonApiHelper
   config.include ActionView::Helpers::NumberHelper
   config.include SilenceOutputHelper
+  config.include Devise::Test::IntegrationHelpers, type: :feature
 
   config.include_context 'turn off some jobs'
   config.include_context 'payment means'
@@ -87,8 +88,4 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
-end
-
-Capybara.configure do |config|
-  config.app_host = "http://#{Rails.configuration.action_controller.default_url_options[:host]}"
 end
