@@ -25,7 +25,8 @@ module Payments
 
         while search_valid?(start_time)
           puts 'не найден'
-          if payment.equal_amount_limited_advertisements_available?
+
+          if selected_advertisement.present?
             payment.update(advertisement: selected_advertisement)
           elsif payment.advertisements_available?
             payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)

@@ -46,6 +46,14 @@ module AdvertisementScopes
         .by_processer_balance(payment.cryptocurrency_amount)
         .by_amount(payment.national_currency_amount)
         .by_direction('Deposit')
+        .equal_amount_payments_limited(payment.national_currency_amount, payment.merchant.equal_amount_payments_limit)
+    }
+
+    scope :for_deposit_unlimited, lambda { |payment|
+      for_payment(payment)
+        .order_by_algorithm(payment.national_currency_amount)
+        .by_processer_balance(payment.cryptocurrency_amount)
+        .by_direction('Deposit')
     }
 
     scope :for_withdrawal, lambda { |payment|

@@ -249,14 +249,6 @@ class Payment < ApplicationRecord
     advertisements_scope.exists?
   end
 
-  def equal_amount_limited_advertisements_available?
-    return advertisements_available? unless merchant.equal_amount_payments_limit
-
-    advertisements_scope
-      .equal_amount_payments_limited(national_currency_amount, merchant.equal_amount_payments_limit)
-      .exists?
-  end
-
   def send_update_callback
     Payments::UpdateCallbackJob.perform_async(id)
   end
@@ -264,7 +256,11 @@ class Payment < ApplicationRecord
   private
 
   def advertisements_scope
-    Advertisement.public_send("for_#{type.downcase}", self)
+    if type == "Deposit" 
+      Advertisement.public_send("for_#{type.downcase}_unlimited", self)
+    else
+      Advertisement.public_send("for_#{type.downcase}", self)
+    end
   end
 
   def update_arbitration_resolutions_time
