@@ -44,7 +44,6 @@ module Api
               orderId: order_id,
               amount: amount,
               callbackUrl: "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PROTOCOL')}://#{ENV.fetch('EXTERNAL_BNN_CALLBACK_ADDRESS')}/#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PATH')}",
-              returnUrl: "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PROTOCOL')}://#{ENV.fetch('EXTERNAL_BNN_CALLBACK_ADDRESS')}/#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PATH')}",
               bankId: rand(1..banks_size)
             }.to_json
 
