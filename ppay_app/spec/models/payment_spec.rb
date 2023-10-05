@@ -43,24 +43,24 @@ RSpec.describe Payment, type: :model do
 
   describe 'before_save' do
     describe 'take_off_arbitration' do
-      let(:payment) { create :payment, payment_status: :processer_search, arbitration: true }
+      let(:payment) { create :payment, :created, arbitration: true }
 
-      context 'status does not change' do
-        before { payment.update(national_currency_amount: (rand(1..1_000_000) / 100.0)) }
-        it { expect(payment.arbitration).to eq true }
+      context 'national_currency_amount changes' do
+        subject(:update_national_currency) { payment.update(national_currency_amount: (rand(1..1_000_000) / 100.0)) }
+        it { expect { update_national_currency }.not_to change { payment.reload.arbitration }.from(true) }
       end
 
-      context 'status changes not to completed or cancelled' do
-        %i[draft processer_search transferring confirming].each do |new_status|
-          before { payment.update(payment_status: new_status) }
-          it { expect(payment.arbitration).to eq true }
+      %i[draft processer_search transferring confirming cancelled].each do |new_status|
+        context "status changes to #{new_status}" do
+          subject(:update_payment_status) { payment.update(payment_status: new_status) }
+          it { expect { update_payment_status }.not_to change { payment.reload.arbitration }.from(true) }
         end
       end
 
-      context 'status changes to completed or cancelled' do
-        %i[cancelled completed].each do |new_status|
-          before { payment.update(payment_status: new_status) }
-          it { expect(payment.arbitration).to eq false }
+      %i[completed].each do |new_status|
+        context "status changes to #{new_status}" do
+          subject(:update_payment_status) { payment.update(payment_status: new_status) }
+          it { expect { update_payment_status }.to change { payment.reload.arbitration }.from(true).to(false) }
         end
       end
     end

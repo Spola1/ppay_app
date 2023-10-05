@@ -4,28 +4,33 @@ require 'rails_helper'
 
 RSpec.describe Payments::CancelExpiredJob, type: :job do
   describe '#perform' do
-    let!(:payment) { create(:payment, :transferring) }
+    subject { described_class.new.perform }
+
+    let!(:payment) { create(:payment, :transferring, arbitration:, arbitration_reason:) }
+    let(:arbitration) { false }
+    let(:arbitration_reason) { nil }
 
     before do
-      silence_output
       allow(Payment).to receive_message_chain(:transferring, :expired).and_return(Payment.where(id: payment.id))
     end
 
+    before { silence_output }
     after { restore_output }
 
-    it 'cancels expired payments and setup cancellation reason to time expired' do
-      described_class.new.perform
+    it { expect { subject }.to change { payment.reload.payment_status }.from('transferring').to('cancelled') }
+    it { expect { subject }.to change { payment.reload.cancellation_reason }.from(nil).to('time_expired') }
+    it { expect { subject }.to output(/Платёж #{payment.uuid} отменён/).to_stdout }
 
-      payment.reload
+    context 'payment in arbitration' do
+      let(:arbitration) { true }
 
-      expect(payment.payment_status).to eq('cancelled')
-      expect(payment.cancellation_reason).to eq('time_expired')
-    end
+      it { expect { subject }.not_to change { payment.reload.arbitration }.from(true) }
 
-    it 'logs the cancelled payment' do
-      payment.cancel!
+      context 'with not_paid arbitration reason' do
+        let(:arbitration_reason) { :not_paid }
 
-      expect { described_class.new.perform }.to output(/Платёж #{payment.uuid} отменён/).to_stdout
+        it { expect { subject }.to change { payment.reload.arbitration }.from(true).to(false) }
+      end
     end
   end
 end
