@@ -23,9 +23,10 @@ class Transaction < ApplicationRecord
     freeze_balance: 7
   }
 
-  scope :payment_transactions, ->    { where(transaction_type: PAYMENT_TYPES) }
-  scope :commission_transactions, -> { where(transaction_type: COMMISSION_TYPES) }
-  scope :balance_transactions, ->    { where(transaction_type: BALANCE_TYPES) }
+  scope :payment_transactions, ->        { where(transaction_type: PAYMENT_TYPES) }
+  scope :commission_transactions, ->     { where(transaction_type: COMMISSION_TYPES) }
+  scope :balance_transactions, ->        { where(transaction_type: BALANCE_TYPES) }
+  scope :freeze_balance_transactions, -> { where(transaction_type: :freeze_balance) }
 
   undef_method :frozen?
   aasm whiny_transitions: false, column: :status, requires_lock: true do
@@ -41,7 +42,12 @@ class Transaction < ApplicationRecord
     end
 
     event :restore do
-      transitions from: :cancelled, to: :frozen, before_enter: :freeze_funds
+      transitions from: :cancelled, to: :frozen, after: :freeze_funds
+    end
+
+    event :rollback do
+      transitions from: :completed, to: :cancelled,
+                  after: %i[rollback_funds unfreeze_funds]
     end
   end
 
@@ -57,5 +63,9 @@ class Transaction < ApplicationRecord
 
   def deposit_funds
     to_balance&.deposit(amount, national_currency_amount)
+  end
+
+  def rollback_funds
+    to_balance&.withdraw(amount, national_currency_amount)
   end
 end

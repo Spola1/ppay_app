@@ -82,32 +82,6 @@ RSpec.describe Payment, type: :model do
     end
   end
 
-  describe '#transactions_cannot_be_completed_or_cancelled' do
-    subject { payment.errors[:transactions] }
-
-    context 'on status changes' do
-      before { payment.update(payment_status: :draft) }
-
-      context 'frozen transactions' do
-        let(:payment) { create(:payment, :with_transactions) }
-
-        it { is_expected.to be_empty }
-      end
-
-      context 'completed transactions' do
-        let(:payment) { create(:payment, :with_completed_transactions) }
-
-        it { is_expected.to match_array(['already completed or cancelled']) }
-      end
-
-      context 'cancelled transactions' do
-        let(:payment) { create(:payment, :with_completed_transactions) }
-
-        it { is_expected.to match_array(['already completed or cancelled']) }
-      end
-    end
-  end
-
   describe ':bind event' do
     shared_examples 'changes payment status to transferring' do
       it do

@@ -71,6 +71,17 @@
                       name: :restore,
                       onclick: 'return confirm(\'Вы уверены, что полностью получили платёж и хотите его подтвердить?\');',
                       class: 'green-button-payment-apply'
+                - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'completed' &&   |
+                        payment.transactions_rollbackable? && role_namespace.in?(%w[supports processers]) |
+                  .flex.flex-row.items-center.justify-between
+                    = payment.human_payment_status
+                    .otp_button
+                      - if otp_payment_confirm?(payment)
+                        = text_field_tag :otp_attempt, nil, size: 5
+                      = f.submit 'Откатить платёж',
+                        name: :rollback,
+                        onclick: 'return confirm(\'Вы уверены, что хотите откатить платёж?\');',
+                        class: 'red-button'
                 - else
                   = payment.human_payment_status
 

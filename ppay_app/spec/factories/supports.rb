@@ -5,5 +5,7 @@ FactoryBot.define do
     type { 'Support' }
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
+    nickname { 'Support' }
+    name { 'Саппорт Саппортович' }
   end
 end

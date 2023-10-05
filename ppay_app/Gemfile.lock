@@ -390,6 +390,11 @@ GEM
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
+    rspec-sidekiq (4.0.2)
+      rspec-core (~> 3.0)
+      rspec-expectations (~> 3.0)
+      rspec-mocks (~> 3.0)
+      sidekiq (>= 5, < 8)
     rspec-support (3.11.1)
     rswag (2.6.0)
       rswag-api (= 2.6.0)
@@ -458,6 +463,8 @@ GEM
     thor (1.2.2)
     tilt (2.0.11)
     timeout (0.3.0)
+    trace_location (0.12.2)
+      method_source
     turbo-rails (1.1.1)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -505,7 +512,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap
   browser
-  byebug (~> 11.1)
+  byebug
   capybara
   caxlsx
   caxlsx_rails
@@ -544,6 +551,7 @@ DEPENDENCIES
   redis (~> 4.0)
   rqrcode (~> 2.0)
   rspec-rails
+  rspec-sidekiq
   rswag
   rubocop
   selenium-webdriver
@@ -555,6 +563,7 @@ DEPENDENCIES
   stimulus-rails
   tailwindcss-rails (~> 2.0)
   telegram-bot-ruby (~> 1.0)
+  trace_location
   turbo-rails
   tzinfo-data
   web-console

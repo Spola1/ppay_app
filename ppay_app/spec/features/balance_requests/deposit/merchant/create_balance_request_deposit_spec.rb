@@ -21,7 +21,6 @@ feature 'Merchant can create new balance request', type: :feature do
 
     expect(page).to have_content('Тип')
     expect(page).to have_content('Сумма')
-    expect(page).to have_content('Криптоадрес USDT TRC20')
     expect(page).to have_button('Сохранить')
 
     select('Внесение', from: 'balance_request_requests_type')

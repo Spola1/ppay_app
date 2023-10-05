@@ -80,6 +80,13 @@ module StateMachines
                         guard: proc { available_cancelled_transactions? },
                         after: :restore_transactions
           end
+
+          event :rollback do
+            after :unfreeze_balance, :rollback_transactions
+
+            transitions from: :completed, to: :cancelled,
+                        guard: proc { transactions_rollbackable? }
+          end
         end
       end
 

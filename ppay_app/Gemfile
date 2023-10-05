@@ -104,7 +104,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'pry-rails'
   gem 'rspec-rails'
-  gem "byebug", "~> 11.1"
+  gem 'byebug'
 end
 
 group :development do
@@ -127,6 +127,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webmock'
+  gem 'rspec-sidekiq'
 end
 
 gem 'aasm'
@@ -137,3 +138,4 @@ gem 'tailwindcss-rails', '~> 2.0'
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'dotenv-rails', groups: [:development, :test]
+gem 'trace_location'

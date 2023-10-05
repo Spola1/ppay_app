@@ -4,7 +4,13 @@ module Payments
   module Transactions
     module Base
       def available_cancelled_transactions?
-        transactions.present? && transactions.pluck(:status).all?('cancelled')
+        transactions.payment_transactions.present? &&
+          transactions.payment_transactions.pluck(:status).all?('cancelled')
+      end
+
+      def transactions_rollbackable?
+        transactions.payment_transactions.present? &&
+          transactions.payment_transactions.all? { |tr| (tr.to_balance&.amount || 0) >= tr.amount }
       end
 
       def processer_commission
@@ -49,15 +55,15 @@ module Payments
       end
 
       def complete_transactions
-        transactions.where.not(transaction_type: :freeze_balance).each(&:complete!)
+        transactions.payment_transactions.each(&:complete!)
       end
 
       def cancel_transactions
-        transactions.each(&:cancel!)
+        transactions.payment_transactions.each(&:cancel!)
       end
 
       def restore_transactions
-        transactions.each(&:restore!)
+        transactions.payment_transactions.each(&:restore!)
       end
     end
   end
