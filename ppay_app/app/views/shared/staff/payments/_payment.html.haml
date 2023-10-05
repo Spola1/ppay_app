@@ -123,7 +123,8 @@
               %td.item-card-td
                 .flex.flex-row.items-center.justify-between
                   = "#{payment.decorate.national_formatted}"
-                  - if payment.transactions.empty?
+                  - if payment.transactions.empty? && local_assigns[:can_manage_payment?] &&                |
+                       payment.payment_status == 'cancelled' && role_namespace.in?(%w[supports processers]) |
                     .change_national_currency_amount
                       = text_field_tag :national_currency_amount, nil, size: 5
                       = f.submit 'Изменить сумму',
