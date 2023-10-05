@@ -105,10 +105,6 @@ Rails.application.routes.draw do
         member do
           get :display_link
         end
-        collection do
-          post :handle_callback
-          get :handle_return
-        end
       end
       resources :withdrawals, param: :uuid, only: %i[index show]
     end

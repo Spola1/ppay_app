@@ -131,7 +131,6 @@ group :test do
 end
 
 gem 'aasm'
-gem 'rest-client'
 gem 'aws-sdk-s3', require: false
 gem 'pagy'
 gem 'pundit', '~> 2.2'
