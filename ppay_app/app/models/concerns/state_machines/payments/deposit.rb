@@ -74,11 +74,18 @@ module StateMachines
           end
 
           event :restore do
-            after :complete_transactions, :freeze_balance
-
             transitions from: :cancelled, to: :completed,
                         guard: proc { available_cancelled_transactions? },
-                        after: :restore_transactions
+                        after: %i[restore_transactions complete_transactions freeze_balance]
+            transitions from: :cancelled, to: :cancelled,
+                        after: %i[set_cryptocurrency_amount create_transactions cancel_transactions]
+          end
+
+          event :rollback do
+            after :unfreeze_balance, :rollback_transactions
+
+            transitions from: :completed, to: :cancelled,
+                        guard: proc { transactions_rollbackable? }
           end
         end
       end

@@ -93,7 +93,6 @@ class Payment < ApplicationRecord
 
   validates :national_currency, inclusion: { in: proc { NationalCurrency.pluck(:name) },
                                              valid_values: proc { NationalCurrency.pluck(:name).join(', ') } }
-  validate :transactions_cannot_be_completed_or_cancelled, if: -> { payment_status_changed? }
 
   validates :unique_amount, inclusion: { in: unique_amounts.keys.push(nil),
                                          valid_values: unique_amounts.keys.join(', ') }
@@ -391,11 +390,5 @@ class Payment < ApplicationRecord
 
   def set_initial_amount
     self.initial_amount = national_currency_amount
-  end
-
-  def transactions_cannot_be_completed_or_cancelled
-    return if transactions.pluck(:status).all?('frozen')
-
-    errors.add(:transactions, 'already completed or cancelled')
   end
 end

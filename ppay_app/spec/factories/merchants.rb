@@ -12,8 +12,12 @@ FactoryBot.define do
     crypto_wallet
     usdt_trc20_address { 'ZtK2GioEtevoAJq3NwQDbLyJDfjW7AAAUt' }
 
-    after(:create) do |merchant|
-      merchant.balance.deposit(1000, 10_000)
+    transient do
+      initial_balance { 1000 }
+    end
+
+    after(:create) do |merchant, context|
+      merchant.balance.deposit(context.initial_balance, context.initial_balance)
     end
 
     trait :with_all_kind_of_payments do
@@ -22,6 +26,13 @@ FactoryBot.define do
         create :payment, :deposit, :confirming, merchant: user
         create :payment, :deposit, merchant: user
       end
+    end
+
+    trait :with_mixed_balance_freeze_type do
+      balance_freeze_type { :mixed }
+      short_freeze_days { 3 }
+      long_freeze_days { 10 }
+      long_freeze_percentage { 30 }
     end
   end
 end

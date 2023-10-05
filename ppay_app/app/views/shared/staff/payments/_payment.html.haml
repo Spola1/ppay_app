@@ -71,6 +71,17 @@
                       name: :restore,
                       onclick: 'return confirm(\'Вы уверены, что полностью получили платёж и хотите его подтвердить?\');',
                       class: 'green-button-payment-apply'
+                - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'completed' &&   |
+                        payment.transactions_rollbackable? && role_namespace.in?(%w[supports processers]) |
+                  .flex.flex-row.items-center.justify-between
+                    = payment.human_payment_status
+                    .otp_button
+                      - if otp_payment_confirm?(payment)
+                        = text_field_tag :otp_attempt, nil, size: 5
+                      = f.submit 'Откатить платёж',
+                        name: :rollback,
+                        onclick: 'return confirm(\'Вы уверены, что хотите откатить платёж?\');',
+                        class: 'red-button'
                 - else
                   = payment.human_payment_status
 
@@ -109,7 +120,18 @@
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Кол-во нац. валюты
-              %td.item-card-td= "#{payment.decorate.national_formatted}"
+              %td.item-card-td
+                .flex.flex-row.items-center.justify-between
+                  = "#{payment.decorate.national_formatted}"
+                  - if payment.transactions.empty? && local_assigns[:can_manage_payment?] &&                |
+                       payment.payment_status == 'cancelled' && role_namespace.in?(%w[supports processers]) |
+                    .change_national_currency_amount
+                      = text_field_tag :national_currency_amount, nil, size: 5
+                      = f.submit 'Изменить сумму',
+                        name: :change_national_currency_amount,
+                        onclick: 'return confirm(\'Вы уверены, что хотите изменить сумму?\');',
+                        class: 'green-button-payment-apply'
+
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Платежная система
               %td.item-card-td

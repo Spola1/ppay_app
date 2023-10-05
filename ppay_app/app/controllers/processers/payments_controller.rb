@@ -25,6 +25,10 @@ module Processers
     def update
       if params[:restore]
         payment_restore
+      elsif params[:rollback]
+        payment_rollback
+      elsif params[:change_national_currency_amount]
+        change_national_currency_amount
       else
         @payment.update(payment_params)
       end
@@ -34,14 +38,31 @@ module Processers
 
     private
 
+    def required_otp_not_confirmed?
+      current_user.otp_payment_confirm? &&
+        @payment.type == 'Deposit' &&
+        @payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0) &&
+        !current_user.validate_and_consume_otp!(params[:otp_attempt])
+    end
+
     def payment_restore
-      return if current_user.otp_payment_confirm? &&
-                @payment.type == 'Deposit' &&
-                @payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0) &&
-                !current_user.validate_and_consume_otp!(params[:otp_attempt])
+      return if required_otp_not_confirmed?
 
       @payment.update(params.permit(:arbitration, :arbitration_reason))
 
+      @payment.restore!
+    end
+
+    def payment_rollback
+      return if required_otp_not_confirmed?
+
+      @payment.rollback!
+    end
+
+    def change_national_currency_amount
+      return if @payment.transactions.present?
+
+      @payment.update(national_currency_amount: params[:national_currency_amount])
       @payment.restore!
     end
 

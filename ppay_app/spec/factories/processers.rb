@@ -6,8 +6,12 @@ FactoryBot.define do
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
 
-    after(:create) do |processer|
-      processer.balance.deposit(1000, 10_000)
+    transient do
+      initial_balance { 1000 }
+    end
+
+    after(:create) do |processer, context|
+      processer.balance.deposit(context.initial_balance, context.initial_balance)
     end
   end
 end
