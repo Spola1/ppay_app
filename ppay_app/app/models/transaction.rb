@@ -42,7 +42,7 @@ class Transaction < ApplicationRecord
     end
 
     event :restore do
-      transitions from: :cancelled, to: :frozen, after: :freeze_funds
+      transitions from: :cancelled, to: :frozen
     end
 
     event :rollback do

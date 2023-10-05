@@ -50,6 +50,7 @@ module Payments
 
         def unfreeze_balance
           transactions.frozen.freeze_balance_transactions.each(&:cancel!)
+          transactions.cancelled.freeze_balance_transactions.each(&:destroy)
         end
       end
     end

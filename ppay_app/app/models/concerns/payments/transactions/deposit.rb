@@ -113,6 +113,7 @@ module Payments
 
       def rollback_transactions
         transactions.completed.payment_transactions.each(&:rollback!)
+        transactions.cancelled.payment_transactions.each(&:destroy)
       end
     end
   end

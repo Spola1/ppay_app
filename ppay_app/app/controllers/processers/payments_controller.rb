@@ -27,6 +27,8 @@ module Processers
         payment_restore
       elsif params[:rollback]
         payment_rollback
+      elsif params[:change_national_currency_amount]
+        change_national_currency_amount
       else
         @payment.update(payment_params)
       end
@@ -55,6 +57,13 @@ module Processers
       return if required_otp_not_confirmed?
 
       @payment.rollback!
+    end
+
+    def change_national_currency_amount
+      return if @payment.transactions.present?
+
+      @payment.update(national_currency_amount: params[:national_currency_amount])
+      @payment.restore!
     end
 
     def mark_messages_as_read(messages)

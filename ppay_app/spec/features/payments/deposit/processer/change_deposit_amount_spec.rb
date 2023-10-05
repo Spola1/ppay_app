@@ -11,7 +11,8 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
   let!(:advertisement) { create :advertisement, processer: }
   let(:merchant_initial_balance) { 1000 }
   let(:processer_initial_balance) { 1000 }
-
+  let(:initial_national_currency_amount) { 3000 }
+  let(:added_national_currency_amount) { 4000 }
 
   before do
     using_session 'Merchant' do
@@ -32,7 +33,7 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
       post '/api/v1/payments/deposits',
            params: {
              national_currency: 'RUB',
-             national_currency_amount: 3000,
+             national_currency_amount: initial_national_currency_amount,
              external_order_id: '1234',
              locale: 'ru',
              redirect_url: 'https://example.com/redirect_url',
@@ -64,9 +65,12 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
         click_on 'ДЕПОЗИТ'
         accept_confirm { click_on 'Подтвердить' }
 
-        binding.irb
-
         accept_confirm { click_on 'Откатить платёж' }
+
+        fill_in 'national_currency_amount', with: added_national_currency_amount
+        accept_confirm { click_on 'Изменить сумму' }
+
+        accept_confirm { click_on 'Подтвердить платёж' }
 
         binding.irb
       end

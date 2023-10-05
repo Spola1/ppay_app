@@ -120,7 +120,17 @@
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Кол-во нац. валюты
-              %td.item-card-td= "#{payment.decorate.national_formatted}"
+              %td.item-card-td
+                .flex.flex-row.items-center.justify-between
+                  = "#{payment.decorate.national_formatted}"
+                  - if payment.transactions.empty?
+                    .change_national_currency_amount
+                      = text_field_tag :national_currency_amount, nil, size: 5
+                      = f.submit 'Изменить сумму',
+                        name: :change_national_currency_amount,
+                        onclick: 'return confirm(\'Вы уверены, что хотите изменить сумму?\');',
+                        class: 'green-button-payment-apply'
+
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Платежная система
               %td.item-card-td
