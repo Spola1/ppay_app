@@ -110,7 +110,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def card_number
-    type == 'Deposit' ? advertisement&.card_number : super
+    if (type == 'Deposit' && processing_type == 'external' && national_currency == 'AZN') || type == 'Withdrawal'
+      super
+    else
+      advertisement&.card_number
+    end
   end
 
   def formatted_card_number
