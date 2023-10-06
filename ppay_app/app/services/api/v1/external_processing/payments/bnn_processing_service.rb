@@ -45,7 +45,7 @@ module Api
 
             settings_path = Rails.root.join('config', 'settings.yml')
             settings = YAML.load_file(settings_path)
-            callback_path = settings['bnn_callback_path']
+            callback_path = settings['external_callback_path']
 
             order_params = {
               orderId: order_id,
