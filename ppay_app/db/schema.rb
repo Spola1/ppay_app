@@ -87,7 +87,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_062256) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
-    t.string "telegram_phone"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
