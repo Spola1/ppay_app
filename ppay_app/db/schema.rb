@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_05_125434) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_06_062256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -87,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_05_125434) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
+    t.string "telegram_phone"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
@@ -332,6 +333,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_05_125434) do
     t.bigint "payment_id", null: false
     t.index ["not_found_payment_id", "payment_id"], name: "index_nfp_payments_on_nfp_id_and_p_id"
     t.index ["payment_id", "not_found_payment_id"], name: "index_nfp_payments_on_p_id_and_nfp_id"
+  end
+
+  create_table "payment_logs", force: :cascade do |t|
+    t.text "banks_response"
+    t.text "create_order_response"
+    t.text "payinfo_responses"
+    t.string "other_processing_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "payment_receipts", force: :cascade do |t|

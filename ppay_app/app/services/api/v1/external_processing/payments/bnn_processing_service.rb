@@ -9,16 +9,18 @@ module Api
     module ExternalProcessing
       module Payments
         class BnnProcessingService
+          attr_reader :logs
+
           def initialize(uid, private_key, object)
             @uid = uid
             @private_key = private_key
             @object = object
+            @timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
+            @logs = []
           end
 
           def get_banks
-            timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
-
-            banks_params = { timestamp: timestamp }
+            banks_params = { timestamp: @timestamp }
 
             sorted_params = banks_params.sort.map { |k, v| "#{k}=#{v}" }.join('&')
             signature_body = "#{@uid}:#{@private_key}:#{sorted_params}"
@@ -31,23 +33,28 @@ module Api
               'Content-Type' => 'application/json'
             }
 
-            HTTParty.get(banks_url, body: banks_params, headers: banks_headers)
+            banks_response = HTTParty.get(banks_url, body: banks_params, headers: banks_headers)
+
+            @logs << { type: 'banks_response', body: banks_response.body, code: banks_response.code }
+            banks_response
           end
 
           def create_order(order_id, amount)
-            timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
-
             banks_response = get_banks
             banks_size = banks_response['Result'].size
+
+            settings_path = Rails.root.join('config', 'settings.yml')
+            settings = YAML.load_file(settings_path)
+            callback_path = settings['bnn_callback_path']
 
             order_params = {
               orderId: order_id,
               amount: amount,
-              callbackUrl: "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PROTOCOL')}://#{ENV.fetch('EXTERNAL_BNN_CALLBACK_ADDRESS')}/#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PATH')}",
+              callbackUrl: "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PROTOCOL')}://#{ENV.fetch('EXTERNAL_BNN_CALLBACK_ADDRESS')}/#{callback_path}",
               bankId: rand(1..banks_size)
             }.to_json
 
-            create_order_url = "https://bnn-pay.com/api/order/create?timestamp=#{timestamp}"
+            create_order_url = "https://bnn-pay.com/api/order/create?timestamp=#{@timestamp}"
 
             order_headers = {
               'UID' => @uid,
@@ -55,13 +62,14 @@ module Api
               'Content-Type' => 'application/json'
             }
 
-            HTTParty.post(create_order_url, body: order_params, headers: order_headers)
+            create_order_response = HTTParty.post(create_order_url, body: order_params, headers: order_headers)
+
+            @logs << { type: 'create_order_response', body: create_order_response.body, code: create_order_response.code }
+            create_order_response
           end
 
           def get_payinfo(order_hash)
-            timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
-
-            get_order_params = { hash: order_hash, timestamp: timestamp }
+            get_order_params = { hash: order_hash, timestamp: @timestamp }
 
             get_order_sorted_params = get_order_params.sort.map { |k, v| "#{k}=#{v}" }.join('&')
             signature_body = "#{@uid}:#{@private_key}:#{get_order_sorted_params}"
@@ -77,8 +85,7 @@ module Api
             10.times do
               get_order_response = HTTParty.get(get_payinfo_url, headers: get_order_headers)
 
-              puts "Response Code: #{get_order_response.code}"
-              puts "Response Body: #{get_order_response.body}"
+              @logs << { type: 'get_payinfo_response', body: get_order_response.body, code: get_order_response.code }
 
               if get_order_response['Result']['IsActive'] == true
                 @object.update(
@@ -91,6 +98,15 @@ module Api
 
               sleep(1)
             end
+          end
+
+          def save_logs(order_hash)
+            PaymentLog.create(
+              banks_response: logs.find { |log| log[:type] == 'banks_response' }&.to_json,
+              create_order_response: logs.find { |log| log[:type] == 'create_order_response' }&.to_json,
+              payinfo_responses: logs.select { |log| log[:type] == 'get_payinfo_response' }&.to_json,
+              other_processing_id: order_hash
+            )
           end
         end
       end

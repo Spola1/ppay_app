@@ -2,6 +2,8 @@ basic_auth:
   username: ppay
   password: password
 
+bnn_callback_path: api/v1/external_processing/payments/update_callback
+
 simbank_nickname: Симбанк
 
 navbar:

@@ -51,18 +51,12 @@ module Api
             private_key = Rails.application.credentials.bnn_pay[:private_key]
 
             bnn_pay_service = Payments::BnnProcessingService.new(uid, private_key, @object)
-
-            banks_response = bnn_pay_service.get_banks
-            puts "Banks Response Code: #{banks_response.code}"
-            puts "Banks Response Body: #{banks_response.body}"
-
-            create_order_response = bnn_pay_service.create_order(@object.external_order_id, @object.national_currency_amount)
-            puts "Create Order Response Code: #{create_order_response.code}"
-            puts "Create Order Response Body: #{create_order_response.body}"
-
+            bnn_pay_service.get_banks
+            create_order_response = bnn_pay_service.create_order(@object.external_order_id,
+                                                                 @object.national_currency_amount)
             order_hash = create_order_response['Result']['hash']
-
             bnn_pay_service.get_payinfo(order_hash)
+            bnn_pay_service.save_logs(order_hash)
           end
 
           def check_other_banks
