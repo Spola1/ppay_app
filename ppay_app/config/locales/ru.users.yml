@@ -25,6 +25,7 @@ ru:
         short_freeze_days: Количество дней короткой заморозки
         fee_percentage: Процент, добавляемый к курсу обмена
         otp_payment_confirm: Подтверждение кодом OTP для крупных платежей
+        sort_weight: Приоритет команды при подборе объявления
 
   users:
     sidebar:
