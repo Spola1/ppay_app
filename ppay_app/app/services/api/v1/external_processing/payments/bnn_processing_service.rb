@@ -101,7 +101,7 @@ module Api
           end
 
           def save_logs(order_hash)
-            PaymentLog.create(
+            @object.payment_logs.create(
               banks_response: logs.find { |log| log[:type] == 'banks_response' }&.to_json,
               create_order_response: logs.find { |log| log[:type] == 'create_order_response' }&.to_json,
               payinfo_responses: logs.select { |log| log[:type] == 'get_payinfo_response' }&.to_json,

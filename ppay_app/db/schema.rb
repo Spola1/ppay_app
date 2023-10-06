@@ -339,8 +339,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_062256) do
     t.text "create_order_response"
     t.text "payinfo_responses"
     t.string "other_processing_id"
+    t.bigint "payment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["payment_id"], name: "index_payment_logs_on_payment_id"
   end
 
   create_table "payment_receipts", force: :cascade do |t|
@@ -588,6 +590,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_062256) do
   add_foreign_key "message_read_statuses", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
+  add_foreign_key "payment_logs", "payments"
   add_foreign_key "payment_receipts", "payments"
   add_foreign_key "payment_receipts", "users"
   add_foreign_key "payment_systems", "exchange_portals"

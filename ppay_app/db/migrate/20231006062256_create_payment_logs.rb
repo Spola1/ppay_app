@@ -6,6 +6,8 @@ class CreatePaymentLogs < ActiveRecord::Migration[7.0]
       t.text :payinfo_responses
       t.string :other_processing_id
 
+      t.references :payment, foreign_key: { to_table: :payments }, index: true
+
       t.timestamps
     end
   end
