@@ -5,7 +5,7 @@ class PaymentDecorator < ApplicationDecorator
 
   delegate_all
 
-  delegate :card_owner_name, :sbp_phone_number, to: :advertisement
+  delegate :card_owner_name, :sbp_phone_number, to: :advertisement, allow_nil: true
 
   def countdown
     return '00:00:00' if countdown_difference.negative?
@@ -126,11 +126,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def payment_link
-    advertisement.payment_link.presence if type == 'Deposit'
+    advertisement&.payment_link.presence if type == 'Deposit'
   end
 
   def payment_link_qr_code_url
-    return unless advertisement.payment_link.present?
+    return unless advertisement&.payment_link.present?
 
     rails_blob_url(advertisement.payment_link_qr_code) if type == 'Deposit'
   end

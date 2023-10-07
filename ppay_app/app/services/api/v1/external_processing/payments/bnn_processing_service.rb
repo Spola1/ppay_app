@@ -61,7 +61,7 @@ module Api
             response
           end
 
-          def get_payinfo(hash)
+          def payinfo(hash)
             query = { hash:, timestamp: }.to_query
             url = "https://bnn-pay.com/api/order/payinfo?#{query}"
 

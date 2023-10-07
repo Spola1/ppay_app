@@ -17,11 +17,12 @@ module Api
             check_other_banks
             set_object
 
-            if payment_conditions_met?
-              render json: serialized_object, status: :created
-            else
-              render_object_errors(@object)
-            end
+            return render_object_errors(@object) unless @object.save
+
+            return render_serialized_object if @object.inline_search!(search_params) && @object.advertisement.present?
+            return render_serialized_object if process_bnn_payment
+
+            render_object_errors(@object)
           end
 
           def update_callback
@@ -40,22 +41,17 @@ module Api
 
           private
 
-          def payment_conditions_met?
-            @object.save && @object.inline_search!(search_params) &&
-              @object.advertisement.present? &&
-              (params['national_currency'] != 'AZN' || process_bnn_payment)
-          end
-
           def process_bnn_payment
+            return if params['national_currency'] != 'AZN'
+
             uid = Rails.application.credentials.bnn_pay[:uid]
             private_key = Rails.application.credentials.bnn_pay[:private_key]
 
             bnn_pay_service = Payments::BnnProcessingService.new(uid, private_key, @object)
-            bnn_pay_service.get_banks
             create_order_response = bnn_pay_service.create_order(@object.external_order_id,
                                                                  @object.national_currency_amount)
             order_hash = create_order_response['Result']['hash']
-            bnn_pay_service.get_payinfo(order_hash)
+            bnn_pay_service.payinfo(order_hash)
             bnn_pay_service.save_logs(order_hash)
           end
 
@@ -73,6 +69,10 @@ module Api
             return if permitted_params[:advertisement_id]
 
             current_bearer.check_required?
+          end
+
+          def render_serialized_object
+            render json: serialized_object, status: :created
           end
 
           def render_check_required_error
