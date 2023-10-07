@@ -15,83 +15,66 @@ module Api
             @uid = uid
             @private_key = private_key
             @object = object
-            @timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
             @logs = []
           end
 
-          def get_banks
-            banks_params = { timestamp: @timestamp }
+          def timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
+          def signature(content) = Digest::MD5.hexdigest("#{@uid}:#{@private_key}:#{content}")
 
-            sorted_params = banks_params.sort.map { |k, v| "#{k}=#{v}" }.join('&')
-            signature_body = "#{@uid}:#{@private_key}:#{sorted_params}"
-
-            banks_url = "https://bnn-pay.com/api/banks?#{sorted_params}"
-
-            banks_headers = {
+          def headers(content)
+            {
               'UID' => @uid,
-              'SIGNATURE' => Digest::MD5.hexdigest(signature_body),
+              'SIGNATURE' => signature(content),
               'Content-Type' => 'application/json'
             }
+          end
 
-            banks_response = HTTParty.get(banks_url, body: banks_params, headers: banks_headers)
+          def callback_url
+            "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PROTOCOL')}://" \
+              "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_ADDRESS')}/#{Settings.external_callback_path}"
+          end
 
-            @logs << { type: 'banks_response', body: banks_response.body, code: banks_response.code }
-            banks_response
+          def banks
+            @banks ||= begin
+              query = { timestamp: }.to_query
+              url = "https://bnn-pay.com/api/banks?#{query}"
+
+              response = HTTParty.get(url, headers: headers(query))
+
+              @logs << { type: 'banks_response', body: response.body, code: response.code }
+              response
+            end
           end
 
           def create_order(order_id, amount)
-            banks_response = get_banks
-            banks_size = banks_response['Result'].size
-
-            settings_path = Rails.root.join('config', 'settings.yml')
-            settings = YAML.load_file(settings_path)
-            callback_path = settings['external_callback_path']
-
-            order_params = {
+            params_json = {
               orderId: order_id,
-              amount: amount,
-              callbackUrl: "#{ENV.fetch('EXTERNAL_BNN_CALLBACK_PROTOCOL')}://#{ENV.fetch('EXTERNAL_BNN_CALLBACK_ADDRESS')}/#{callback_path}",
-              bankId: rand(1..banks_size)
+              amount:,
+              callbackUrl: callback_url,
+              bankId: banks['Result'].sample['Id']
             }.to_json
+            url = "https://bnn-pay.com/api/order/create?timestamp=#{timestamp}"
 
-            create_order_url = "https://bnn-pay.com/api/order/create?timestamp=#{@timestamp}"
+            response = HTTParty.post(url, body: params_json, headers: headers(params_json))
 
-            order_headers = {
-              'UID' => @uid,
-              'SIGNATURE' => Digest::MD5.hexdigest("#{@uid}:#{@private_key}:#{order_params}"),
-              'Content-Type' => 'application/json'
-            }
-
-            create_order_response = HTTParty.post(create_order_url, body: order_params, headers: order_headers)
-
-            @logs << { type: 'create_order_response', body: create_order_response.body, code: create_order_response.code }
-            create_order_response
+            @logs << { type: 'create_order_response', body: response.body, code: response.code }
+            response
           end
 
-          def get_payinfo(order_hash)
-            get_order_params = { hash: order_hash, timestamp: @timestamp }
-
-            get_order_sorted_params = get_order_params.sort.map { |k, v| "#{k}=#{v}" }.join('&')
-            signature_body = "#{@uid}:#{@private_key}:#{get_order_sorted_params}"
-
-            get_payinfo_url = "https://bnn-pay.com/api/order/payinfo?#{get_order_sorted_params}"
-
-            get_order_headers = {
-              'UID' => @uid,
-              'SIGNATURE' => Digest::MD5.hexdigest(signature_body),
-              'Content-Type' => 'application/json'
-            }
+          def get_payinfo(hash)
+            query = { hash:, timestamp: }.to_query
+            url = "https://bnn-pay.com/api/order/payinfo?#{query}"
 
             10.times do
-              get_order_response = HTTParty.get(get_payinfo_url, headers: get_order_headers)
+              response = HTTParty.get(url, headers: headers(query))
 
-              @logs << { type: 'get_payinfo_response', body: get_order_response.body, code: get_order_response.code }
+              @logs << { type: 'get_payinfo_response', body: response.body, code: response.code }
 
-              if get_order_response['Result']['IsActive'] == true
+              if response['Result']['IsActive']
                 @object.update(
-                  payment_system: get_order_response['Result']['cardDetail']['Bank'],
-                  card_number: get_order_response['Result']['cardDetail']['Card'],
-                  other_processing_id: order_hash
+                  payment_system: response['Result']['cardDetail']['Bank'],
+                  card_number: response['Result']['cardDetail']['Card'],
+                  other_processing_id: hash
                 )
                 break
               end
