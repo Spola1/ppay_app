@@ -24,6 +24,7 @@ module Merchants
         @payment = Payment.new(payment_params)
         @payment.uuid = SecureRandom.uuid
         @payment.save
+
         if @payment.errors.empty?
           redirect_to "/payments/deposits/#{@payment.uuid}/display_link"
         else

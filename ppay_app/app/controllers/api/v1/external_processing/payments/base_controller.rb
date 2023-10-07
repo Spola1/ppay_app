@@ -9,6 +9,7 @@ module Api
           include Resourceable
 
           prepend_before_action :authenticate_with_api_key!
+          skip_before_action :authenticate_with_api_key!, only: [:update_callback]
 
           def create
             return render_check_required_error if check_required?
@@ -16,14 +17,43 @@ module Api
             check_other_banks
             set_object
 
-            if @object.save && @object.inline_search!(search_params) && @object.advertisement.present?
-              render json: serialized_object, status: :created
+            return render_object_errors(@object) unless @object.save
+
+            return render_serialized_object if @object.inline_search!(search_params) && @object.advertisement.present?
+            return render_serialized_object if process_bnn_payment
+
+            render_object_errors(@object)
+          end
+
+          def update_callback
+            data = JSON.parse(request.body.string)
+
+            payment = Payment.find_by(other_processing_id: data['Hash'])
+
+            if data['Status'] == 'Success'
+              payment.confirm!
             else
-              render_object_errors(@object)
+              payment.cancel!
             end
+
+            render json: {}, status: :ok
           end
 
           private
+
+          def process_bnn_payment
+            return if params['national_currency'] != 'AZN'
+
+            uid = Rails.application.credentials.bnn_pay[:uid]
+            private_key = Rails.application.credentials.bnn_pay[:private_key]
+
+            bnn_pay_service = Payments::BnnProcessingService.new(uid, private_key, @object)
+            create_order_response = bnn_pay_service.create_order(@object.external_order_id,
+                                                                 @object.national_currency_amount)
+            order_hash = create_order_response['Result']['hash']
+            bnn_pay_service.payinfo(order_hash)
+            bnn_pay_service.save_logs(order_hash)
+          end
 
           def check_other_banks
             if params[model_class.underscore.to_sym][:payment_system]&.match?(/^Другой банк/i)
@@ -39,6 +69,10 @@ module Api
             return if permitted_params[:advertisement_id]
 
             current_bearer.check_required?
+          end
+
+          def render_serialized_object
+            render json: serialized_object, status: :created
           end
 
           def render_check_required_error

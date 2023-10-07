@@ -138,4 +138,5 @@ gem 'tailwindcss-rails', '~> 2.0'
 gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'dotenv-rails', groups: [:development, :test]
+gem 'httparty'
 gem 'trace_location'
