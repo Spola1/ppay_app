@@ -3,6 +3,7 @@
 require_relative 'boot'
 
 require 'rails/all'
+require_relative '../lib/rack/raw_json'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -38,5 +39,7 @@ module PpayApp
         config.swagger_dry_run = false
       end
     end
+
+    config.middleware.use Rack::RawJSON
   end
 end

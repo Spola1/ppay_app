@@ -17,7 +17,7 @@ module Api
         else
           render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
         end
-      rescue Exception => e
+      rescue StandardError => e
         @incoming_request = IncomingRequest.create(initial_params: request.raw_post, error: e.full_message)
 
         render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
@@ -26,13 +26,14 @@ module Api
       private
 
       def set_incoming_data
-        if from_macrodroid? || params[:body]
-          body = from_macrodroid? ? request.raw_post : params[:body]
+        @incoming_data =
+          if from_macrodroid? || params[:body]
+            body = from_macrodroid? ? params[:raw_json] : params[:body]
 
-          @incoming_data = JSON.parse(sanitized_params(body))
-        else
-          @incoming_data = params.permit!.to_h
-        end
+            JSON.parse(sanitized_params(body))
+          else
+            params.permit!.to_h
+          end
       end
 
       def from_macrodroid?
