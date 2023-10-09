@@ -6,7 +6,9 @@ module AdvertisementScopes
   included do
     scope :active,               -> { where(status: true) }
     scope :by_payment_system,    ->(payment_system) { where(payment_system:) }
-    scope :by_amount,            ->(amount) { where('max_summ >= :amount AND min_summ <= :amount', amount:) }
+    scope :by_amount,            lambda { |amount|
+      where('(max_summ >= :amount or max_summ is NULL) AND (min_summ <= :amount or min_summ is NULL)', amount:)
+    }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_direction,         ->(direction) { where(direction:) }
     scope :order_random,         lambda {
