@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_09_171337) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_212345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -87,6 +87,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_171337) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
+    t.decimal "conversion", default: "0.0"
+    t.integer "completed_payments", default: 0
+    t.integer "cancelled_payments", default: 0
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end

@@ -109,6 +109,9 @@ class Payment < ApplicationRecord
   after_update_commit :cancel_transactions, if: lambda {
     payment_status.in?(%w[cancelled]) && payment_status_previously_changed?
   }
+  after_update_commit :set_advertisement_conversion, if: lambda {
+    payment_status_previously_changed? && (completed? || cancelled?)
+  }
 
   after_update_commit lambda {
     broadcast_replace_payment_to_client if payment_status_previously_changed? || arbitration_previously_changed?
@@ -277,7 +280,8 @@ class Payment < ApplicationRecord
     if merchant.chat_enabled?
       Chat.create(payment_id: id, user_id: support_id, text: text_with_active_arbitration_chat, skip_notification: true)
     else
-      Chat.create(payment_id: id, user_id: support_id, text: text_without_active_arbitration_chat, skip_notification: true)
+      Chat.create(payment_id: id, user_id: support_id, text: text_without_active_arbitration_chat,
+                  skip_notification: true)
     end
   end
 
@@ -391,5 +395,13 @@ class Payment < ApplicationRecord
 
   def set_initial_amount
     self.initial_amount = national_currency_amount
+  end
+
+  def set_advertisement_conversion
+    finished = advertisement.payments.finished.count
+    completed = advertisement.payments.completed.count
+    cancelled = finished - completed
+    advertisement.update(conversion: (completed.to_f / finished * 100).round(2),
+                         completed_payments: completed, cancelled_payments: cancelled)
   end
 end

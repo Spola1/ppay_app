@@ -1,0 +1,8 @@
+- if ad.status == true
+    = button_to "/advertisements/#{ ad.id }", method: :patch, params: { advertisement: {status: 0} } do
+        .icon-button-green
+            = fa_icon 'check-square-o'
+- else 
+    = button_to "/advertisements/#{ ad.id }", method: :patch, params: { advertisement: {status: 1} } do
+        .icon-button-red
+            = fa_icon 'square-o'

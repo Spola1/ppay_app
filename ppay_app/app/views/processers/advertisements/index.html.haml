@@ -18,6 +18,7 @@
       %table.items-list-table
         %thead.item-list-thead
           %tr
+            %th.items-list-th
             %th.items-list-th ID
             %th.items-list-th создано
             %th.items-list-th направление
@@ -32,7 +33,8 @@
               кол-во активных
               %br
               платежей
-
+            %th.items-list-th успех/отмена
+            %th.items-list-th конверсия
 
             %th.items-list-th
             %th.items-list-th
@@ -41,6 +43,7 @@
         %tbody
           - @advertisements.each do |ad|
             %tr.items-list-tr{ class: ad.archived? ? 'opacity-30' : '' }
+              %td.items-list-td= render 'shared/staff/advertisements/activate_deactivate_button', ad: ad
               %td.items-list-td-link= link_to ad.id, ad
               %td.items-list-td= ad.formatted_created_at
               %td.items-list-td{ class: "direction-#{ ad.direction.underscore }" }
@@ -54,6 +57,12 @@
                 = ad.status ? 'Активно' : 'Неактивно'
               %td.items-list-td= ad.processer_id
               %td.items-list-td= ad.payments.active.count
+              %td.items-list-td
+                %span.font-semibold.text-green-600= ad.completed_payments
+                = "/"
+                %span.font-semibold.text-red-600= ad.cancelled_payments
+              %td.items-list-td
+                %span.font-semibold{class: ad.conversion < 50 ? 'text-red-600' : 'text-green-600'}= "#{ad.conversion}%"
 
               %td.items-list-td.px-1.w-0
                 - unless ad.archived?

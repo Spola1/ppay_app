@@ -38,5 +38,14 @@
         %td.item-card-td.item-card-td-label Источник курса
         %td.item-card-td= @advertisement.exchange_rate_source
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Кол-во успешных платежей
+        %td.item-card-td= @advertisement.completed_payments  
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Кол-во отмененных платежей
+        %td.item-card-td= @advertisement.cancelled_payments 
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Конверсия
+        %td.item-card-td= @advertisement.conversion  
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Статус
         %td.item-card-td= @advertisement.status ? 'Активно' : 'Неактивно'
