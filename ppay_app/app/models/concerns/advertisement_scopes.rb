@@ -13,6 +13,7 @@ module AdvertisementScopes
     scope :by_direction,         ->(direction) { where(direction:) }
     scope :order_random,         lambda {
       weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
+      weights_sum = [weights_sum, 1].max
       order = Arel.sql("(RANDOM() * users.sort_weight / #{weights_sum}) DESC")
       joins(:processer).order(order).group('advertisements.id, users.sort_weight')
     }
@@ -40,20 +41,21 @@ module AdvertisementScopes
         .group('advertisements.id')
     }
 
-    scope :for_deposit, lambda { |payment|
+    scope :for_deposit_common, lambda { |payment|
       for_payment(payment)
         .order_by_algorithm(payment.national_currency_amount)
         .by_processer_balance(payment.cryptocurrency_amount)
         .by_amount(payment.national_currency_amount)
         .by_direction('Deposit')
-        .equal_amount_payments_limited(payment.national_currency_amount, payment.merchant.equal_amount_payments_limit)
+    }
+
+    scope :for_deposit, lambda { |payment|
+      equal_amount_payments_limited(payment.national_currency_amount, payment.merchant.equal_amount_payments_limit)
+        .for_deposit_common(payment)
     }
 
     scope :for_deposit_unlimited, lambda { |payment|
-      for_payment(payment)
-        .order_by_algorithm(payment.national_currency_amount)
-        .by_processer_balance(payment.cryptocurrency_amount)
-        .by_direction('Deposit')
+      for_deposit_common(payment)
     }
 
     scope :for_withdrawal, lambda { |payment|
