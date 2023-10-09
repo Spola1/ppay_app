@@ -12,6 +12,8 @@ navbar:
       path: turnover_stats_path
     - name: Балансы
       path: balances_path
+    - name: Запросы баланса
+      path: balance_requests_path
   admin:
     - name: Все платежи
       path: payments_path

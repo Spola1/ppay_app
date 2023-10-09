@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include Pagy::Backend
 
-  MANAGEMENT_NAMESPACES = %w[admins supports].freeze
+  MANAGEMENT_NAMESPACES = %w[super_admins admins supports].freeze
 
   before_action :set_application_locale
 

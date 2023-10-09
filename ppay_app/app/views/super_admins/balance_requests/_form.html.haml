@@ -1,0 +1,10 @@
+= simple_form_for @balance_request do |f|
+
+  = f.input :status, collection: [["Ожидание", :processing], ["Подтверждено", :completed], ["Отменён", :cancelled]],
+                     include_blank: '-выбрать-'
+
+  = f.input :transaction_hash
+  = f.input :real_commission
+  = f.input :short_comment
+
+  = f.submit 'Сохранить',  class: 'form-submit'
