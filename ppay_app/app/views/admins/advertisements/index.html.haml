@@ -23,7 +23,8 @@
             %th.items-list-th комментарий
             %th.items-list-th источник курса
             %th.items-list-th статус
-
+            %th.items-list-th успех/отмена
+            %th.items-list-th конверсия
 
             %th.items-list-th
             %th.items-list-th
@@ -46,6 +47,12 @@
               %td.items-list-td= ad.exchange_rate_source
               %td.items-list-td{ class: "advertisement-status-#{ ad.status }" }
                 = ad.status ? 'Активно' : 'Неактивно'
+              %td.items-list-td
+                %span.font-semibold.text-green-600= ad.completed_payments
+                = "/"
+                %span.font-semibold.text-red-600= ad.cancelled_payments
+              %td.items-list-td
+                %span.font-semibold{class: ad.conversion < 50 ? 'text-red-600' : 'text-green-600'}= "#{ad.conversion}%"
 
               %td.items-list-td.px-1.w-0
                 - unless ad.archived?
