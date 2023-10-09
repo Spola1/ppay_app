@@ -4,6 +4,10 @@
                         include_blank: '-выбрать-'
 
   = f.input :national_currency, collection: NationalCurrency.pluck(:name), include_blank: '-выбрать-'
+  
+  = f.input :min_summ
+
+  = f.input :max_summ
 
   = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: '-выбрать-'
 

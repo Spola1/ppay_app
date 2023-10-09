@@ -42,12 +42,14 @@ module AdvertisementScopes
       for_payment(payment)
         .order_by_algorithm(payment.national_currency_amount)
         .by_processer_balance(payment.cryptocurrency_amount)
+        .by_amount(payment.national_currency_amount)
         .by_direction('Deposit')
     }
 
     scope :for_withdrawal, lambda { |payment|
       for_payment(payment)
         .order_by_algorithm(payment.national_currency_amount)
+        .by_amount(payment.national_currency_amount)
         .by_direction('Withdrawal')
     }
 

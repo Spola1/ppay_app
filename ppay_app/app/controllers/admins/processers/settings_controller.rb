@@ -22,7 +22,7 @@ module Admins
       def settings_params
         params.require(:processer).permit(:nickname, :name, :processer_commission, :working_group_commission,
                                           :processer_withdrawal_commission, :working_group_withdrawal_commission,
-                                          :working_group_id, :otp_payment_confirm, :sort_weight)
+                                          :working_group_id, :otp_payment_confirm, :sort_weight, :can_edit_summ)
       end
     end
   end
