@@ -7,7 +7,7 @@ module Processers
     def index
       @pagy, @advertisements = pagy(current_user.advertisements
                                                 .filter_by(filtering_params)
-                                                .order(archived_at: :desc, conversion: :desc, status: :desc))
+                                                .order(archived_at: :desc, conversion: :asc, status: :desc))
       @advertisements = @advertisements.decorate
     end
 

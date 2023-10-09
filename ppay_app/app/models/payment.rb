@@ -86,7 +86,6 @@ class Payment < ApplicationRecord
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
   before_save :take_off_arbitration, if: -> { payment_status_changed? && completed? }
-  before_save :set_advertisement_conversion, if: -> { payment_status_changed? && (completed? || cancelled?) }
   before_save :update_status_changed_at, if: :payment_status_changed?
 
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
@@ -109,6 +108,9 @@ class Payment < ApplicationRecord
   }
   after_update_commit :cancel_transactions, if: lambda {
     payment_status.in?(%w[cancelled]) && payment_status_previously_changed?
+  }
+  after_update_commit :set_advertisement_conversion, if: lambda {
+    payment_status_previously_changed? && (completed? || cancelled?)
   }
 
   after_update_commit lambda {
