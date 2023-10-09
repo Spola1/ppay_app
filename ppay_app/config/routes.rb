@@ -33,13 +33,14 @@ Rails.application.routes.draw do
     concerns :statuses_updatable
   end
 
-  scope module: :superadmins, constraints: ->(request) { request.env['warden'].user&.super_admin? } do
+  scope module: :super_admins, constraints: ->(request) { request.env['warden'].user&.super_admin? } do
     resources :turnover_stats, only: %i[index] do
       collection do
         get :all_stats
       end
     end
     resources :balances, only: %i[index]
+    resources :balance_requests
 
     root 'turnover_stats#index', as: :superadmins_root
   end

@@ -13,7 +13,12 @@ module Staff
       before_action :find_balance_request, except: %i[new index]
 
       def index
-        @pagy, @balance_requests = pagy(BalanceRequest.filter_by(filtering_params).order(created_at: :desc))
+        @pagy, @balance_requests = pagy(
+          BalanceRequest.joins(:user).includes(user: :balance)
+            .where.not(user: { type: 'Ppay' })
+            .filter_by(filtering_params)
+            .order(created_at: :desc)
+        )
       end
 
       def show; end

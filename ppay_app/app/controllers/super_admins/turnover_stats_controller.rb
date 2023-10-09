@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Superadmins
+module SuperAdmins
   class TurnoverStatsController < Staff::BaseController
     def index
       set_all_merchants
