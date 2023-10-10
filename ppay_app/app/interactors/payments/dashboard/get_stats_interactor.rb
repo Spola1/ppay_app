@@ -2,7 +2,7 @@
 
 module Payments
   module Dashboard
-    class GetStatsInteractor
+    class GetStatsProcesser
       include Interactor
 
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
@@ -34,10 +34,12 @@ module Payments
       private
 
       def set_default_params
-        if filtering_params.blank? || (filtering_params[:period].blank? && filtering_params[:created_from].blank?)
-          context.filtering_params = {} if filtering_params.blank?
-          context.filtering_params[:period] = 'last_hour'
+        unless filtering_params.blank? || (filtering_params[:period].blank? && filtering_params[:created_from].blank?)
+          return
         end
+
+        context.filtering_params = {} if filtering_params.blank?
+        context.filtering_params[:period] = 'last_hour'
       end
 
       def set_payments
@@ -48,13 +50,13 @@ module Payments
         context.finished = payments.finished.count
         context.completed = payments.completed.count
         context.cancelled = finished - completed
-        context.conversion = finished.positive? && completed.positive? ?
-          (completed.to_f / finished.to_f * 100).round(2) :
-          0
+        context.conversion =
+          finished.positive? && completed.positive? ? (completed.to_f / finished * 100).round(2) : 0
       end
 
       def set_average_confirmation
-        context.average_confirmation = payments
+        context.average_confirmation =
+          payments
           .completed
           .joins(:audits)
           .where("audited_changes @> '{\"payment_status\": [\"transferring\",\"confirming\"]}'")
@@ -74,14 +76,14 @@ module Payments
       def set_active_advertisements_period
         start_time, end_time = calculate_time_range
 
-        if start_time && end_time
-          active_advertisements_period = fetch_active_advertisements_period(start_time, end_time)
-          context.active_advertisements_period = active_advertisements_period
-        end
+        return unless start_time && end_time
+
+        active_advertisements_period = fetch_active_advertisements_period(start_time, end_time)
+        context.active_advertisements_period = active_advertisements_period
       end
 
       def calculate_time_range_for_period(period)
-        if !['yesterday', 'before_yesterday'].include?(period)
+        if !%w[yesterday before_yesterday].include?(period)
           [PERIODS[period], Time.now]
         elsif period == 'yesterday'
           [PERIODS[period], 1.day.ago.end_of_day]
@@ -119,10 +121,8 @@ module Payments
       def set_average_arbitration_resolution_time
         start_time, end_time = calculate_time_range
 
-        total_resolution_time = 0
-        arbitration_resolutions_count = 0
-
-        arbitration_resolutions = ArbitrationResolution
+        arbitration_resolutions =
+          ArbitrationResolution
           .completed
           .where(payment: payments,
                  reason: [ArbitrationResolution.reasons[:check_by_check],
@@ -133,6 +133,59 @@ module Payments
         context.average_arbitration_resolution_time = arbitration_resolutions.average('ended_at - created_at') || 0
         context.arbitration_resolutions_count = arbitration_resolutions.count
       end
+    end
+
+    class GetStatsGeneral
+      include Interactor
+
+      def call
+        set_national_currencies
+        set_average_payments_release_time
+        set_payments_bandwith
+      end
+
+      private
+
+      def set_average_payments_release_time
+        context.avg_release_time = {}
+        context.national_currencies.each do |currency|
+          payments = get_most_frequent_amount_payments(currency)[1]
+          context.avg_release_time[currency] =
+            if payments
+              (payments.map { |payment| (payment.status_changed_at - payment.created_at) / 60 }.sum / payments.count)
+                .round(2)
+            else
+              0
+            end
+        end
+      end
+
+      def set_payments_bandwith
+        context.payments_bandwith = {}
+        context.national_currencies.each do |currency|
+          ad_count = Advertisement.where(national_currency: currency, status: true).count
+          avg_release_time = context.avg_release_time[currency]
+          context.payments_bandwith[currency] = ad_count.positive? ? (avg_release_time / ad_count).round(2) : 0
+        end
+      end
+
+      def get_most_frequent_amount_payments(national_currency)
+        Payment.where('created_at >= ?', 1.hour.ago)
+               .where(payment_status: %w[cancelled completed],
+                      national_currency:)
+               .group_by(&:national_currency_amount)
+               .max_by(&:count) || []
+      end
+
+      def set_national_currencies
+        context.national_currencies = NationalCurrency.pluck(:name)
+      end
+    end
+
+    class GetStatsInteractor
+      include Interactor::Organizer
+
+      organize GetStatsProcesser, GetStatsGeneral
     end
   end
 end
