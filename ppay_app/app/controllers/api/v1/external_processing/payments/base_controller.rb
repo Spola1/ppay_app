@@ -31,9 +31,9 @@ module Api
             payment = Payment.find_by(other_processing_id: data['Hash'])
 
             if data['Status'] == 'Success'
-              payment.confirm!
+              payment.update(payment_status: :completed)
             else
-              payment.cancel!
+              payment.update(payment_status: :cancelled)
             end
 
             render json: {}, status: :ok
