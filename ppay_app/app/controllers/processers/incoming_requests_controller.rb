@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Supports
+module Processers
   class IncomingRequestsController < ApplicationController
     before_action :set_incoming_request, only: :show
 
