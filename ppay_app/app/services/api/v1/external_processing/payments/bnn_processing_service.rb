@@ -76,6 +76,11 @@ module Api
                   card_number: response['Result']['cardDetail']['Card'],
                   other_processing_id: hash
                 )
+                @object.advertisement = Advertisement.where(processer: Processer.where(nickname: 'bnn',
+                                                                                       national_currency: 'AZN',
+                                                                                       payment_system: @object.payment_system))
+                @object.save
+                @object.bind!
                 break
               end
 

@@ -20,11 +20,11 @@ class TransactionDecorator < ApplicationDecorator
   end
 
   def crypto_currency
-    transactionable.cryptocurrency
+    transactionable&.cryptocurrency
   end
 
   def national_currency
-    transactionable.national_currency
+    transactionable&.national_currency
   end
 
   def formatted_unfreeze_time_moscow
