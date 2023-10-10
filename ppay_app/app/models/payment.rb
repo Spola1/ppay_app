@@ -402,7 +402,11 @@ class Payment < ApplicationRecord
   end
 
   def set_advertisement_conversion
+    return unless advertisement&.payments.present?
+
     finished = advertisement.payments.finished.count
+    return unless finished.positive?
+
     completed = advertisement.payments.completed.count
     cancelled = finished - completed
     advertisement.update(conversion: (completed.to_f / finished * 100).round(2),
