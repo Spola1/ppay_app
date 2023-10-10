@@ -165,8 +165,7 @@ module Payments
         context.national_currencies.each do |currency|
           ad_count = Advertisement.where(national_currency: currency, status: true).count
           avg_release_time = context.avg_release_time[currency]
-          context.payments_bandwith[currency] =
-            ad_count && avg_release_time ? (avg_release_time / ad_count).round(2) : 0
+          context.payments_bandwith[currency] = ad_count.positive? ? (avg_release_time / ad_count).round(2) : 0
         end
       end
 
