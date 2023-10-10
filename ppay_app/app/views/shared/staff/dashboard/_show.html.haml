@@ -21,12 +21,12 @@
               value: "#{@total_average_confirmation.round(2)} сек",
               value_color: average_confirmation_color(@total_average_confirmation)
             - @stats[1].national_currencies.each do |currency|
-              = render 'shared/staff/stats/stats_tr', 
+              = render 'shared/staff/stats/stats_tr',
                 title: "Среднее время завершения платежа #{currency}",
                 value: "#{@stats[1].avg_release_time[currency]} мин"
-              = render 'shared/staff/stats/stats_tr', 
+              = render 'shared/staff/stats/stats_tr',
                 title: "Пропускная способность #{currency}",
-                value: @stats[1].payments_bandwith[currency]  
+                value: @stats[1].payments_bandwith[currency]
   - @stats.each do |stats|
     .card-wrap{ class: 'basis-1/2' }
       .item-card.h-full
