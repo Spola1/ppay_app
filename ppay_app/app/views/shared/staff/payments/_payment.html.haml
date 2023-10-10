@@ -65,7 +65,7 @@
                         payment.available_cancelled_transactions? && role_namespace.in?(%w[supports processers]) |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
-                    - if otp_payment_confirm?(payment)
+                    - if otp_payment_confirm?(payment) && role_namespace == 'processers'
                       = text_field_tag :otp_attempt
                     = f.submit 'Подтвердить платёж',
                       name: :restore,
@@ -76,7 +76,7 @@
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
                     .otp_button
-                      - if otp_payment_confirm?(payment)
+                      - if otp_payment_confirm?(payment) && role_namespace == 'processers'
                         = text_field_tag :otp_attempt, nil, size: 5
                       = f.submit 'Откатить платёж',
                         name: :rollback,
@@ -104,7 +104,12 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус изменён
               %td.item-card-td
-                = payment.formatted_status_changed_at
+                .flex.flex-row.items-center.justify-between
+                  = payment.formatted_status_changed_at
+                  - if role_namespace.in?(%w[supports admins])
+                    = f.submit 'Отправить Callback',
+                      name: :send_update_callback,
+                      class: 'form-submit'
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Кол-во криптовалюты

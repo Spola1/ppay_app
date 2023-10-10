@@ -134,7 +134,7 @@ class Payment < ApplicationRecord
     end
   }
 
-  after_update_commit -> { Payments::UpdateCallbackJob.perform_async(id) if payment_status_previously_changed? }
+  after_update_commit :send_update_callback, if: :payment_status_previously_changed?
 
   after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
 
@@ -252,6 +252,10 @@ class Payment < ApplicationRecord
     advertisements_scope
       .equal_amount_payments_limited(national_currency_amount, merchant.equal_amount_payments_limit)
       .exists?
+  end
+
+  def send_update_callback
+    Payments::UpdateCallbackJob.perform_async(id)
   end
 
   private

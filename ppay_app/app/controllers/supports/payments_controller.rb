@@ -33,6 +33,8 @@ module Supports
         @payment.rollback!
       elsif params[:change_national_currency_amount]
         change_national_currency_amount
+      elsif params[:send_update_callback]
+        @payment.send_update_callback
       else
         @payment.update(payment_params)
       end

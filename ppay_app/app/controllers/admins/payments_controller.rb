@@ -18,6 +18,8 @@ module Admins
     def update
       if params[:fire_event]
         @payment.aasm.fire!(params[:event]) if params[:event].present?
+      elsif params[:send_update_callback]
+        @payment.send_update_callback
       else
         @payment.update(payment_params)
       end
