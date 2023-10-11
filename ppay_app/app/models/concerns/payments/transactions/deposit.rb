@@ -110,11 +110,6 @@ module Payments
       def main_transaction_percent
         100 - processer_commission - working_group_commission - agent_commission - ppay_commission
       end
-
-      def rollback_transactions
-        transactions.completed.payment_transactions.each(&:rollback!)
-        transactions.cancelled.payment_transactions.each(&:destroy)
-      end
     end
   end
 end

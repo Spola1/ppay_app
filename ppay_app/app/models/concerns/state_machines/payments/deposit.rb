@@ -58,6 +58,21 @@ module StateMachines
                         guard: proc { |params| valid_image?(params) && valid_account_number?(params) }
           end
 
+          # recreate transactions with new amounts
+          event :recalculate do
+            before :set_cryptocurrency_amount
+            after do
+              cancel_transactions unless cancelled?
+              destroy_transactions
+              create_transactions
+              cancel_transactions if cancelled?
+            end
+
+            transitions from: :transferring, to: :transferring, guard: proc { available_frozen_transactions? }
+            transitions from: :confirming, to: :confirming, guard: proc { available_frozen_transactions? }
+            transitions from: :cancelled, to: :cancelled, guard: proc { available_cancelled_transactions? }
+          end
+
           # show_confirmation
           event :confirm do
             before :set_locale
@@ -74,18 +89,14 @@ module StateMachines
           end
 
           event :restore do
-            transitions from: :cancelled, to: :completed,
-                        guard: proc { available_cancelled_transactions? },
+            transitions from: :cancelled, to: :completed, guard: proc { available_cancelled_transactions? },
                         after: %i[restore_transactions complete_transactions freeze_balance]
-            transitions from: :cancelled, to: :cancelled,
-                        after: %i[set_cryptocurrency_amount create_transactions cancel_transactions]
           end
 
           event :rollback do
             after :unfreeze_balance, :rollback_transactions
 
-            transitions from: :completed, to: :cancelled,
-                        guard: proc { transactions_rollbackable? }
+            transitions from: :completed, to: :cancelled, guard: proc { transactions_rollbackable? }
           end
         end
       end

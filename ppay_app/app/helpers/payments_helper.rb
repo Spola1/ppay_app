@@ -2,6 +2,7 @@
 
 module PaymentsHelper
   AVAILABLE_STATUSES_COLLECTION = %i[transferring confirming completed cancelled].freeze
+  AVAILABLE_EVENTS_COLLECTION = %i[check confirm cancel].freeze
   AVAILABLE_CANCELLATION_REASONS_COLLECTION = %i[by_client duplicate_payment fraud_attempt incorrect_amount
                                                  not_paid].freeze
   AVAILABLE_ARBITRATION_REASONS_COLLECTION_FOR_PROCESSERS = %i[duplicate_payment fraud_attempt
@@ -47,7 +48,7 @@ module PaymentsHelper
 
   def support_payment_permitted_transitions_collection(payment)
     payment.aasm.permitted_transitions
-           .select { |transition| transition[:state].in? AVAILABLE_STATUSES_COLLECTION }
+           .select { |transition| available_transition(transition) }
            .map { |transition| [state_translation(transition[:state]), transition[:event]] }
            .prepend([state_translation(payment.payment_status), nil])
   end
@@ -185,5 +186,10 @@ module PaymentsHelper
     payment.cryptocurrency_amount > (Setting.instance.otp_payment_confirm_amount || 0) &&
       payment.processer&.otp_payment_confirm? &&
       payment.processer&.otp_secret&.present?
+  end
+
+  def available_transition(transition)
+    transition[:state].in?(AVAILABLE_STATUSES_COLLECTION) &&
+      transition[:event].in?(AVAILABLE_EVENTS_COLLECTION)
   end
 end

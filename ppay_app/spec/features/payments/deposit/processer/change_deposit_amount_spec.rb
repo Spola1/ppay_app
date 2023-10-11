@@ -15,6 +15,8 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
   let(:added_national_currency_amount) { 4000 }
 
   before do
+    Sidekiq::Testing.inline!
+
     using_session 'Merchant' do
       sign_in merchant
       visit root_path
@@ -24,10 +26,6 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
       sign_in support
       visit root_path
     end
-  end
-
-  scenario 'processer changes the completed deposit amount' do
-    Sidekiq::Testing.inline!
 
     perform_enqueued_jobs do
       post '/api/v1/payments/deposits',
@@ -43,8 +41,6 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
                       'Content-Type' => 'application/json',
                       'Authorization' => "Bearer #{merchant.token}" }
       deposit_url = response_body[:data][:attributes][:url]
-      deposit_uuid = response_body[:data][:attributes][:uuid]
-      deposit = Deposit.find_by_uuid(deposit_uuid)
 
       using_session 'Processer' do
         sign_in processer
@@ -63,6 +59,13 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
 
       using_session 'Processer' do
         click_on 'ДЕПОЗИТ'
+      end
+    end
+  end
+
+  scenario 'processer changes the completed deposit amount' do
+    perform_enqueued_jobs do
+      using_session 'Processer' do
         accept_confirm { click_on 'Подтвердить' }
 
         accept_confirm { click_on 'Откатить платёж' }
@@ -71,8 +74,19 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
         accept_confirm { click_on 'Изменить сумму' }
 
         accept_confirm { click_on 'Подтвердить платёж' }
+      end
+    end
+  end
 
-        binding.irb
+  scenario 'processer changes the confirming deposit amount' do
+    perform_enqueued_jobs do
+      using_session 'Processer' do
+        deposit = Deposit.first
+
+        fill_in 'national_currency_amount', with: added_national_currency_amount
+        accept_confirm { click_on 'Изменить сумму' }
+
+        accept_confirm { click_on 'Подтвердить' }
       end
     end
   end
