@@ -77,9 +77,16 @@ module Api
                   other_processing_id: hash
                 )
                 @object.advertisement = Advertisement.where(processer: Processer.where(nickname: 'bnn'),
-                                                                                       national_currency: 'AZN',
-                                                                                       payment_system: @object.payment_system)
+                                                            national_currency: 'AZN',
+                                                            payment_system: @object.payment_system).first
+
                 @object.save
+
+                if @object.payment_status == 'created'
+                  @object.show!
+                  @object.inline_search!
+                end
+
                 @object.bind!
                 break
               end
