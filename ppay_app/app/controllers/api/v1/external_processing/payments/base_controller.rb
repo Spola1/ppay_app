@@ -31,6 +31,24 @@ module Api
             payment = Payment.find_by(other_processing_id: data['Hash'])
 
             if data['Status'] == 'Success'
+
+              uid = Rails.application.credentials.bnn_pay[:uid]
+              private_key = Rails.application.credentials.bnn_pay[:private_key]
+              bnn_pay_service = Payments::BnnProcessingService.new(uid, private_key, payment)
+
+              response = bnn_pay_service.get_orders(payment.other_processing_id)
+
+              RateSnapshot.create(exchange_portal: ExchangePortal.first,
+                                  value: response['Result']['Items'][0]['AznUsdtPrice'])
+
+              payment.transactions.payment_transactions.each(&:cancel!)
+              payment.transactions.delete_all
+              payment.rate_snapshot = RateSnapshot.where(payment_system_id: nil).last
+              payment.cryptocurrency_amount = payment.rate_snapshot.to_crypto(payment.national_currency_amount,
+                                                                              payment.merchant.fee_percentage)
+              payment.send(:create_transactions)
+              bnn_pay_service.update_logs
+
               payment.update(payment_status: :completed)
             else
               payment.update(payment_status: :cancelled)

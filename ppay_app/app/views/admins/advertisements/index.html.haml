@@ -35,7 +35,7 @@
             %tr.items-list-tr{ class: ad.archived? ? 'opacity-30' : '' }
               %td.items-list-td= render 'shared/staff/advertisements/activate_deactivate_button', ad: ad
               %td.items-list-td-link= link_to ad.id, ad
-              %td.items-list-td= "#{ad.processer.name} (#{ad.processer.email})"
+              %td.items-list-td= "#{ad.processer&.name} (#{ad.processer&.email})"
               %td.items-list-td= ad.processer_id
               %td.items-list-td= ad.formatted_created_at
               %td.items-list-td{ class: "direction-#{ ad.direction.underscore }" }

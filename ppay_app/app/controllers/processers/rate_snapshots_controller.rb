@@ -5,7 +5,7 @@ module Processers
     def index
       @pagy, @rate_snapshots = pagy(
         RateSnapshot.includes(payment_system: :national_currency)
-                    .order(created_at: :desc)
+                    .order(created_at: :desc).where.not(payment_system: nil)
       )
     end
 

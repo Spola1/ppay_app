@@ -21,6 +21,21 @@ module Api
           def timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
           def signature(content) = Digest::MD5.hexdigest("#{@uid}:#{@private_key}:#{content}")
 
+          def get_orders(hash)
+            query_params = {
+              hash:,
+              exclude_expired: true,
+              timestamp:
+            }
+
+            url = "https://bnn-pay.com/api/orders?#{query_params.to_query}"
+
+            response = HTTParty.get(url, headers: headers(query_params.to_query))
+
+            @logs << { type: 'orders_response', body: response.body, code: response.code }
+            response
+          end
+
           def headers(content)
             {
               'UID' => @uid,
@@ -80,13 +95,7 @@ module Api
                                                             national_currency: 'AZN',
                                                             payment_system: @object.payment_system).first
 
-                @object.save
-
-                if @object.payment_status == 'created'
-                  @object.show!
-                  @object.inline_search!
-                end
-
+                @object.save!
                 @object.bind!
                 break
               end
@@ -101,6 +110,12 @@ module Api
               create_order_response: logs.find { |log| log[:type] == 'create_order_response' }&.to_json,
               payinfo_responses: logs.select { |log| log[:type] == 'get_payinfo_response' }&.to_json,
               other_processing_id: order_hash
+            )
+          end
+
+          def update_logs
+            @object.payment_logs.last.update(
+              orders_response: logs.select { |log| log[:type] == 'orders_response' }&.to_json
             )
           end
         end

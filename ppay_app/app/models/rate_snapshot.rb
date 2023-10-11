@@ -2,7 +2,7 @@
 
 class RateSnapshot < ApplicationRecord
   belongs_to :exchange_portal
-  belongs_to :payment_system
+  belongs_to :payment_system, optional: true
   # к каждому снэпшоту курса может быть привязано множество платежей
   has_many   :payments
 
