@@ -8,8 +8,18 @@ module Payments
           transactions.payment_transactions.pluck(:status).all?('cancelled')
       end
 
-      def transactions_rollbackable?
+      def available_frozen_transactions?
         transactions.payment_transactions.present? &&
+          transactions.payment_transactions.pluck(:status).all?('frozen')
+      end
+
+      def available_completed_transactions?
+        transactions.payment_transactions.present? &&
+          transactions.payment_transactions.pluck(:status).all?('completed')
+      end
+
+      def transactions_rollbackable?
+        available_completed_transactions? &&
           transactions.payment_transactions.all? { |tr| (tr.to_balance&.amount || 0) >= tr.amount }
       end
 
@@ -64,6 +74,14 @@ module Payments
 
       def restore_transactions
         transactions.payment_transactions.each(&:restore!)
+      end
+
+      def rollback_transactions
+        transactions.payment_transactions.each(&:rollback!)
+      end
+
+      def destroy_transactions
+        transactions.cancelled.payment_transactions.each(&:destroy)
       end
     end
   end

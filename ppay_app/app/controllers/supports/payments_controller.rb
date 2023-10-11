@@ -45,10 +45,10 @@ module Supports
     private
 
     def change_national_currency_amount
-      return if @payment.transactions.present?
+      return unless @payment.payment_status.in?(%w[transferring confirming cancelled])
 
       @payment.update(national_currency_amount: params[:national_currency_amount])
-      @payment.restore!
+      @payment.recalculate!
     end
 
     def mark_messages_as_read(messages)

@@ -56,32 +56,40 @@
                   = "(продажа / sell / внесение средств)"
                 - else
                   = "(покупка / buy / снятие средств)"
+
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Статус
               %td.item-card-td
                 - if local_assigns[:can_manage_payment?] && !payment.payment_status.in?(%w[completed cancelled]) && role_namespace != 'merchants'
                   = render "#{role_namespace}/payments/payment_status_field", f:, payment:
-                - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'cancelled' &&          |
+
+                - elsif local_assigns[:can_manage_payment?] && payment.cancelled? &&                             |
                         payment.available_cancelled_transactions? && role_namespace.in?(%w[supports processers]) |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
+
                     - if otp_payment_confirm?(payment) && role_namespace == 'processers'
                       = text_field_tag :otp_attempt
+
                     = f.submit 'Подтвердить платёж',
                       name: :restore,
                       onclick: 'return confirm(\'Вы уверены, что полностью получили платёж и хотите его подтвердить?\');',
                       class: 'green-button-payment-apply'
-                - elsif local_assigns[:can_manage_payment?] && payment.payment_status == 'completed' &&   |
-                        payment.transactions_rollbackable? && role_namespace.in?(%w[supports processers]) |
+
+                - elsif local_assigns[:can_manage_payment?] && payment.completed? &&                             |
+                        payment.available_completed_transactions? && role_namespace.in?(%w[supports processers]) |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
+
                     .otp_button
                       - if otp_payment_confirm?(payment) && role_namespace == 'processers'
                         = text_field_tag :otp_attempt, nil, size: 5
+
                       = f.submit 'Откатить платёж',
                         name: :rollback,
                         onclick: 'return confirm(\'Вы уверены, что хотите откатить платёж?\');',
                         class: 'red-button'
+
                 - else
                   = payment.human_payment_status
 
@@ -128,10 +136,11 @@
               %td.item-card-td
                 .flex.flex-row.items-center.justify-between
                   = "#{payment.decorate.national_formatted}"
-                  - if payment.transactions.empty? && local_assigns[:can_manage_payment?] &&                |
-                       payment.payment_status == 'cancelled' && role_namespace.in?(%w[supports processers]) |
+                  - if local_assigns[:can_manage_payment?] &&                               |
+                       payment.payment_status.in?(%w[cancelled transferring confirming]) && |
+                       role_namespace.in?(%w[supports processers])                          |
                     .change_national_currency_amount
-                      = text_field_tag :national_currency_amount, nil, size: 5
+                      = text_field_tag :national_currency_amount, nil, size: 10
                       = f.submit 'Изменить сумму',
                         name: :change_national_currency_amount,
                         onclick: 'return confirm(\'Вы уверены, что хотите изменить сумму?\');',
