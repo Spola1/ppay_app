@@ -1,33 +1,15 @@
-%section.wrap
-  .card-wrap
-    .item-card
-      %h1.mb-4.text-xl Входящие запросы
+= turbo_frame_tag 'content' do
+  %section.wrap
+    .filters-wrap
+      .item-card
+        %h1.mb-4.text-xl Фильтры
+        = render 'shared/staff/incoming_requests/filter', incoming_requests: @incoming_requests, role_namespace:
 
-      - if @incoming_requests.present?
-        %table.items-list-table
-          %thead.item-list-thead
-            %tr
-              %th.items-list-th ID
-              %th.items-list-th создано
-              %th.items-list-th приложение
-              %th.items-list-th тип
+    .card-wrap
+      .item-card
+        %h1.mb-4.text-xl Входящие запросы
 
-              %th.items-list-th
-
-          %tbody
-            - @incoming_requests.each do |ir|
-              %tr.border-b{ class: ('bg-red-100' if ir.error) }
-                %td.items-list-td-link= link_to ir.id, ir
-                %td.items-list-td= ir.decorate.formatted_created_at
-                %td.items-list-td= ir.app
-                %td.items-list-td= ir.request_type
-
-                %td.items-list-td.px-1.w-0
-                  = link_to ir do
-                    .icon-button-gray
-                      = fa_icon 'arrow-right'
-      - else
-        .empty-list-text
-          Запросов пока нет
-      .card-wrap
-        = render 'shared/pagination', pagy: @pagy
+        = render 'table', incoming_requests: @incoming_requests
+        
+        .card-wrap
+          = render 'shared/pagination', pagy: @pagy

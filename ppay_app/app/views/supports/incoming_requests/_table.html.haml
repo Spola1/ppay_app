@@ -1,0 +1,26 @@
+- if incoming_requests.present?
+  %table.items-list-table
+    %thead.item-list-thead
+      %tr
+        %th.items-list-th ID
+        %th.items-list-th создано
+        %th.items-list-th приложение
+        %th.items-list-th тип
+
+        %th.items-list-th
+
+    %tbody
+      - incoming_requests.each do |ir|
+        %tr.border-b{ class: ('bg-red-100' if ir.error) }
+          %td.items-list-td-link= link_to ir.id, ir
+          %td.items-list-td= ir.decorate.formatted_created_at
+          %td.items-list-td= ir.app
+          %td.items-list-td= ir.request_type
+
+          %td.items-list-td.px-1.w-0
+            = link_to ir do
+              .icon-button-gray
+                = fa_icon 'arrow-right'
+- else
+  .empty-list-text
+    Запросов пока нет
