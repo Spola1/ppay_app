@@ -19,7 +19,7 @@ module Api
 
             return render_object_errors(@object) unless @object.save
 
-            @object.inline_search!(search_params)
+            @object.inline_search!(search_params) if @object.national_currency == 'AZN'
 
             return render_serialized_object if @object.inline_search!(search_params) && @object.advertisement.present?
             return render_serialized_object if process_bnn_payment
