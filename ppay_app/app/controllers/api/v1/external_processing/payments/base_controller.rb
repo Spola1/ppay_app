@@ -7,7 +7,6 @@ module Api
         class BaseController < ActionController::API
           include ApiKeyAuthenticatable
           include Resourceable
-          include BnnProcessable
 
           prepend_before_action :authenticate_with_api_key!
           skip_before_action :authenticate_with_api_key!, only: [:update_callback]
@@ -42,6 +41,77 @@ module Api
           end
 
           private
+
+          def handle_successful_payment_callback(payment)
+            bnn_pay_service = Payments::BnnProcessingService.new
+            response = bnn_pay_service.get_orders(payment.other_processing_id)
+            create_rate_snapshot(response)
+            update_payment(payment, response, bnn_pay_service)
+          end
+
+          def create_rate_snapshot(response)
+            RateSnapshot.create(exchange_portal: ExchangePortal.first,
+                                value: response['Result']['Items'][0]['AznUsdtPrice'])
+          end
+
+          def update_payment(payment, response, bnn_pay_service)
+            payment.update(rate_snapshot: RateSnapshot.where(payment_system_id: nil).last)
+
+            update_amount(payment, response)
+
+            payment.recalculate!
+
+            update_payment_logs(payment, bnn_pay_service.logs)
+
+            payment.update(payment_status: :completed)
+          end
+
+          def update_amount(payment, response)
+            amount = response['Result']['Items'][0]['ResultAmount']
+
+            payment.update(national_currency_amount: amount) if amount.present?
+          end
+
+          def update_payment_logs(payment, logs)
+            payment.payment_logs.last.update(
+              orders_response: logs.select { |log| log[:type] == 'orders_response' }&.to_json
+            )
+          end
+
+          def handle_failed_payment_callback(payment)
+            payment.update(payment_status: :cancelled)
+          end
+
+          def process_bnn_payment
+            return if params['national_currency'] != 'AZN'
+
+            bnn_pay_service = Payments::BnnProcessingService.new
+            create_order_response = bnn_pay_service.create_order(@object.external_order_id, @object.national_currency_amount)
+            order_hash = create_order_response['Result']['hash']
+            payinfo = bnn_pay_service.payinfo(order_hash)
+
+            update_object_attributes(order_hash, payinfo)
+            create_payment_logs(bnn_pay_service.logs, order_hash)
+          end
+
+          def update_object_attributes(order_hash, payinfo)
+            @object.update(payment_system: payinfo['Result']['cardDetail']['Bank'],
+                           card_number: payinfo['Result']['cardDetail']['Card'],
+                           other_processing_id: order_hash,
+                           advertisement: Advertisement.where(processer: Processer.where(nickname: 'bnn'),
+                                                              national_currency: 'AZN',
+                                                              payment_system: @object.payment_system).first)
+            @object.bind!
+          end
+
+          def create_payment_logs(logs, order_hash)
+            @object.payment_logs.create(
+              banks_response: logs.find { |log| log[:type] == 'banks_response' }&.to_json,
+              create_order_response: logs.find { |log| log[:type] == 'create_order_response' }&.to_json,
+              payinfo_responses: logs.select { |log| log[:type] == 'get_payinfo_response' }&.to_json,
+              other_processing_id: order_hash
+            )
+          end
 
           def check_other_banks
             if params[model_class.underscore.to_sym][:payment_system]&.match?(/^Другой банк/i)
