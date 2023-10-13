@@ -11,10 +11,9 @@ module Api
         class BnnProcessingService
           attr_reader :logs
 
-          def initialize(uid, private_key, object)
-            @uid = uid
-            @private_key = private_key
-            @object = object
+          def initialize
+            @uid = Rails.application.credentials.bnn_pay[:uid]
+            @private_key = Rails.application.credentials.bnn_pay[:private_key]
             @logs = []
           end
 
@@ -68,28 +67,27 @@ module Api
             10.times do
               response = HTTParty.get(url, headers: headers(query))
 
-              @logs << { type: 'get_payinfo_response', body: response.body, code: response.code }
+              @logs << { type: 'payinfo_response', body: response.body, code: response.code }
 
-              if response['Result']['IsActive']
-                @object.update(
-                  payment_system: response['Result']['cardDetail']['Bank'],
-                  card_number: response['Result']['cardDetail']['Card'],
-                  other_processing_id: hash
-                )
-                break
-              end
+              return response if response.dig('Result', 'IsActive')
 
               sleep(1)
             end
           end
 
-          def save_logs(order_hash)
-            @object.payment_logs.create(
-              banks_response: logs.find { |log| log[:type] == 'banks_response' }&.to_json,
-              create_order_response: logs.find { |log| log[:type] == 'create_order_response' }&.to_json,
-              payinfo_responses: logs.select { |log| log[:type] == 'get_payinfo_response' }&.to_json,
-              other_processing_id: order_hash
-            )
+          def orders(hash, exclude_expired: nil)
+            params = {
+              hash:,
+              exclude_expired:,
+              timestamp:
+            }.compact
+
+            url = "https://bnn-pay.com/api/orders?#{params.to_query}"
+
+            response = HTTParty.get(url, headers: headers(params.to_query))
+
+            @logs << { type: 'orders_response', body: response.body, code: response.code }
+            response
           end
         end
       end
