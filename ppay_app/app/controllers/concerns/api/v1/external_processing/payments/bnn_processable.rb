@@ -17,6 +17,8 @@ module Api
             response = bnn_pay_service.orders(@payment.other_processing_id)
 
             @payment.update(rate_snapshot: create_rate_snapshot(response))
+            @payment.bind!
+
             update_amount(response)
             @payment.recalculate!
 
@@ -64,17 +66,22 @@ module Api
             create_payment_logs(order_hash)
           end
 
+          def bnn_advertisement(payinfo)
+            Advertisement.where(
+              processer: Processer.where(nickname: 'bnn'),
+              national_currency: 'AZN',
+              payment_system: payinfo['Result']['cardDetail']['Bank']
+            ).first
+          end
+
           def update_object_attributes(order_hash, payinfo)
             @object.update(
               payment_status: 'processer_search',
               payment_system: payinfo['Result']['cardDetail']['Bank'],
               card_number: payinfo['Result']['cardDetail']['Card'],
               other_processing_id: order_hash,
-              advertisement: Advertisement.where(processer: Processer.where(nickname: 'bnn'),
-                                                 national_currency: 'AZN',
-                                                 payment_system: @object.payment_system).first
+              advertisement: bnn_advertisement(payinfo)
             )
-            @object.bind!
           end
 
           def create_payment_logs(order_hash)
