@@ -1,9 +1,1 @@
-%section.wrap
-  .card-wrap
-    .item-card
-      .flex.mb-4.items-center
-        .text-xl.flex-1= "Запрос (ID: #{@incoming_request.id})"
-      .mt-8.my-4
-        = render @incoming_request
-      .back-link
-        = link_to '<- К списку ненайденных платежей', not_found_payments_path
+= render 'shared/staff/incoming_requests/show', incoming_request: @incoming_request

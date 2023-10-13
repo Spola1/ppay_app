@@ -1,15 +1,1 @@
-= turbo_frame_tag 'content' do
-  %section.wrap
-    .filters-wrap
-      .item-card
-        %h1.mb-4.text-xl Фильтры
-        = render 'shared/staff/incoming_requests/filter', incoming_requests: @incoming_requests, role_namespace:
-
-    .card-wrap
-      .item-card
-        %h1.mb-4.text-xl Входящие запросы
-
-        = render 'table', incoming_requests: @incoming_requests
-        
-        .card-wrap
-          = render 'shared/pagination', pagy: @pagy
+= render 'shared/staff/incoming_requests/index', incoming_requests: @incoming_requests, role_namespace:
