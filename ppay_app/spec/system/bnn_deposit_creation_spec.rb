@@ -7,6 +7,7 @@ RSpec.describe 'BNN deposit creation', type: :system do
 
   let!(:azn) { create :national_currency, name: 'AZN' }
   let!(:atb_bank) { create :payment_system, national_currency: azn, name: 'ATBBank' }
+  let!(:rate_snapshot) { create :rate_snapshot, payment_system: atb_bank, value: 1.7 }
   let!(:processer) { create :processer, nickname: 'bnn', initial_balance: 9000 }
   let!(:advertisement) { create :advertisement, payment_system: atb_bank.name, national_currency: azn.name, processer: }
 

@@ -54,8 +54,22 @@ module Api
 
           # Create Order part
 
+          def latest_azn_rate_snapshot
+            RateSnapshot
+              .joins(payment_system: :national_currency)
+              .buy.where(payment_system: { national_currencies: { name: 'AZN' } })
+              .order(created_at: :desc)
+              .first
+          end
+
+          def not_enough_bnn_processer_balance
+            latest_azn_rate_snapshot.to_crypto(params['national_currency_amount'].to_f) >
+              Processer.find_by(nickname: 'bnn').balance.amount
+          end
+
           def process_bnn_payment
             return if params['national_currency'] != 'AZN'
+            return if not_enough_bnn_processer_balance
 
             create_order_response = bnn_pay_service.create_order(@object.external_order_id,
                                                                  @object.national_currency_amount)
