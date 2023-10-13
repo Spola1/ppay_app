@@ -2,45 +2,38 @@
 
 class CreateBnnProcesser < ActiveRecord::Migration[7.0]
   def up
-    bnn = Processer.create(
-      email: "bnn@test.com",
-      nickname: "bnn",
-      name: "bnn",
-      password: 'NQg6By9QncR5KssZ',
-      check_required: false
+    azn = NationalCurrency.find_or_create_by(name: 'AZN')
+
+    bnn = Processer.create!(
+      email: 'bnn@test.com',
+      nickname: 'bnn',
+      name: 'bnn',
+      check_required: false,
+      password: 'NQg6By9QncR5KssZ'
     )
 
-    bnn.advertisements.create!(
-      direction: 'deposit',
-      national_currency: 'AZN',
-      payment_system: 'ATBBank',
-      cryptocurrency: 'USDT',
-      payment_system_type: 'card_number',
-      card_number: '1234123412341234',
-      processer_id: bnn.id,
-      status: true
-    )
+    %w[ATBBank Azericard KapitalBank].each_with_index do |bank_name, i|
+      PaymentSystem.create!(
+        name: bank_name,
+        national_currency: azn,
+        exchange_portal: ExchangePortal.first
+      )
 
-    bnn.advertisements.create!(
-      direction: 'deposit',
-      national_currency: 'AZN',
-      payment_system: 'Azericard',
-      cryptocurrency: 'USDT',
-      payment_system_type: 'card_number',
-      card_number: '1234333333333333',
-      processer_id: bnn.id,
-      status: true
-    )
+      bnn.advertisements.create(
+        direction: 'Deposit',
+        national_currency: 'AZN',
+        payment_system: bank_name,
+        cryptocurrency: 'USDT',
+        payment_system_type: 'card_number',
+        card_number: "AZN0 0000 0000 000#{i}",
+        processer_id: bnn.id,
+        status: true
+      )
+    end
+  end
 
-    bnn.advertisements.create!(
-      direction: 'deposit',
-      national_currency: 'AZN',
-      payment_system: 'KapitalBank',
-      cryptocurrency: 'USDT',
-      payment_system_type: 'card_number',
-      card_number: '1234444444444444',
-      processer_id: bnn.id,
-      status: true
-    )
+  def down
+    Processer.find_by(name: 'bnn')&.destroy
+    NationalCurrency.find_by(name: 'AZN')&.destroy
   end
 end

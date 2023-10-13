@@ -20,21 +20,6 @@ module Api
           def timestamp = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
           def signature(content) = Digest::MD5.hexdigest("#{@uid}:#{@private_key}:#{content}")
 
-          def get_orders(hash)
-            query_params = {
-              hash:,
-              exclude_expired: true,
-              timestamp:
-            }
-
-            url = "https://bnn-pay.com/api/orders?#{query_params.to_query}"
-
-            response = HTTParty.get(url, headers: headers(query_params.to_query))
-
-            @logs << { type: 'orders_response', body: response.body, code: response.code }
-            response
-          end
-
           def headers(content)
             {
               'UID' => @uid,
@@ -82,12 +67,27 @@ module Api
             10.times do
               response = HTTParty.get(url, headers: headers(query))
 
-              @logs << { type: 'get_payinfo_response', body: response.body, code: response.code }
+              @logs << { type: 'payinfo_response', body: response.body, code: response.code }
 
-              return response if response['Result']['IsActive']
+              return response if response.dig('Result', 'IsActive')
 
               sleep(1)
             end
+          end
+
+          def orders(hash, exclude_expired: nil)
+            params = {
+              hash:,
+              exclude_expired:,
+              timestamp:
+            }.compact
+
+            url = "https://bnn-pay.com/api/orders?#{params.to_query}"
+
+            response = HTTParty.get(url, headers: headers(params.to_query))
+
+            @logs << { type: 'orders_response', body: response.body, code: response.code }
+            response
           end
         end
       end

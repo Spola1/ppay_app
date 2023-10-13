@@ -9,8 +9,7 @@ module Api
           include Resourceable
           include BnnProcessable
 
-          prepend_before_action :authenticate_with_api_key!
-          skip_before_action :authenticate_with_api_key!, only: [:update_callback]
+          prepend_before_action :authenticate_with_api_key!, except: :bnn_update_callback
 
           def create
             return render_check_required_error if check_required?
@@ -20,22 +19,19 @@ module Api
 
             return render_object_errors(@object) unless @object.save
 
-            @object.inline_search!(search_params) if @object.national_currency == 'AZN'
-
-            return render_serialized_object if @object.inline_search!(search_params) && @object.advertisement.present?
             return render_serialized_object if process_bnn_payment
+            return render_serialized_object if @object.inline_search!(search_params) && @object.advertisement.present?
 
             render_object_errors(@object)
           end
 
-          def update_callback
-            data = JSON.parse(request.body.string)
-            payment = Payment.find_by(other_processing_id: data['Hash'])
+          def bnn_update_callback
+            @payment = Payment.find_by(other_processing_id: params['Hash'])
 
-            if data['Status'] == 'Success'
-              handle_successful_payment_callback(payment)
+            if params['Status'] == 'Success'
+              handle_successful_payment_callback
             else
-              handle_failed_payment_callback(payment)
+              handle_failed_payment_callback
             end
 
             render json: {}, status: :ok
