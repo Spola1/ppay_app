@@ -11,10 +11,9 @@ module Api
         class BnnProcessingService
           attr_reader :logs
 
-          def initialize(uid, private_key, object)
-            @uid = uid
-            @private_key = private_key
-            @object = object
+          def initialize
+            @uid = Rails.application.credentials.bnn_pay[:uid]
+            @private_key = Rails.application.credentials.bnn_pay[:private_key]
             @logs = []
           end
 
@@ -85,38 +84,10 @@ module Api
 
               @logs << { type: 'get_payinfo_response', body: response.body, code: response.code }
 
-              if response['Result']['IsActive']
-                @object.update(
-                  payment_system: response['Result']['cardDetail']['Bank'],
-                  card_number: response['Result']['cardDetail']['Card'],
-                  other_processing_id: hash
-                )
-                @object.advertisement = Advertisement.where(processer: Processer.where(nickname: 'bnn'),
-                                                            national_currency: 'AZN',
-                                                            payment_system: @object.payment_system).first
-
-                @object.save!
-                @object.bind!
-                break
-              end
+              return response if response['Result']['IsActive']
 
               sleep(1)
             end
-          end
-
-          def save_logs(order_hash)
-            @object.payment_logs.create(
-              banks_response: logs.find { |log| log[:type] == 'banks_response' }&.to_json,
-              create_order_response: logs.find { |log| log[:type] == 'create_order_response' }&.to_json,
-              payinfo_responses: logs.select { |log| log[:type] == 'get_payinfo_response' }&.to_json,
-              other_processing_id: order_hash
-            )
-          end
-
-          def update_logs
-            @object.payment_logs.last.update(
-              orders_response: logs.select { |log| log[:type] == 'orders_response' }&.to_json
-            )
           end
         end
       end
