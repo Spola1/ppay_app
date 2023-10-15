@@ -16,9 +16,7 @@ module Api
           def handle_successful_payment_callback
             response = bnn_pay_service.orders(@payment.other_processing_id)
 
-            @payment.update(rate_snapshot: create_rate_snapshot(response))
-            @payment.bind!
-
+            @object.update(rate_snapshot: create_rate_snapshot(response))
             update_amount(response)
             @payment.recalculate!
 
@@ -76,6 +74,7 @@ module Api
 
             create_order_response = bnn_pay_service.create_order(@object.id,
                                                                  @object.national_currency_amount)
+            Rails.logger.error(create_order_response)
             order_hash = create_order_response['Result']['Hash']
             payinfo = bnn_pay_service.payinfo(order_hash)
 
@@ -93,12 +92,15 @@ module Api
 
           def update_object_attributes(order_hash, payinfo)
             @object.update(
-              payment_status: 'transferring',
+              payment_status: 'processer_search',
               payment_system: payinfo['Result']['cardDetail']['Bank'],
               card_number: payinfo['Result']['cardDetail']['Card'],
               other_processing_id: order_hash,
-              advertisement: bnn_advertisement(payinfo)
+              advertisement: bnn_advertisement(payinfo),
+              rate_snapshot: latest_azn_rate_snapshot
             )
+
+            @object.bind!
           end
 
           def create_payment_logs(order_hash)

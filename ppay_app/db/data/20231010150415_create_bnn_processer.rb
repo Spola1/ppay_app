@@ -30,14 +30,6 @@ class CreateBnnProcesser < ActiveRecord::Migration[7.0]
         status: true
       )
     end
-
-    RateSnapshot.create!(
-      direction: 'buy',
-      cryptocurrency: 'USDT',
-      exchange_portal: ExchangePortal.first,
-      payment_system: PaymentSystem.where(national_currency: azn).first,
-      value: 1.7
-    )
   end
 
   def down

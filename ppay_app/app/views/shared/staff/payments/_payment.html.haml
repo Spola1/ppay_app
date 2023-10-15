@@ -39,6 +39,9 @@
               %td.item-card-td.item-card-td-label{ class: 'w-1/4' } UUID
               %td.item-card-td= "#{payment.uuid}"
             %tr.item-card-tr
+              %td.item-card-td.item-card-td-label{ class: 'w-1/4' } ID на сторонней площадке
+              %td.item-card-td= "#{payment.other_processing_id}"
+            %tr.item-card-tr
               %td.item-card-td.item-card-td-label Ссылка
               %td.item-card-td.whitespace-normal{id: "payment_link_with_uuid"}
                 = "#{payment.decorate.url}"

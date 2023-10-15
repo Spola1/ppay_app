@@ -73,6 +73,8 @@ module StateMachines
       end
 
       def bind_rate_snapshot
+        return if rate_snapshot
+
         self.rate_snapshot = rate_snapshots_scope
                              .where(created_at: 2.weeks.ago..)
                              .by_payment_system(PaymentSystem.find_by(name: payment_system))
