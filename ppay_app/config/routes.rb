@@ -216,6 +216,7 @@ Rails.application.routes.draw do
       namespace :external_processing do
         namespace :payments do
           patch '/bnn_update_callback', to: 'base#bnn_update_callback'
+          post '/bnn_update_callback', to: 'base#bnn_update_callback'
         end
         concerns :payments_creatable
         patch 'payments/:uuid/statuses/:event', to: 'payments/statuses#update'

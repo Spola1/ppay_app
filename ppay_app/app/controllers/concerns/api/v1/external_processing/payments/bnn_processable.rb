@@ -22,8 +22,9 @@ module Api
             update_amount(response)
             @payment.recalculate!
 
-            update_payment_logs
             @payment.confirm!
+          ensure
+            update_payment_logs
           end
 
           def create_rate_snapshot(response)
@@ -50,6 +51,8 @@ module Api
 
           def handle_failed_payment_callback
             @payment.cancel!
+          ensure
+            update_payment_logs
           end
 
           # Create Order part
@@ -71,9 +74,9 @@ module Api
             return if params['national_currency'] != 'AZN'
             return if not_enough_bnn_processer_balance
 
-            create_order_response = bnn_pay_service.create_order(@object.external_order_id,
+            create_order_response = bnn_pay_service.create_order(@object.id,
                                                                  @object.national_currency_amount)
-            order_hash = create_order_response['Result']['hash']
+            order_hash = create_order_response['Result']['Hash']
             payinfo = bnn_pay_service.payinfo(order_hash)
 
             update_object_attributes(order_hash, payinfo)
@@ -90,7 +93,7 @@ module Api
 
           def update_object_attributes(order_hash, payinfo)
             @object.update(
-              payment_status: 'processer_search',
+              payment_status: 'transferring',
               payment_system: payinfo['Result']['cardDetail']['Bank'],
               card_number: payinfo['Result']['cardDetail']['Card'],
               other_processing_id: order_hash,

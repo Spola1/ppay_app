@@ -218,10 +218,7 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Номер карты
               %td.item-card-td
-                - if payment.type == 'Deposit'
-                  = payment.advertisement&.decorate&.formatted_card_number
-                - else
-                  = payment.formatted_card_number
+                = payment.formatted_card_number
             - if ['supports', 'admins'].include?(role_namespace)
               %tr.item-card-tr
                 %td.item-card-td.item-card-td-label Количество посещений
