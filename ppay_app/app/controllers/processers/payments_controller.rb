@@ -25,8 +25,6 @@ module Processers
     def update
       if params[:restore]
         payment_restore
-      elsif params[:rollback]
-        payment_rollback
       elsif params[:change_national_currency_amount]
         change_national_currency_amount
       else
@@ -51,12 +49,6 @@ module Processers
       @payment.update(params.permit(:arbitration, :arbitration_reason))
 
       @payment.restore!
-    end
-
-    def payment_rollback
-      return if required_otp_not_confirmed?
-
-      @payment.rollback!
     end
 
     def change_national_currency_amount
