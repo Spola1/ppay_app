@@ -76,19 +76,14 @@
                       onclick: 'return confirm(\'Вы уверены, что полностью получили платёж и хотите его подтвердить?\');',
                       class: 'green-button-payment-apply'
 
-                - elsif local_assigns[:can_manage_payment?] && payment.completed? &&                             |
-                        payment.available_completed_transactions? && role_namespace.in?(%w[supports processers]) |
+                - elsif local_assigns[:can_manage_payment?] && payment.completed? &&                  |
+                        payment.available_completed_transactions? && role_namespace.in?(%w[supports]) |
                   .flex.flex-row.items-center.justify-between
                     = payment.human_payment_status
-
-                    .otp_button
-                      - if otp_payment_confirm?(payment) && role_namespace == 'processers'
-                        = text_field_tag :otp_attempt, nil, size: 5
-
-                      = f.submit 'Откатить платёж',
-                        name: :rollback,
-                        onclick: 'return confirm(\'Вы уверены, что хотите откатить платёж?\');',
-                        class: 'red-button'
+                    = f.submit 'Откатить платёж',
+                      name: :rollback,
+                      onclick: 'return confirm(\'Вы уверены, что хотите откатить платёж?\');',
+                      class: 'red-button'
 
                 - else
                   = payment.human_payment_status
@@ -144,7 +139,7 @@
                       = f.submit 'Изменить сумму',
                         name: :change_national_currency_amount,
                         onclick: 'return confirm(\'Вы уверены, что хотите изменить сумму?\');',
-                        class: 'green-button-payment-apply'
+                        class: 'form-submit'
 
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label Платежная система
