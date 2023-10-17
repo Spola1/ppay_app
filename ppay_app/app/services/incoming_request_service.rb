@@ -30,7 +30,7 @@ class IncomingRequestService
     find_matching_payment
     create_not_found_payment
     build_related_models
-    payment_message
+    payment_message if @payment.advertisement.simbank_auto_confirmation?
     render_success_response
   end
 
