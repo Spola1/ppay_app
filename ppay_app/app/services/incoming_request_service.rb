@@ -54,6 +54,14 @@ class IncomingRequestService
                                          .where(simbank_auto_confirmation: true,
                                                 simbank_sender: @incoming_request.from)
 
+    @matching_advertisements = @processer.advertisements
+                                         .where('imei = :value OR imsi = :value OR phone = :value',
+                                                value: search_value)
+                                         .where('(save_incoming_requests_history = true AND
+                                                simbank_auto_confirmation = true AND simbank_sender = :sender)
+                                                OR (save_incoming_requests_history = true AND simbank_sender = :sender)',
+                                                sender: @incoming_request.from)
+
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
     @advertisement = nil
@@ -108,7 +116,7 @@ class IncomingRequestService
 
       if @payments.size == 1
         @payment = @payments.last[:payment]
-        @payment.confirm!
+        @payment.confirm! if @payment.advertisement.simbank_auto_confirmation == true
       end
     else
       find_amount(amount_masks)
