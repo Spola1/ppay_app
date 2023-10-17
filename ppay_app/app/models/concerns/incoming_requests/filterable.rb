@@ -34,7 +34,9 @@ module IncomingRequests
       }
 
       scope :filter_by_card_number, lambda { |card_number|
-        joins(:payment).where(payments: { card_number: })
+        joins(payment: :advertisement)
+          .where('advertisements.card_number ILIKE :card_number OR payments.card_number ILIKE :card_number',
+                 card_number: "%#{card_number}%")
       }
 
       scope :filter_by_advertisement_id, lambda { |advertisement_id|
@@ -42,8 +44,8 @@ module IncomingRequests
       }
 
       scope :filter_by_processer, lambda { |processer|
-        processer_id = processer.is_a?(Processer) ? processer.id : processer
-        joins(payment: { advertisement: :processer }).where(advertisements: { processer_id: })
+        processer_id = Processer.find_by(nickname: processer)
+        joins(payment: { advertisement: :processer }).where(users: { id: processer_id })
       }
 
       scope :filter_by_status, lambda { |status|
