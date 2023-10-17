@@ -30,12 +30,12 @@ class AddBinanceNamesToPaymentSystems < ActiveRecord::Migration[7.0]
       ['Alif - КортиМилли',          'AlifBank'],
       ['Спитамен - VISA',            'SpitamenBank'],
       ['Спитамен - КортиМилли',      'SpitamenBank'],
-    ].each do |name, binance_name|
+    ].each do |name, exchange_name|
       ps = PaymentSystem.find_by(name:)
 
       next unless ps
 
-      ps.update(binance_name:) if binance_name.present?
+      ps.update(exchange_name:) if exchange_name.present?
     end
   end
 end
