@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe AdvertisementDecorator do
-  let(:advertisement) { create :advertisement }
+  let(:advertisement) { create :advertisement, card_number: '4444 3333 2222 1111' }
 
   describe '#card_info' do
     context 'when payment_system is less than or equal to 8 characters' do
