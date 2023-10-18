@@ -74,7 +74,7 @@ module Admins
       port = ENV.fetch('TA_PORT', nil)
       path = ENV.fetch('TA_PATH')
 
-      url = "#{protocol}://#{address}#{port}/#{path}/#{endpoint}"
+      url = "#{protocol}://#{address}:#{port}/#{path}/#{endpoint}"
 
       HTTParty.post(
         url,

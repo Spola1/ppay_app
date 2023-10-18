@@ -20,7 +20,6 @@ client.start()
 @client.on(events.NewMessage(chats=chats_to_listen))
 async def normal_handler(event):
     message_text = event.text
-    print(event.text)
     send_message_to_rails(message_text)
 
 def send_message_to_rails(message_text):

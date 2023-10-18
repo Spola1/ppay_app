@@ -30,14 +30,16 @@ class TelegramApplicationJob
     end
 
     stdin.puts(phone_number)
-    stdin.flush
 
-    sleep(30)
+    loop do
+      break if telegram_application.code.present?
 
-    telegram_application.reload
+      sleep(3)
 
-    # не записывается автоматически
-    stdin.puts(code)
+      telegram_application.reload
+    end
+
+    stdin.puts(telegram_application.code)
     stdin.flush
 
     loop { stdin.puts gets.chomp }
