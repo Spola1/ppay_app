@@ -14,7 +14,6 @@ class TelegramApplicationJob
     session_name = telegram_application.session_name
     phone_number = telegram_application.phone_number
     main_application_id = telegram_application.main_application_id
-    code = telegram_application.code
     telegram_bots = telegram_application.bot_names
     telegram_bots_str = telegram_bots.join("")
 
