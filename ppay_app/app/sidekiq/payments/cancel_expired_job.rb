@@ -7,7 +7,7 @@ module Payments
 
     def perform
       cancel_expired
-      cancel_expired_arbitration
+      cancel_arbitration_not_paid
       cancel_expired_autoconfirming
     end
 
@@ -21,8 +21,8 @@ module Payments
       end
     end
 
-    def cancel_expired_arbitration
-      Deposit.expired_arbitration_not_paid.find_each do |payment|
+    def cancel_arbitration_not_paid
+      Deposit.arbitration_not_paid.find_each do |payment|
         payment.update(cancellation_reason: :not_paid)
         payment.cancel!
         payment.update(arbitration: false)
