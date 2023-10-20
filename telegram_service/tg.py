@@ -20,9 +20,10 @@ client.start()
 @client.on(events.NewMessage(chats=chats_to_listen))
 async def normal_handler(event):
     message_text = event.text
-    send_message_to_rails(message_text)
+    sender = event.message.peer_id.user_id
+    send_message_to_rails(message_text, sender)
 
-def send_message_to_rails(message_text):
+def send_message_to_rails(message_text, sender):
     url = 'http://localhost:3000/api/v1/simbank/requests'
     data = {
         'message': message_text,
@@ -30,7 +31,7 @@ def send_message_to_rails(message_text):
         'main_application_id': main_application_id,
         'telegram_phone': phone_number,
         'type': 'telegram_message',
-        'from': 'Telegram'
+        'from': sender
     }
     response = requests.post(url, json=data)
 

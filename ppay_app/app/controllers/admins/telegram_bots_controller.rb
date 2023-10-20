@@ -56,7 +56,7 @@ module Admins
     end
 
     def telegram_bot_params
-      params.require(:telegram_bot).permit(:name)
+      params.require(:telegram_bot).permit(:name, :chat_id)
     end
   end
 end

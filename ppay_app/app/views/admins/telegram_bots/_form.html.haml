@@ -9,5 +9,9 @@
     .col-span-1
       = f.input :name, label: 'Имя бота', hint: 'Обязательно с символом "@". Например: @test_bot'
 
+  .form-inputs.flex
+    .col-span-1
+      = f.input :chat_id, label: 'Chat ID'
+
   .form-actions
     = f.button :submit, 'Сохранить', class: 'form-submit'
