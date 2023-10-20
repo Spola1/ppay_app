@@ -20,10 +20,13 @@ class BalanceRequest < ApplicationRecord
   }
 
   before_validation :set_crypto_address, on: :create, if: -> { deposit? }
+
+  before_create :set_crypto_address_for_agent_and_wg, if: :agent_or_wg_withdrawing?
   after_create :create_transaction
   after_create_commit :send_new_balance_request_notification
 
-  validates_presence_of :crypto_address
+  validate :check_crypto_address_presence, on: :create
+  validates_presence_of :crypto_address, unless: :agent_or_wg_withdrawing?
   validates_numericality_of :amount, greater_than: 0
 
   scope :filter_by_status, ->(status) { where(status:) }
@@ -54,5 +57,19 @@ class BalanceRequest < ApplicationRecord
 
   def set_crypto_address
     self.crypto_address = user&.crypto_wallet&.address
+  end
+
+  def set_crypto_address_for_agent_and_wg
+    self.crypto_address = 'bep20'
+  end
+
+  def agent_or_wg_withdrawing?
+    %w[Agent WorkingGroup].include?(user.type) && withdraw?
+  end
+
+  def check_crypto_address_presence
+    if agent_or_wg_withdrawing? && crypto_address.present?
+      errors.add(:crypto_address, "Должно быть пустым.")
+    end
   end
 end
