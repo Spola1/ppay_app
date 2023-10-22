@@ -3,7 +3,6 @@
     %tr
       %th.items-list-th-mask-id ID
       %th.items-list-th Name
-      %th.items-list-th Chat ID
       %th.items-list-th
   %tbody
     - @telegram_bots.each do |telegram_bot|
@@ -11,8 +10,6 @@
         %td.items-list-td-link
           = link_to telegram_bot.id, telegram_bot_path(telegram_bot), data: { turbo_action: :advance }
         %td.items-list-td= telegram_bot.name     
-
-        %td.items-list-td= telegram_bot.chat_id           
         
         %td.items-list-td.px-1.w-0
           = link_to telegram_bot, data: { turbo_confirm: 'Вы уверены что хотите удалить бота?', turbo_method: :delete }  do

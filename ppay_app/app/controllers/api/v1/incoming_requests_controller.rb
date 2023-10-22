@@ -55,21 +55,13 @@ module Api
         app.processer.token
       end
 
-      def find_sender(data)
-        if data['app'] == 'Telegram'
-          TelegramBot.where(chat_id: data['from']).last.name
-        else
-          data['from']
-        end
-      end
-
       def incoming_request_params(data)
         {
           app: data['app'],
           api_key: data['api_key'] || find_api_key(data),
           request_type: data['type'],
           request_id: data['id'],
-          from: find_sender(data),
+          from: data['from'],
           to: data['to'],
           message: CGI.unescape(data['message'] || data['content']),
           res_sn: data['res_sn'],
