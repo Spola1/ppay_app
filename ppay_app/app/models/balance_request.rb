@@ -68,8 +68,8 @@ class BalanceRequest < ApplicationRecord
   end
 
   def check_crypto_address_presence
-    if agent_or_wg_withdrawing? && crypto_address.present?
-      errors.add(:crypto_address, "Должно быть пустым.")
-    end
+    return unless agent_or_wg_withdrawing? && crypto_address.present?
+
+    errors.add(:crypto_address, 'Должно быть пустым.')
   end
 end
