@@ -2,6 +2,7 @@ import requests
 from telethon import TelegramClient, sync, events
 import sys
 import pdb
+import os
 
 api_id = int(sys.argv[1])
 api_hash = sys.argv[2]
@@ -15,6 +16,8 @@ telegram_bots_list = [bot for bot in telegram_bots_list if bot]
 client = TelegramClient(session_name, api_id, api_hash)
 
 chats_to_listen = ['@' + bot for bot in telegram_bots_list]
+
+simbank_api_url = os.environ.get('MAIN_APP_SIMBANK_API_URL')
 
 client.start()
 
@@ -38,7 +41,6 @@ async def normal_handler(event):
         send_message_to_rails(message_text, sender_username)
 
 def send_message_to_rails(message_text, sender):
-    url = 'http://localhost:3000/api/v1/simbank/requests'
     data = {
         'message': message_text,
         'app': 'Telegram',
@@ -47,6 +49,6 @@ def send_message_to_rails(message_text, sender):
         'type': 'telegram_message',
         'from': '@' + sender
     }
-    response = requests.post(url, json=data)
+    response = requests.post(simbank_api_url, json=data)
 
 client.run_until_disconnected()

@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     namespace :users do
       get :settings
       resource :otp, only: %i[show update], controller: :otp
+      get :check_job_status
     end
 
     root 'payments#index', as: :processers_root

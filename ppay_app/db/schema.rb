@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_17_094308) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -343,7 +343,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_094308) do
   create_table "payment_logs", force: :cascade do |t|
     t.text "banks_response"
     t.text "create_order_response"
-    t.text "payinfo_responses"
     t.string "other_processing_id"
     t.bigint "payment_id"
     t.datetime "created_at", null: false
@@ -492,6 +491,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_094308) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "telegram_microservice_job_statuses", force: :cascade do |t|
+    t.string "status"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_telegram_microservice_job_statuses_on_user_id"
+  end
+
   create_table "telegram_settings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.boolean "balance_request_deposit", default: true
@@ -632,6 +639,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_094308) do
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
   add_foreign_key "telegram_applications", "users", column: "processer_id"
+  add_foreign_key "telegram_microservice_job_statuses", "users"
   add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
 end

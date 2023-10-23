@@ -69,12 +69,8 @@ module Admins
     end
 
     def send_request_to_microservice(data_to_send, endpoint)
-      protocol = ENV.fetch('TA_PROTOCOL')
-      address = ENV.fetch('TA_ADDRESS')
-      port = ENV.fetch('TA_PORT', nil)
-      path = ENV.fetch('TA_PATH')
-
-      url = "#{protocol}://#{address}:#{port}/#{path}/#{endpoint}"
+      url = "#{ENV.fetch('TA_PROTOCOL')}://#{ENV.fetch('TA_ADDRESS')}#{ENV.fetch('TA_PORT',
+                                                                                 nil)}/#{ENV.fetch('TA_PATH')}/#{endpoint}"
 
       HTTParty.post(
         url,
