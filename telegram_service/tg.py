@@ -63,9 +63,23 @@ async def send_status_update():
             print(f"Status update sent. Response: {response.text}")
         except Exception as e:
             print(f"Error sending status update: {e}")
-        await asyncio.sleep(300)
+        await asyncio.sleep(6000)
+
+async def check_connection_status():
+    while True:
+        await asyncio.sleep(6000)  # Проверяем каждые 30 секунд
+        try:
+            # Пробуем отправить тестовое сообщение
+            test_message = await client.send_message('me', 'Check connection')
+            
+            # Если сообщение отправлено успешно, удаляем его
+            await client.delete_messages('me', test_message.id)
+        except Exception as e:
+            print(f"Connection lost: {e}")
+            break
 
 if __name__ == "__main__":
     client.start()
     asyncio.ensure_future(send_status_update())
+    asyncio.ensure_future(check_connection_status())
     client.run_until_disconnected()

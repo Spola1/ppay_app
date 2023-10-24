@@ -343,7 +343,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   create_table "payment_logs", force: :cascade do |t|
     t.text "banks_response"
     t.text "create_order_response"
-    t.text "payinfo_responses"
     t.string "other_processing_id"
     t.bigint "payment_id"
     t.datetime "created_at", null: false
@@ -413,13 +412,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.decimal "initial_amount", precision: 128, scale: 64
     t.integer "processing_type", default: 0
+    t.decimal "initial_amount", precision: 128, scale: 64
     t.string "locale"
+    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
-    t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
     t.decimal "adjusted_rate"
     t.string "other_processing_id"
@@ -495,9 +494,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   create_table "telegram_connections", force: :cascade do |t|
     t.string "status"
     t.bigint "processer_id", null: false
+    t.bigint "telegram_application_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["processer_id"], name: "index_telegram_connections_on_processer_id"
+    t.index ["telegram_application_id"], name: "index_telegram_connections_on_telegram_application_id"
   end
 
   create_table "telegram_settings", force: :cascade do |t|
@@ -567,9 +568,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
+    t.boolean "only_whitelisted_processers", default: false, null: false
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
-    t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
     t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.integer "short_freeze_days"
@@ -640,6 +641,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
   add_foreign_key "telegram_applications", "users", column: "processer_id"
+  add_foreign_key "telegram_connections", "telegram_applications"
   add_foreign_key "telegram_connections", "users", column: "processer_id"
   add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
