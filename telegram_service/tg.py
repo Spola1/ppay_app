@@ -18,7 +18,7 @@ client = TelegramClient(session_name, api_id, api_hash)
 chats_to_listen = ['@' + bot for bot in telegram_bots_list]
 
 simbank_api_url = os.environ.get('MAIN_APP_SIMBANK_API_URL')
-status_update_url = "http://localhost:3000/api/v1/check_telegram_connections/check_connection_status"
+status_update_url = os.environ.get('MAIN_APP_STATUS_CONNECTION_URL')
 
 async def get_username(user_id):
     try:
