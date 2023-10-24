@@ -52,5 +52,5 @@ ru:
           title: Аутентификация OTP
         update:
           title: Аутентификация OTP
-      check_job_status:
+      check_telegram_connection_status:
         title: Соединение телеграм

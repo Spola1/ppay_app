@@ -160,7 +160,7 @@ Rails.application.routes.draw do
     namespace :users do
       get :settings
       resource :otp, only: %i[show update], controller: :otp
-      get :check_job_status
+      get :check_telegram_connection_status
     end
 
     root 'payments#index', as: :processers_root
@@ -215,6 +215,8 @@ Rails.application.routes.draw do
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
+      post '/check_telegram_connections/check_connection_status', to: 'check_telegram_connections#check_connection_status'
+      
       concerns :payments_creatable
       namespace :external_processing do
         namespace :payments do

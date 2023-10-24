@@ -8,6 +8,7 @@
       %th.items-list-th номер телефона
       %th.items-list-th код подтверждения
       %th.items-list-th оператор
+      %th.items-list-th статус подключения
       %th.items-list-th
   %tbody
     - @telegram_applications.each do |telegram_application|
@@ -20,6 +21,7 @@
         %td.items-list-td= telegram_application.phone_number
         %td.items-list-td= telegram_application.code
         %td.items-list-td= telegram_application.processer.decorate.display_name
+        %td.items-list-td= telegram_application.processer.telegram_connections.last.decorate.status_with_color
         
         %td.items-list-td.px-1.w-0
           = link_to telegram_application, data: { turbo_confirm: 'Вы уверены что хотите удалить приложение?', turbo_method: :delete }  do

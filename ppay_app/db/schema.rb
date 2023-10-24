@@ -343,6 +343,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   create_table "payment_logs", force: :cascade do |t|
     t.text "banks_response"
     t.text "create_order_response"
+    t.text "payinfo_responses"
     t.string "other_processing_id"
     t.bigint "payment_id"
     t.datetime "created_at", null: false
@@ -491,12 +492,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "telegram_microservice_job_statuses", force: :cascade do |t|
+  create_table "telegram_connections", force: :cascade do |t|
     t.string "status"
-    t.bigint "user_id", null: false
+    t.bigint "processer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_telegram_microservice_job_statuses_on_user_id"
+    t.index ["processer_id"], name: "index_telegram_connections_on_processer_id"
   end
 
   create_table "telegram_settings", force: :cascade do |t|
@@ -639,7 +640,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
   add_foreign_key "telegram_applications", "users", column: "processer_id"
-  add_foreign_key "telegram_microservice_job_statuses", "users"
+  add_foreign_key "telegram_connections", "users", column: "processer_id"
   add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
 end

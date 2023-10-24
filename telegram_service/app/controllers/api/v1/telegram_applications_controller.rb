@@ -22,30 +22,20 @@ module Api
         main_application_id = params[:main_application_id]
         telegram_application = TelegramApplication.find_by(main_application_id: main_application_id)
 
+        code_check = telegram_application.code.present?
+
         if telegram_application
           if telegram_application.update(telegram_application_params)
+            telegram_application.update(code: nil) if code_check == true || telegram_application.code == ''
+
+            TelegramApplicationJob.perform_async(telegram_application.id) if telegram_application.code.nil?
+
             render json: { status: 'success', message: 'Приложение успешно обновлено' }
           else
             render json: { status: 'error', message: 'Ошибка обновления приложения' }, status: :unprocessable_entity
           end
         else
           render json: { status: 'error', message: 'Приложение не найдено' }, status: :not_found
-        end
-      end
-
-      def check_job_status
-        phone_number = params[:phone_number]
-        telegram_application = TelegramApplication.where(phone_number: phone_number).last
-        active_workers = Sidekiq::Workers.new
-
-        if active_workers.find { |aw|
-                                 aw[2]['payload']['tags'] == ['telegram_application'] &&
-                                 aw[2]['payload']['jid'] == telegram_application.jid
-                               }.present?
-
-          render json: { status: 'Подключено' }, status: :ok
-        else
-          render json: { status: 'Не подключено' }, status: :ok
         end
       end
 

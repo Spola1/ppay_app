@@ -40,8 +40,5 @@ class TelegramApplicationJob
 
     stdin.puts(telegram_application.code)
     stdin.flush
-
-    loop { stdin.puts gets.chomp }
-    wait_thr.join
   end
 end
