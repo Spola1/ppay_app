@@ -4,31 +4,28 @@ require 'net/http'
 
 module Bybit
   class OtcOnline
-    PAYMENT_TYPES = {
-      'Local Card(Yellow)' => '581',  # Tinkoff
-      'Local Card(Green)' => '582',   # Rosbank
-      'Local Card(Red)' => '583',     # Alfa Bank
-      'Local Bank(R-Green)' => '584', # Rosbank
-      'Local Bank(S-Green)' => '585', # Sberbank
-      'Raiffeisen Bank Aval' => '63',
-      'Raiffeisenbank' => '64'
-    }.freeze
+    attr_reader :params, :usertoken
 
-    attr_reader :params
-
-    def initialize(params)
-      @params = params
+    def initialize(usertoken)
+      @usertoken = usertoken
     end
 
-    def items
-      @items ||= parse_response(send_request).dig('result', 'items')
+    def items(params)
+      @params = params
+      parse_response(send_request).dig('result', 'items')
+    end
+
+    def payment_systems
+      @payment_systems ||=
+        parse_response(send_payments_request)
+        .dig('result', 'paymentConfigVo')
+        .to_h { [_1['paymentName'], _1['paymentType']] }
     end
 
     private
 
     def side = params[:trade_type].downcase == 'sell' ? '0' : '1'
-
-    def payment = [PAYMENT_TYPES.fetch(params[:pay_type])]
+    def payment = [params[:pay_type]]
 
     def request_body
       # params = {asset: "USDT", fiat: "RUB", merchant_check: true, page: 1,
@@ -54,7 +51,8 @@ module Bybit
         'sec-fetch-site': 'same-site', Referer: 'https://www.bybit.com/',
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
-                      'Chrome/116.0.5845.837 YaBrowser/23.9.1.837 (beta) Yowser/2.5 Safari/537.36'
+                      'Chrome/116.0.5845.837 YaBrowser/23.9.1.837 (beta) Yowser/2.5 Safari/537.36',
+        usertoken:
       }
     end
 
@@ -66,6 +64,15 @@ module Bybit
         req.body = request_body.to_json
         puts req.body
 
+        http.request(req)
+      end
+    end
+
+    def send_payments_request
+      uri = URI('https://api2.bybit.com/fiat/otc/configuration/queryAllPaymentList')
+
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        req = Net::HTTP::Post.new(uri, initheader)
         http.request(req)
       end
     end

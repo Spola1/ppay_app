@@ -30,14 +30,26 @@ module Bybit
     def bybit_advs
       return @bybit_advs if @bybit_advs
 
-      @params in { action:, crypto_asset:, fiat:, fiat_amount:, merchant_check:, payment_method:, }
+      @params in { action:, crypto_asset:, fiat:, fiat_amount:, merchant_check:, payment_method: }
 
-      otc = Bybit::OtcOnline.new(
-        { asset: crypto_asset, fiat:, merchant_check:, pay_type: payment_method,
-          trade_type: action, trans_amount: fiat_amount }
-      )
+      @bybit_advs = otc.items({ asset: crypto_asset, fiat:, merchant_check:, pay_type:,
+                                trade_type: action, trans_amount: fiat_amount })
+    end
 
-      @bybit_advs = otc.items
+    def exchange_portal = @payment_system.exchange_portal
+    def otc = @otc ||= Bybit::OtcOnline.new(exchange_portal.settings.fetch('usertoken', ''))
+
+    def pay_type
+      @params in { payment_method: }
+
+      result = exchange_portal.settings.dig('payment_systems', payment_method)
+
+      unless result
+        exchange_portal.update(settings: exchange_portal.settings.deep_merge({ payment_systems: otc.payment_systems }))
+        result = exchange_portal.settings.dig('payment_systems', payment_method)
+      end
+
+      result || '-1'
     end
   end
 end
