@@ -65,6 +65,14 @@
               title: 'Текущий баланс',
               value: "#{stats.processer.balance.decorate.amount_formatted}",
               value_color: balance_color(stats.processer.balance.amount)
+            - stats.active_advertisements.each do |currency, advertisements|
+              = render 'shared/staff/stats/stats_tr',
+                title: "Текущие активные карты #{currency}",
+                value: active_advertisements_list(advertisements)
+            - stats.active_advertisements_period.each do |currency, advertisements|
+              = render 'shared/staff/stats/stats_tr',
+                title: "Активные карты за выбранный период #{currency}",
+                value: active_advertisements_list(advertisements)
             - if role_namespace == 'processers'
               - stats.processer.advertisements.each do |advertisement|
                 = render 'shared/staff/stats/stats_tr',
