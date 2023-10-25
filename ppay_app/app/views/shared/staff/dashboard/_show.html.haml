@@ -65,9 +65,10 @@
               title: 'Текущий баланс',
               value: "#{stats.processer.balance.decorate.amount_formatted}",
               value_color: balance_color(stats.processer.balance.amount)
-            - stats.processer.advertisements.each do |advertisement|
-              = render 'shared/staff/stats/stats_tr',
-                title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
-                value: "#{advertisement.conversion}%",
-                value_color: conversion_color(advertisement.conversion)
+            - if role_namespace == 'processers'
+              - stats.processer.advertisements.each do |advertisement|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
+                  value: "#{advertisement.conversion}%",
+                  value_color: conversion_color(advertisement.conversion)
 
