@@ -18,9 +18,9 @@ module AdvertisementsHelper
   end
 
   def advertisement_statuses_collection
-    AVAILABLE_STATUSES_COLLECTION.map { |status|
+    AVAILABLE_STATUSES_COLLECTION.map do |status|
       [I18n.t("activerecord.attributes.advertisement/status.#{status}"), status]
-    }
+    end
   end
 
   def advertisement_filters_params(key)

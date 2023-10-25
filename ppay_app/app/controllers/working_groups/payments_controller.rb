@@ -12,9 +12,9 @@ module WorkingGroups
 
         format.xlsx do
           payments = current_user.payments.joins(advertisement: { processer: :working_group })
-                            .includes(:advertisement, :transactions)
-                            .filter_by(filtering_params)
-                            .decorate
+                                 .includes(:advertisement, :transactions)
+                                 .filter_by(filtering_params)
+                                 .decorate
 
           render xlsx: 'payments', locals: { payments: }
         end
@@ -37,9 +37,9 @@ module WorkingGroups
 
     def find_payment
       @payment = current_user.payments.joins(advertisement: { processer: :working_group })
-                        .find_by(uuid: params[:uuid])
-                        .becomes(model_class.constantize)
-                        .decorate
+                             .find_by(uuid: params[:uuid])
+                             .becomes(model_class.constantize)
+                             .decorate
     end
 
     def filtering_params

@@ -39,7 +39,7 @@ module Payments
         else
           payment.update(autoconfirming: false)
           text = "Ждал #{Setting.last.minutes_to_autocancel} минут. " \
-                         'Сумма не поступила. Перевожу на ручное подтверждение'
+                 'Сумма не поступила. Перевожу на ручное подтверждение'
         end
         payment.comments.create(
           author_nickname: Settings.simbank_nickname,
