@@ -31,7 +31,7 @@
     .card-wrap{ class: 'basis-1/2' }
       .item-card.h-full
         .flex.mb-4.items-center
-          .text-xl.flex-1= stats.processer.display_name
+          .text-xl.flex-1= stats.processer.decorate.display_name
         %table.item-card-table
           %tbody
             = render 'shared/staff/stats/stats_tr',
@@ -65,11 +65,9 @@
               title: 'Текущий баланс',
               value: "#{stats.processer.balance.decorate.amount_formatted}",
               value_color: balance_color(stats.processer.balance.amount)
-            - stats.active_advertisements.each do |currency, advertisements|
+            - stats.processer.advertisements.each do |advertisement|
               = render 'shared/staff/stats/stats_tr',
-                title: "Текущие активные карты #{currency}",
-                value: active_advertisements_list(advertisements)
-            - stats.active_advertisements_period.each do |currency, advertisements|
-              = render 'shared/staff/stats/stats_tr',
-                title: "Активные карты за выбранный период #{currency}",
-                value: active_advertisements_list(advertisements)
+                title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
+                value: "#{advertisement.conversion}%",
+                value_color: conversion_color(advertisement.conversion)
+
