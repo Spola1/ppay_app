@@ -20,5 +20,8 @@
     = f.input :processer, collection: processers_collection, include_blank: 'Все',
                        selected: advertisement_filters_params(:processer) if management_namespace?
 
+    = f.input :card_owner_name, as: :string, input_html: { value: advertisement_filters_params(:card_owner_name) }
+    = f.input :simbank_card_number, as: :string, input_html: { value: advertisement_filters_params(:simbank_card_number) }
+
   = f.submit t('buttons.submit'), class: 'form-submit'
   = link_to t('buttons.reset'), advertisements_path, data: { turbo_action: :advance }, class: 'reset-button'
