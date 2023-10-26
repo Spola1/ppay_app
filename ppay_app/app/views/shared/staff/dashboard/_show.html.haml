@@ -73,10 +73,9 @@
               = render 'shared/staff/stats/stats_tr',
                 title: "Активные карты за выбранный период #{currency}",
                 value: active_advertisements_list(advertisements)
-            - if role_namespace == 'processers'
-              - stats.processer.advertisements.each do |advertisement|
-                = render 'shared/staff/stats/stats_tr',
-                  title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
-                  value: "#{advertisement.conversion}%",
-                  value_color: conversion_color(advertisement.conversion)
+            - stats.processer.advertisements.each do |advertisement|
+              = render 'shared/staff/stats/stats_tr',
+                title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
+                value: "#{advertisement.conversion}%",
+                value_color: conversion_color(advertisement.conversion)
 
