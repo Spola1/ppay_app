@@ -20,6 +20,9 @@
         %td.item-card-td.item-card-td-label Номер карты
         %td.item-card-td= @advertisement.card_number
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label ФИО владельца карты
+        %td.item-card-td= @advertisement.card_owner_name
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Комментарий
         %td.item-card-td= @advertisement.comment
       %tr.item-card-tr
@@ -34,6 +37,9 @@
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label IMSI
         %td.item-card-td= link_to nil, @advertisement.imsi
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Последние 4 цифры номера счета
+        %td.item-card-td= @advertisement.simbank_card_number
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Источник курса
         %td.item-card-td= @advertisement.exchange_rate_source
