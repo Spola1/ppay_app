@@ -19,12 +19,12 @@ module Bybit
       @payment_systems ||=
         parse_response(send_payments_request)
         .dig('result', 'paymentConfigVo')
-        .to_h { [_1['paymentName'], _1['paymentType']] }
+        .to_h { [_1['paymentName'].strip, _1['paymentType']] }
     end
 
     private
 
-    def side = params[:trade_type].downcase == 'sell' ? '0' : '1'
+    def side = params[:trade_type].to_s.downcase == 'sell' ? '0' : '1'
     def payment = [params[:pay_type]]
 
     def request_body
@@ -32,8 +32,8 @@ module Bybit
       #           pay_type: 'Tinkoff' , trade_type: 'sell', trans_amount: 5000}
       {
         userId: '',
-        tokenId: params[:asset],
-        currencyId: params[:fiat],
+        tokenId: params[:asset] || 'USDT',
+        currencyId: params[:fiat] || 'RUB',
         payment:,
         side:,
         size: '20', page: '1',
