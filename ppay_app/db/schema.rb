@@ -229,7 +229,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_19_024434) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.boolean "in_progress"
-    t.json "settings"
+    t.jsonb "settings", default: {}
   end
 
   create_table "form_customizations", force: :cascade do |t|
