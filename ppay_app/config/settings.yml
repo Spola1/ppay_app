@@ -88,7 +88,7 @@ navbar:
       path: balance_requests_path
     - name: Телеграм Бот
       path: edit_supports_profile_path
-    - name: Реестр
+    - name: Реестр ненайденных платежей
       path: not_found_payments_path
     - name: Арбитражи по чеку
       path: arbitrations_path

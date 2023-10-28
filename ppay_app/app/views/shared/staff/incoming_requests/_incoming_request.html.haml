@@ -74,7 +74,7 @@
         %td.item-card-td.underline= link_to @incoming_request.advertisement.id, @incoming_request.advertisement if @incoming_request.advertisement
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Маска номера карты/счета
-        %td.item-card-td.underline= @incoming_request.card_mask.regexp if @incoming_request.card_mask
+        %td.item-card-td.underline= @incoming_request.card_mask&.regexp
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Маска суммы
-        %td.item-card-td.underline= @incoming_request.sum_mask.regexp if @incoming_request.sum_mask.regexp
+        %td.item-card-td.underline= @incoming_request.sum_mask&.regexp
