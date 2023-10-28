@@ -20,8 +20,8 @@ module SuperAdmins
 
     def filename
       "#{request.domain}_all_stats_" \
-      "#{@filtering_params[:created_from].to_time&.strftime('%y%m%d')}-" \
-      "#{(@filtering_params[:created_to].to_time || Time.zone.now).strftime('%y%m%d')}"
+        "#{@filtering_params[:created_from].to_time&.strftime('%y%m%d')}-" \
+        "#{(@filtering_params[:created_to].to_time || Time.zone.now).strftime('%y%m%d')}"
     end
 
     def set_all_merchants

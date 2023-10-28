@@ -50,7 +50,8 @@ module Staff
       end
 
       def filtering_params
-        params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system, :processer)
+        params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system, :processer,
+                                              :card_owner_name, :simbank_card_number)
       end
     end
   end

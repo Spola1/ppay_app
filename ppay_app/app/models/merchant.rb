@@ -21,8 +21,11 @@ class Merchant < User
 
   validates :short_freeze_days, presence: true, if: -> { balance_freeze_type == 'short' }
   validates :long_freeze_percentage, :long_freeze_days, presence: true, if: -> { balance_freeze_type == 'long' }
-  validates :short_freeze_days, :long_freeze_days, :long_freeze_percentage, numericality: { greater_than: 0 }, allow_nil: true
-  validates :short_freeze_days, :long_freeze_days, :long_freeze_percentage, presence: true, if: -> { balance_freeze_type == 'mixed' }
+  validates :short_freeze_days, :long_freeze_days, :long_freeze_percentage, numericality: { greater_than: 0 },
+                                                                            allow_nil: true
+  validates :short_freeze_days, :long_freeze_days, :long_freeze_percentage, presence: true, if: lambda {
+                                                                                                  balance_freeze_type == 'mixed'
+                                                                                                }
 
   enum unique_amount: {
     none: 0,

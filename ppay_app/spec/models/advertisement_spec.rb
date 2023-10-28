@@ -144,10 +144,22 @@ RSpec.describe Advertisement, type: :model do
     end
 
     describe 'filter scope' do
-      let!(:advertisement1) { create(:advertisement, status: true, card_number: '1111 1111 1111 1111') }
-      let!(:advertisement2) { create(:advertisement, status: false, card_number: '1234 1234 1234 1234') }
-      let!(:advertisement3) { create(:advertisement, status: true, card_number: '1111 1111 1111 1112') }
-      let!(:advertisement4) { create(:advertisement, status: false, card_number: '4321 4321 4321 4321') }
+      let!(:advertisement1) do
+        create(:advertisement, status: true, card_number: '1111 1111 1111 1111', simbank_card_number: '1234',
+                               card_owner_name: 'VASYA')
+      end
+      let!(:advertisement2) do
+        create(:advertisement, status: false, card_number: '1234 1234 1234 1234', simbank_card_number: '7777',
+                               card_owner_name: 'MIHAIL')
+      end
+      let!(:advertisement3) do
+        create(:advertisement, status: true, card_number: '1111 1111 1111 1112', simbank_card_number: '9394',
+                               card_owner_name: 'ALEXEI')
+      end
+      let!(:advertisement4) do
+        create(:advertisement, status: false, card_number: '4321 4321 4321 4321', simbank_card_number: '8154',
+                               card_owner_name: 'KIRILL')
+      end
 
       describe '.filter_by_status' do
         subject(:advertisements) { Advertisement.filter_by_status('Aктивно') }
@@ -158,6 +170,18 @@ RSpec.describe Advertisement, type: :model do
       describe '.filter_by_card_number' do
         subject(:advertisements) { Advertisement.filter_by_card_number('1111') }
         let(:correct_result) { [advertisement1, advertisement3] }
+        it { expect(advertisements.to_a).to eq(correct_result) }
+      end
+
+      describe '.filter_by_card_owner_name' do
+        subject(:advertisements) { Advertisement.filter_by_card_owner_name('mi') }
+        let(:correct_result) { [advertisement2] }
+        it { expect(advertisements.to_a).to eq(correct_result) }
+      end
+
+      describe '.filter_by_simbank_card_number' do
+        subject(:advertisements) { Advertisement.filter_by_simbank_card_number('1') }
+        let(:correct_result) { [advertisement1, advertisement4] }
         it { expect(advertisements.to_a).to eq(correct_result) }
       end
     end
