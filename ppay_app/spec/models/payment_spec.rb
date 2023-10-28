@@ -50,17 +50,27 @@ RSpec.describe Payment, type: :model do
         it { expect { update_national_currency }.not_to change { payment.reload.arbitration }.from(true) }
       end
 
-      %i[draft processer_search transferring confirming cancelled].each do |new_status|
+      %i[draft processer_search transferring confirming].each do |new_status|
         context "status changes to #{new_status}" do
           subject(:update_payment_status) { payment.update(payment_status: new_status) }
           it { expect { update_payment_status }.not_to change { payment.reload.arbitration }.from(true) }
         end
       end
 
-      %i[completed].each do |new_status|
+      %i[completed cancelled].each do |new_status|
         context "status changes to #{new_status}" do
           subject(:update_payment_status) { payment.update(payment_status: new_status) }
           it { expect { update_payment_status }.to change { payment.reload.arbitration }.from(true).to(false) }
+        end
+      end
+
+      context 'cancellation reason is time_expired' do
+        before { payment.update(cancellation_reason: :time_expired) }
+
+        context 'status changes to cancelled' do
+          subject(:update_payment_status) { payment.update(payment_status: :cancelled) }
+
+          it { expect { update_payment_status }.not_to change { payment.reload.arbitration }.from(true) }
         end
       end
     end
@@ -565,31 +575,23 @@ RSpec.describe Payment, type: :model do
     end
   end
 
-  describe '.expired_arbitration_not_paid' do
-    let!(:not_expired_arbitration) do
-      create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :not_paid,
-                       status_changed_at: 5.minutes.ago)
+  describe '.arbitration_not_paid' do
+    let!(:arbitration_not_paid) do
+      create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :not_paid)
     end
-    let!(:expired_arbitration_not_paid) do
-      create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :not_paid,
-                       status_changed_at: 15.minutes.ago)
+    let!(:arbitration_fraud_attempt) do
+      create(:payment, payment_status: :transferring, arbitration: true, arbitration_reason: :fraud_attempt)
     end
-    let!(:expired_arbitration_other_reason) do
-      create(:payment, arbitration: true, payment_status: :transferring, arbitration_reason: :fraud_attempt,
-                       status_changed_at: 15.minutes.ago)
+    let!(:just_arbitration_not_paid_reason) do
+      create(:payment, payment_status: :transferring, arbitration_reason: :not_paid)
     end
 
-    it 'includes expired arbitration with not_paid reason' do
-      expect(Payment.expired_arbitration_not_paid).to include(expired_arbitration_not_paid)
+    it 'includes arbitration with not_paid reason' do
+      expect(Payment.arbitration_not_paid).to include(arbitration_not_paid)
     end
 
-    it 'excludes not expired arbitration with not_paid reason' do
-      expect(Payment.expired_arbitration_not_paid).not_to include([not_expired_arbitration,
-                                                                   expired_arbitration_other_reason])
-    end
-
-    it 'excludes expired arbitration with other reason' do
-      expect(Payment.expired_arbitration_not_paid).not_to include(expired_arbitration_other_reason)
+    it 'excludes arbitration with other reason' do
+      expect(Payment.arbitration_not_paid).not_to include(arbitration_fraud_attempt, just_arbitration_not_paid_reason)
     end
   end
 

@@ -123,15 +123,18 @@ RSpec.describe Balance, type: :model do
 
     context 'when there are multiple transactions today' do
       let!(:transaction1) do
-        create(:transaction, to_balance: balance, amount: 100, created_at: Time.zone.now - 23.hours,
+        create(:transaction, to_balance: balance, amount: 100,
+                             created_at: Time.zone.now.beginning_of_day + 1.hour,
                              status: :completed)
       end
       let!(:transaction2) do
-        create(:transaction, to_balance: balance, amount: 50, created_at: Time.zone.now - 1.hours,
+        create(:transaction, to_balance: balance, amount: 50,
+                             created_at: Time.zone.now.beginning_of_day + 23.hours,
                              status: :completed)
       end
       let!(:transaction3) do
-        create(:transaction, from_balance: balance, amount: 75, created_at: Time.zone.now - 8.hours,
+        create(:transaction, from_balance: balance, amount: 75,
+                             created_at: Time.zone.now.beginning_of_day + rand(24).hours,
                              status: :completed)
       end
 
@@ -142,11 +145,14 @@ RSpec.describe Balance, type: :model do
 
     context 'when there are negative from transactions and positive to transactions today' do
       let!(:transaction1) do
-        create(:transaction, to_balance: balance, amount: 100, created_at: Time.zone.now - 23.hours,
+        create(:transaction, to_balance: balance, amount: 100,
+                             created_at: Time.zone.now.beginning_of_day + 1.hour,
                              status: :completed)
       end
       let!(:transaction2) do
-        create(:transaction, from_balance: balance, amount: 150, created_at: Time.zone.now - 1.hours, status: :completed)
+        create(:transaction, from_balance: balance, amount: 150,
+                             created_at: Time.zone.now.beginning_of_day + 23.hours,
+                             status: :completed)
       end
 
       it 'returns a negative number' do

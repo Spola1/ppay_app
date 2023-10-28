@@ -6,7 +6,7 @@ RSpec.describe TelegramNotification::PaymentsService do
   describe '#send_new_payment_notification_to_user' do
     context 'when payment type is Deposit' do
       let(:payment) { create(:payment, :deposit) }
-      let(:ad) { create(:advertisement) }
+      let(:ad) { create :advertisement, card_number: '1111 1111 1111 1111' }
 
       before do
         payment.advertisement = ad
@@ -66,7 +66,7 @@ RSpec.describe TelegramNotification::PaymentsService do
 
   describe '#send_new_arbitration_notification_to_user' do
     let(:payment) { create(:payment, :deposit, arbitration: true, advertisement: ad, support:) }
-    let(:ad) { create(:advertisement) }
+    let(:ad) { create :advertisement, card_number: '1111 1111 1111 1111' }
     let(:support) { create(:support) }
 
     before do

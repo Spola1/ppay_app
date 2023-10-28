@@ -11,7 +11,7 @@ class Payment < ApplicationRecord
 
   default_scope { order(created_at: :desc, id: :desc) }
 
-  scope :expired_arbitration_not_paid, lambda {
+  scope :arbitration_not_paid, lambda {
     where(arbitration: true,
           arbitration_reason: :not_paid)
   }
@@ -85,7 +85,10 @@ class Payment < ApplicationRecord
 
   before_save :set_support, if: -> { support.blank? && arbitration_changed? && arbitration }
 
-  before_save :take_off_arbitration, if: -> { payment_status_changed? && completed? }
+  before_save :take_off_arbitration, if: lambda {
+                                           payment_status_changed? &&
+                                             (completed? || (cancelled? && !time_expired?))
+                                         }
   before_save :update_status_changed_at, if: :payment_status_changed?
 
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
