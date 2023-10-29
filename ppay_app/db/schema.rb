@@ -90,7 +90,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
     t.decimal "conversion", default: "0.0"
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
-    t.boolean "save_incoming_requests_history", default: false
     t.string "telegram_phone"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
