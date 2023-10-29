@@ -13,7 +13,9 @@ module Api
         processer = TelegramApplication.find(main_application_id).processer
         telegram_application = TelegramApplication.find(main_application_id)
 
-        telegram_connection = TelegramConnection.find_or_initialize_by(processer:)
+        debugger
+
+        telegram_connection = TelegramConnection.create(processer:)
         telegram_connection.update(status:)
         telegram_application.telegram_connections << telegram_connection
         telegram_connection.touch

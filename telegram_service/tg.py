@@ -52,34 +52,32 @@ def send_message_to_rails(message_text, sender):
     except Exception as e:
         print(f"Error sending message to Rails: {e}")
 
-async def send_status_update():
+async def check_connection_status():
     while True:
+        await asyncio.sleep(10)
         try:
+            # Пробуем отправить тестовое сообщение
+            test_message = await client.send_message('me', 'Check connection')
+
+            # Если сообщение успешно отправлено, удаляем его
+            await client.delete_messages('me', test_message.id)
+            
+            print("Message delivered successfully.")
+
+            # Отправляем статус только при успешной доставке тестового сообщения
             data = {
                 'status': 'success',
                 'main_application_id': main_application_id,
             }
             response = requests.post(status_update_url, json=data)
             print(f"Status update sent. Response: {response.text}")
-        except Exception as e:
-            print(f"Error sending status update: {e}")
-        await asyncio.sleep(6000)
 
-async def check_connection_status():
-    while True:
-        await asyncio.sleep(6000)  # Проверяем каждые 30 секунд
-        try:
-            # Пробуем отправить тестовое сообщение
-            test_message = await client.send_message('me', 'Check connection')
-            
-            # Если сообщение отправлено успешно, удаляем его
-            await client.delete_messages('me', test_message.id)
         except Exception as e:
-            print(f"Connection lost: {e}")
+            print(f"Error sending test message: {e}")
+            print("Connection lost.")
             break
 
 if __name__ == "__main__":
     client.start()
-    asyncio.ensure_future(send_status_update())
     asyncio.ensure_future(check_connection_status())
     client.run_until_disconnected()
