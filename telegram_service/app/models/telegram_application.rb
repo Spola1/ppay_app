@@ -1,2 +1,0 @@
-class TelegramApplication < ApplicationRecord
-end
