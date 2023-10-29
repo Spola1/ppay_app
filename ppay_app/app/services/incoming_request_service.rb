@@ -51,12 +51,6 @@ class IncomingRequestService
     @matching_advertisements = @processer.advertisements
                                          .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
                                                 value: search_value)
-                                         .where(simbank_auto_confirmation: true,
-                                                simbank_sender: @incoming_request.from)
-
-    @matching_advertisements = @processer.advertisements
-                                         .where('imei = :value OR imsi = :value OR phone = :value',
-                                                value: search_value)
                                          .where('(save_incoming_requests_history = true AND
                                                 simbank_auto_confirmation = true AND simbank_sender = :sender)
                                                 OR (save_incoming_requests_history = true AND simbank_sender = :sender)',
