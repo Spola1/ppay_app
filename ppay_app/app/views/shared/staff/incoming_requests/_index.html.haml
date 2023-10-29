@@ -2,11 +2,11 @@
   .filters-wrap
     .item-card
       %h1.mb-4.text-xl Фильтры
-      = render 'shared/staff/incoming_requests/filter', incoming_requests: @incoming_requests, role_namespace:
+      = render incoming_request_filters_partial(current_user)
 
   .card-wrap
     .item-card
-      %h1.mb-4.text-xl Входящие запросы
+      %h1.mb-4.text-xl Реестр платежей
 
       = render 'shared/staff/incoming_requests/table', incoming_requests: @incoming_requests
       
