@@ -27,11 +27,12 @@ module Payments
           puts 'не найден'
 
           if selected_advertisement.present?
-            existing_payment = selected_advertisement&.payments
-                                                     &.where(national_currency_amount: payment.national_currency_amount,
-                                                             national_currency: payment.national_currency,
-                                                             payment_status: 'processer_search')
-                                                     &.where&.not(uuid: payment.uuid)
+            existing_payment =
+              selected_advertisement.payments
+                                    .where(national_currency_amount: payment.national_currency_amount,
+                                           national_currency: payment.national_currency,
+                                           payment_status: 'processer_search')
+                                    .where.not(uuid: payment.uuid)
 
             if existing_payment.blank? || existing_payment.size <= merchant.equal_amount_payments_limit
               payment.update(advertisement: selected_advertisement)
@@ -44,6 +45,7 @@ module Payments
           else
             payment.update(advertisement_not_found_reason: :no_active_advertisements)
           end
+
           payment.bind! if payment.advertisement
           sleep 0.5
         end

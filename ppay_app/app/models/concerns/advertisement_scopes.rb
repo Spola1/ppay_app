@@ -86,6 +86,8 @@ module AdvertisementScopes
     }
 
     scope :equal_amount_payments_limited, lambda { |national_currency_amount, limit|
+      return unless limit
+
       having(Arel.sql("SUM(CASE WHEN payments.national_currency_amount
         = #{national_currency_amount} THEN 1 ELSE 0 END) < #{limit}"))
     }
