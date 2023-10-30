@@ -25,6 +25,12 @@ module Api
 
       private
 
+      def render_links
+        ping_url = ENV.fetch('MOBILE_APP_PING_LINK')
+        message_url = ENV.fetch('MOBILE_APP_SIMBANK_LINK')
+        render json: { ping_url:, message_url: }, status: :ok
+      end
+
       def save_application_info
         MobileAppRequest.create(
           application_id: params[:application_id],
