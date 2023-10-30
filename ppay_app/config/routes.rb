@@ -211,6 +211,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/catcher/ping', to: 'mobile_app_requests#receive_ping'
       post '/simbank/requests', to: 'incoming_requests#create'
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
