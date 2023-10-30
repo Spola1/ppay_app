@@ -1,0 +1,23 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Создать нового телеграм бота
+
+          .mt-8.my-4
+            = simple_form_for @telegram_bot do |f|
+              - if @telegram_bot.errors.any?
+                .flex.items-center
+                  .text-xl.px-2
+                    = fa_icon 'exclamation-circle'
+                  = f.error_notification
+              
+              .form-inputs.flex
+                .col-span-1
+                  = f.input :name, label: 'Имя бота', hint: 'Обязательно с символом "@". Например: @test_bot'
+
+              .form-actions
+                = f.button :submit, 'Сохранить', class: 'form-submit'
+          .back-link
+            = link_to '<- К списку ботов', telegram_bots_path

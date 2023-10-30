@@ -33,6 +33,7 @@ ru:
       account: Учётная запись
       settings: Настройки
       otp: Аутентификация OTP
+      tg_status: Cтатус соединения телеграм
       whitelisted_processers: Белый список операторов
 
   merchants:
@@ -51,3 +52,5 @@ ru:
           title: Аутентификация OTP
         update:
           title: Аутентификация OTP
+      check_telegram_connection_status:
+        title: Соединение телеграм

@@ -1,0 +1,15 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Приложение (ID: #{@telegram_application.id})"
+        .flex.text-right
+          = link_to edit_telegram_application_path(@telegram_application), class: 'icon-button' do
+            .flex
+              .mr-2
+                = fa_icon 'pencil'
+              Редактировать
+      .mt-8.my-4
+        = render @telegram_application
+      .back-link
+        = link_to '<- К списку приложений', telegram_applications_path

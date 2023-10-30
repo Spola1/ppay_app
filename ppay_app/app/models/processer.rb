@@ -7,6 +7,8 @@ class Processer < User
   has_many :payments, through: :advertisements
   has_many :deposits, through: :advertisements
   has_many :withdrawals, through: :advertisements
+  has_many :telegram_applications
+  has_many :telegram_connections
 
   has_many :merchant_processers, dependent: :destroy
 

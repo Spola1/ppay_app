@@ -1,0 +1,11 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl
+          Редактировать бота
+          = "(ID: #{@telegram_bot.id})"
+      .mt-8.my-4
+        = render 'form'
+      .back-link
+        = link_to '<- К списку ботов', telegram_bots_path

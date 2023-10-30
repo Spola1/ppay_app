@@ -1,0 +1,19 @@
+= simple_form_for @telegram_application do |f|
+  .form-inputs.flex
+    .col-span-1
+      = f.input :api_id
+      = f.input :api_hash
+      = f.input :session_name
+      = f.input :phone_number
+      = f.input :code
+      = f.input :processer_id, collection: @processers.map { |processer| [processer.nickname, processer.id] }
+
+    .ml-6.mt-4
+      = label_tag 'telegram_application[telegram_bot_ids][]', 'Выберите ботов:'
+      - TelegramBot.all.each do |bot|
+        .checkbox.mb-2
+          = check_box_tag 'telegram_application[telegram_bot_ids][]', bot.id, @telegram_application.telegram_bot_ids.include?(bot.id)
+          = label_tag "telegram_application[telegram_bot_ids][]", bot.name
+
+  .form-actions
+    = f.button :submit, 'Сохранить', class: 'form-submit'

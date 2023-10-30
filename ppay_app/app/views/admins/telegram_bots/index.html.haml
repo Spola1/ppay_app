@@ -1,0 +1,11 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .card-head
+        %h1 Телеграм боты
+        = link_to '+ Создать бота', new_telegram_bot_path, class: 'form-submit'
+
+      = render 'table', telegram_bots: @telegram_bots
+
+      .card-wrap
+        = render 'shared/pagination', pagy: @pagy

@@ -969,4 +969,12 @@
   .hidden {
     display: none;
   }
+
+  .connected {
+    color: green;
+  }
+  
+  .not-connected {
+    color: red;
+  }
 }

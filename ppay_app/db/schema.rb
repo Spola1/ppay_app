@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -90,6 +90,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
     t.decimal "conversion", default: "0.0"
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
+    t.string "telegram_phone"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
@@ -267,6 +268,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
     t.jsonb "initial_params"
     t.bigint "user_id"
     t.text "error"
+    t.string "telegram_phone"
     t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
     t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
     t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
@@ -464,6 +466,41 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
     t.jsonb "settings", default: {}
   end
 
+  create_table "telegram_applications", force: :cascade do |t|
+    t.bigint "processer_id", null: false
+    t.string "api_id"
+    t.string "api_hash"
+    t.string "phone_number"
+    t.string "code"
+    t.string "session_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["processer_id"], name: "index_telegram_applications_on_processer_id"
+  end
+
+  create_table "telegram_applications_bots", id: false, force: :cascade do |t|
+    t.bigint "telegram_application_id", null: false
+    t.bigint "telegram_bot_id", null: false
+    t.index ["telegram_application_id", "telegram_bot_id"], name: "index_ta_tb_on_ta_id_and_tb_id"
+    t.index ["telegram_bot_id", "telegram_application_id"], name: "index_tb_ta_on_tb_id_and_ta_id"
+  end
+
+  create_table "telegram_bots", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "telegram_connections", force: :cascade do |t|
+    t.string "status"
+    t.bigint "processer_id", null: false
+    t.bigint "telegram_application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["processer_id"], name: "index_telegram_connections_on_processer_id"
+    t.index ["telegram_application_id"], name: "index_telegram_connections_on_telegram_application_id"
+  end
+
   create_table "telegram_settings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.boolean "balance_request_deposit", default: true
@@ -603,6 +640,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_11_152043) do
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
   add_foreign_key "rate_snapshots", "payment_systems"
+  add_foreign_key "telegram_applications", "users", column: "processer_id"
+  add_foreign_key "telegram_connections", "telegram_applications"
+  add_foreign_key "telegram_connections", "users", column: "processer_id"
   add_foreign_key "telegram_settings", "users"
   add_foreign_key "visits", "payments"
 end

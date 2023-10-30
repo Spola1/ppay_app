@@ -31,6 +31,9 @@ class IncomingRequestService
       'MacroDroid' => {
         'SMS' => { search_field: :phone },
         'PUSH' => { search_field: :imei }
+      },
+      'Telegram' => {
+        'telegram_message' => { search_field: :telegram_phone }
       }
     }
 
@@ -43,7 +46,7 @@ class IncomingRequestService
     search_value = @incoming_request.send(search_field)
 
     @matching_advertisements = @processer.advertisements
-                                         .where('imei = :value OR imsi = :value OR phone = :value',
+                                         .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
                                                 value: search_value)
                                          .where(simbank_auto_confirmation: true,
                                                 simbank_sender: @incoming_request.from)
