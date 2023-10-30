@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -87,11 +87,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
-    t.string "telegram_phone"
     t.decimal "conversion", default: "0.0"
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
-    t.boolean "save_incoming_requests_history", default: false
+    t.string "telegram_phone"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
@@ -270,12 +269,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
     t.bigint "user_id"
     t.text "error"
     t.string "telegram_phone"
-    t.text "deactivated_advertisements"
-    t.bigint "card_blocked_message_mask_id"
-    t.bigint "card_blocked_number_mask_id"
     t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
-    t.index ["card_blocked_message_mask_id"], name: "index_incoming_requests_on_card_blocked_message_mask_id"
-    t.index ["card_blocked_number_mask_id"], name: "index_incoming_requests_on_card_blocked_number_mask_id"
     t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
     t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
     t.index ["sum_mask_id"], name: "index_incoming_requests_on_sum_mask_id"
@@ -357,6 +351,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
   create_table "payment_logs", force: :cascade do |t|
     t.text "banks_response"
     t.text "create_order_response"
+    t.text "payinfo_responses"
     t.string "other_processing_id"
     t.bigint "payment_id"
     t.datetime "created_at", null: false
@@ -426,13 +421,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
     t.string "callback_url"
     t.integer "cancellation_reason"
     t.integer "unique_amount"
-    t.integer "processing_type", default: 0
     t.decimal "initial_amount", precision: 128, scale: 64
+    t.integer "processing_type", default: 0
     t.string "locale"
-    t.bigint "form_customization_id"
     t.integer "arbitration_reason"
     t.boolean "autoconfirming", default: false
     t.string "account_number"
+    t.bigint "form_customization_id"
     t.integer "advertisement_not_found_reason"
     t.decimal "adjusted_rate"
     t.string "other_processing_id"
@@ -582,9 +577,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
-    t.boolean "only_whitelisted_processers", default: false, null: false
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
+    t.boolean "only_whitelisted_processers", default: false, null: false
     t.integer "equal_amount_payments_limit"
     t.decimal "fee_percentage", precision: 5, scale: 2, default: "0.0"
     t.integer "short_freeze_days"
@@ -596,12 +591,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
     t.boolean "otp_required_for_login"
     t.boolean "otp_payment_confirm"
     t.boolean "can_edit_summ"
-    t.bigint "merchant_support_id"
-    t.bigint "merchant_id"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["merchant_id"], name: "index_users_on_merchant_id"
-    t.index ["merchant_support_id"], name: "index_users_on_merchant_support_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
@@ -640,8 +631,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
   add_foreign_key "commissions", "merchant_methods"
   add_foreign_key "crypto_wallets", "users"
   add_foreign_key "incoming_requests", "advertisements"
-  add_foreign_key "incoming_requests", "masks", column: "card_blocked_message_mask_id"
-  add_foreign_key "incoming_requests", "masks", column: "card_blocked_number_mask_id"
   add_foreign_key "incoming_requests", "masks", column: "card_mask_id"
   add_foreign_key "incoming_requests", "masks", column: "sum_mask_id"
   add_foreign_key "incoming_requests", "payments"
@@ -664,6 +653,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_065925) do
   add_foreign_key "telegram_connections", "telegram_applications"
   add_foreign_key "telegram_connections", "users", column: "processer_id"
   add_foreign_key "telegram_settings", "users"
-  add_foreign_key "users", "users", column: "merchant_id"
   add_foreign_key "visits", "payments"
 end
