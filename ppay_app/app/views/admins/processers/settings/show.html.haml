@@ -25,6 +25,7 @@
                     = f.input :otp_payment_confirm
                     = f.association :working_group
                     = f.input :can_edit_summ, as: :boolean
+                    = f.input :autocancel, as: :boolean
 
                   .form-actions
                     = f.button :submit, t('buttons.submit'), class: 'form-submit'
