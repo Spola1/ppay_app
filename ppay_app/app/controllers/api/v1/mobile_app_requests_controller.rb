@@ -15,6 +15,14 @@ module Api
         end
       end
 
+      def receive_ping
+        if request.post?
+          process_ping
+        else
+          render_error('Invalid request method')
+        end
+      end
+
       private
 
       def render_links
@@ -31,6 +39,16 @@ module Api
           device_model: params[:device_model]
         )
         render json: { message: 'Application information saved successfully' }, status: :ok
+      end
+
+      def process_ping
+        MobileAppRequest.create(
+          application_id: params[:application_id],
+          version: params[:version],
+          current_device_ip: params[:current_device_ip],
+          device_model: params[:device_model]
+        )
+        render json: { message: 'Ping information saved successfully' }, status: :ok
       end
 
       def render_error(message)

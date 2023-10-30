@@ -212,7 +212,6 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post '/simbank/requests', to: 'incoming_requests#create'
-      match '/get-api-link', to: 'mobile_app_requests#api_link', via: [:get, :post]
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
@@ -230,6 +229,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  match '/get-api-link', to: 'api/v1/mobile_app_requests#api_link', via: [:get, :post]
 
   resources :payments, param: :uuid, only: [] do
     resources :comments, only: :create, controller: 'payments/comments'
