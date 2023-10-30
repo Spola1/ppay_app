@@ -91,7 +91,8 @@ module Binance
     def send_request(form_data_hash)
       uri = URI('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search')
 
-      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true,
+                                              open_timeout: 60, read_timeout: 60) do |http|
         req = Net::HTTP::Post.new(uri)
         req.body = form_data_hash.to_json
         req.set_content_type('application/json')

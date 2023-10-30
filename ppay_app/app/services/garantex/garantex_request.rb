@@ -9,7 +9,8 @@ module Garantex
       custom_headers = { 'Authorization' => "Bearer #{token}" }
       uri = URI.parse("https://#{host}/api/v2/#{link}")
 
-      response = Net::HTTP.start uri.hostname, uri.port, use_ssl: true do |http|
+      response = Net::HTTP.start uri.hostname, uri.port, use_ssl: true,
+                                                         open_timeout: 60, read_timeout: 60 do |http|
         request = Net::HTTP::Get.new uri.request_uri
         custom_headers.each { |key, value| request[key] = value }
         request.set_form_data(form_data_hash)
