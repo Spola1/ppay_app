@@ -25,13 +25,27 @@ module Payments
 
         while search_valid?(start_time)
           puts 'не найден'
-          if payment.equal_amount_limited_advertisements_available?
-            payment.update(advertisement: selected_advertisement)
+
+          if selected_advertisement.present?
+            existing_payment =
+              selected_advertisement.payments
+                                    .where(national_currency_amount: payment.national_currency_amount,
+                                           national_currency: payment.national_currency,
+                                           payment_status: 'processer_search')
+                                    .where.not(uuid: payment.uuid)
+
+            if existing_payment.blank? || existing_payment.size <= merchant.equal_amount_payments_limit
+              payment.update(advertisement: selected_advertisement)
+            else
+              payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
+            end
+
           elsif payment.advertisements_available?
             payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
           else
             payment.update(advertisement_not_found_reason: :no_active_advertisements)
           end
+
           payment.bind! if payment.advertisement
           sleep 0.5
         end
