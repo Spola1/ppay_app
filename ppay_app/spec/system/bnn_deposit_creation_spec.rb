@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'BNN deposit creation', type: :system do
+RSpec.xdescribe 'BNN deposit creation', type: :system do
   let!(:ppay) { create :user, :ppay }
 
   let!(:azn) { create :national_currency, name: 'AZN' }

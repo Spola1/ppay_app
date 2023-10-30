@@ -50,8 +50,8 @@ module AdvertisementScopes
     }
 
     scope :for_deposit, lambda { |payment|
-      equal_amount_payments_limited(payment.national_currency_amount, payment.merchant.equal_amount_payments_limit)
-        .for_deposit_common(payment)
+      for_deposit_common(payment)
+        .equal_amount_payments_limited(payment.national_currency_amount, payment.merchant.equal_amount_payments_limit)
     }
 
     scope :for_deposit_unlimited, lambda { |payment|
@@ -88,8 +88,9 @@ module AdvertisementScopes
     scope :equal_amount_payments_limited, lambda { |national_currency_amount, limit|
       return unless limit
 
-      having(Arel.sql("SUM(CASE WHEN payments.national_currency_amount
-        = #{national_currency_amount} THEN 1 ELSE 0 END) < #{limit}"))
+      having(Arel.sql('SUM(CASE WHEN ' \
+                      "payments.national_currency_amount = #{national_currency_amount} " \
+                      "THEN 1 ELSE 0 END) < #{limit}"))
     }
   end
 end
