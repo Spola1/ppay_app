@@ -98,5 +98,11 @@ module AdvertisementScopes
                        .select('advertisements.*').group('advertisements.id, users.id')
                        .having('SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit')
     }
+
+    scope :with_limit_test, lambda {
+      joins(:processer).left_joins(:payments).merge(Payment.in_one_day.reorder(''))
+                       .select('advertisements.*').group('advertisements.id, users.id')
+                       .having('SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit')
+    }
   end
 end
