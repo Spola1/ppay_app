@@ -25,7 +25,7 @@ class BalanceRequest < ApplicationRecord
   after_create :create_transaction
   after_create_commit :send_new_balance_request_notification
 
-  validate :check_crypto_address_presence, on: :create
+  validate :agent_or_wg_withdrawing_crypto_address_cannot_present, on: :create
   validates_presence_of :crypto_address, unless: :agent_or_wg_withdrawing?
   validates_numericality_of :amount, greater_than: 0
 
@@ -67,7 +67,7 @@ class BalanceRequest < ApplicationRecord
     %w[Agent WorkingGroup].include?(user.type) && withdraw?
   end
 
-  def check_crypto_address_presence
+  def agent_or_wg_withdrawing_crypto_address_cannot_present
     return unless agent_or_wg_withdrawing? && crypto_address.present?
 
     errors.add(:crypto_address, 'Должно быть пустым.')

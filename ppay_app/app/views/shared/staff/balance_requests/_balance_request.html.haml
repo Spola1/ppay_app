@@ -32,9 +32,9 @@
           %td.item-card-td= @balance_request.real_commission
       %tr.items-list-tr{ 'data-controller': 'clipboard' }
         %td.item-card-td.item-card-td-label Криптоадрес
-        %td.item-card-td{ 'data-clipboard-target': 'source' }= @balance_request.crypto_address
-        %td.copy-button
-          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+        %td.item-card-td
+          .inline-flex.flex-row.items-center.space-x-3.cursor-pointer{ 'data-action': 'click->clipboard#copy' }
+            %span{ 'data-clipboard-target': 'source' }= @balance_request.crypto_address
             = image_tag 'copy.svg', class: 'h-full'
       %tr.items-list-tr
         %td.item-card-td.item-card-td-label Пользователь
