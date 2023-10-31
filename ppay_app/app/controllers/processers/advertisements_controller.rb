@@ -16,7 +16,9 @@ module Processers
       @advertisements = current_user.advertisements
     end
 
-    def show; end
+    def show
+      @advertisement = @advertisement.decorate
+    end
 
     def new
       @advertisement = current_user.advertisements.new(@advertisement&.attributes)

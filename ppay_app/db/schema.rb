@@ -602,6 +602,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_094308) do
     t.boolean "otp_required_for_login"
     t.boolean "otp_payment_confirm"
     t.boolean "can_edit_summ"
+    t.decimal "daily_usdt_card_limit", default: "0.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

@@ -92,5 +92,11 @@ module AdvertisementScopes
                       "payments.national_currency_amount = #{national_currency_amount} " \
                       "THEN 1 ELSE 0 END) < #{limit}"))
     }
+
+    scope :with_limit_test, lambda {
+      joins(:processer).left_joins(:payments).merge(Payment.in_one_day.reorder(''))
+                       .select('advertisements.*').group('advertisements.id, users.id')
+                       .having('SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit')
+    }
   end
 end

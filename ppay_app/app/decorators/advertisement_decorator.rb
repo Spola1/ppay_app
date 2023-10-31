@@ -15,4 +15,16 @@ class AdvertisementDecorator < ApplicationDecorator
   def hotlist_payments
     direction == 'Deposit' ? payments.in_deposit_flow_hotlist : payments.in_withdrawal_flow_hotlist
   end
+
+  def active_status
+    if status
+      if exceed_daily_usdt_card_limit?
+        'Превышен суточный лимит'
+      else
+        'Активно'
+      end
+    else
+      'Неактивно'
+    end
+  end
 end

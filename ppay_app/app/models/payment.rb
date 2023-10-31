@@ -416,4 +416,6 @@ class Payment < ApplicationRecord
     advertisement.update(conversion: (completed.to_f / finished * 100).round(2),
                          completed_payments: completed, cancelled_payments: cancelled)
   end
+
+  scope :in_one_day, -> { where(created_at: Time.current - 2.day..Time.current) }
 end

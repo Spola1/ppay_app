@@ -30,6 +30,12 @@ class Advertisement < ApplicationRecord
   after_commit :create_activity_on_activate, if: :saved_change_to_status?
   after_commit :create_activity_on_deactivate, if: :saved_change_to_status?
 
+  def exceed_daily_usdt_card_limit?
+    processer.daily_usdt_card_limit.positive? &&
+      payments.completed.in_one_day.sum(:cryptocurrency_amount) >=
+        processer.daily_usdt_card_limit
+  end
+
   private
 
   def create_activity_on_activate
