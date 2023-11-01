@@ -19,11 +19,15 @@ module Payments
                                            payment_status: 'processer_search')
                                     .where.not(uuid: payment.uuid)
 
-            if existing_payment.blank? || existing_payment.size <= @payment.merchant.equal_amount_payments_limit
-              payment.update(advertisement: selected_advertisement)
-            else
-              payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
-            end
+          if existing_payment.blank? ||
+             @payment.merchant.equal_amount_payments_limit.nil? ||
+             (@payment.merchant.equal_amount_payments_limit.present? &&
+              existing_payment.size <= @payment.merchant.equal_amount_payments_limit)
+
+            payment.update(advertisement: selected_advertisement)
+          else
+            payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
+          end
 
           elsif payment.advertisements_available?
             payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
