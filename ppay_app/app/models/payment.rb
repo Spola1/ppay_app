@@ -417,7 +417,7 @@ class Payment < ApplicationRecord
                          completed_payments: completed, cancelled_payments: cancelled)
   end
 
-  scope :in_one_day, -> { where(created_at: Time.current - 10.day..Time.current) }
+  scope :in_one_day, -> { where(created_at: Time.current - 1.day..Time.current) }
 
   after_update_commit :block_advertisement, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed? &&
