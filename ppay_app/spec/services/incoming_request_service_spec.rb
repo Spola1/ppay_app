@@ -127,7 +127,7 @@ RSpec.describe IncomingRequestService do
     end
 
     context 'when advertisement simbank_auto_confirmation disabled' do
-      let!(:advertisement) { create(:advertisement, processer:, simbank_auto_confirmation: false ) }
+      let!(:advertisement) { create(:advertisement, processer:, simbank_auto_confirmation: false) }
 
       it 'returns correct find_matching_advertisement result' do
         expect(incoming_request.advertisement).to eq(advertisement)
@@ -167,7 +167,9 @@ RSpec.describe IncomingRequestService do
     end
 
     context 'when advertisement simbank_auto_confirmation and save_incoming_requests_history disabled' do
-      let!(:advertisement) { create(:advertisement, processer:, simbank_auto_confirmation: false, save_incoming_requests_history: false ) }
+      let!(:advertisement) do
+        create(:advertisement, processer:, simbank_auto_confirmation: false, save_incoming_requests_history: false)
+      end
 
       it 'returns correct find_matching_advertisement result' do
         expect(incoming_request.advertisement).to eq(nil)

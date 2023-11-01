@@ -261,7 +261,7 @@ class Payment < ApplicationRecord
   end
 
   def advertisements_scope
-    if type == "Deposit" 
+    if type == 'Deposit'
       Advertisement.public_send("for_#{type.downcase}_unlimited", self)
     else
       Advertisement.public_send("for_#{type.downcase}", self)

@@ -3,7 +3,7 @@
 module JsonApiHelper
   def response_body
     JSON.parse(response.body).deep_symbolize_keys.with_indifferent_access
-  rescue
+  rescue StandardError
     nil
   end
 end
