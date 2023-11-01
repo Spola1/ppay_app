@@ -34,7 +34,7 @@ module Payments
                                            payment_status: 'processer_search')
                                     .where.not(uuid: payment.uuid)
 
-            if existing_payment.size <= (@payment.merchant.equal_amount_payments_limit || Float::Infinity)
+            if existing_payment.size <= (@payment.merchant.equal_amount_payments_limit || Float::INFINITY)
               payment.update(advertisement: selected_advertisement)
             else
               payment.update(advertisement_not_found_reason: :equal_amount_payments_limit_exceeded)
