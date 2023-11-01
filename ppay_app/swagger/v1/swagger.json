@@ -59,22 +59,22 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "5f373bf4-e194-4674-924f-ed733ea7350a",
+                    "id": "3b1579d1-b8b2-44f5-93f4-850cdadb2ec2",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "5f373bf4-e194-4674-924f-ed733ea7350a",
-                      "card_number": "1111111111111111",
-                      "expiration_time": "2023-09-28T16:18:42.142+03:00",
+                      "uuid": "3b1579d1-b8b2-44f5-93f4-850cdadb2ec2",
+                      "card_number": "2386724827706979",
+                      "expiration_time": "2023-11-01T13:14:00.229+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "payment_system": "Sberbank",
                       "initial_amount": "100.0",
-                      "cryptocurrency_commission_amount": 0.0652635013868494,
+                      "cryptocurrency_commission_amount": 0.03988433542726094,
                       "national_currency_commission_amount": 3.9999999999999996,
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBCZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--cdcab48c69fe6f1bc996a99fc8e7a4e37945e288/611b3b64727093ba13a66c4aa89155f6.svg"
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBOZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--c49739fd44f7178ad8a8200b707d6011a2dba057/bc84727c3969ac52ffd44bfcb61512d5.svg"
                     }
                   }
                 },
@@ -327,16 +327,16 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "bfcc2017-a644-4a55-ba8a-cf5607924fcf",
+                    "id": "861dfedf-56c7-4694-854d-d975690f70ed",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "bfcc2017-a644-4a55-ba8a-cf5607924fcf",
+                      "uuid": "861dfedf-56c7-4694-854d-d975690f70ed",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "payment_system": "Sberbank",
                       "initial_amount": "3000.0",
-                      "cryptocurrency_commission_amount": 1.9579050416054822,
-                      "national_currency_commission_amount": 119.99999999999999
+                      "cryptocurrency_commission_amount": 1.1965300628178284,
+                      "national_currency_commission_amount": 119.99999999999997
                     }
                   }
                 },
@@ -377,6 +377,192 @@
         }
       }
     },
+    "/get-api-link": {
+      "get": {
+        "summary": "Получить ссылки для отправки пинга и сообщений",
+        "tags": [
+          "Мобильное приложение"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "description": "## Запрос ссылок\n\nДля получения ссылок нужно отправить GET-запрос `/get-api-link`.\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "responses": {
+          "200": {
+            "description": "успешный ответ системы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ping_url": {
+                      "type": "string",
+                      "example": "/api/v1/catcher/ping"
+                    },
+                    "message_url": {
+                      "type": "string",
+                      "example": "/api/v1/simbank/requests"
+                    }
+                  },
+                  "required": [
+                    "ping_url",
+                    "message_url"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "не авторизован"
+          }
+        }
+      },
+      "post": {
+        "summary": "Отправить информацию о клиенте",
+        "description": "## Отправка информации о клиенте\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр    | Название   | Тип    | Наличие     | Описание               |\n|-------------|------------|--------|-------------|------------------------|\n| application | Приложение | Object | Обязательно | блок данных приложения |\n| device      | Устройство | Object | Обязательно | блок данных устройства |\n\n### Блок данных приложения\n\n| Параметр | Название | Тип    | Наличие     | Описание          |\n|----------|----------|--------|-------------|-------------------|\n| id       | UUID     | String | Обязательно | UUID приложения   |\n| version  | версия   | String | Обязательно | Версия приложения |\n\n### Блок данных устройства\n\n| Параметр | Название | Тип    | Наличие     | Описание |\n|----------|----------|--------|-------------|----------|\n| ip       | IP адрес | String | Обязательно |          |\n| model    | Модель   | String | Обязательно |          |\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "tags": [
+          "Мобильное приложение"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "запись с клиентской информацией создана"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "application": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5b355a3f-2486-4d72-b62a-ff36e9d107d0"
+                      },
+                      "version": {
+                        "type": "string",
+                        "example": "1.33.7"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version"
+                    ]
+                  },
+                  "device": {
+                    "type": "object",
+                    "properties": {
+                      "ip": {
+                        "type": "string",
+                        "example": "1.3.3.7"
+                      },
+                      "model": {
+                        "type": "string",
+                        "example": "TopForItsMoney 13X"
+                      }
+                    },
+                    "required": [
+                      "ip",
+                      "model"
+                    ]
+                  }
+                },
+                "required": [
+                  "application",
+                  "device"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catcher/ping": {
+      "post": {
+        "summary": "Отправить пинг с информацией о клиенте",
+        "description": "## Отправка пинга с информацией о клиенте\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр    | Название   | Тип    | Наличие     | Описание               |\n|-------------|------------|--------|-------------|------------------------|\n| application | Приложение | Object | Обязательно | блок данных приложения |\n| device      | Устройство | Object | Обязательно | блок данных устройства |\n\n### Блок данных приложения\n\n| Параметр | Название | Тип    | Наличие     | Описание          |\n|----------|----------|--------|-------------|-------------------|\n| id       | UUID     | String | Обязательно | UUID приложения   |\n| version  | версия   | String | Обязательно | Версия приложения |\n\n### Блок данных устройства\n\n| Параметр | Название | Тип    | Наличие     | Описание |\n|----------|----------|--------|-------------|----------|\n| ip       | IP адрес | String | Обязательно |          |\n| model    | Модель   | String | Обязательно |          |\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "tags": [
+          "Мобильное приложение"
+        ],
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "запись с клиентской информацией создана"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "application": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "7e68ca71-d7a6-407a-bb0f-d36ce96f26e1"
+                      },
+                      "version": {
+                        "type": "string",
+                        "example": "1.33.7"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version"
+                    ]
+                  },
+                  "device": {
+                    "type": "object",
+                    "properties": {
+                      "ip": {
+                        "type": "string",
+                        "example": "1.3.3.7"
+                      },
+                      "model": {
+                        "type": "string",
+                        "example": "TopForItsMoney 13X"
+                      }
+                    },
+                    "required": [
+                      "ip",
+                      "model"
+                    ]
+                  }
+                },
+                "required": [
+                  "application",
+                  "device"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/payments/deposits": {
       "post": {
         "summary": "Создание депозита",
@@ -400,11 +586,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "da272dd8-95cd-4017-9562-f1e586407201",
+                    "id": "11d01e45-d7e4-4655-8acb-426a631fb8c2",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "da272dd8-95cd-4017-9562-f1e586407201",
-                      "url": "http://example.org/payments/deposits/da272dd8-95cd-4017-9562-f1e586407201?signature=01cf855bdc0536740ecbfb1d66c8ff0289d47913075cbb8dc4c4f8297be6c50c"
+                      "uuid": "11d01e45-d7e4-4655-8acb-426a631fb8c2",
+                      "url": "http://example.org/payments/deposits/11d01e45-d7e4-4655-8acb-426a631fb8c2?signature=dbfd037b99b3310c5101a4978a659d36c7a219ce9c8c945eda4b7ab47eb07223"
                     }
                   }
                 },
@@ -468,11 +654,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "3ff69966-056a-4dfb-8b7d-2264286b6cb4",
+                    "id": "5dbc36c9-50b1-4e3f-a6db-71b83c798e71",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "3ff69966-056a-4dfb-8b7d-2264286b6cb4",
-                      "url": "http://example.org/payments/withdrawals/3ff69966-056a-4dfb-8b7d-2264286b6cb4?signature=d082df0408e71c858708e40913131dc9131f91dce23db5ddce088682b33bafa5"
+                      "uuid": "5dbc36c9-50b1-4e3f-a6db-71b83c798e71",
+                      "url": "http://example.org/payments/withdrawals/5dbc36c9-50b1-4e3f-a6db-71b83c798e71?signature=bde12ebcb026272b4ee4f756ec28fcd9c2916955baad62482b4544486c66016a"
                     }
                   }
                 },
@@ -914,7 +1100,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "b17263f9-5570-4a35-8a05-057604984a95"
+                    "example": "a342ab05-80d6-4f4c-90b9-5d88e9eeb3d7"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -922,7 +1108,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-09-28T15:58:39.307+03:00"
+                    "example": "2023-11-01T12:53:56.397+03:00"
                   },
                   "national_currency": {
                     "type": "string",

@@ -3,7 +3,7 @@
 require 'swagger_helper'
 
 describe 'External processing withdrawals' do
-  include_context 'authorization'
+  include_context 'merchant authorization'
   let(:check_required) { false }
 
   let!(:rate_snapshot) { create(:rate_snapshot, :sell) }

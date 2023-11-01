@@ -2,101 +2,139 @@
 
 require 'swagger_helper'
 
-describe 'MobileAppRequests' do
-  include_context 'authorization'
+def application_device_schema
+  {
+    type: :object,
+    properties: {
+      application: {
+        type: :object,
+        properties: {
+          id: { type: :string, example: SecureRandom.uuid },
+          version: { type: :string, example: '1.33.7' }
+        },
+        required: %i[id version]
+      },
+      device: {
+        type: :object,
+        properties: {
+          ip: { type: :string, example: '1.3.3.7' },
+          model: { type: :string, example: 'TopForItsMoney 13X' }
+        },
+        required: %i[ip model]
+      }
+    },
+    required: %i[application device]
+  }
+end
 
-  let(:save_application_info) do
-    MobileAppRequest.create(
-      application_id: 'some_id',
-      version: '1.0',
-      current_device_ip: '127.0.0.1',
-      device_model: 'iPhone'
-    )
+shared_examples 'send_client_info' do
+  tags 'Мобильное приложение'
+
+  consumes 'application/json'
+  security [bearerAuth: {}]
+
+  parameter name: :params, in: :body, schema: application_device_schema
+
+  let(:params) do
+    {
+      application: {
+        id: SecureRandom.uuid,
+        version: '1.0.0'
+      },
+      device: {
+        ip: FFaker::Internet.ip_v4_address,
+        model: 'топ за свои деньги'
+      }
+    }
   end
 
+  response '201', 'запись с клиентской информацией создана' do
+    it 'creates a mobile app request record with actual data' do |example|
+      expect { submit_request(example.metadata) }.to change {
+        MobileAppRequest.count
+      }.from(0).to(1)
+
+      record = MobileAppRequest.first
+      expect(record.application_id).to eq params[:application][:id]
+      expect(record.application_version).to eq params[:application][:version]
+      expect(record.device_ip).to eq params[:device][:ip]
+      expect(record.device_model).to eq params[:device][:model]
+      expect(record.api_key).to eq processer_token
+      expect(record.user).to eq processer
+    end
+
+    context 'with invalid token' do
+      let(:processer_token) { invalid_processer_token }
+
+      it 'creates a mobile app request record with actual data' do |example|
+        expect { submit_request(example.metadata) }.to change {
+          MobileAppRequest.count
+        }.from(0).to(1)
+
+        record = MobileAppRequest.first
+        expect(record.application_id).to eq params[:application][:id]
+        expect(record.application_version).to eq params[:application][:version]
+        expect(record.device_ip).to eq params[:device][:ip]
+        expect(record.device_model).to eq params[:device][:model]
+        expect(record.api_key).to eq processer_token
+        expect(record.user).to be_nil
+      end
+    end
+  end
+end
+
+describe 'External processing payments receipts' do
+  include_context 'processer authorization'
+
   path '/get-api-link' do
-    get 'Get links' do
-      tags 'MobileAppRequests'
-      produces 'application/json'
+    get 'Получить ссылки для отправки пинга и сообщений' do
+      tags 'Мобильное приложение'
+
       security [bearerAuth: {}]
 
-      description 'Get ping and message URLs'
+      description_erb 'get_get-api-link.md.erb'
 
-      response '200', 'Links' do
-        schema '$ref': '#/components/schemas/t_mobile_app_requests_api_link_response_body_schema'
+      response '200', 'успешный ответ системы' do
+        produces 'application/json'
 
-        before do
-          ENV['MOBILE_APP_PING_LINK'] = 'test_ping_link'
-          ENV['MOBILE_APP_SIMBANK_LINK'] = 'test_simbank_link'
+        schema type: :object,
+               properties: {
+                 ping_url: { type: :string, example: '/api/v1/catcher/ping' },
+                 message_url: { type: :string, example: '/api/v1/simbank/requests' }
+               },
+               required: %i[ping_url message_url]
+
+        context 'validates schema' do
+          run_test! do
+            expect(response_body[:ping_url]).to eq api_v1_catcher_ping_path
+            expect(response_body[:message_url]).to eq api_v1_simbank_request_path
+          end
         end
+      end
 
-        run_test! do |_response|
-          expect(response_body['ping_url']).to eq('test_ping_link')
-          expect(response_body['message_url']).to eq('test_simbank_link')
-        end
+      response '401', 'не авторизован' do
+        context 'invalid token' do
+          let(:processer_token) { invalid_processer_token }
 
-        after do
-          ENV['MOBILE_APP_PING_LINK'] = nil
-          ENV['MOBILE_APP_SIMBANK_LINK'] = nil
+          run_test! do
+            expect(response_body).to be_blank
+          end
         end
       end
     end
 
-    post 'Get links' do
-      tags 'MobileAppRequests'
-      produces 'application/json'
-      security [bearerAuth: {}]
+    post 'Отправить информацию о клиенте' do
+      description_erb 'post_get-api-link.md.erb'
 
-      description 'Create application'
-
-      response '200', 'Links' do
-        schema '$ref': '#/components/schemas/post_mobile_app_requests_api_link_response_body_schema'
-
-        before do
-          ENV['MOBILE_APP_PING_LINK'] = 'test_ping_link'
-          ENV['MOBILE_APP_SIMBANK_LINK'] = 'test_simbank_link'
-        end
-
-        before do
-          post '/api/v1/catcher/ping', params: {
-            application_id: 'app_id',
-            version: '1.0'
-          }
-        end
-
-        run_test! do |_response|
-          expect(response_body['message']).to eq('Information saved successfully')
-          expect { save_application_info }.to change(MobileAppRequest, :count).by(1)
-        end
-      end
+      it_behaves_like 'send_client_info'
     end
   end
 
   path '/api/v1/catcher/ping' do
-    post 'Receive ping' do
-      tags 'MobileAppRequests'
-      produces 'application/json'
-      security [bearerAuth: {}]
+    post 'Отправить пинг с информацией о клиенте' do
+      description_erb 'catcher/ping.md.erb'
 
-      description 'Receive ping'
-
-      response '200', 'Pings' do
-        schema '$ref': '#/components/schemas/post_mobile_app_requests_receive_ping_response_body_schema'
-
-        before do
-          post '/api/v1/catcher/ping', params: {
-            application_id: 'app_id',
-            version: '1.0',
-            current_device_ip: '127.0.0.1',
-            device_model: 'iPhone'
-          }
-        end
-
-        run_test! do |_response|
-          expect(response_body['message']).to eq('Information saved successfully')
-          expect { save_application_info }.to change(MobileAppRequest, :count).by(1)
-        end
-      end
+      it_behaves_like 'send_client_info'
     end
   end
 end

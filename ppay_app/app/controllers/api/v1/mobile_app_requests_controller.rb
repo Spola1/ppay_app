@@ -2,47 +2,38 @@
 
 module Api
   module V1
-    class MobileAppRequestsController < ApplicationController
-      skip_before_action :verify_authenticity_token
+    class MobileAppRequestsController < ActionController::API
+      include ApiKeyAuthenticatable
 
-      def api_link
-        if request.get?
-          render_links
-        elsif request.post?
-          save_application_info
-        else
-          render_error('Invalid request method')
-        end
+      prepend_before_action :authenticate_with_api_key
+
+      def api_link_get
+        return(head :unauthorized) unless current_bearer
+
+        render json: {
+          ping_url: api_v1_catcher_ping_path,
+          message_url: api_v1_simbank_request_path
+        }
       end
 
-      def receive_ping
-        if request.post?
-          save_application_info
-        else
-          render_error('Invalid request method')
-        end
+      def ping
+        create_mobile_app_request
+
+        head :created
       end
+      alias api_link_post ping
 
       private
 
-      def render_links
-        ping_url = ENV.fetch('MOBILE_APP_PING_LINK')
-        message_url = ENV.fetch('MOBILE_APP_SIMBANK_LINK')
-        render json: { ping_url:, message_url: }, status: :ok
-      end
-
-      def save_application_info
-        MobileAppRequest.create(
-          application_id: params[:application_id],
-          version: params[:version],
-          current_device_ip: params[:current_device_ip],
-          device_model: params[:device_model]
+      def create_mobile_app_request
+        MobileAppRequest.create!(
+          application_id: params.dig(:application, :id),
+          application_version: params.dig(:application, :version),
+          device_ip: params.dig(:device, :ip),
+          device_model: params.dig(:device, :model),
+          api_key: current_http_token,
+          user: current_bearer
         )
-        render json: { message: 'Information saved successfully' }, status: :ok
-      end
-
-      def render_error(message)
-        render json: { error: message }, status: :bad_request
       end
     end
   end

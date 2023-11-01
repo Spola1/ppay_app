@@ -211,13 +211,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      post '/catcher/ping', to: 'mobile_app_requests#receive_ping'
-      post '/simbank/requests', to: 'incoming_requests#create'
+      post '/catcher/ping', to: 'mobile_app_requests#ping', as: :catcher_ping
+      post '/simbank/requests', to: 'incoming_requests#create', as: :simbank_request
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
 
-      post '/check_telegram_connections/check_connection_status', to: 'check_telegram_connections#check_connection_status'
-      
+      post '/check_telegram_connections/check_connection_status',
+           to: 'check_telegram_connections#check_connection_status'
+
       concerns :payments_creatable
       namespace :external_processing do
         namespace :payments do
@@ -231,8 +232,6 @@ Rails.application.routes.draw do
     end
   end
 
-  match '/get-api-link', to: 'api/v1/mobile_app_requests#api_link', via: [:get, :post]
-
   resources :payments, param: :uuid, only: [] do
     resources :comments, only: :create, controller: 'payments/comments'
     resources :chats, only: :create, controller: 'payments/chats'
@@ -242,6 +241,8 @@ Rails.application.routes.draw do
 
   get 'users/otp', to: 'users/otp#show', as: :user_otp
   post 'users/otp', to: 'users/otp#verify', as: :verify_user_otp
+  get 'get-api-link', to: 'api/v1/mobile_app_requests#api_link_get'
+  post 'get-api-link', to: 'api/v1/mobile_app_requests#api_link_post'
 
   constraints(
     lambda do |request|

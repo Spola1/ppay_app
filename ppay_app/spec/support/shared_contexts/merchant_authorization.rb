@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_context 'authorization' do
+shared_context 'merchant authorization' do
   let!(:payment_system) { create :payment_system }
   let!(:merchant) { create :merchant, check_required:, account_number_required: }
   let(:check_required) { true }
