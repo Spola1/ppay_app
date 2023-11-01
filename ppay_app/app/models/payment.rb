@@ -78,6 +78,7 @@ class Payment < ApplicationRecord
   has_many :chats
   has_many :visits
   has_many :payment_logs
+  has_many :incoming_requests
 
   before_create :set_default_unique_amount
   before_create :set_initial_amount

@@ -30,7 +30,7 @@ class IncomingRequestService
     find_matching_payment
     create_not_found_payment
     build_related_models
-    payment_message if @payment.advertisement.simbank_auto_confirmation?
+    payment_message
     render_success_response
   end
 
@@ -53,7 +53,7 @@ class IncomingRequestService
                                                 value: search_value)
                                          .where('(save_incoming_requests_history = true AND
                                                 simbank_auto_confirmation = true AND simbank_sender = :sender)
-                                                OR (save_incoming_requests_history = true AND simbank_sender = :sender)',
+                                                OR (save_incoming_requests_history AND simbank_sender = :sender)',
                                                 sender: @incoming_request.from)
 
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
@@ -82,6 +82,16 @@ class IncomingRequestService
     @incoming_request.payment = @payment if @payment.present?
     @incoming_request.card_mask = @card_mask if @card_mask.present?
     @incoming_request.sum_mask = @amount_mask if @amount_mask.present?
+
+    if @payment.present?
+      @payment.incoming_requests << @incoming_request
+      @payment.save
+    end
+
+    if @advertisement.present?
+      @advertisement.incoming_requests << @incoming_request
+      @advertisement.save
+    end
 
     @incoming_request.save
   end
@@ -160,6 +170,7 @@ class IncomingRequestService
 
   def payment_message
     return unless @payment.present?
+    return unless @advertisement.simbank_auto_confirmation?
 
     text = "#{@incoming_request.message}\n\n"
 

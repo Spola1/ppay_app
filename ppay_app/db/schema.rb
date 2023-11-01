@@ -92,8 +92,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_09_065935) do
     t.integer "cancelled_payments", default: 0
     t.string "telegram_phone"
     t.boolean "save_incoming_requests_history", default: false
+    t.bigint "incoming_request_id"
     t.index ["archived_at"], name: "index_advertisements_on_archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
+    t.index ["incoming_request_id"], name: "index_advertisements_on_incoming_request_id"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
 
@@ -438,6 +440,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_09_065935) do
     t.integer "advertisement_not_found_reason"
     t.decimal "adjusted_rate"
     t.string "other_processing_id"
+    t.bigint "incoming_request_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id", "created_at"], name: "index_payments_on_advertisement_id_and_created_at"
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
@@ -445,6 +448,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_09_065935) do
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"
     t.index ["created_at"], name: "index_payments_on_created_at"
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
+    t.index ["incoming_request_id"], name: "index_payments_on_incoming_request_id"
     t.index ["payment_status"], name: "index_payments_on_payment_status"
     t.index ["status_changed_at"], name: "index_payments_on_status_changed_at"
     t.index ["support_id"], name: "index_payments_on_support_id"
@@ -636,6 +640,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_09_065935) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "advertisement_activities", "advertisements"
+  add_foreign_key "advertisements", "incoming_requests"
   add_foreign_key "arbitration_resolutions", "payments"
   add_foreign_key "chats", "payments"
   add_foreign_key "chats", "users"
@@ -659,6 +664,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_09_065935) do
   add_foreign_key "payment_systems", "national_currencies"
   add_foreign_key "payment_systems", "payment_systems", column: "payment_system_copy_id"
   add_foreign_key "payments", "form_customizations"
+  add_foreign_key "payments", "incoming_requests"
   add_foreign_key "rate_snapshots", "payment_systems"
   add_foreign_key "telegram_applications", "users", column: "processer_id"
   add_foreign_key "telegram_connections", "telegram_applications"
