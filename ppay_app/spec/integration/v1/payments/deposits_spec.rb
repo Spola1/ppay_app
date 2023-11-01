@@ -3,7 +3,7 @@
 require 'swagger_helper'
 
 describe 'Deposits' do
-  include_context 'authorization'
+  include_context 'merchant authorization'
 
   let!(:rate_snapshot) { create(:rate_snapshot) }
 

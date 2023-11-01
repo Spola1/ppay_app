@@ -3,7 +3,7 @@
 require 'swagger_helper'
 
 describe 'Balance' do
-  include_context 'authorization'
+  include_context 'merchant authorization'
 
   path '/api/v1/balance' do
     get 'Запрос текущего баланса' do

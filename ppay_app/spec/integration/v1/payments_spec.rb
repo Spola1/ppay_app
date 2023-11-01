@@ -3,7 +3,7 @@
 require 'swagger_helper'
 
 describe 'Payments' do
-  include_context 'authorization'
+  include_context 'merchant authorization'
 
   path '/api/v1/payments/{uuid}' do
     get 'Получение информации по платежу' do

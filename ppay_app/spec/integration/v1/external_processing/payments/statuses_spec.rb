@@ -3,7 +3,7 @@
 require 'swagger_helper'
 
 describe 'External processing payments statuses' do
-  include_context 'authorization'
+  include_context 'merchant authorization'
   let(:check_required) { false }
 
   path '/api/v1/external_processing/payments/{uuid}/statuses/{event}' do

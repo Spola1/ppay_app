@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_01_072746) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -313,6 +313,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_23_104734) do
     t.datetime "updated_at", null: false
     t.index ["message_type", "message_id"], name: "index_message_read_statuses_on_message"
     t.index ["user_id"], name: "index_message_read_statuses_on_user_id"
+  end
+
+  create_table "mobile_app_requests", force: :cascade do |t|
+    t.string "application_id"
+    t.string "application_version"
+    t.string "device_ip"
+    t.string "device_model"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "api_key"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_mobile_app_requests_on_user_id"
   end
 
   create_table "national_currencies", force: :cascade do |t|

@@ -8,7 +8,7 @@ module Api
       include ActionController::HttpAuthentication::Basic::ControllerMethods
       include ActionController::HttpAuthentication::Token::ControllerMethods
 
-      attr_reader :current_api_key, :current_bearer
+      attr_reader :current_http_token, :current_api_key, :current_bearer
 
       # Use this to raise an error and automatically respond with a 401 HTTP status
       # code when API key authentication fails
@@ -26,6 +26,7 @@ module Api
       attr_writer :current_api_key, :current_bearer
 
       def authenticator(http_token, _options)
+        @current_http_token = http_token
         @current_api_key = ApiKey.find_by token: http_token
 
         current_api_key&.bearer
