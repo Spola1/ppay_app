@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe BalanceRequest, type: :model do
-  let!(:balance_request) { create(:balance_request, :deposit) }
+  let!(:balance_request) { create :balance_request, :deposit }
 
   it { is_expected.to have_one(:balance_transaction).class_name('Transaction') }
   it { is_expected.to belong_to(:user) }

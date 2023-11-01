@@ -64,7 +64,7 @@ class BalanceRequest < ApplicationRecord
   end
 
   def agent_or_wg_withdrawing?
-    %w[Agent WorkingGroup].include?(user.type) && withdraw?
+    %w[Agent WorkingGroup].include?(user&.type) && withdraw?
   end
 
   def agent_or_wg_withdrawing_crypto_address_cannot_present
