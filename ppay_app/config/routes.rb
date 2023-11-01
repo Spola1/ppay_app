@@ -241,8 +241,7 @@ Rails.application.routes.draw do
 
   get 'users/otp', to: 'users/otp#show', as: :user_otp
   post 'users/otp', to: 'users/otp#verify', as: :verify_user_otp
-  get 'get-api-link', to: 'api/v1/mobile_app_requests#api_link_get'
-  post 'get-api-link', to: 'api/v1/mobile_app_requests#api_link_post'
+  get 'get-api-link', to: 'api/v1/mobile_app_requests#api_link'
 
   constraints(
     lambda do |request|

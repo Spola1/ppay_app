@@ -7,7 +7,7 @@ module Api
 
       prepend_before_action :authenticate_with_api_key
 
-      def api_link_get
+      def api_link
         return(head :unauthorized) unless current_bearer
 
         render json: {
@@ -21,7 +21,6 @@ module Api
 
         head :created
       end
-      alias api_link_post ping
 
       private
 

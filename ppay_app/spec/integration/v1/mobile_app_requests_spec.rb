@@ -2,87 +2,6 @@
 
 require 'swagger_helper'
 
-def application_device_schema
-  {
-    type: :object,
-    properties: {
-      application: {
-        type: :object,
-        properties: {
-          id: { type: :string, example: SecureRandom.uuid },
-          version: { type: :string, example: '1.33.7' }
-        },
-        required: %i[id version]
-      },
-      device: {
-        type: :object,
-        properties: {
-          ip: { type: :string, example: '1.3.3.7' },
-          model: { type: :string, example: 'TopForItsMoney 13X' }
-        },
-        required: %i[ip model]
-      }
-    },
-    required: %i[application device]
-  }
-end
-
-shared_examples 'send_client_info' do
-  tags 'Мобильное приложение'
-
-  consumes 'application/json'
-  security [bearerAuth: {}]
-
-  parameter name: :params, in: :body, schema: application_device_schema
-
-  let(:params) do
-    {
-      application: {
-        id: SecureRandom.uuid,
-        version: '1.0.0'
-      },
-      device: {
-        ip: FFaker::Internet.ip_v4_address,
-        model: 'топ за свои деньги'
-      }
-    }
-  end
-
-  response '201', 'запись с клиентской информацией создана' do
-    it 'creates a mobile app request record with actual data' do |example|
-      expect { submit_request(example.metadata) }.to change {
-        MobileAppRequest.count
-      }.from(0).to(1)
-
-      record = MobileAppRequest.first
-      expect(record.application_id).to eq params[:application][:id]
-      expect(record.application_version).to eq params[:application][:version]
-      expect(record.device_ip).to eq params[:device][:ip]
-      expect(record.device_model).to eq params[:device][:model]
-      expect(record.api_key).to eq processer_token
-      expect(record.user).to eq processer
-    end
-
-    context 'with invalid token' do
-      let(:processer_token) { invalid_processer_token }
-
-      it 'creates a mobile app request record with actual data' do |example|
-        expect { submit_request(example.metadata) }.to change {
-          MobileAppRequest.count
-        }.from(0).to(1)
-
-        record = MobileAppRequest.first
-        expect(record.application_id).to eq params[:application][:id]
-        expect(record.application_version).to eq params[:application][:version]
-        expect(record.device_ip).to eq params[:device][:ip]
-        expect(record.device_model).to eq params[:device][:model]
-        expect(record.api_key).to eq processer_token
-        expect(record.user).to be_nil
-      end
-    end
-  end
-end
-
 describe 'External processing payments receipts' do
   include_context 'processer authorization'
 
@@ -122,19 +41,85 @@ describe 'External processing payments receipts' do
         end
       end
     end
-
-    post 'Отправить информацию о клиенте' do
-      description_erb 'post_get-api-link.md.erb'
-
-      it_behaves_like 'send_client_info'
-    end
   end
 
   path '/api/v1/catcher/ping' do
     post 'Отправить пинг с информацией о клиенте' do
+      tags 'Мобильное приложение'
       description_erb 'catcher/ping.md.erb'
 
-      it_behaves_like 'send_client_info'
+      consumes 'application/json'
+      security [bearerAuth: {}]
+
+      parameter name: :params, in: :body, schema: {
+        type: :object,
+        properties: {
+          application: {
+            type: :object,
+            properties: {
+              id: { type: :string, example: SecureRandom.uuid },
+              version: { type: :string, example: '1.33.7' }
+            },
+            required: %i[id version]
+          },
+          device: {
+            type: :object,
+            properties: {
+              ip: { type: :string, example: '1.3.3.7' },
+              model: { type: :string, example: 'TopForItsMoney 13X' }
+            },
+            required: %i[ip model]
+          }
+        },
+        required: %i[application device]
+      }
+
+      let(:params) do
+        {
+          application: {
+            id: SecureRandom.uuid,
+            version: '1.0.0'
+          },
+          device: {
+            ip: FFaker::Internet.ip_v4_address,
+            model: 'топ за свои деньги'
+          }
+        }
+      end
+
+      response '201', 'запись с клиентской информацией создана' do
+        it 'creates a mobile app request record with actual data' do |example|
+          expect { submit_request(example.metadata) }.to change {
+            MobileAppRequest.count
+          }.from(0).to(1)
+
+          record = MobileAppRequest.first
+          expect(record.application_id).to eq params[:application][:id]
+          expect(record.application_version).to eq params[:application][:version]
+          expect(record.device_ip).to eq params[:device][:ip]
+          expect(record.device_model).to eq params[:device][:model]
+          expect(record.api_key).to eq processer_token
+          expect(record.user).to eq processer
+        end
+
+        context 'with invalid token' do
+          let(:processer_token) { invalid_processer_token }
+
+          it 'creates a mobile app request record with actual data' do |example|
+            expect { submit_request(example.metadata) }.to change {
+              MobileAppRequest.count
+            }.from(0).to(1)
+
+            record = MobileAppRequest.first
+            expect(record.application_id).to eq params[:application][:id]
+            expect(record.application_version).to eq params[:application][:version]
+            expect(record.device_ip).to eq params[:device][:ip]
+            expect(record.device_model).to eq params[:device][:model]
+            expect(record.api_key).to eq processer_token
+            expect(record.user).to be_nil
+          end
+        end
+      end
     end
   end
 end
