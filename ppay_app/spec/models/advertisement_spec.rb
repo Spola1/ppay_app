@@ -187,11 +187,11 @@ RSpec.describe Advertisement, type: :model do
     end
 
     def processer_with_payments(payments_count: 3)
-      FactoryBot.create(:processer, daily_usdt_card_limit: 100) do |processer|
-        FactoryBot.create(:advertisement, status: false,
-                                          block_reason: :exceed_daily_usdt_card_limit,
-                                          processer:) do |advertisement|
-          FactoryBot.create_list(:payment, payments_count, payment_status: 'completed', advertisement:)
+      create(:processer, daily_usdt_card_limit: 100) do |processer|
+        create(:advertisement, status: false,
+                               block_reason: :exceed_daily_usdt_card_limit,
+                               processer:) do |advertisement|
+          create_list(:payment, payments_count, payment_status: 'completed', advertisement:)
         end
       end
     end
