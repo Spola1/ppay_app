@@ -11,9 +11,7 @@ module Staff
         @advertisements = @advertisements.decorate
       end
 
-      def show
-        @advertisement = @advertisement.decorate
-      end
+      def show; end
 
       def edit; end
 

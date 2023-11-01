@@ -36,6 +36,10 @@ class Advertisement < ApplicationRecord
         processer.daily_usdt_card_limit
   end
 
+  enum block_reason: {
+    exceed_daily_usdt_card_limit: 0
+  }
+
   private
 
   def create_activity_on_activate
