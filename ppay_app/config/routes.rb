@@ -245,6 +245,10 @@ Rails.application.routes.draw do
   post 'users/otp', to: 'users/otp#verify', as: :verify_user_otp
   get 'get-api-link', to: 'api/v1/mobile_app_requests#api_link'
 
+  namespace :staff do
+    resources :users, only: :update, controller: 'base'
+  end
+
   constraints(
     lambda do |request|
       request.env['warden'].user.blank? &&
