@@ -3,7 +3,7 @@
 class AddOtherCommissionsForMerchants < ActiveRecord::Migration[7.0]
   def up
     MerchantMethod.find_each do |merchant_method|
-      Commission.create!(
+      Commission.create(
         {
           merchant_method:,
           commission_type: :other,
