@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class AddNationalCurrencies < ActiveRecord::Migration[7.0]
-  class NationalCurrency < ApplicationRecord;  end
+  class NationalCurrency < ApplicationRecord
+    validates_uniqueness_of :name
+  end
 
   def up
     NationalCurrency.create(
