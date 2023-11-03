@@ -79,7 +79,7 @@ module Supports
                                       :payment_system, :national_currency, :national_currency_amount_from,
                                       :national_currency_amount_to, :cryptocurrency_amount_from,
                                       :cryptocurrency_amount_to, :uuid, :external_order_id, :card_number,
-                                      :advertisement_id)
+                                      :advertisement_id, :merchant)
     end
 
     def filtered_payments
