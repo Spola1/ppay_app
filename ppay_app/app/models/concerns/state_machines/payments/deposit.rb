@@ -133,10 +133,8 @@ module StateMachines
       def recalculation_guard(national_currency_amount: nil)
         return unless aasm.current_event.in? %i[recalculate! recalculate]
 
-        if national_currency_amount
-          self.national_currency_amount = national_currency_amount
-          set_cryptocurrency_amount
-        end
+        self.national_currency_amount = national_currency_amount if national_currency_amount
+        set_cryptocurrency_amount
 
         cryptocurrency_amount <= processer.balance.amount
       end
