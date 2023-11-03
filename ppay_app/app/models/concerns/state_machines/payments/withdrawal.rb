@@ -39,12 +39,11 @@ module StateMachines
           end
 
           # bind_operator
-          event :bind do
+          event :bind, ensure: :search_processer do
             before :set_payment_system_by_advertisement, :bind_rate_snapshot, :set_cryptocurrency_amount, :set_locale
             after :create_transactions
-            ensure :search_processer # rubocop:disable Layout/RescueEnsureAlignment
 
-            transitions from: :processer_search, to: :transferring, guard: :advertisement? # rubocop:disable Layout/IndentationConsistency
+            transitions from: :processer_search, to: :transferring, guard: :advertisement?
           end
 
           # make_deposit

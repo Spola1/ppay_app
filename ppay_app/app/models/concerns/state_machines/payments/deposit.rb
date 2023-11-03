@@ -41,13 +41,12 @@ module StateMachines
           end
 
           # bind_operator
-          event :bind do
+          event :bind, ensure: :search_processer do
             before :set_payment_system_by_advertisement, :ensure_unique_amount, :bind_rate_snapshot,
                    :set_cryptocurrency_amount, :set_locale, :set_autoconfirming
             after :create_transactions
-            ensure :search_processer # rubocop:disable Layout/RescueEnsureAlignment
 
-            transitions from: :processer_search, to: :transferring, guard: :advertisement? # rubocop:disable Layout/IndentationConsistency
+            transitions from: :processer_search, to: :transferring, guard: :advertisement?
           end
 
           # make_deposit
@@ -59,8 +58,7 @@ module StateMachines
           end
 
           # recreate transactions with new amounts
-          event :recalculate do
-            before :set_cryptocurrency_amount
+          event :recalculate, guard: :recalculation_guard do
             after do
               cancel_transactions unless cancelled?
               destroy_transactions
@@ -68,9 +66,9 @@ module StateMachines
               cancel_transactions if cancelled?
             end
 
-            transitions from: :transferring, to: :transferring, guard: proc { available_frozen_transactions? }
-            transitions from: :confirming, to: :confirming, guard: proc { available_frozen_transactions? }
-            transitions from: :cancelled, to: :cancelled, guard: proc { available_cancelled_transactions? }
+            transitions from: :transferring, to: :transferring, guard: :available_frozen_transactions?
+            transitions from: :confirming, to: :confirming, guard: :available_frozen_transactions?
+            transitions from: :cancelled, to: :cancelled, guard: :available_cancelled_transactions?
           end
 
           # show_confirmation
@@ -104,8 +102,8 @@ module StateMachines
       private
 
       def available_processer_search?(params)
-        return unless valid_payment_system?(params)
-        return unless rate_snapshot.present?
+        return false unless valid_payment_system?(params)
+        return false unless rate_snapshot.present?
 
         true
       end
@@ -130,6 +128,17 @@ module StateMachines
           text: 'Проверка по симбанку. Ждем 3 минуты',
           skip_notification: true
         )
+      end
+
+      def recalculation_guard(national_currency_amount: nil)
+        return unless aasm.current_event.in? %i[recalculate! recalculate]
+
+        if national_currency_amount
+          self.national_currency_amount = national_currency_amount
+          set_cryptocurrency_amount
+        end
+
+        cryptocurrency_amount <= processer.balance.amount
       end
     end
   end
