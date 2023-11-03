@@ -5,6 +5,7 @@ FactoryBot.define do
     type { 'Processer' }
     email { FFaker::Internet.email }
     password { FFaker::Internet.password(10) }
+    daily_usdt_card_limit { 200 }
 
     transient do
       initial_balance { 1000 }
