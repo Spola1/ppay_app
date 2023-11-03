@@ -67,11 +67,20 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
     perform_enqueued_jobs do
       using_session 'Processer' do
         accept_confirm { click_on 'Подтвердить' }
+      end
+
+      using_session 'Support' do
+        click_on 'Все платежи'
+        find('.fa-search').click
 
         accept_confirm { click_on 'Откатить платёж' }
+      end
 
+      using_session 'Processer' do
         fill_in 'national_currency_amount', with: added_national_currency_amount
         accept_confirm { click_on 'Изменить сумму' }
+
+        processer.balance.withdraw(970)
 
         accept_confirm { click_on 'Подтвердить платёж' }
       end
