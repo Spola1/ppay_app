@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_11_02_123754) do
+>>>>>>> e23e6a0d (migrations)
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -87,6 +91,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
+    t.integer "block_reason"
     t.decimal "conversion", default: "0.0"
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
@@ -580,11 +585,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
     t.string "account_number_title"
     t.string "account_number_placeholder"
     t.string "any_bank"
-    t.boolean "autocancel", default: false, null: false
+    t.boolean "autocancel", default: true, null: false
     t.float "sort_weight", default: 1.0, null: false
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
+    t.decimal "daily_usdt_card_limit", default: "0.0"
+    t.integer "minutes_to_autocancel", default: 7, null: false
+    t.string "time_zone"
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
