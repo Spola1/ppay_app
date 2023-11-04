@@ -5,10 +5,11 @@ module Admins
     before_action :find_payment, only: %i[update show]
 
     def index
-      @pagy, @payments = pagy(Payment.includes(:merchant).order(created_at: :desc))
+      @pagy, @payments = pagy(Payment.includes(:merchant, :arbitration_resolutions).order(created_at: :desc))
       @payments = @payments.decorate
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration.includes(:merchant),
+      @arbitration_payments_pagy, @arbitration_payments = pagy(Payment.arbitration
+                                                                      .includes(:merchant, :arbitration_resolutions),
                                                                page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end

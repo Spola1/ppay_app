@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_02_111352) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -91,6 +91,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_111352) do
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
     t.string "telegram_phone"
+    t.index ["archived_at"], name: "index_advertisements_on_archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
   end
@@ -435,7 +436,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_111352) do
     t.decimal "adjusted_rate"
     t.string "other_processing_id"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
+    t.index ["advertisement_id", "created_at"], name: "index_payments_on_advertisement_id_and_created_at"
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"
+    t.index ["arbitration", "created_at"], name: "index_payments_on_arbitration_and_created_at"
     t.index ["arbitration_reason"], name: "index_payments_on_arbitration_reason"
     t.index ["created_at"], name: "index_payments_on_created_at"
     t.index ["form_customization_id"], name: "index_payments_on_form_customization_id"
@@ -536,8 +539,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_111352) do
     t.datetime "unfreeze_time"
     t.index ["from_balance_id", "transaction_type"], name: "index_transactions_on_from_balance_id_and_transaction_type"
     t.index ["from_balance_id"], name: "index_transactions_on_from_balance_id"
+    t.index ["to_balance_id", "created_at"], name: "index_transactions_on_to_balance_id_and_created_at"
     t.index ["to_balance_id"], name: "index_transactions_on_to_balance_id"
     t.index ["transactionable_type", "transactionable_id"], name: "index_transactions_on_transactionable"
+    t.index ["unfreeze_time"], name: "index_transactions_on_unfreeze_time"
   end
 
   create_table "users", force: :cascade do |t|

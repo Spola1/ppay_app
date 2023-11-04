@@ -23,6 +23,9 @@ before_install:
   - echo "GARANTEX_PRIVATE_KEY=$GARANTEX_PRIVATE_KEY" >> ppay_app/.env
   - echo "EXTERNAL_BNN_CALLBACK_PROTOCOL=$EXTERNAL_BNN_CALLBACK_PROTOCOL" >> ppay_app/.env
   - echo "EXTERNAL_BNN_CALLBACK_ADDRESS=$EXTERNAL_BNN_CALLBACK_ADDRESS" >> ppay_app/.env
+  - echo "TA_ADDRESS=$TA_ADDRESS" >> ppay_app/.env
+  - echo "TA_PATH=$TA_PATH" >> ppay_app/.env
+  - echo "TA_PROTOCOL=$TA_PROTOCOL" >> ppay_app/.env
   - cat ppay_app/.env
   - git add -f ppay_app/.env
   - git status

@@ -13,7 +13,7 @@ module Merchants
 
         format.xlsx do
           payments = current_user.payments
-                                 .includes(:advertisement, :transactions)
+                                 .includes(:advertisement, :transactions, :arbitration_resolutions)
                                  .filter_by(filtering_params)
                                  .decorate
           render xlsx: 'payments', locals: { payments: }
@@ -48,7 +48,8 @@ module Merchants
     def set_all_payments
       @deposits = current_user.deposits
       @withdrawals = current_user.withdrawals
-      @pagy, @filtered_payments = pagy(current_user.payments.filter_by(filtering_params))
+      @pagy, @filtered_payments = pagy(current_user.payments.includes(:merchant, :arbitration_resolutions)
+                                                            .filter_by(filtering_params))
       @filtered_payments = @filtered_payments.decorate
       @payments = current_user.payments
     end

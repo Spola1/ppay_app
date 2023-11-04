@@ -12,7 +12,7 @@ module Processers
 
         format.xlsx do
           payments = current_user.payments
-                                 .includes(:advertisement, :transactions)
+                                 .includes(:advertisement, :transactions, :arbitration_resolutions)
                                  .filter_by(filtering_params)
                                  .decorate
           render xlsx: 'payments', locals: { payments: }
@@ -63,12 +63,14 @@ module Processers
     end
 
     def set_payments
-      @pagy, @payments = pagy(current_user.payments.filter_by(filtering_params)
-                                                   .includes(:merchant)
+      @pagy, @payments = pagy(current_user.payments.includes(:merchant, :arbitration_resolutions)
+                                                   .filter_by(filtering_params)
                                                    .order(created_at: :desc))
       @payments = @payments.decorate
 
-      @arbitration_payments_pagy, @arbitration_payments = pagy(current_user.payments.arbitration.includes(:merchant),
+      @arbitration_payments_pagy, @arbitration_payments = pagy(current_user.payments
+                                                                           .arbitration
+                                                                           .includes(:merchant, :arbitration_resolutions),
                                                                page_param: :arbitration_page)
       @arbitration_payments = @arbitration_payments.decorate
     end

@@ -12,7 +12,9 @@ module Supports
 
         format.xlsx do
           render xlsx: 'payments',
-                 locals: { payments: Payment.filter_by(filtering_params).includes(:merchant).decorate }
+                 locals: { payments: Payment.filter_by(filtering_params)
+                                            .includes(:merchant, :arbitration_resolutions)
+                                            .decorate }
         end
       end
     end
@@ -56,7 +58,8 @@ module Supports
     end
 
     def set_all_payments
-      @pagy, @payments = pagy(Payment.filter_by(filtering_params).includes(:merchant))
+      @pagy, @payments = pagy(Payment.includes(:merchant, :arbitration_resolutions)
+                                     .filter_by(filtering_params))
       @payments = @payments.decorate
 
       @arbitration_payments_pagy, @arbitration_payments = pagy(filtered_payments, page_param: :arbitration_page)
@@ -80,7 +83,7 @@ module Supports
     end
 
     def filtered_payments
-      payments = Payment.arbitration.includes(:merchant, :advertisement)
+      payments = Payment.arbitration.includes(:merchant, :advertisement, :arbitration_resolutions)
 
       if filtering_params.present?
         if filtering_params[:card_number].present?
