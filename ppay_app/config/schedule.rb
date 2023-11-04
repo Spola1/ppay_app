@@ -29,8 +29,11 @@ set :environment, ENV.fetch('RAILS_ENV', nil)
 set :output, '/var/log/cron.log'
 
 every 1.minute do
-  runner 'RateSnapshots::GetAllRatesJob.perform_async'
   runner 'Payments::CancelExpiredJob.perform_async'
+end
+
+every 10.minutes do
+  runner 'RateSnapshots::GetAllRatesJob.perform_async'
 end
 
 every 5.minutes do
