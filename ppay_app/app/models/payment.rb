@@ -141,6 +141,8 @@ class Payment < ApplicationRecord
 
   after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
 
+  after_update_commit :send_update_callback, if: :arbitration_changed_to_false?
+
   after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
 
   scope :in_hotlist, lambda {
@@ -243,6 +245,10 @@ class Payment < ApplicationRecord
 
   def arbitration_changed_to_true?
     saved_change_to_arbitration? && arbitration?
+  end
+
+  def arbitration_changed_to_false?
+    saved_change_to_arbitration? && !arbitration?
   end
 
   def advertisements_available?
