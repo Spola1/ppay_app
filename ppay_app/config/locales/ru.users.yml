@@ -27,7 +27,7 @@ ru:
         otp_payment_confirm: Подтверждение кодом OTP для крупных платежей
         sort_weight: Приоритет команды при подборе объявления
         can_edit_summ: Возможность редактирования суммы объявления
-        autocancel: Автоотмена 
+        autocancel: Автоотмена
 
   users:
     sidebar:
