@@ -261,4 +261,20 @@ RSpec.describe Advertisement, type: :model do
       end
     end
   end
+
+  describe '.for_deposit_with_sbp_payment_system' do
+    subject { Advertisement.for_deposit_with_sbp_payment_system(payment).order(id: :asc) }
+
+    let(:payment) { create(:payment, :SBP, :deposit) }
+
+    let(:processer1) { create :processer }
+    let(:processer2) { create :processer }
+
+    let!(:advertisement1) { create :advertisement, processer: processer1, sbp_phone_number: '' }
+    let!(:advertisement2) { create :advertisement, processer: processer2 }
+
+    it 'selects all advertisements' do
+      is_expected.to eq([advertisement2])
+    end
+  end
 end
