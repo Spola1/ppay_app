@@ -41,10 +41,11 @@
             %tr.item-card-tr
               %td.item-card-td.item-card-td-label{ class: 'w-1/4' } ID на сторонней площадке
               %td.item-card-td= "#{payment.other_processing_id}"
-            %tr.item-card-tr
-              %td.item-card-td.item-card-td-label Ссылка
-              %td.item-card-td.whitespace-normal{id: "payment_link_with_uuid"}
-                = "#{payment.decorate.url}"
+            - unless current_user.processer?
+              %tr.item-card-tr
+                %td.item-card-td.item-card-td-label Ссылка
+                %td.item-card-td.whitespace-normal{id: "payment_link_with_uuid"}
+                  = "#{payment.decorate.url}"
 
 
             %tr.item-card-tr
