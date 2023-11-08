@@ -32,7 +32,8 @@ id:
         qr_manual_1: Arahkan kamera ke kode QR untuk melanjutkan
         qr_manual_2: dari telepon
         time_for_payment: Anda dapat membayar dalam waktu
-        make_transfer: Lakukan transfer jumlah yang ditentukan ke nomor kartu yang tercantum di bawah ini
+        make_transfer_by_card_number: Lakukan transfer jumlah yang ditentukan ke nomor kartu yang tercantum di bawah ini
+        make_transfer_by_phone_number: Lakukan transfer jumlah yang ditentukan ke nomor telepon yang tertera di bawah
         add_receipt_image: Tambahkan gambar tanda terima
         click_payment_completed_button: Setelah transfer, klik tombol "Pembayaran selesai" 
         payment_completed: Pembayaran selesai

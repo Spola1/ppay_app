@@ -33,7 +33,8 @@ tr:
         qr_manual_1: Devam etmek için kamerayı QR koduna yönlendirin
         qr_manual_2: telefondan
         time_for_payment: İçinde ödeme yapabilirsiniz
-        make_transfer: Belirtilen tutarın aşağıda belirtilen kart numarasına göre transferini yapın
+        make_transfer_by_card_number: Belirtilen tutarın aşağıda belirtilen kart numarasına göre transferini yapın
+        make_transfer_by_phone_number: Belirtilen tutarı aşağıda verilen telefon numarasına aktarın
         add_receipt_image: Çekin resmini ekleyin
         click_payment_completed_button: Transferden sonra "Ödeme tamamlandı» düğmesine tıklayın
         payment_completed: Ödeme tamamlandı
