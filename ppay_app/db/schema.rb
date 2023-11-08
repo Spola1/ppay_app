@@ -580,7 +580,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
     t.string "account_number_title"
     t.string "account_number_placeholder"
     t.string "any_bank"
-    t.boolean "autocancel", default: false, null: false
+    t.boolean "autocancel", default: true, null: false
     t.float "sort_weight", default: 1.0, null: false
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
