@@ -1,0 +1,14 @@
+%table.items-list-table
+  %thead.items-list-thead
+    %tr
+      %th.items-list-th название сессии
+      %th.items-list-th номер телефона
+      %th.items-list-th статус
+      %th.items-list-th
+  
+  %tbody
+    - telegram_connections.each do |tc|
+      %tr.items-list-tr 
+        %td.items-list-td= tc.telegram_application.session_name
+        %td.items-list-td= tc.telegram_application.phone_number
+        %td.items-list-td= tc.decorate.status_with_color
