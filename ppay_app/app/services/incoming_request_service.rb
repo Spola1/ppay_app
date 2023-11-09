@@ -147,7 +147,7 @@ class IncomingRequestService
     str_without_thousands = @incoming_request.message.gsub(mask.thousands_separator, '')
     formatted_str = str_without_thousands&.gsub(mask.decimal_separator, '.')
     amount = formatted_str[regexp]
-    amount.gsub(/[\s\xC2\xA0]/, '')
+    amount&.gsub(/[\s\xC2\xA0]/, '')&.gsub(',', '.')
   end
 
   def payment_message
