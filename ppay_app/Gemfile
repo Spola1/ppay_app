@@ -142,4 +142,4 @@ gem 'caxlsx_rails'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'httparty'
 gem 'trace_location'
-
+gem 'async-http-faraday'

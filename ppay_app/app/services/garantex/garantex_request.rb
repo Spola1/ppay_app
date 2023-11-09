@@ -1,8 +1,35 @@
 # frozen_string_literal: true
 
+require 'async/http/faraday'
+
 module Garantex
   module GarantexRequest
+    def set_conn(token)
+      Faraday.new do |builder|
+        builder.adapter :async_http, timeout: 60
+        builder.request :json
+        builder.request :authorization, 'Bearer', -> { token }
+        builder.response :json
+        # builder.response :raise_error
+      end
+    end
+
     def self.send_get(token, link, form_data_hash)
+      puts "send_get: #{link} #{form_data_hash}"
+      host = 'garantex.org'
+      url = "https://#{host}/api/v2/#{link}"
+      Async do
+        body = set_conn(token).get(url, form_data_hash).body
+        # puts 'res..... ', body
+        raise Faraday::Error, body['message'] unless body['success']
+
+        body
+      ensure
+        Faraday.default_connection.close
+      end
+    end
+
+    def self.send_get1(token, link, form_data_hash)
       puts "send_get: #{link} #{form_data_hash}"
 
       host = 'garantex.org'

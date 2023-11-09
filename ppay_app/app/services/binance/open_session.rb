@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'net/http'
+require 'async/http/faraday'
 
 module Binance
   class OpenSession
@@ -31,9 +32,9 @@ module Binance
 
       check_merchant(form_data_hash, advs_params)
 
-      res = send_request(form_data_hash)
+      send_request(form_data_hash).wait
 
-      parse_response(res)
+      # parse_response(res)
     end
 
     def otc_advs_array
@@ -88,11 +89,35 @@ module Binance
       end
     end
 
+    def set_conn
+      Faraday.new do |builder|
+        builder.adapter :async_http, timeout: 60
+        builder.request :json
+        builder.response :json
+        # builder.response :raise_error
+      end
+    end
+
     def send_request(form_data_hash)
+      Async do
+        url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search'
+        body = set_conn.post(url) do |req|
+          req.body = form_data_hash.to_json
+          puts req.body
+        end.body
+        # puts 'res..... ', body
+        raise Faraday::Error, body['message'] unless body['success']
+
+        body
+      ensure
+        Faraday.default_connection.close
+      end
+    end
+
+    def send_request1(form_data_hash)
       uri = URI('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search')
 
-      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true,
-                                              open_timeout: 60, read_timeout: 60) do |http|
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         req = Net::HTTP::Post.new(uri)
         req.body = form_data_hash.to_json
         req.set_content_type('application/json')
