@@ -58,7 +58,7 @@ class IncomingRequestService
     @card_number = nil
 
     card_number_masks.each do |mask|
-      regexp = Regexp.new(mask.regexp)
+      regexp = Regexp.new(mask.regexp[1..-2])
       match = @incoming_request.message.scan(regexp).first
 
       next unless match.present?
@@ -143,7 +143,7 @@ class IncomingRequestService
   end
 
   def extract_match(mask)
-    regexp = Regexp.new(mask.regexp)
+    regexp = Regexp.new(mask.regexp[1..-2])
     str_without_thousands = @incoming_request.message.gsub(mask.thousands_separator, '')
     formatted_str = str_without_thousands&.gsub(mask.decimal_separator, '.')
     amount = formatted_str[regexp]
