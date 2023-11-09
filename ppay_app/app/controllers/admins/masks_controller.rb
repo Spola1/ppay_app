@@ -23,7 +23,7 @@ module Admins
       if @mask.save
         redirect_to mask_path(@mask), notice: 'Маска создана.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -31,7 +31,7 @@ module Admins
       if @mask.update(mask_params)
         redirect_to mask_path(@mask), notice: 'Маска успешно обновлена.'
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 
@@ -47,7 +47,7 @@ module Admins
     end
 
     def mask_params
-      params.require(:mask).permit(:sender, :regexp_type, :regexp)
+      params.require(:mask).permit(:sender, :regexp_type, :regexp, :thousands_separator, :decimal_separator)
     end
   end
 end

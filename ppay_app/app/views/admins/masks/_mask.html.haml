@@ -10,5 +10,11 @@
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Регулярное выражение
         %td.item-card-td.left
-          %pre= mask.regexp
+          %pre= @mask.regexp
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Разделитель тысяч
+        %td.item-card-td= @mask.thousands_separator
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label Дробный разделитель 
+        %td.item-card-td= @mask.decimal_separator
       

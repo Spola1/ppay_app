@@ -19,10 +19,17 @@ RSpec.describe IncomingRequestService do
 
     it 'finds matching payment' do
       regexp = eval(amount_mask.regexp)
-      match = incoming_request.message.scan(regexp).first
+      str_without_thousands = incoming_request.message.gsub(amount_mask.thousands_separator, '')
+      formatted_str = str_without_thousands.gsub(amount_mask.decimal_separator, amount_mask.thousands_separator)
+
+     # debugger
+
+      match = formatted_str.scan(regexp).first
 
       expect(match).not_to be_nil
       expect(match.first.to_d).to eq(payment.national_currency_amount.to_d)
+      expect(str_without_thousands).to eq('Schet *8412 Platezh s nomera 79529048819 Summa 100,00 RUB Balans 94,87 RUB')
+      expect(formatted_str).to eq('Schet *8412 Platezh s nomera 79529048819 Summa 100.00 RUB Balans 94.87 RUB')
     end
   end
 
@@ -60,7 +67,7 @@ RSpec.describe IncomingRequestService do
         last_comment = incoming_request.payment.comments.last
 
         expected_text = <<~TEXT.strip
-          Schet *8412. Platezh s nomera 79529048819. Summa 100.00 RUB. Balans 94.87 RUB.
+          Schet *8412. Platezh s nomera 79529048819. Summa 100,00 RUB. Balans 94,87 RUB.
 
           request_type: SMS
           identifier: phone

@@ -12,6 +12,8 @@ FactoryBot.define do
     trait :amount do
       regexp_type { 'Сумма' }
       regexp { '/(\d+\.\d+)/' }
+      thousands_separator { '.' }
+      decimal_separator { ',' }
     end
   end
 end

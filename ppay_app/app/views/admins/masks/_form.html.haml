@@ -2,4 +2,6 @@
   = f.input :sender, hint: 'как в СМС, напр. 900 или Tinkoff'
   = f.input :regexp_type, collection: ["Номер счёта", "Сумма"], include_blank: '-выбрать-'
   = f.input :regexp, hint: 'Указывать со слешами в начале и в конце, например: /\*(\d{4})/', placeholder: '/\*(\d{4})/'
+  = f.input :thousands_separator
+  = f.input :decimal_separator
   = f.submit 'Сохранить', class: 'form-submit'

@@ -115,8 +115,7 @@ class IncomingRequestService
 
   def find_amount(amount_masks)
     amount_masks.each do |mask|
-      regexp = eval(mask.regexp)
-      match = @incoming_request.message.scan(regexp).first
+      match = extract_match(mask)
 
       next unless match.present?
 
@@ -132,8 +131,7 @@ class IncomingRequestService
 
     @advertisement.payments.for_simbank.each do |payment|
       amount_masks.each do |mask|
-        regexp = eval(mask.regexp)
-        match = @incoming_request.message.scan(regexp).first
+        match = extract_match(mask)
 
         next unless match.present? && sum_matched?(payment, match)
 
@@ -142,6 +140,14 @@ class IncomingRequestService
         break if @payments.size > 1
       end
     end
+  end
+
+  def extract_match(mask)
+    regexp = eval(mask.regexp)
+    str_without_thousands = @incoming_request.message.gsub(mask.thousands_separator, '')
+    formatted_str = str_without_thousands.gsub(mask.decimal_separator, mask.thousands_separator)
+
+    formatted_str.scan(regexp).first
   end
 
   def payment_message
