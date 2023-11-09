@@ -22,8 +22,6 @@ RSpec.describe IncomingRequestService do
       str_without_thousands = incoming_request.message.gsub(amount_mask.thousands_separator, '')
       formatted_str = str_without_thousands.gsub(amount_mask.decimal_separator, amount_mask.thousands_separator)
 
-     # debugger
-
       match = formatted_str.scan(regexp).first
 
       expect(match).not_to be_nil
