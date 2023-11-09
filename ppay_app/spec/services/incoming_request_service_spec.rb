@@ -10,7 +10,7 @@ RSpec.describe IncomingRequestService do
 
   describe 'regexp' do
     it 'finds matching advertisement' do
-      regexp = eval(card_mask.regexp)
+      regexp = Regexp.new(card_mask.regexp)
       match = incoming_request.message.scan(regexp).first
 
       expect(match).not_to be_nil
@@ -18,7 +18,7 @@ RSpec.describe IncomingRequestService do
     end
 
     it 'finds matching payment' do
-      regexp = eval(amount_mask.regexp)
+      regexp = Regexp.new(amount_mask.regexp)
       str_without_thousands = incoming_request.message.gsub(amount_mask.thousands_separator, '')
       formatted_str = str_without_thousands.gsub(amount_mask.decimal_separator, amount_mask.thousands_separator)
 

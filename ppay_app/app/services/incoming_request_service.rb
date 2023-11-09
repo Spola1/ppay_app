@@ -58,7 +58,7 @@ class IncomingRequestService
     @card_number = nil
 
     card_number_masks.each do |mask|
-      regexp = eval(mask.regexp)
+      regexp = Regexp.new(mask.regexp)
       match = @incoming_request.message.scan(regexp).first
 
       next unless match.present?
@@ -135,7 +135,7 @@ class IncomingRequestService
 
         next unless match.present? && sum_matched?(payment, match)
 
-        @payments << { payment:, mask:, amount: match.first&.gsub(/[\s\xC2\xA0]/, '')&.gsub(/,/, '.')&.to_d }
+        @payments << { payment:, mask:, amount: match.to_d }
 
         break if @payments.size > 1
       end
@@ -143,11 +143,11 @@ class IncomingRequestService
   end
 
   def extract_match(mask)
-    regexp = eval(mask.regexp)
+    regexp = Regexp.new(mask.regexp)
     str_without_thousands = @incoming_request.message.gsub(mask.thousands_separator, '')
-    formatted_str = str_without_thousands.gsub(mask.decimal_separator, mask.thousands_separator)
-
-    formatted_str.scan(regexp).first
+    formatted_str = str_without_thousands&.gsub(mask.decimal_separator, '.')
+    amount = formatted_str[regexp]
+    amount.gsub(/[\s\xC2\xA0]/, '')
   end
 
   def payment_message
@@ -173,7 +173,7 @@ class IncomingRequestService
   end
 
   def sum_matched?(payment, match)
-    match.first.gsub(/[\s\xC2\xA0]/, '').gsub(/,/, '.').to_d == payment.national_currency_amount.to_d
+    match.to_d == payment.national_currency_amount.to_d
   end
 
   def render_success_response
