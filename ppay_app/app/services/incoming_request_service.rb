@@ -117,11 +117,11 @@ class IncomingRequestService
 
   def find_amount(amount_masks)
     amount_masks.each do |mask|
-      match = extract_match(mask)
+      amount = extract_amount(mask)
 
-      next unless match.present?
+      next unless amount.present?
 
-      @amount = match.to_d
+      @amount = amount
       @amount_mask = mask
 
       break if @amount
@@ -133,24 +133,27 @@ class IncomingRequestService
 
     @advertisement.payments.for_simbank.each do |payment|
       amount_masks.each do |mask|
-        match = extract_match(mask)
+        amount = extract_amount(mask)
 
-        next unless match.present? && sum_matched?(payment, match)
+        next unless amount.present? && sum_matched?(payment, amount)
 
-        @payments << { payment:, mask:, amount: match.to_d }
+        @payments << { payment:, mask:, amount: }
 
         break if @payments.size > 1
       end
     end
   end
 
-  def extract_match(mask)
+  def extract_amount(mask)
     amount = @incoming_request.message.match(mask.to_regexp)&.captures&.first
 
-    amount
-      &.delete(mask.thousands_separator)
-      &.gsub(mask.decimal_separator, '.')
-      &.gsub(/[\s\xC2\xA0]/, '')
+    return unless amount
+
+    amount.delete!(mask.thousands_separator) if mask.thousands_separator.present?
+    amount.gsub!(mask.decimal_separator, '.') if mask.decimal_separator.present?
+    amount.gsub!(/[\s\xC2\xA0]/, '')
+
+    amount.to_d
   end
 
   def payment_message
@@ -175,8 +178,8 @@ class IncomingRequestService
     )
   end
 
-  def sum_matched?(payment, match)
-    match.to_d == payment.national_currency_amount.to_d
+  def sum_matched?(payment, amount)
+    amount == payment.national_currency_amount
   end
 
   def render_success_response

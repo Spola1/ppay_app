@@ -32,10 +32,9 @@ RSpec.describe IncomingRequestService do
 
     it 'finds matching payment' do
       match = incoming_request.message.match(amount_mask.to_regexp)&.captures&.first
-      match
-        &.delete!(amount_mask.thousands_separator)
-        &.gsub!(amount_mask.decimal_separator, '.')
-        &.gsub!(/[\s\xC2\xA0]/, '')
+      match.delete!(amount_mask.thousands_separator) if amount_mask.thousands_separator.present?
+      match.gsub!(amount_mask.decimal_separator, '.') if amount_mask.decimal_separator.present?
+      match.gsub!(/[\s\xC2\xA0]/, '')
 
       expect(match.to_d).to eq(payment.national_currency_amount.to_d)
     end
