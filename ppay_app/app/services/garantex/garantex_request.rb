@@ -10,7 +10,6 @@ module Garantex
         builder.request :json
         builder.request :authorization, 'Bearer', -> { token }
         builder.response :json
-        # builder.response :raise_error
       end
     end
 
@@ -18,14 +17,8 @@ module Garantex
       puts "send_get: #{link} #{form_data_hash}"
       host = 'garantex.org'
       url = "https://#{host}/api/v2/#{link}"
-      Async do
-        body = build_conn(token).get(url, form_data_hash).body
-        raise Faraday::Error, body['message'] unless body['success']
-
-        body
-      ensure
-        Faraday.default_connection.close
-      end
+      res = build_conn(token).get(url, form_data_hash)
+      res.body
     end
 
     # def self.send_get1(token, link, form_data_hash)

@@ -39,7 +39,7 @@ module Garantex
     def get_otc_member_profile(nickname)
       link = 'otc/profiles'
       form_data_hash = { nickname: }
-      GarantexRequest.send_get(@token, link, form_data_hash).wait
+      GarantexRequest.send_get(@token, link, form_data_hash)
 
       # {
       #   'nickname' => 'BTC_Sanya',
@@ -75,7 +75,7 @@ module Garantex
     def get_exchange_bids_and_asks(market)
       link = 'depth'
       form_data_hash = { market: }
-      GarantexRequest.send_get(@token, link, form_data_hash).wait
+      GarantexRequest.send_get(@token, link, form_data_hash)
 
       # {
       #   'timestamp' => 1659332301,
@@ -111,7 +111,7 @@ module Garantex
     def get_otc_bids_and_asks(currency, direction, payment_method, amount = nil)
       link = 'otc/ads'
       form_data_hash = { currency:, direction:, payment_method:, amount: }.compact
-      GarantexRequest.send_get(@token, link, form_data_hash).wait
+      GarantexRequest.send_get(@token, link, form_data_hash)
 
       # {
       #   'id' => 32_240,

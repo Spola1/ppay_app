@@ -31,7 +31,7 @@ module Binance
 
       check_merchant(form_data_hash, advs_params)
 
-      send_request(form_data_hash).wait
+      send_request(form_data_hash)
     end
 
     def otc_advs_array
@@ -91,23 +91,15 @@ module Binance
         builder.adapter :async_http, timeout: 60
         builder.request :json
         builder.response :json
-        # builder.response :raise_error
       end
     end
 
     def send_request(form_data_hash)
-      Async do
-        url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search'
-        body = build_conn.post(url) do |req|
-          req.body = form_data_hash.to_json
-          puts req.body
-        end.body
-        raise Faraday::Error, body['message'] unless body['success']
-
-        body
-      ensure
-        Faraday.default_connection.close
+      url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search'
+      res = build_conn.post(url) do |req|
+        req.body = form_data_hash
       end
+      res.body
     end
   end
 end
