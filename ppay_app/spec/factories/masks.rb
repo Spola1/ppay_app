@@ -6,7 +6,7 @@ FactoryBot.define do
 
     trait :card_number do
       regexp_type { 'Номер счёта' }
-      regexp { '/\\*([0-9]+)/' }
+      regexp { '/\*([0-9]+)/' }
     end
 
     trait :amount do

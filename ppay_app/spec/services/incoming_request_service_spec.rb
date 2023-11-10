@@ -1,33 +1,43 @@
 require 'rails_helper'
 
 RSpec.describe IncomingRequestService do
-  let!(:processer) { create(:processer) }
-  let!(:advertisement) { create(:advertisement, processer:) }
-  let!(:amount_mask) { create(:mask, :amount, sender: incoming_request.from) }
-  let!(:card_mask) { create(:mask, :card_number, sender: incoming_request.from) }
-  let!(:payment) { create(:payment, :deposit, :transferring, advertisement:) }
-  let!(:incoming_request) { create(:incoming_request) }
+  let!(:processer)        { create :processer }
+  let!(:advertisement)    { create :advertisement, processer: }
+  let!(:payment)          { create :payment, :deposit, :transferring, advertisement:, national_currency_amount: }
+  let!(:incoming_request) { create :incoming_request, message: }
+
+  let!(:amount_mask) do
+    create :mask, :amount, sender: incoming_request.from, regexp: amount_regexp,
+                           thousands_separator:, decimal_separator:
+  end
+  let!(:card_mask) do
+    create :mask, :card_number, sender: incoming_request.from, regexp: card_regexp
+  end
+
+  let(:message) do
+    'Schet *8412 Platezh s nomera 79529048819 Summa 123.456,78 RUB Balans 1.234.567,89 RUB'
+  end
+  let(:national_currency_amount) { 123_456.78 }
+  let(:decimal_separator)        { ',' }
+  let(:thousands_separator)      { '.' }
+  let(:amount_regexp)            { '/Summa\s((?:\d+\.)*\d+,\d+)/' }
+  let(:card_regexp)              { '/Schet\s\*([0-9]{4})/' }
 
   describe 'regexp' do
     it 'finds matching advertisement' do
-      regexp = Regexp.new(card_mask.regexp[1..-2])
-      match = incoming_request.message.scan(regexp).first
+      match = incoming_request.message.match(card_mask.to_regexp)&.captures&.first
 
-      expect(match).not_to be_nil
-      expect(match.first).to eq(advertisement.simbank_card_number)
+      expect(match).to eq(advertisement.simbank_card_number)
     end
 
     it 'finds matching payment' do
-      regexp = Regexp.new(amount_mask.regexp[1..-2])
-      str_without_thousands = incoming_request.message.gsub(amount_mask.thousands_separator, '')
-      formatted_str = str_without_thousands.gsub(amount_mask.decimal_separator, amount_mask.thousands_separator)
+      match = incoming_request.message.match(amount_mask.to_regexp)&.captures&.first
+      match
+        &.delete!(amount_mask.thousands_separator)
+        &.gsub!(amount_mask.decimal_separator, '.')
+        &.gsub!(/[\s\xC2\xA0]/, '')
 
-      match = formatted_str.scan(regexp).first
-
-      expect(match).not_to be_nil
-      expect(match.first.to_d).to eq(payment.national_currency_amount.to_d)
-      expect(str_without_thousands).to eq('Schet *8412 Platezh s nomera 79529048819 Summa 100,00 RUB Balans 94,87 RUB')
-      expect(formatted_str).to eq('Schet *8412 Platezh s nomera 79529048819 Summa 100.00 RUB Balans 94.87 RUB')
+      expect(match.to_d).to eq(payment.national_currency_amount.to_d)
     end
   end
 
@@ -65,7 +75,7 @@ RSpec.describe IncomingRequestService do
         last_comment = incoming_request.payment.comments.last
 
         expected_text = <<~TEXT.strip
-          Schet *8412. Platezh s nomera 79529048819. Summa 100,00 RUB. Balans 94,87 RUB.
+          #{message}
 
           request_type: SMS
           identifier: phone
