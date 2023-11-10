@@ -14,6 +14,8 @@ ru:
         sender: Отправитель
         regexp_type: Тип регулярного выражения
         regexp: Регулярное выражение
+        thousands_separator: Разделитель тысяч
+        decimal_separator: Дробный разделитель
       advertisement:
         direction: Направление
         national_currency: Нац. валюта

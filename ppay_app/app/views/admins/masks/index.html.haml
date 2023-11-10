@@ -13,6 +13,8 @@
             %th.items-list-th Отправитель
             %th.items-list-th-mask-type Тип регулярного выражения
             %th.items-list-th Регулярное выражение
+            %th.items-list-th Разделитель тысяч
+            %th.items-list-th Дробный разделитель
             %th.items-list-th
         %tbody
           - @masks.each do |mask|
@@ -23,6 +25,8 @@
               %td.items-list-td= mask.regexp_type
               %td.items-list-td
                 %pre= mask.regexp
+              %td.items-list-td.font-bold= mask.thousands_separator
+              %td.items-list-td.font-bold= mask.decimal_separator
               %td.items-list-td.px-1.w-0
                 = link_to mask, data: { turbo_confirm: 'Вы уверены что хотите удалить маску?', turbo_method: :delete }  do
                   .icon-button-red

@@ -1,49 +1,52 @@
 # frozen_string_literal: true
 
 class IncomingRequestService
+  SEARCH_FIELDS = {
+    'smsdeliverer' => {
+      'SMS' => { search_field: :imsi }
+    },
+    'SMS Forwarder' => {
+      'SMS' => { search_field: :phone },
+      'PUSH' => { search_field: :imei }
+    },
+    'MacroDroid' => {
+      'SMS' => { search_field: :phone },
+      'PUSH' => { search_field: :imei }
+    },
+    'Telegram' => {
+      'telegram_message' => { search_field: :telegram_phone }
+    }
+  }.freeze
+
   def initialize(incoming_request)
     @processer = incoming_request.user.becomes(Processer)
     @incoming_request = incoming_request
   end
 
   def process_request
-    if @processer
-      find_matching_advertisement
-      find_matching_payment
-      create_not_found_payment
-      build_related_models
-      payment_message
-      render_success_response
-    end
+    return unless @processer
+
+    find_matching_advertisement
+    find_matching_payment
+    create_not_found_payment
+    build_related_models
+    payment_message
+    render_success_response
   end
 
   private
 
+  def search_field
+    @search_field ||=
+      SEARCH_FIELDS.dig(@incoming_request.app, @incoming_request.request_type, :search_field)
+  end
+
+  def search_value
+    @incoming_request.send(search_field)
+  end
+
   def find_matching_advertisement
-    search_fields = {
-      'smsdeliverer' => {
-        'SMS' => { search_field: :imsi }
-      },
-      'SMS Forwarder' => {
-        'SMS' => { search_field: :phone },
-        'PUSH' => { search_field: :imei }
-      },
-      'MacroDroid' => {
-        'SMS' => { search_field: :phone },
-        'PUSH' => { search_field: :imei }
-      },
-      'Telegram' => {
-        'telegram_message' => { search_field: :telegram_phone }
-      }
-    }
-
-    app = @incoming_request.app
-    request_type = @incoming_request.request_type
-    search_value = search_fields.dig(app, request_type)
-    return false unless search_value
-
-    search_field = search_value[:search_field]
-    search_value = @incoming_request.send(search_field)
+    return false unless search_field
 
     @matching_advertisements = @processer.advertisements
                                          .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
@@ -58,8 +61,7 @@ class IncomingRequestService
     @card_number = nil
 
     card_number_masks.each do |mask|
-      regexp = eval(mask.regexp)
-      match = @incoming_request.message.scan(regexp).first
+      match = @incoming_request.message.match(mask.to_regexp)&.captures&.first
 
       next unless match.present?
 
@@ -67,7 +69,7 @@ class IncomingRequestService
                        .where('RIGHT(card_number, 4) = :match OR simbank_card_number = :match', match:)
                        .last
       @card_mask = mask
-      @card_number = match.first
+      @card_number = match
 
       break
     end
@@ -115,12 +117,11 @@ class IncomingRequestService
 
   def find_amount(amount_masks)
     amount_masks.each do |mask|
-      regexp = eval(mask.regexp)
-      match = @incoming_request.message.scan(regexp).first
+      amount = extract_amount(mask)
 
-      next unless match.present?
+      next unless amount.present?
 
-      @amount = match.first.to_d
+      @amount = amount
       @amount_mask = mask
 
       break if @amount
@@ -132,16 +133,27 @@ class IncomingRequestService
 
     @advertisement.payments.for_simbank.each do |payment|
       amount_masks.each do |mask|
-        regexp = eval(mask.regexp)
-        match = @incoming_request.message.scan(regexp).first
+        amount = extract_amount(mask)
 
-        next unless match.present? && sum_matched?(payment, match)
+        next unless amount.present? && sum_matched?(payment, amount)
 
-        @payments << { payment:, mask:, amount: match.first&.gsub(/[\s\xC2\xA0]/, '')&.gsub(/,/, '.')&.to_d }
+        @payments << { payment:, mask:, amount: }
 
         break if @payments.size > 1
       end
     end
+  end
+
+  def extract_amount(mask)
+    amount = @incoming_request.message.match(mask.to_regexp)&.captures&.first
+
+    return unless amount
+
+    amount.delete!(mask.thousands_separator) if mask.thousands_separator.present?
+    amount.gsub!(mask.decimal_separator, '.') if mask.decimal_separator.present?
+    amount.gsub!(/[\s\xC2\xA0]/, '')
+
+    amount.to_d
   end
 
   def payment_message
@@ -166,8 +178,8 @@ class IncomingRequestService
     )
   end
 
-  def sum_matched?(payment, match)
-    match.first.gsub(/[\s\xC2\xA0]/, '').gsub(/,/, '.').to_d == payment.national_currency_amount.to_d
+  def sum_matched?(payment, amount)
+    amount == payment.national_currency_amount
   end
 
   def render_success_response

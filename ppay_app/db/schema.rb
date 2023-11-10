@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_09_065935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -283,6 +283,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_04_180509) do
     t.string "sender"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "thousands_separator"
+    t.string "decimal_separator"
   end
 
   create_table "merchant_methods", force: :cascade do |t|
