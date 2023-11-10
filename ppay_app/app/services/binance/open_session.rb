@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'async/http/faraday'
-
 module Binance
   class OpenSession
     attr_reader :advs_params
@@ -27,11 +25,11 @@ module Binance
       #      "tradeType": "SELL",
       #      "transAmount":  "5000"
       #  }
-      form_data_hash = create_form_date_hash
+      form_data_hash = create_form_data_hash
 
       check_merchant(form_data_hash, advs_params)
 
-      send_request(form_data_hash)
+      make_request(form_data_hash)
     end
 
     def otc_advs_array
@@ -63,7 +61,7 @@ module Binance
       advs_array
     end
 
-    def create_form_date_hash
+    def create_form_data_hash
       {
         asset: advs_params[:asset],
         fiat: advs_params[:fiat],
@@ -94,7 +92,9 @@ module Binance
       end
     end
 
-    def send_request(form_data_hash)
+    def make_request(form_data_hash)
+      puts "binance make_request #{form_data_hash}"
+
       url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search'
       res = build_conn.post(url) do |req|
         req.body = form_data_hash
