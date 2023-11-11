@@ -211,6 +211,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post '/merchant_methods', to: 'merchant_methods#index'
       post '/catcher/ping', to: 'mobile_app_requests#ping', as: :catcher_ping
       post '/simbank/requests', to: 'incoming_requests#create', as: :simbank_request
       get :balance, to: 'balance#show'
