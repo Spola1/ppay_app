@@ -9,7 +9,7 @@ describe 'Merchant Methods' do
   let!(:rate_snapshot_sell) { create :rate_snapshot, :sell }
 
   path '/api/v1/merchant_methods' do
-    get 'Запрос текущих платежных методов' do
+    post 'Запрос текущих платежных методов' do
       tags 'Платежные методы'
       produces 'application/json'
       security [bearerAuth: {}]

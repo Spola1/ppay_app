@@ -8,7 +8,7 @@ module Api
       set_id :id
       set_type :merchant_method
 
-      attribute :id, :direction, :payment_system_name, :rate, :commission_percentage
+      attribute :id, :direction, :payment_system_name, :currency, :rate, :commission_percentage
     end
   end
 end

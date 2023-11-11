@@ -18,6 +18,10 @@ class MerchantMethodDecorator < UserDecorator
     payment_system.decorate.public_send("#{rate_type}_rate")
   end
 
+  def currency
+    payment_system.national_currency.name
+  end
+
   private
 
   def rate_type
