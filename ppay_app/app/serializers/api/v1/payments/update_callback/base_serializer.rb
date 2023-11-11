@@ -18,6 +18,8 @@ module Api
           attribute :national_currency
           attribute :cryptocurrency_commission_amount
           attribute :national_currency_commission_amount
+          attribute :arbitration
+          attribute :arbitration_reason
         end
       end
     end

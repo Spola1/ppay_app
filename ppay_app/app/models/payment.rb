@@ -137,11 +137,9 @@ class Payment < ApplicationRecord
     end
   }
 
-  after_update_commit :send_update_callback, if: :payment_status_previously_changed?
+  after_update_commit :send_update_callback, if: :send_update_callback?
 
   after_update_commit :send_arbitration_notification, if: :arbitration_changed_to_true?
-
-  after_update_commit :send_update_callback, if: :arbitration_changed_to_false?
 
   after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
 
@@ -247,10 +245,6 @@ class Payment < ApplicationRecord
     saved_change_to_arbitration? && arbitration?
   end
 
-  def arbitration_changed_to_false?
-    saved_change_to_arbitration? && !arbitration?
-  end
-
   def advertisements_available?
     advertisements_scope.exists?
   end
@@ -260,6 +254,10 @@ class Payment < ApplicationRecord
   end
 
   private
+
+  def send_update_callback?
+    payment_status_previously_changed? || arbitration_previously_changed?
+  end
 
   def advertisements_scope
     if type == "Deposit" 
