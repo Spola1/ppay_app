@@ -3,8 +3,6 @@
 class MerchantMethodDecorator < UserDecorator
   delegate_all
 
-  delegate :name, to: :payment_system, prefix: true
-
   RATE_TYPES = {
     'Deposit' => :buy,
     'Withdrawal' => :sell
@@ -18,8 +16,8 @@ class MerchantMethodDecorator < UserDecorator
     payment_system.decorate.public_send("#{rate_type}_rate")
   end
 
-  def national_currency
-    payment_system.national_currency.name
+  def name
+    "#{payment_system.name} #{national_currency.name} #{direction}"
   end
 
   private

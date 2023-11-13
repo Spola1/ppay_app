@@ -30,7 +30,9 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
                 initial_amount: '100.0',
                 national_currency: 'RUB',
                 cryptocurrency_commission_amount: nil,
-                national_currency_commission_amount: nil
+                national_currency_commission_amount: nil,
+                rate: '100.29',
+                commission_percentage: '4.0'
               }
             }
           }

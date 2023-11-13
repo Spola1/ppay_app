@@ -8,7 +8,10 @@ module Api
       set_id :id
       set_type :merchant_method
 
-      attribute :id, :direction, :payment_system_name, :national_currency, :rate, :commission_percentage
+      attributes :direction
+      attribute :payment_system, -> { _1.payment_system.name }
+      attribute :national_currency, -> { _1.national_currency.name }
+      attributes :rate, :commission_percentage
     end
   end
 end
