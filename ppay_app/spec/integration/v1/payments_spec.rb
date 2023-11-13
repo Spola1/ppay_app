@@ -16,8 +16,10 @@ describe 'Payments' do
       parameter name: :uuid, in: :path, type: :string
 
       let(:payment) do
-        create :payment, :deposit, :confirming, :with_transactions, merchant:, cancellation_reason:, external_order_id:
+        create :payment, :deposit, :confirming, :with_transactions,
+               merchant:, cancellation_reason:, external_order_id:, advertisement:
       end
+      let(:advertisement) { create :advertisement }
       let(:uuid) { payment.uuid }
       let(:cancellation_reason) { :fraud_attempt }
       let(:external_order_id) { '1234' }

@@ -15,6 +15,8 @@ module Api
           attributes :created_at, :national_currency, :national_currency_amount, :initial_amount,
                      :cryptocurrency, :payment_system, :payment_status, :cryptocurrency_commission_amount,
                      :national_currency_commission_amount, :arbitration, :arbitration_reason
+          attribute :rate, -> { _1.rate_snapshot&.value }
+          attribute :commission_percentage, -> { _1.total_commission }
         end
       end
     end
