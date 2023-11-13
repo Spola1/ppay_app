@@ -8,14 +8,15 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
 
     let(:payment) do
       create :payment, :deposit, :confirming,
-             external_order_id:, callback_url:, cancellation_reason:, advertisement:,
-             rate_snapshot:
+             external_order_id:, callback_url:, cancellation_reason:, arbitration_reason:,
+             advertisement:, rate_snapshot:
     end
     let(:rate_snapshot) { create :rate_snapshot }
     let(:advertisement) { create :advertisement }
     let(:callback_url) { 'http://stub-request.test' }
     let(:external_order_id) { '1234' }
     let(:cancellation_reason) { :fraud_attempt }
+    let(:arbitration_reason) { :check_by_check }
 
     it 'makes POST request with payment\'s JSON' do
       stub_request(:post, callback_url)
@@ -38,6 +39,8 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
                 national_currency: 'RUB',
                 cryptocurrency_commission_amount: nil,
                 national_currency_commission_amount: nil,
+                arbitration: false,
+                arbitration_reason: arbitration_reason.to_s,
                 rate: '100.29',
                 commission_percentage: '4.0'
               }
