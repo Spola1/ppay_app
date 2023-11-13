@@ -55,6 +55,16 @@ describe 'Merchant Methods' do
 
         run_test! do
           expect(response_body[:data]).to have(2).items
+
+          deposit_data = response_body[:data].select { _1['attributes']['direction'] == 'Deposit' }
+          withdrawal_data = response_body[:data].select { _1['attributes']['direction'] == 'Withdrawal' }
+
+          expect(deposit_data.dig(0, :attributes, :rate)).to eq rate_snapshot_buy.value.to_s
+          expect(withdrawal_data.dig(0, :attributes, :rate)).to eq rate_snapshot_sell.value.to_s
+          expect(deposit_data.dig(0, :attributes, :commission_percentage))
+            .to eq (Merchant::DEFAULT_COMMISSION + Merchant::DEFAULT_OTHER_COMMISSION).to_s
+          expect(withdrawal_data.dig(0, :attributes, :commission_percentage))
+            .to eq (Merchant::DEFAULT_COMMISSION + Merchant::DEFAULT_OTHER_COMMISSION).to_s
         end
 
         context 'without query params' do

@@ -7,7 +7,13 @@ shared_examples 'create_external_processing_payment' do |type:|
     include_context 'generate_examples'
 
     context 'validates schema' do
-      run_test!
+      run_test! do
+        expect(response_body[:data][:attributes][:rate]).to eq rate_snapshot.value.to_s
+
+        merchant_method_commission = merchant.merchant_methods.find_by_direction(payment_type.to_s)
+                                             .decorate.commission_percentage.to_s
+        expect(response_body[:data][:attributes][:commission_percentage]).to eq merchant_method_commission
+      end
     end
 
     context 'withdraw almost everything', if: type == :withdrawal do
