@@ -14,7 +14,7 @@ describe 'Deposits' do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments/deposits.md'))
+      description_erb 'payments/deposits.md.erb'
 
       parameter name: :params,
                 in: :body,
