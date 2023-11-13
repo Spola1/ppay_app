@@ -77,11 +77,12 @@ POST запросов (при каждом изменении статуса) с
 
 ### Пример приходящего по callback_url запроса:
 
-```json
+<json>
+```
 {
   "data": {
     "id": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
-    "type": "<%= @payment_type %>",
+    "type": "<%= @payment_type.downcase %>",
     "attributes": {
       "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
       "external_order_id": "1234",
@@ -100,4 +101,5 @@ POST запросов (при каждом изменении статуса) с
   }
 }
 ```
+</json>
 </details>
