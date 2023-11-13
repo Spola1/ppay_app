@@ -16,7 +16,7 @@ module Api
                        :national_currency_commission_amount, :card_owner_name, :sbp_phone_number
             attribute :payment_link, -> { _1.payment_link.presence }
             attribute :payment_link_qr_code_url, -> { _1.payment_link_qr_code_url.presence }
-            attribute :rate, -> { _1.rate_snapshot.value }
+            attribute :rate, -> { _1.rate_snapshot&.value }
             attribute :commission_percentage, -> { _1.total_commission }
           end
         end

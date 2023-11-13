@@ -5,7 +5,14 @@ require 'rails_helper'
 RSpec.describe Payments::UpdateCallbackService, type: :service do
   describe '.call' do
     subject { described_class.call(payment) }
-    let(:payment) { create :payment, :deposit, :confirming, external_order_id:, callback_url:, cancellation_reason: }
+
+    let(:payment) do
+      create :payment, :deposit, :confirming,
+             external_order_id:, callback_url:, cancellation_reason:, advertisement:,
+             rate_snapshot:
+    end
+    let(:rate_snapshot) { create :rate_snapshot }
+    let(:advertisement) { create :advertisement }
     let(:callback_url) { 'http://stub-request.test' }
     let(:external_order_id) { '1234' }
     let(:cancellation_reason) { :fraud_attempt }

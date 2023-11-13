@@ -20,6 +20,8 @@ module Api
           attribute :national_currency_commission_amount
           attribute :arbitration
           attribute :arbitration_reason
+          attribute :rate, -> { _1.rate_snapshot&.value }
+          attribute :commission_percentage, -> { _1.total_commission }
         end
       end
     end
