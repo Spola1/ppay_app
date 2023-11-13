@@ -98,6 +98,7 @@ module Swagger
                         expiration_time: { type: :string },
                         national_currency: { type: :string },
                         national_currency_amount: { type: :string },
+                        payment_system: { type: :string, example: 'Sberbank' },
                         initial_amount: { type: :string },
                         cryptocurrency_commission_amount: { type: :number, example: 10.0 },
                         national_currency_commission_amount: { type: :number, example: 100.0 },
