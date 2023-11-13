@@ -10,6 +10,7 @@ FactoryBot.define do
 
     trait :sell do
       direction { :sell }
+      value { 99.71 }
     end
   end
 end

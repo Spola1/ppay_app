@@ -215,6 +215,7 @@ Rails.application.routes.draw do
       post '/simbank/requests', to: 'incoming_requests#create', as: :simbank_request
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
+      resources :merchant_methods, only: :index
 
       post '/check_telegram_connections/check_connection_status',
            to: 'check_telegram_connections#check_connection_status'

@@ -14,7 +14,7 @@ describe 'Withdrawals' do
       produces 'application/json'
       security [bearerAuth: {}]
 
-      description File.read(Rails.root.join('spec/support/swagger/markdown/v1/payments/withdrawals.md'))
+      description_erb 'payments/withdrawals.md.erb'
 
       parameter name: :params,
                 in: :body,

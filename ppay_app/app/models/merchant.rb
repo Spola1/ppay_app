@@ -3,6 +3,9 @@
 class Merchant < User
   include TelegramProcessable
 
+  DEFAULT_COMMISSION = 1.0
+  DEFAULT_OTHER_COMMISSION = 3.0
+
   has_many :payments,    foreign_key: :merchant_id
   has_many :deposits,    foreign_key: :merchant_id
   has_many :withdrawals, foreign_key: :merchant_id
@@ -74,14 +77,14 @@ class Merchant < User
   end
 
   def all_possible_commissions
-    [{ commission: 1 }]
+    [{ commission: DEFAULT_COMMISSION }]
       .product(
         merchant_methods.all.map { { merchant_method_id: _1.id } },
         %i[ppay processer working_group agent].map { { commission_type: _1 } }
       )
       .map { _1.inject(:merge) }
       .concat(
-        [{ commission: 3, commission_type: :other }]
+        [{ commission: DEFAULT_OTHER_COMMISSION, commission_type: :other }]
           .product(merchant_methods.all.map { { merchant_method_id: _1.id } })
           .map { _1.inject(:merge) }
       )
