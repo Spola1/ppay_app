@@ -11,6 +11,7 @@ module Admins
 
     def destroy
       if @telegram_application.destroy
+        send_data_to_microservice(@telegram_application)
         redirect_to telegram_applications_path, notice: 'Приложение успешно удалено'
       else
         redirect_to telegram_applications_path, alert: 'Ошибка удаления приложения'
@@ -75,6 +76,7 @@ module Admins
       send_request_to_microservice(data_to_send, 'create_telegram_application') if action_name == 'create'
       send_request_to_microservice(data_to_send, 'update_telegram_application') if action_name == 'update'
       send_request_to_microservice(data_to_send, 'restart_telegram_application') if action_name == 'restart'
+      send_request_to_microservice(data_to_send, 'destroy_telegram_application') if action_name == 'destroy'
     end
 
     def send_request_to_microservice(data_to_send, endpoint)
