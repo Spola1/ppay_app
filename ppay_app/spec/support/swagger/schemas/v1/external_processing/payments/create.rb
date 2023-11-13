@@ -72,11 +72,14 @@ module Swagger
                         expiration_time: { type: :string },
                         national_currency: { type: :string },
                         national_currency_amount: { type: :string },
+                        payment_system: { type: :string, example: 'Sberbank' },
                         initial_amount: { type: :string },
-                        payment_link: { type: :string },
-                        payment_link_qr_code_url: { type: :string },
+                        payment_link: { type: :string, nullable: true },
+                        payment_link_qr_code_url: { type: :string, nullable: true },
                         cryptocurrency_commission_amount: { type: :number, example: 10.0 },
                         national_currency_commission_amount: { type: :number, example: 100.0 },
+                        card_owner_name: { type: :string, example: 'John Doe' },
+                        sbp_phone_number: { type: :string, example: '+1234567890' },
                         rate: { type: :string, example: '94.12' },
                         commission_percentage: { type: :string, example: '4.0' }
                       } }

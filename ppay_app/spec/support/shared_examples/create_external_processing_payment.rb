@@ -48,7 +48,7 @@ shared_examples 'create_external_processing_payment' do |type:|
         run_test! do
           case response_body
           in {data: {attributes:}}
-            expect(attributes).not_to include(payment_link:)
+            expect(attributes).not_to include(payment_link: be_a(String))
             expect(attributes).not_to include(payment_link_qr_code_url: be_a(String))
           else
             flunk 'unappropriated response'

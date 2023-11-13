@@ -14,8 +14,10 @@ module Api
             attributes :uuid, :card_number, :expiration_time, :national_currency, :national_currency_amount,
                        :payment_system, :initial_amount, :cryptocurrency_commission_amount,
                        :national_currency_commission_amount, :card_owner_name, :sbp_phone_number
-            attribute :payment_link, if: proc { _1.payment_link.present? }
-            attribute :payment_link_qr_code_url, if: proc { _1.payment_link_qr_code_url.present? }
+            attribute :payment_link, -> { _1.payment_link.presence }
+            attribute :payment_link_qr_code_url, -> { _1.payment_link_qr_code_url.presence }
+            attribute :rate, -> { _1.rate_snapshot.value }
+            attribute :commission_percentage, -> { _1.total_commission }
           end
         end
       end
