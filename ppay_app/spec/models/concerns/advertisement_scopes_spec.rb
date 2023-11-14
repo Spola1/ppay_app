@@ -263,6 +263,8 @@ RSpec.describe Advertisement, type: :model do
   end
 
   describe '.by_payment_system' do
+    subject { Advertisement.by_payment_system(payment.payment_system) }
+
     let!(:advertisement1) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: '') }
     let!(:advertisement2) { create(:advertisement, payment_system: 'AlfaBank', sbp_phone_number: '') }
     let!(:advertisement3) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: '+77777777777') }
@@ -276,9 +278,7 @@ RSpec.describe Advertisement, type: :model do
 
     context 'when payment system SBP' do
       let!(:payment) { create(:payment, :withdrawal, :processer_search, :SBP) }
-  
-      subject { Advertisement.by_payment_system(payment.payment_system) }
-  
+
       it 'selects advertisements only with sbp phone number' do
         is_expected.to eq([advertisement3, advertisement5, advertisement8, advertisement10])
       end
@@ -286,8 +286,6 @@ RSpec.describe Advertisement, type: :model do
   
     context 'when payment system !SBP' do
       let!(:payment) { create(:payment, :withdrawal, :processer_search) }
-  
-      subject { Advertisement.by_payment_system(payment.payment_system) }
   
       it 'selects advertisements only with sbp phone number' do
         is_expected.to eq([advertisement4, advertisement6, advertisement10])
