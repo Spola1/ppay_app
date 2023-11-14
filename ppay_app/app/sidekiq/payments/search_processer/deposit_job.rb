@@ -6,11 +6,7 @@ module Payments
       private
 
       def selected_advertisement
-        if payment.payment_system == 'СБП'
-          Advertisement.for_deposit_with_sbp_payment_system(payment).first
-        else
-          Advertisement.for_deposit(payment).first
-        end
+        Advertisement.for_deposit(payment).first
       end
     end
   end

@@ -5,7 +5,7 @@ module AdvertisementScopes
 
   included do
     scope :active,               -> { where(status: true) }
-    scope :by_payment_system,    ->(payment_system) { where(payment_system:) }
+    scope :by_payment_system,    ->(payment_system) { payment_system == 'СБП' ? where.not(sbp_phone_number: '') : where(payment_system:) }
     scope :by_amount,            lambda { |amount|
       where('(max_summ >= :amount or max_summ is NULL) AND (min_summ <= :amount or min_summ is NULL)', amount:)
     }
@@ -91,18 +91,6 @@ module AdvertisementScopes
       having(Arel.sql('SUM(CASE WHEN ' \
                       "payments.national_currency_amount = #{national_currency_amount} " \
                       "THEN 1 ELSE 0 END) < #{limit}"))
-    }
-
-    scope :for_deposit_with_sbp_payment_system, lambda { |payment|
-      join_active_payments
-        .by_whitelisted_processers(payment)
-        .active
-        .group('advertisements.id')
-        .order_by_algorithm(payment.national_currency_amount)
-        .by_processer_balance(payment.cryptocurrency_amount)
-        .by_amount(payment.national_currency_amount)
-        .by_direction('Deposit')
-        .where.not(sbp_phone_number: '')
     }
   end
 end
