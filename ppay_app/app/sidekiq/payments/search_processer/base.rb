@@ -54,7 +54,7 @@ module Payments
       def search_valid?(start_time)
         payment.reload.advertisement.blank? &&
           payment.reload.processer_search? &&
-          (Time.now - start_time) < 600
+          (Time.now - start_time) < 60
       end
     end
   end
