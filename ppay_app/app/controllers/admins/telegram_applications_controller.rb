@@ -51,7 +51,7 @@ module Admins
     end
 
     def restart
-      @telegram_application.update(code: nil)
+      #@telegram_application.update(code: nil)
 
       send_data_to_microservice(@telegram_application)
 
