@@ -51,8 +51,6 @@ module Admins
     end
 
     def restart
-      #@telegram_application.update(code: nil)
-
       send_data_to_microservice(@telegram_application)
 
       redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение перезапущено. Доджитесь нового кода и сохраните его в соответствующее поле.'
