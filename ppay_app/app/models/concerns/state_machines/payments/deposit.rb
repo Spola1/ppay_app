@@ -41,7 +41,7 @@ module StateMachines
           end
 
           # bind_operator
-          event :bind, ensure: :search_processer do
+          event :bind do
             before :set_payment_system_by_advertisement, :ensure_unique_amount, :bind_rate_snapshot,
                    :set_cryptocurrency_amount, :set_locale, :set_autoconfirming
             after :create_transactions
