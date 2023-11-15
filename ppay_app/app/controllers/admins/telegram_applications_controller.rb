@@ -24,7 +24,7 @@ module Admins
       if @telegram_application.save
         send_data_to_microservice(@telegram_application)
 
-        redirect_to telegram_applications_path, notice: 'Приложение успешно обновлено.'
+        redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение успешно обновлено.'
       else
         render :edit
       end
@@ -44,7 +44,7 @@ module Admins
       if @telegram_application.save
         send_data_to_microservice(@telegram_application)
 
-        redirect_to telegram_applications_path, notice: 'Приложение успешно создано.'
+        redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение успешно создано. Доджитесь кода и сохраните его в соответствующее поле.'
       else
         render :new
       end
