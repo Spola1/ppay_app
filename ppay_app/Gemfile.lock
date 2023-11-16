@@ -234,6 +234,7 @@ GEM
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
     foreman (0.87.2)
+    glob (0.4.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     google-protobuf (3.24.0-arm64-darwin)
@@ -251,6 +252,9 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    i18n-js (4.2.3)
+      glob (>= 0.4.0)
+      i18n
     ice_nine (0.11.2)
     importmap-rails (1.1.5)
       actionpack (>= 6.0.0)
@@ -541,6 +545,7 @@ DEPENDENCIES
   haml
   health_check
   httparty
+  i18n-js
   importmap-rails
   inline_svg
   interactor (~> 3.0)

@@ -45,9 +45,10 @@ kk:
       attributes:
         merchant: Саудагер
         amount: Сомасы
-        choosing_bank_card: Қаражатты қайда алғыңыз келетінін картаны көрсетіңіз
+        choosing_bank_card: Қаражатты қайда алғыңыз келетінін деректемелер көрсетіңіз
         bank: Банк
         card_number: Карта нөмірі
+        requisites: Деректемелер
         money_transfer: Біз ақша аударамыз...
         transfer_confirmation: Сіз ақша алдыңыз ба?
         confirmation_receipt_of_money: Сіз төлемді толығымен алғаныңызға сенімдісіз бе және оны растағыңыз келе ме?

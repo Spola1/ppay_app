@@ -5,7 +5,6 @@ module AdvertisementScopes
 
   included do
     scope :active,               -> { where(status: true) }
-    scope :by_payment_system,    ->(payment_system) { payment_system == 'СБП' ? where.not(sbp_phone_number: '') : where(payment_system:) }
     scope :by_amount,            lambda { |amount|
       where('(max_summ >= :amount or max_summ is NULL) AND (min_summ <= :amount or min_summ is NULL)', amount:)
     }
@@ -28,6 +27,16 @@ module AdvertisementScopes
       where(processer: payment.merchant.whitelisted_processers) if payment.merchant.only_whitelisted_processers
     }
 
+    scope :by_payment_system,    ->(payment_system, card_number, type) { 
+      if payment_system == 'СБП' && type == 'Deposit' 
+        where.not(sbp_phone_number: '')
+      elsif payment_system == 'СБП' && type == 'Withdrawal' 
+        where(sbp_phone_number: card_number)
+      else
+        where(payment_system:)
+      end
+    }
+
     scope :for_payment, lambda { |payment|
       join_active_payments
         .by_whitelisted_processers(payment)
@@ -36,7 +45,9 @@ module AdvertisementScopes
           payment.payment_system.presence ||
           payment.merchant.payment_systems
             .where(merchant_methods: { direction: payment.type })
-            .pluck(:name)
+            .pluck(:name), 
+          payment.card_number, 
+          payment.type
         )
         .group('advertisements.id')
     }

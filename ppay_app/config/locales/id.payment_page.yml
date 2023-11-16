@@ -44,9 +44,10 @@ id:
       attributes:
         merchant: Merchant
         amount: Jumlahnya
-        choosing_bank_card: Sebutkan kartu tempat Anda ingin menarik dana
+        choosing_bank_card: Silakan tunjukkan detail di mana Anda ingin menarik dana
         bank: Bank
         card_number: Nomor kartu
+        requisites: Detail
         money_transfer: Kami mentransfer uang...
         transfer_confirmation: Apakah Anda mendapatkan uangnya?
         confirmation_receipt_of_money: Apakah Anda yakin telah menerima pembayaran secara penuh dan ingin mengonfirmasinya?

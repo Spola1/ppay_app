@@ -45,9 +45,10 @@ uz:
       attributes:
         merchant: Savdogar
         amount: Miqdori
-        choosing_bank_card: Iltimos, pulni qaytarib olmoqchi bo'lgan kartani ko'rsating
+        choosing_bank_card: Iltimos, pulni qayerdan olib qo'ymoqchi bo'lgan tafsilotlarni ko'rsating
         bank: Bank
         card_number: Karta raqami
+        requisites: Rekvizitlar
         money_transfer: Biz pul o'tkazamiz...
         transfer_confirmation: Siz pul oldingizmi?
         confirmation_receipt_of_money: To'lovni to'liq olganingizga ishonchingiz komilmi va uni tasdiqlamoqchimisiz?

@@ -45,9 +45,10 @@ tr:
       attributes:
         merchant: Tüccar
         amount: Tutar
-        choosing_bank_card: Lütfen parayı çekmek istediğiniz kartı belirtin
+        choosing_bank_card: Lütfen para çekmek istediğiniz bilgileri giriniz
         bank: Банк
         card_number: Kart numarası
+        requisites: Gereksinimler
         money_transfer: Parayı transfer ediyoruz...
         transfer_confirmation: Parayı aldınız mı?
         confirmation_receipt_of_money: Ödemeyi tamamen aldığınızdan ve onaylamak istediğinizden emin misiniz?

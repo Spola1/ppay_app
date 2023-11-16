@@ -45,9 +45,10 @@ ky:
       attributes:
         merchant: Сатуучу
         amount: Суммасы
-        choosing_bank_card: Сураныч, сиз каражаттарды алып келет картаны көрсөтүү
+        choosing_bank_card: Сураныч, каражатты кайдан чыгаргыңыз келген чоо-жайын көрсөтүңүз
         bank: Банк
         card_number: Картанын номери
+        requisites: Реквизиттер
         money_transfer: Акча которуу...
         transfer_confirmation: Акча алдыңызбы?
         confirmation_receipt_of_money: Төлөмдү толугу менен алганыңызга жана аны ырастагыңыз келгенине ишенесизби?

@@ -45,9 +45,10 @@ uk:
       attributes:
         merchant: Мерчант
         amount: Сума
-        choosing_bank_card: Будь ласка, вкажіть карту, куди ви хочете вивести кошти
+        choosing_bank_card: Будь ласка, вкажіть реквізити, куди ви хочете вивести гроші
         bank: Банк
         card_number: Номер картки
+        requisites: Реквізити
         money_transfer: Переводимо гроші...
         transfer_confirmation: Ви отримали гроші?
         confirmation_receipt_of_money: Ви впевнені, що повністю отримали платіж і хочете його підтвердити?

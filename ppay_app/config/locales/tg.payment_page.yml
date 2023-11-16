@@ -45,9 +45,10 @@ tg:
       attributes:
         merchant: Мерчант
         amount: Маблағ
-        choosing_bank_card: Лутфан кортро муайян Кунед, ки шумо мехоҳед маблағро бозпас гиред
+        choosing_bank_card: Лутфан тафсилотеро, ки шумо мехоҳед пулро аз он бозпас гиред, ворид кунед
         bank: Бонк
         card_number: Рақами корт
+        requisites: Реквизитҳо
         money_transfer: Интиқоли пул...
         transfer_confirmation: Шумо пул гирифтед?
         confirmation_receipt_of_money: Ое шумо мутмаин ҳастед, ки шумо пардохтро пурра гирифтаед ва мехоҳед онро тасдиқ кунед?
