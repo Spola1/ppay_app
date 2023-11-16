@@ -81,16 +81,6 @@ class IncomingRequestService
     @incoming_request.card_mask = @card_mask if @card_mask.present?
     @incoming_request.sum_mask = @amount_mask if @amount_mask.present?
 
-    if @payment.present?
-      @payment.incoming_requests << @incoming_request
-      @payment.save
-    end
-
-    if @advertisement.present?
-      @advertisement.incoming_requests << @incoming_request
-      @advertisement.save
-    end
-
     @incoming_request.save
   end
 

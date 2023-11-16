@@ -68,6 +68,8 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(payment)
         expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([incoming_request])
+        expect(advertisement.incoming_requests).to eq([incoming_request])
       end
 
       it 'creates a comment for the payment with the correct message text' do
@@ -117,6 +119,8 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
         expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([])
+        expect(advertisement.incoming_requests).to eq([])
       end
 
       it 'creates a success response' do
