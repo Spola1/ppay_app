@@ -59,12 +59,12 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "e451a5ff-3c3f-448e-9122-3cc7a1415ada",
+                    "id": "6821c290-996d-4084-a799-89f25c9d78b3",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "e451a5ff-3c3f-448e-9122-3cc7a1415ada",
-                      "card_number": "4517622961199902",
-                      "expiration_time": "2023-11-13T16:27:03.132+03:00",
+                      "uuid": "6821c290-996d-4084-a799-89f25c9d78b3",
+                      "card_number": "7898233316091403",
+                      "expiration_time": "2023-11-16T13:53:49.200+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "100.0",
                       "payment_system": "Sberbank",
@@ -74,7 +74,7 @@
                       "card_owner_name": "John Doe",
                       "sbp_phone_number": "+1234567890",
                       "payment_link": "https://bank.com/ab/cdefg",
-                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbjhCIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ea90d17c91cf41a1e0ece028e2ad997fdefcb888/ab7d9a3761038bb2ee082fea71c8ca97.svg",
+                      "payment_link_qr_code_url": "http://example.org/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBKUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--de5c14e21d4499b39f74432ebd6acd518b0a25db/cffb573f88a3007b9007418c13e58854.svg",
                       "rate": "100.29",
                       "commission_percentage": "4.0"
                     }
@@ -332,11 +332,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "8c2faffe-78bf-47fa-a14e-f2786ba722b8",
+                    "id": "d7cd954c-72f3-4661-83e1-3f856c7a7f40",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "8c2faffe-78bf-47fa-a14e-f2786ba722b8",
-                      "expiration_time": "2023-11-13T16:27:12.055+03:00",
+                      "uuid": "d7cd954c-72f3-4661-83e1-3f856c7a7f40",
+                      "expiration_time": "2023-11-16T13:53:56.502+03:00",
                       "national_currency": "RUB",
                       "national_currency_amount": "3000.0",
                       "payment_system": "Sberbank",
@@ -379,6 +379,114 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/external_processing_withdrawals_create_parameter_body_schema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/simbank/requests": {
+      "post": {
+        "summary": "Отправить входящий запрос",
+        "tags": [
+          "Входящие запросы"
+        ],
+        "description": "## Отправка входящего запроса\n\nДля отправки запроса нужно сформировать тело (Request body) в формате JSON со следующими параметрами:\n\n| Параметр | Название      | Тип    | Наличие     | Описание                        |\n|----------|---------------|--------|-------------|---------------------------------|\n| app      | Приложение    | String | Обязательно | Название приложения             |\n| type     | Тип сообщения | String | Обязательно | Тип сообщения входящего запроса |\n| ...      |               |        |             |                                 |\n\n### Примеры\n\n```json\n{\n  \"type\": \"SMS\",\n  \"api_key\": \"8ef216e24c98fb61ca68038852e5fa9a8e4b67c78912c605\",\n  \"from\": \"Raiffeisen\",\n  \"content\": \"Schet *8412. Platezh s nomera 79529048819. Summa 3000.00 RUB. Balans 94.87 RUB.\",\n  \"identifier\": {\n    \"phone\": \"79232005555\"\n  },\n  \"app\": \"SMS Forwarder\"\n}\n```\n\n\n<br>\n\n*Для отправки тестового запроса, нажмите кнопку `Try it out`, затем внизу `Execute`*\n\n*Предварительно можно открыть в браузере `Dev Tools (F12)` > вкладка `Network`, чтобы увидеть все данные по запросу.*\n",
+        "security": [
+          {
+            "bearerAuth": {
+            }
+          }
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "запись входящего запроса создана"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "app": {
+                    "type": "string",
+                    "example": "SMS Forwarder"
+                  },
+                  "api_key": {
+                    "type": "string",
+                    "example": "a61990273e8e029665ab9e3522f87da9a81941f3fee929f9"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "SMS"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string",
+                    "example": "Raiffeisen"
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Schet *8412. Platezh s nomera 79529048819. Summa 3000.00 RUB. Balans 94.87 RUB."
+                  },
+                  "res_sn": {
+                    "type": "string"
+                  },
+                  "identifier": {
+                    "type": "object",
+                    "properties": {
+                      "imei": {
+                        "type": "string"
+                      },
+                      "imsi": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "example": "79232005555"
+                      }
+                    }
+                  },
+                  "imsi": {
+                    "type": "string"
+                  },
+                  "imei": {
+                    "type": "string"
+                  },
+                  "telegram_phone": {
+                    "type": "string"
+                  },
+                  "com": {
+                    "type": "string"
+                  },
+                  "simno": {
+                    "type": "string"
+                  },
+                  "softwareid": {
+                    "type": "string"
+                  },
+                  "custmemo": {
+                    "type": "string"
+                  },
+                  "sendstat": {
+                    "type": "string"
+                  },
+                  "user_agent": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -568,7 +676,7 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "example": "b064932c-f115-4f4a-b595-b211367a2c56"
+                        "example": "4560b67f-aeaa-4cf1-a081-4e867fde442f"
                       },
                       "version": {
                         "type": "string",
@@ -631,11 +739,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "3c8fe522-3e11-4ad8-a1bd-8572a67d72e4",
+                    "id": "7e342e41-3ec6-468d-aa3d-058d9be870f9",
                     "type": "deposit",
                     "attributes": {
-                      "uuid": "3c8fe522-3e11-4ad8-a1bd-8572a67d72e4",
-                      "url": "http://example.org/payments/deposits/3c8fe522-3e11-4ad8-a1bd-8572a67d72e4?signature=ddb4297c7b5618eac8c88236f7e8d940b542b209fe6b32b5d7a2651de53db807"
+                      "uuid": "7e342e41-3ec6-468d-aa3d-058d9be870f9",
+                      "url": "http://example.org/payments/deposits/7e342e41-3ec6-468d-aa3d-058d9be870f9?signature=effb8f7b74f5a54a75c40388c2d4055289545c0d089ee1833675786696b1c1d4"
                     }
                   }
                 },
@@ -699,11 +807,11 @@
               "application/json": {
                 "example": {
                   "data": {
-                    "id": "d2d99a78-4bee-489f-bcaa-435318d11828",
+                    "id": "3a44176a-bf80-4074-9517-e7c5d7cf66de",
                     "type": "withdrawal",
                     "attributes": {
-                      "uuid": "d2d99a78-4bee-489f-bcaa-435318d11828",
-                      "url": "http://example.org/payments/withdrawals/d2d99a78-4bee-489f-bcaa-435318d11828?signature=e769c6639c0a11caed905583eaf27424c6283e411d99ec0b9be361ae35a182a3"
+                      "uuid": "3a44176a-bf80-4074-9517-e7c5d7cf66de",
+                      "url": "http://example.org/payments/withdrawals/3a44176a-bf80-4074-9517-e7c5d7cf66de?signature=75d0e4ee27dbc72e7473ba3a0bb063e002a5a3ca25adf9f913b53cc0cb69844c"
                     }
                   }
                 },
@@ -1205,7 +1313,7 @@
                 "properties": {
                   "uuid": {
                     "type": "string",
-                    "example": "f63c98d5-8168-4221-baa0-3b4291467ab6"
+                    "example": "4f4c150b-cb42-4888-afc9-89261f3fd8b7"
                   },
                   "external_order_id": {
                     "type": "string",
@@ -1213,7 +1321,7 @@
                   },
                   "created_at": {
                     "type": "string",
-                    "example": "2023-11-13T16:06:58.621+03:00"
+                    "example": "2023-11-16T13:33:45.413+03:00"
                   },
                   "national_currency": {
                     "type": "string",
