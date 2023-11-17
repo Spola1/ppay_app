@@ -9,6 +9,7 @@ module AdvertisementScopes
       where('(max_summ >= :amount or max_summ is NULL) AND (min_summ <= :amount or min_summ is NULL)', amount:)
     }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
+    scope :by_payment_system,    ->(payment_system) { payment_system == 'СБП' ? where.not(sbp_phone_number: '') : where(payment_system:) }
     scope :by_direction,         ->(direction) { where(direction:) }
     scope :order_random,         lambda {
       weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
@@ -27,16 +28,6 @@ module AdvertisementScopes
       where(processer: payment.merchant.whitelisted_processers) if payment.merchant.only_whitelisted_processers
     }
 
-    scope :by_payment_system,    ->(payment_system, card_number, type) { 
-      if payment_system == 'СБП' && type == 'Deposit' 
-        where.not(sbp_phone_number: '')
-      elsif payment_system == 'СБП' && type == 'Withdrawal' 
-        where(sbp_phone_number: card_number)
-      else
-        where(payment_system:)
-      end
-    }
-
     scope :for_payment, lambda { |payment|
       join_active_payments
         .by_whitelisted_processers(payment)
@@ -45,9 +36,7 @@ module AdvertisementScopes
           payment.payment_system.presence ||
           payment.merchant.payment_systems
             .where(merchant_methods: { direction: payment.type })
-            .pluck(:name), 
-          payment.card_number, 
-          payment.type
+            .pluck(:name)
         )
         .group('advertisements.id')
     }
