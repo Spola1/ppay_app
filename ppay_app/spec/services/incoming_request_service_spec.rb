@@ -166,7 +166,19 @@ RSpec.describe IncomingRequestService do
       it 'creates a comment for the payment with the correct message text' do
         last_comment = incoming_request.payment.comments.last
 
-        expect(last_comment).to eq(nil)
+        expected_text = <<~TEXT.strip
+          #{message}
+
+          request_type: SMS
+          identifier: phone
+          phone: 79231636742
+          app: SMS Forwarder
+          from: Raiffeisen
+
+          поступило сообщение от симбанка
+        TEXT
+
+        expect(last_comment.text).to eq(expected_text)
       end
     end
 

@@ -158,7 +158,6 @@ class IncomingRequestService
 
   def payment_message
     return unless @payment.present?
-    return unless @advertisement.simbank_auto_confirmation?
 
     text = "#{@incoming_request.message}\n\n"
 
@@ -169,7 +168,11 @@ class IncomingRequestService
       text += "#{attr}: #{value}\n"
     end
 
-    text += "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
+    if @advertisement.save_incoming_requests_history? && !@advertisement.simbank_auto_confirmation?
+      text += "\nпоступило сообщение от симбанка"
+    else
+      text += "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
+    end
 
     @payment.comments.create!(
       author_nickname: Settings.simbank_nickname,
