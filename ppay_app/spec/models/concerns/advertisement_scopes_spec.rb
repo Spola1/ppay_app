@@ -296,7 +296,7 @@ RSpec.describe Advertisement, type: :model do
     context 'when payment system is SBP for withdrawal' do
       let!(:payment) { create(:payment, :withdrawal, :processer_search, :SBP, card_number: '+111111111111') }
 
-      it 'selects advertisements only with correct sbp phone number' do
+      it 'selects advertisements only with sbp phone number' do
         is_expected.to eq([advertisement3, advertisement5, advertisement8, advertisement10, advertisement11])
       end
     end
