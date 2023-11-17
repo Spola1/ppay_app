@@ -32,7 +32,7 @@ module Staff
     end
 
     def filtering_params
-      params[:payment_filters]&.slice(:national_currency, :period)
+      params[:payment_filters]&.slice(:national_currency, :period, :created_from, :created_to)
     end
   end
 end

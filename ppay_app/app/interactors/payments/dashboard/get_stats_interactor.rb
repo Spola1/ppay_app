@@ -29,9 +29,29 @@ module Payments
         set_active_advertisements
         set_active_advertisements_period
         set_average_arbitration_resolution_time
+        set_advertisement_conversions
       end
 
       private
+
+      def set_advertisement_conversions
+        start_time, end_time = calculate_time_range
+
+        return unless start_time && end_time
+
+        advertisements = context.processer.advertisements
+
+        advertisements.each do |adv|
+          adv.conversion = calculate_conversion_for_advertisements(adv, start_time, end_time)
+        end
+      end
+
+      def calculate_conversion_for_advertisements(advertisement, start_time, end_time)
+        total_completed = advertisement.payments.completed.where(created_at: start_time..end_time).count
+        total_finished = advertisement.payments.finished.where(created_at: start_time..end_time).count
+
+        total_finished.positive? && total_completed.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
+      end
 
       def set_default_params
         unless filtering_params.blank? || (filtering_params[:period].blank? && filtering_params[:created_from].blank?)
