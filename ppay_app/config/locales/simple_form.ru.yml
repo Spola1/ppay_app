@@ -18,6 +18,7 @@ ru:
         cancellation_reason: 'Причина отмены:'
         payment_status: 'Статус платежа:'
         payment_system: 'Платежная система:'
+        merchant: 'Мерчант:'
         national_currency: 'Нац. валюта:'
         national_currency_amount_from: 'Кол-во нац. валюты от:'
         national_currency_amount_to: 'Кол-во нац. валюты до:'
