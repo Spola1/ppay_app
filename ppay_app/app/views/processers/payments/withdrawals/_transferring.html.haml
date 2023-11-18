@@ -21,7 +21,7 @@
     = payment.payment_system
 
   %p.text-2xl
-    Номер карты:
+    = payment.payment_system == 'СБП' ? 'Номер телефона:' : 'Номер карты:'
     = payment.formatted_card_number
 
   %br

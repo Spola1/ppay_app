@@ -33,7 +33,8 @@ ky:
         qr_manual_1: Улантуу үчүн камераны ТВ кодуна багыттаңыз
         qr_manual_2: телефондон
         time_for_payment: Сиз үчүн төлөй аласыз
-        make_transfer: Көрсөтүлгөн сумманы төмөндө көрсөтүлгөн картанын номери боюнча которуңуз
+        make_transfer_by_card_number: Көрсөтүлгөн сумманы төмөндө көрсөтүлгөн картанын номери боюнча которуңуз
+        make_transfer_by_phone_number: Төмөндө көрсөтүлгөн телефон номерине көрсөтүлгөн сумманы которуңуз
         add_receipt_image: Чек сүрөтүн кошуңуз
         click_payment_completed_button: Которгондон кийин "Төлөм аяктады" баскычын басыңыз
         payment_completed: Төлөм аяктады
@@ -44,9 +45,10 @@ ky:
       attributes:
         merchant: Сатуучу
         amount: Суммасы
-        choosing_bank_card: Сураныч, сиз каражаттарды алып келет картаны көрсөтүү
+        choosing_bank_card: Сураныч, каражатты кайдан чыгаргыңыз келген чоо-жайын көрсөтүңүз
         bank: Банк
         card_number: Картанын номери
+        requisites: Реквизиттер
         money_transfer: Акча которуу...
         transfer_confirmation: Акча алдыңызбы?
         confirmation_receipt_of_money: Төлөмдү толугу менен алганыңызга жана аны ырастагыңыз келгенине ишенесизби?

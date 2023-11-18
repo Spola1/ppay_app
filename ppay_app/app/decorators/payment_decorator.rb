@@ -118,7 +118,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_card_number
-    if ['ЕРИП БНБ', 'ЕРИП Альфа', 'ЕРИП Белагро'].include?(payment_system)
+    if ['ЕРИП БНБ', 'ЕРИП Альфа', 'ЕРИП Белагро'].include?(payment_system) || (payment_system == 'СБП' && type == 'Withdrawal')
       card_number
     else
       card_number&.gsub(/(.{4})/, '\1 ')

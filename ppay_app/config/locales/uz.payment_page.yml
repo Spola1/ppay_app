@@ -33,7 +33,8 @@ uz:
         qr_manual_1: Davom etish uchun kamerani QR kodiga yo'naltiring
         qr_manual_2: telefondan
         time_for_payment: Siz to'lashingiz mumkin
-        make_transfer: Ko'rsatilgan summani quyidagi karta raqamiga o'tkazing
+        make_transfer_by_card_number: Ko'rsatilgan summani quyidagi karta raqamiga o'tkazing
+        make_transfer_by_phone_number: Ko'rsatilgan summani quyidagi ko'rsatilgan telefon raqamiga o'tkazing
         add_receipt_image: Chek rasmini qo'shing
         click_payment_completed_button: O'tkazilgandan so'ng"to'lov tugadi" tugmasini bosing
         payment_completed: To'lov tugallandi
@@ -44,9 +45,10 @@ uz:
       attributes:
         merchant: Savdogar
         amount: Miqdori
-        choosing_bank_card: Iltimos, pulni qaytarib olmoqchi bo'lgan kartani ko'rsating
+        choosing_bank_card: Iltimos, pulni qayerdan olib qo'ymoqchi bo'lgan tafsilotlarni ko'rsating
         bank: Bank
         card_number: Karta raqami
+        requisites: Rekvizitlar
         money_transfer: Biz pul o'tkazamiz...
         transfer_confirmation: Siz pul oldingizmi?
         confirmation_receipt_of_money: To'lovni to'liq olganingizga ishonchingiz komilmi va uni tasdiqlamoqchimisiz?

@@ -34,7 +34,8 @@ ru:
         qr_manual_1: Наведите камеру на QR-код, чтобы продолжить
         qr_manual_2: с телефона
         time_for_payment: Вы можете оплатить в течение
-        make_transfer: Сделайте перевод указанной суммы по номеру карты указанному ниже
+        make_transfer_by_card_number: Сделайте перевод указанной суммы по номеру карты указанному ниже
+        make_transfer_by_phone_number: Сделайте перевод указанной суммы по номеру телефона указанному ниже
         add_receipt_image: Добавьте изображение чека
         click_payment_completed_button: После перевода нажмите кнопку «Оплата завершена» 
         payment_completed: Оплата завершена
@@ -45,9 +46,10 @@ ru:
       attributes:
         merchant: Мерчант
         amount: Сумма
-        choosing_bank_card: Пожалуйста, укажите карту, куда Вы хотите вывести средства
+        choosing_bank_card: Пожалуйста, укажите реквизиты, куда Вы хотите вывести средства
         bank: Банк
         card_number: Номер карты
+        requisites: Реквизиты
         money_transfer: Переводим деньги...
         transfer_confirmation: Вы получили деньги?
         confirmation_receipt_of_money: Вы уверены, что полностью получили платёж и хотите его подтвердить?

@@ -32,7 +32,8 @@ id:
         qr_manual_1: Arahkan kamera ke kode QR untuk melanjutkan
         qr_manual_2: dari telepon
         time_for_payment: Anda dapat membayar dalam waktu
-        make_transfer: Lakukan transfer jumlah yang ditentukan ke nomor kartu yang tercantum di bawah ini
+        make_transfer_by_card_number: Lakukan transfer jumlah yang ditentukan ke nomor kartu yang tercantum di bawah ini
+        make_transfer_by_phone_number: Lakukan transfer jumlah yang ditentukan ke nomor telepon yang tertera di bawah
         add_receipt_image: Tambahkan gambar tanda terima
         click_payment_completed_button: Setelah transfer, klik tombol "Pembayaran selesai" 
         payment_completed: Pembayaran selesai
@@ -43,9 +44,10 @@ id:
       attributes:
         merchant: Merchant
         amount: Jumlahnya
-        choosing_bank_card: Sebutkan kartu tempat Anda ingin menarik dana
+        choosing_bank_card: Silakan tunjukkan detail di mana Anda ingin menarik dana
         bank: Bank
         card_number: Nomor kartu
+        requisites: Detail
         money_transfer: Kami mentransfer uang...
         transfer_confirmation: Apakah Anda mendapatkan uangnya?
         confirmation_receipt_of_money: Apakah Anda yakin telah menerima pembayaran secara penuh dan ingin mengonfirmasinya?
