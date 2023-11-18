@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class IncomingRequest < ApplicationRecord
+  include Filterable
+  include IncomingRequests::Filterable
+
   belongs_to :user, optional: true
   belongs_to :payment, optional: true
   belongs_to :advertisement, optional: true

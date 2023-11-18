@@ -31,11 +31,11 @@ navbar:
       path: edit_setting_path
     - name: Регулярки
       path: masks_path
-    - name: Запросы
+    - name: Реестр платежей
       path: incoming_requests_path
     - name: Оборот
       path: turnover_stats_path
-    - name: Реестр
+    - name: Реестр ненайденных платежей
       path: not_found_payments_path
     - name: Платёжные системы
       path: payment_systems_path
@@ -75,6 +75,8 @@ navbar:
       path: arbitrations_path
     - name: Статистика
       path: dashboard_path
+    - name: Реестр платежей
+      path: incoming_requests_path
   support:
     - name: Все платежи
       path: payments_path
@@ -86,12 +88,14 @@ navbar:
       path: balance_requests_path
     - name: Телеграм Бот
       path: edit_supports_profile_path
-    - name: Реестр
+    - name: Реестр ненайденных платежей
       path: not_found_payments_path
     - name: Арбитражи по чеку
       path: arbitrations_path
     - name: Статистика
       path: dashboard_path
+    - name: Реестр платежей
+      path: incoming_requests_path
   agent:
     - name: Все платежи
       path: payments_path

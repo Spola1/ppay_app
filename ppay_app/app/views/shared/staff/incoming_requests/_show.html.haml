@@ -1,0 +1,10 @@
+%section.wrap
+  .card-wrap
+    .item-card
+      .flex.mb-4.items-center
+        .text-xl.flex-1= "Запрос (ID: #{@incoming_request.id})"
+      .mt-8.my-4
+        = render 'shared/staff/incoming_requests/incoming_request', incoming_request: @incoming_request
+      .back-link
+        = link_to '<- К списку запросов', incoming_requests_path
+  

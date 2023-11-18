@@ -12,6 +12,7 @@ class Advertisement < ApplicationRecord
   has_many :deposits
   has_many :withdrawals
   has_many :advertisement_activities, dependent: :destroy
+  has_many :incoming_requests
   # STI модель - processer < user
   belongs_to :processer
 

@@ -144,6 +144,7 @@ Rails.application.routes.draw do
         get :flow
       end
     end
+    resources :incoming_requests
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
     resources :balance_requests

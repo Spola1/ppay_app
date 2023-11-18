@@ -68,6 +68,8 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(payment)
         expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([incoming_request])
+        expect(advertisement.incoming_requests).to eq([incoming_request])
       end
 
       it 'creates a comment for the payment with the correct message text' do
@@ -117,6 +119,8 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
         expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([])
+        expect(advertisement.incoming_requests).to eq([])
       end
 
       it 'creates a success response' do
@@ -128,6 +132,60 @@ RSpec.describe IncomingRequestService do
 
     context 'when advertisement simbank_auto_confirmation disabled' do
       let!(:advertisement) { create(:advertisement, processer:, simbank_auto_confirmation: false) }
+
+      it 'returns correct find_matching_advertisement result' do
+        expect(incoming_request.advertisement).to eq(advertisement)
+        expect(incoming_request.card_mask).to eq(card_mask)
+      end
+
+      it 'returns correct find_matching_payment result and will not automatically confirm the payment' do
+        expect(incoming_request.payment).to eq(payment)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(incoming_request.payment.payment_status).to eq('transferring')
+      end
+
+      it 'does not create any NotFoundPayment' do
+        expect(NotFoundPayment.all.size).to eq(0)
+      end
+
+      it 'builds correct related models' do
+        expect(incoming_request.advertisement).to eq(advertisement)
+        expect(incoming_request.card_mask).to eq(card_mask)
+        expect(incoming_request.payment).to eq(payment)
+        expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([incoming_request])
+        expect(advertisement.incoming_requests).to eq([incoming_request])
+      end
+
+      it 'creates a success response' do
+        service = IncomingRequestService.new(incoming_request)
+        response = service.process_request
+        expect(response).to eq({ status: 'success', message: 'Запрос успешно сохранен' })
+      end
+
+      it 'creates a comment for the payment with the correct message text' do
+        last_comment = incoming_request.payment.comments.last
+
+        expected_text = <<~TEXT.strip
+          #{message}
+
+          request_type: SMS
+          identifier: phone
+          phone: 79231636742
+          app: SMS Forwarder
+          from: Raiffeisen
+
+          поступило сообщение от симбанка
+        TEXT
+
+        expect(last_comment.text).to eq(expected_text)
+      end
+    end
+
+    context 'when advertisement simbank_auto_confirmation and save_incoming_requests_history disabled' do
+      let!(:advertisement) do
+        create(:advertisement, processer:, simbank_auto_confirmation: false, save_incoming_requests_history: false)
+      end
 
       it 'returns correct find_matching_advertisement result' do
         expect(incoming_request.advertisement).to eq(nil)
@@ -148,6 +206,8 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
         expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([])
+        expect(advertisement.incoming_requests).to eq([])
       end
 
       it 'creates a success response' do
@@ -180,6 +240,8 @@ RSpec.describe IncomingRequestService do
         expect(incoming_request.card_mask).to eq(card_mask)
         expect(incoming_request.payment).to eq(nil)
         expect(incoming_request.sum_mask).to eq(amount_mask)
+        expect(payment.incoming_requests).to eq([])
+        expect(advertisement.incoming_requests).to eq([incoming_request])
       end
 
       it 'creates a success response' do

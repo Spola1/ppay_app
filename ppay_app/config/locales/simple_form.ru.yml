@@ -28,6 +28,18 @@ ru:
         external_order_id: 'Внешний номер заказа:'
         card_number: 'Номер карты:'
         advertisement_id: 'ID объявления:'
+      incoming_request_filters:
+        created_from: 'Дата от:'
+        created_to: 'Дата до:'
+        status: 'Статус:'
+        national_currency: 'Нац. валюта:'
+        national_currency_amount_from: 'Кол-во нац. валюты от:'
+        national_currency_amount_to: 'Кол-во нац. валюты до:'
+        uuid: 'UUID:'
+        id: 'ID:'
+        card_number: 'Номер карты:'
+        advertisement_id: 'ID объявления:'
+        processer: 'Оператор:'
       stats_filters:
         created_from: 'Дата от:'
         created_to: 'Дата до:'

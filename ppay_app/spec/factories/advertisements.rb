@@ -12,6 +12,7 @@ FactoryBot.define do
     max_summ { 100_000 }
     min_summ { 10 }
     simbank_auto_confirmation { true }
+    save_incoming_requests_history { true }
     phone { '79231636742' }
     simbank_card_number { '8412' }
     simbank_sender { 'Raiffeisen' }

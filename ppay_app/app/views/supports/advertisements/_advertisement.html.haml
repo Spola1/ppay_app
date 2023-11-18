@@ -28,6 +28,9 @@
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Автоматизированная проверка платежей
         %td.item-card-td= @advertisement.simbank_auto_confirmation ? 'Активно' : 'Неактивно'
+      %tr.item-card-tr 
+        %td.item-card-td.item-card-td-label Сохранение истории пуш/смс уведомлений
+        %td.item-card-td= @advertisement.save_incoming_requests_history ? 'Активно' : 'Неактивно'
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label IMEI
         %td.item-card-td= link_to nil, @advertisement.imei
