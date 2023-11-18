@@ -263,49 +263,32 @@ RSpec.describe Advertisement, type: :model do
   end
 
   describe '.by_payment_system' do
-    subject { Advertisement.by_payment_system(payment.payment_system, payment.card_number, payment.type) }
+    subject { Advertisement.by_payment_system(payment_system_name) }
 
-    let!(:advertisement1) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: '') }
+    let!(:advertisement1) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: nil) }
     let!(:advertisement2) { create(:advertisement, payment_system: 'AlfaBank', sbp_phone_number: '') }
     let!(:advertisement3) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: '+77777777777') }
-    let!(:advertisement4) { create(:advertisement, payment_system: 'Sberbank', sbp_phone_number: '') }
+    let!(:advertisement4) { create(:advertisement, payment_system: 'Sberbank', sbp_phone_number: nil) }
     let!(:advertisement5) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: '+999999999999') }
     let!(:advertisement6) { create(:advertisement, payment_system: 'Sberbank', sbp_phone_number: '') }
     let!(:advertisement7) { create(:advertisement, payment_system: 'Tinkoff', sbp_phone_number: '') }
     let!(:advertisement8) { create(:advertisement, payment_system: 'AlfaBank', sbp_phone_number: '+88888888888') }
     let!(:advertisement9) { create(:advertisement, payment_system: 'AlfaBank', sbp_phone_number: '') }
     let!(:advertisement10) { create(:advertisement, payment_system: 'Sberbank', sbp_phone_number: '+111111111111') }
-    let!(:advertisement11) { create(:advertisement, :withdrawal, payment_system: 'Sberbank', sbp_phone_number: '+111111111111') }
 
-    context 'when payment system is SBP for deposit' do
-      let!(:payment) { create(:payment, :deposit, :processer_search, :SBP) }
-
-      it 'selects advertisements only with sbp phone number' do
-        is_expected.to eq([advertisement3, advertisement5, advertisement8, advertisement10, advertisement11])
-      end
-    end
-  
-    context 'when payment system is not SBP for deposit' do
-      let!(:payment) { create(:payment, :deposit, :processer_search) }
-  
-      it 'selects advertisements with payment.payment_system independently of sbp_phone_number' do
-        is_expected.to eq([advertisement4, advertisement6, advertisement10, advertisement11])
-      end
-    end
-
-    context 'when payment system is SBP for withdrawal' do
-      let!(:payment) { create(:payment, :withdrawal, :processer_search, :SBP, card_number: '+111111111111') }
+    context 'when payment system is СБП' do
+      let(:payment_system_name) { 'СБП' }
 
       it 'selects advertisements only with sbp phone number' do
-        is_expected.to eq([advertisement3, advertisement5, advertisement8, advertisement10, advertisement11])
+        is_expected.to eq([advertisement3, advertisement5, advertisement8, advertisement10])
       end
     end
 
-    context 'when payment system is not SBP for withdrawal' do
-      let!(:payment) { create(:payment, :withdrawal, :processer_search) }
-  
-      it 'selects advertisements with payment.payment_system independently of sbp_phone_number' do
-        is_expected.to eq([advertisement4, advertisement6, advertisement10, advertisement11])
+    context 'when payment system is not СБП' do
+      let(:payment_system_name) { 'Sberbank' }
+
+      it 'selects advertisements by payment system name' do
+        is_expected.to eq([advertisement4, advertisement6, advertisement10])
       end
     end
   end
