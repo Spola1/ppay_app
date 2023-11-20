@@ -2,7 +2,8 @@
 
 module Processers
   class AdvertisementsController < Staff::BaseController
-    before_action :find_advertisement, only: %i[show edit update destroy new]
+    before_action :find_advertisement, only: %i[show edit update destroy]
+    before_action :find_advertisement_for_copy, only: %i[new]
 
     def index
       @pagy, @advertisements = pagy(current_user.advertisements
@@ -67,6 +68,10 @@ module Processers
     private
 
     def find_advertisement
+      @advertisement = current_user.advertisements.find(params[:id])
+    end
+
+    def find_advertisement_for_copy
       @advertisement = current_user.advertisements.find_by_id(params[:id])
     end
 
