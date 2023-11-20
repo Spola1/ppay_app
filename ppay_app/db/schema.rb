@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_02_123754) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_15_092007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -334,6 +334,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_123754) do
     t.index ["user_id"], name: "index_mobile_app_requests_on_user_id"
   end
 
+  create_table "mobile_apps", force: :cascade do |t|
+    t.string "name"
+    t.string "device_name"
+    t.string "imei"
+    t.string "imsi"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_mobile_apps_on_user_id"
+  end
+
   create_table "national_currencies", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -608,9 +619,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_123754) do
     t.boolean "otp_required_for_login"
     t.boolean "otp_payment_confirm"
     t.boolean "can_edit_summ"
-    t.decimal "daily_usdt_card_limit", default: "0.0"
+    t.bigint "merchant_id"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["merchant_id"], name: "index_users_on_merchant_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
@@ -657,6 +669,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_02_123754) do
   add_foreign_key "merchant_processers", "users", column: "merchant_id"
   add_foreign_key "merchant_processers", "users", column: "processer_id"
   add_foreign_key "message_read_statuses", "users"
+  add_foreign_key "mobile_apps", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_logs", "payments"
