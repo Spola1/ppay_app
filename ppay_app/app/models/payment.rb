@@ -422,7 +422,7 @@ class Payment < ApplicationRecord
   after_update_commit :block_advertisement, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed? &&
       advertisement&.status &&
-      advertisement.exceed_daily_usdt_card_limit?
+      advertisement&.exceed_daily_usdt_card_limit?
   }
 
   def block_advertisement
