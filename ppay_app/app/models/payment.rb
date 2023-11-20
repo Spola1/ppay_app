@@ -434,6 +434,6 @@ class Payment < ApplicationRecord
   }
 
   def enable_advertisements
-    Advertisement.for_enable_status.update_all(status: true, block_reason: nil)
+    Payments::EnableAdvertisementStatusJob.perform_async
   end
 end
