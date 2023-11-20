@@ -46,6 +46,10 @@ module Payments
         ].max
       end
 
+      def total_commission
+        processer_commission + working_group_commission + agent_commission + ppay_commission
+      end
+
       private
 
       def merchant_commissions

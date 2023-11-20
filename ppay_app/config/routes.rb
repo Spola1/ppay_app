@@ -148,6 +148,7 @@ Rails.application.routes.draw do
         get :flow
       end
     end
+    resources :incoming_requests
     resources :exchange_portals, only: %i[index show]
     resources :rate_snapshots, only: %i[index show]
     resources :balance_requests
@@ -219,6 +220,7 @@ Rails.application.routes.draw do
       post '/simbank/requests', to: 'incoming_requests#create', as: :simbank_request
       get :balance, to: 'balance#show'
       resources :payments, param: :uuid, only: :show
+      resources :merchant_methods, only: :index
 
       post '/check_telegram_connections/check_connection_status',
            to: 'check_telegram_connections#check_connection_status'

@@ -38,7 +38,7 @@
                    class: 'grey-drop-down mb-3', id: 'advertisement_payment_system'
 
       .select-payment-system
-        = f.label :card_number, t('payments.withdraw.attributes.card_number')
+        = f.label :card_number, t('payments.withdraw.attributes.requisites')
         = f.text_field :card_number, data: { controller: 'inputmask--card-number', 'inputmask--card-number-target': 'input' }, class: "grey-cardplace"
 
 

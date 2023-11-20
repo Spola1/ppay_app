@@ -31,7 +31,7 @@
     .card-wrap{ class: 'basis-1/2' }
       .item-card.h-full
         .flex.mb-4.items-center
-          .text-xl.flex-1= stats.processer.display_name
+          .text-xl.flex-1= stats.processer.decorate.display_name
         %table.item-card-table
           %tbody
             = render 'shared/staff/stats/stats_tr',
@@ -73,3 +73,9 @@
               = render 'shared/staff/stats/stats_tr',
                 title: "Активные карты за выбранный период #{currency}",
                 value: active_advertisements_list(advertisements)
+            - stats.processer.advertisements.each do |advertisement|
+              = render 'shared/staff/stats/stats_tr',
+                title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
+                value: "#{advertisement.conversion}%",
+                value_color: conversion_color(advertisement.conversion)
+

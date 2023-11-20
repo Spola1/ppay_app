@@ -49,6 +49,8 @@ RSpec.configure do |config|
   # Defaults to json. Accepts ':json' and ':yaml'.
   config.swagger_format = :json
 
+  config.swagger_strict_schema_validation = true
+
   RSpec.shared_context 'generate_examples' do
     after do |example|
       example.metadata[:response][:content] = {

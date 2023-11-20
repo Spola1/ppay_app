@@ -70,6 +70,10 @@ FactoryBot.define do
       payment_system { 'Tinkoff' }
     end
 
+    trait :SBP do
+      payment_system { 'СБП' }
+    end
+
     trait :with_transactions do
       after(:create) do |payment, _evaluator|
         %i[main processer_commission working_group_commission agent_commission ppay_commission]

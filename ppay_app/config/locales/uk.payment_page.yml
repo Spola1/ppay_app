@@ -33,7 +33,8 @@ uk:
         qr_manual_1: Наведіть камеру на QR-код, щоб продовжити
         qr_manual_2: з телефону
         time_for_payment: Ви можете оплатити протягом
-        make_transfer: Зробіть переказ зазначеної суми за номером картки вказаним нижче
+        make_transfer_by_card_number: Зробіть переказ зазначеної суми за номером картки вказаним нижче
+        make_transfer_by_phone_number: Зробіть переказ зазначеної суми за номером телефону вказаним нижче
         add_receipt_image: Додайте зображення чека
         click_payment_completed_button: Після переказу натисніть кнопку "Оплата завершена»
         payment_completed: Оплата завершена
@@ -44,9 +45,10 @@ uk:
       attributes:
         merchant: Мерчант
         amount: Сума
-        choosing_bank_card: Будь ласка, вкажіть карту, куди ви хочете вивести кошти
+        choosing_bank_card: Будь ласка, вкажіть реквізити, куди ви хочете вивести гроші
         bank: Банк
         card_number: Номер картки
+        requisites: Реквізити
         money_transfer: Переводимо гроші...
         transfer_confirmation: Ви отримали гроші?
         confirmation_receipt_of_money: Ви впевнені, що повністю отримали платіж і хочете його підтвердити?

@@ -78,6 +78,7 @@ class Payment < ApplicationRecord
   has_many :chats
   has_many :visits
   has_many :payment_logs
+  has_many :incoming_requests
 
   before_create :set_default_unique_amount
   before_create :set_initial_amount
@@ -260,7 +261,7 @@ class Payment < ApplicationRecord
   end
 
   def advertisements_scope
-    if type == "Deposit" 
+    if type == 'Deposit'
       Advertisement.public_send("for_#{type.downcase}_unlimited", self)
     else
       Advertisement.public_send("for_#{type.downcase}", self)

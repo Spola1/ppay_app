@@ -51,8 +51,8 @@ class IncomingRequestService
     @matching_advertisements = @processer.advertisements
                                          .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
                                                 value: search_value)
-                                         .where(simbank_auto_confirmation: true,
-                                                simbank_sender: @incoming_request.from)
+                                         .where('(save_incoming_requests_history AND simbank_sender = :sender)',
+                                                sender: @incoming_request.from)
 
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
@@ -108,7 +108,7 @@ class IncomingRequestService
 
       if @payments.size == 1
         @payment = @payments.last[:payment]
-        @payment.confirm!
+        @payment.confirm! if @payment.advertisement.simbank_auto_confirmation == true
       end
     else
       find_amount(amount_masks)
@@ -168,7 +168,11 @@ class IncomingRequestService
       text += "#{attr}: #{value}\n"
     end
 
-    text += "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
+    if @advertisement.save_incoming_requests_history? && !@advertisement.simbank_auto_confirmation?
+      text += "\nпоступило сообщение от симбанка"
+    else
+      text += "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
+    end
 
     @payment.comments.create!(
       author_nickname: Settings.simbank_nickname,

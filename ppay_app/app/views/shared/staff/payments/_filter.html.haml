@@ -14,6 +14,9 @@
       selected: payment_filters_params(:payment_status), required: false
     = f.input :payment_system, collection: PaymentSystem.pluck(:name), include_blank: 'Все',
       selected: payment_filters_params(:payment_system), required: false
+    - if current_user.admin? || current_user.support?
+      = f.input :merchant, collection: Merchant.pluck(:nickname, :id), include_blank: 'Все',
+        selected: payment_filters_params(:merchant), value_method: :last, text_method: :first, required: false
     = f.input :national_currency, collection: NationalCurrency.pluck(:name), include_blank: 'Все',
       selected: payment_filters_params(:national_currency), required: false
     = f.input :national_currency_amount_from, as: :numeric,

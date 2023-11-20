@@ -77,22 +77,29 @@ POST запросов (при каждом изменении статуса) с
 
 ### Пример приходящего по callback_url запроса:
 
+<json>
 ```
 {
   "data": {
-    "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
-    "type": "<%= @payment_type %>",
+    "id": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
+    "type": "<%= @payment_type.downcase %>",
     "attributes": {
       "uuid": "8de5d972-cdbb-48c1-9afe-318c38247fa7",
       "external_order_id": "1234",
+      "cancellation_reason": "fraud_attempt",
       "payment_status": "confirming",
-      "national_currency": "RUB",
       "national_currency_amount": "2999.99",
       "initial_amount": "3000.0",
+      "national_currency": "RUB",
       "cryptocurrency_commission_amount": 3.2632,
-      "national_currency_commission_amount": 200.001528
+      "national_currency_commission_amount": 200.001528,
+      "arbitration": false,
+      "arbitration_reason": "check_by_check",
+      "rate": "100.29",
+      "commission_percentage": "4.0"
     }
   }
 }
 ```
+</json>
 </details>

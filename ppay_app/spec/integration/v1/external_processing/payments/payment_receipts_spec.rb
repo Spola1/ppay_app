@@ -54,28 +54,21 @@ describe 'External processing payments receipts' do
       end
 
       response '201', 'чек успешно создан' do
-        schema type: :object,
-               properties: {
-                 data: {
-                   type: :object,
-                   properties: {
-                     id: { type: :string },
-                     type: { type: :string },
-                     attributes: {
-                       type: :object,
-                       properties: {
-                         image_url: { type: :string },
-                         comment: { type: :string, nullable: true },
-                         receipt_reason: { type: :string, enum: PaymentReceipt.receipt_reasons, nullable: true },
-                         start_arbitration: { type: :boolean, nullable: true },
-                         source: { type: :string, enum: PaymentReceipt.sources, nullable: true }
-                       },
-                       required: %i[image_url comment receipt_reason start_arbitration source]
-                     }
-                   },
-                   required: %i[id type]
-                 }
-               }
+        schema type: :object, required: %i[data], properties: {
+          data: { type: :object, required: %i[id type], properties: {
+            id: { type: :string },
+            type: { type: :string },
+            attributes: { type: :object, required: %i[
+              image_url comment receipt_reason start_arbitration source
+            ], properties: {
+              image_url: { type: :string },
+              comment: { type: :string, nullable: true },
+              receipt_reason: { type: :string, enum: PaymentReceipt.receipt_reasons.keys, nullable: true },
+              start_arbitration: { type: :boolean, nullable: true },
+              source: { type: :string, enum: PaymentReceipt.sources.keys, nullable: true }
+            } }
+          } }
+        }
 
         context 'validates schema' do
           run_test! do

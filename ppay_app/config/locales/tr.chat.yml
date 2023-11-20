@@ -1,0 +1,8 @@
+tr:
+  chat:
+    support_chat: Destek ekibiyle sohbet edin
+    upload_payment_receipt: Makbuzunuzu yükleyin
+    upload_receipt: Makbuz yükle
+    send: Göndermek
+    attached_payment_receipt: Ekli çek
+    client: Müşteri

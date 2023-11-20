@@ -39,7 +39,10 @@
       %span.text-red
         1.
       %span
-        = t('payments.deposit.attributes.make_transfer')
+      - if payment.payment_system == 'СБП'
+        = t('payments.deposit.attributes.make_transfer_by_phone_number')
+      - else
+        = t('payments.deposit.attributes.make_transfer_by_card_number')
 
     = render 'payments/deposits/change_sum', payment: payment
     = render 'payments/deposits/bank_card', payment: payment

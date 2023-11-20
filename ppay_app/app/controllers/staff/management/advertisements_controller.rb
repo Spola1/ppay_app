@@ -45,13 +45,13 @@ module Staff
           :payment_system_type, :min_summ, :max_summ, :card_number, :autoacceptance,
           :comment, :operator_contact, :exchange_rate_type, :exchange_rate_source,
           :percent, :min_fix_price, :status, :hidden, :account_id, :simbank_auto_confirmation,
-          :imei, :phone, :imsi, :simbank_card_number, :sbp_phone_number, :card_owner_name, :telegram_phone
-        )
+          :imei, :phone, :imsi, :simbank_card_number, :sbp_phone_number, :card_owner_name,
+          :telegram_phone, :save_incoming_requests_history)
       end
 
       def filtering_params
-        params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system, :processer,
-                                              :card_owner_name, :simbank_card_number)
+        params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system,
+                                              :processer, :card_owner_name, :simbank_card_number)
       end
     end
   end

@@ -59,61 +59,54 @@ module Swagger
             def create_response_body_schema
               {
                 external_processing_deposits_create_response_body_schema: {
-                  type: :object,
-                  properties: {
-                    data: {
-                      type: :object,
-                      properties: {
-                        id: { type: :string },
-                        type: { type: :string },
-                        attributes: {
-                          type: :object,
-                          properties: {
-                            uuid: { type: :string },
-                            card_number: { type: :string },
-                            expiration_time: { type: :string },
-                            national_currency: { type: :string },
-                            national_currency_amount: { type: :string },
-                            initial_amount: { type: :string },
-                            payment_link: { type: :string },
-                            payment_link_qr_code_url: { type: :string },
-                            cryptocurrency_commission_amount: { type: :number, example: 10.0 },
-                            national_currency_commission_amount: { type: :number, example: 100.0 }
-                          },
-                          required: %w[uuid card_number expiration_time national_currency national_currency_amount
-                                       initial_amount]
-                        }
-                      },
-                      required: %w[id type attributes]
-                    }
-                  },
-                  required: %w[data]
+                  type: :object, required: %w[data], properties: {
+                    data: { type: :object, required: %w[id type attributes], properties: {
+                      id: { type: :string },
+                      type: { type: :string },
+                      attributes: { type: :object, required: %w[
+                        uuid card_number expiration_time national_currency national_currency_amount
+                        initial_amount rate commission_percentage
+                      ], properties: {
+                        uuid: { type: :string },
+                        card_number: { type: :string },
+                        expiration_time: { type: :string },
+                        national_currency: { type: :string },
+                        national_currency_amount: { type: :string },
+                        payment_system: { type: :string, example: 'Sberbank' },
+                        initial_amount: { type: :string },
+                        payment_link: { type: :string, nullable: true },
+                        payment_link_qr_code_url: { type: :string, nullable: true },
+                        cryptocurrency_commission_amount: { type: :number, example: 10.0 },
+                        national_currency_commission_amount: { type: :number, example: 100.0 },
+                        card_owner_name: { type: :string, example: 'John Doe' },
+                        sbp_phone_number: { type: :string, example: '+1234567890' },
+                        rate: { type: :string, example: '94.12' },
+                        commission_percentage: { type: :string, example: '4.0' }
+                      } }
+                    } }
+                  }
                 },
                 external_processing_withdrawals_create_response_body_schema: {
-                  type: :object,
-                  properties: {
-                    data: {
-                      type: :object,
-                      properties: {
-                        id: { type: :string },
-                        type: { type: :string },
-                        attributes: {
-                          type: :object,
-                          properties: {
-                            uuid: { type: :string },
-                            national_currency: { type: :string },
-                            national_currency_amount: { type: :string },
-                            initial_amount: { type: :string },
-                            cryptocurrency_commission_amount: { type: :number, example: 10.0 },
-                            national_currency_commission_amount: { type: :number, example: 100.0 }
-                          },
-                          required: %w[uuid national_currency national_currency_amount initial_amount]
-                        }
-                      },
-                      required: %w[id type attributes]
-                    }
-                  },
-                  required: %w[data]
+                  type: :object, required: %w[data], properties: {
+                    data: { type: :object, required: %w[id type attributes], properties: {
+                      id: { type: :string },
+                      type: { type: :string },
+                      attributes: { type: :object, required: %w[
+                        uuid national_currency national_currency_amount initial_amount rate commission_percentage
+                      ], properties: {
+                        uuid: { type: :string },
+                        expiration_time: { type: :string },
+                        national_currency: { type: :string },
+                        national_currency_amount: { type: :string },
+                        payment_system: { type: :string, example: 'Sberbank' },
+                        initial_amount: { type: :string },
+                        cryptocurrency_commission_amount: { type: :number, example: 10.0 },
+                        national_currency_commission_amount: { type: :number, example: 100.0 },
+                        rate: { type: :string, example: '94.12' },
+                        commission_percentage: { type: :string, example: '4.0' }
+                      } }
+                    } }
+                  }
                 }
               }
             end

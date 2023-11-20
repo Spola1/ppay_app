@@ -64,6 +64,19 @@
       .humo-card-owner
         = payment.advertisement.card_owner_name
 
+  - when "СБП"
+    .default-bank-card{ 'data-controller': 'clipboard' }
+      .default-bank-card-bank
+        = payment.advertisement.payment_system.upcase
+      .proc-copy-bank-card-content
+        .default-bank-card-number{ 'data-clipboard-target': 'source' }
+          = payment.advertisement.sbp_phone_number
+        .copy-card-button
+          = button_tag class: 'svg-button', data: { action: "click->clipboard#copy" } do
+            = image_tag 'copy.svg'
+      .default-card-owner
+        = payment.advertisement.card_owner_name
+
   - else
     .default-bank-card{ 'data-controller': 'clipboard' }
       .default-bank-card-bank

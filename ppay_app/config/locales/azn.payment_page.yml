@@ -27,7 +27,8 @@ azn:
         qr_manual_1: Davam etmək üçün kameranı QR koduna yönəldin
         qr_manual_2: telefondan
         time_for_payment: Siz ərzində ödəyə bilər
-        make_transfer: Göstərilən məbləği aşağıda göstərilən kart nömrəsi ilə köçürün
+        make_transfer_by_card_number: Göstərilən məbləği aşağıda göstərilən kart nömrəsi ilə köçürün
+        make_transfer_by_phone_number: Göstərilən məbləği aşağıda göstərilən telefon nömrəsinə köçürün
         add_receipt_image: Çek şəkli əlavə edin
         click_payment_completed_button: Köçürdükdən sonra "ödəniş tamamlandı"düyməsini basın
         payment_completed: Ödəniş tamamlandı

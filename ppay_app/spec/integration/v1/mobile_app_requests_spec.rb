@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-describe 'External processing payments receipts' do
+describe 'Mobile app requests' do
   include_context 'processer authorization'
 
   path '/get-api-link' do

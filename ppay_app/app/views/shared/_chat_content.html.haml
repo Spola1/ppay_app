@@ -1,7 +1,7 @@
 = turbo_stream_from payment
 
 - if role_namespace == nil
-  %p.text-xl.mb-2 Чат с поддержкой
+  %p.text-xl.mb-2= t('chat.support_chat')
 - else
   %p.text-xl.mb-2 Чат
 .h-96.overflow-auto#chat-container
@@ -13,7 +13,7 @@
     .flex.mt-2
       .flex-1
         .mb-1.text-xs.h-4
-          = f.label :image, 'Загрузите чек'
+          = f.label :image, t('chat.upload_payment_receipt')
           %span.text-red-500
             *
         .file-field-container.flex.items-center
@@ -25,14 +25,14 @@
           = f.error :image
         .flex-2.mt-4
           .flex.items-center
-            = f.submit 'Загрузить чек', class: 'red-button w-[100%] h-[45px] text-xs'
+            = f.submit t('chat.upload_receipt'), class: 'red-button w-[100%] h-[45px] text-xs'
 - elsif payment.payment_receipts.exists?(user_id: nil) && payment.cancellation_reason == 'not_paid' && payment.merchant.chat_enabled?
   .mt-4
     = form_for Chat.new, url: payment_chats_path( payment_uuid: payment.uuid ), remote: true,
           data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
       - unless role_namespace == 'processers'
         = f.text_area :text, class: 'form-input w-full h-16'
-        = f.submit 'Отправить', class: 'form-submit mt-4'
+        = f.submit t('chat.send'), class: 'form-submit mt-4'
 - elsif payment.payment_receipts.exists?(user_id: nil) && payment.cancellation_reason == 'not_paid' && !payment.merchant.chat_enabled?
   .mt-4
 - else
@@ -41,10 +41,10 @@
         data: { controller: 'chat_refresh', action: 'turbo:submit-end->chat_refresh#clearInput' } do |f|
     - unless role_namespace == 'processers'
       = f.text_area :text, class: 'form-input w-full h-16'
-      = f.submit 'Отправить', class: 'form-submit mt-4'
+      = f.submit t('chat.send'), class: 'form-submit mt-4'
 
 - if payment.payment_receipts.where(user_id: nil).exists? && role_namespace.nil?
-  %p.text-xl.mb-2.mt-4 Прикрепленный чек
+  %p.text-xl.mb-2.mt-4= t('chat.attached_payment_receipt')
   = link_to payment.payment_receipts.where(user_id: nil).last.image, target: '_blank' do
     = image_tag payment.payment_receipts.where(user_id: nil).last.image, class: 'max-h-96 inline-block w-full'
 

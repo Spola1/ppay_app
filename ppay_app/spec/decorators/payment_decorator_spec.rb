@@ -56,6 +56,22 @@ RSpec.describe PaymentDecorator do
         expect(subject.formatted_card_number).to eq('1234/2345/23452345')
       end
     end
+
+    context 'when payment system is СБП withdrawal' do
+      let(:payment) { create(:payment, :transferring, :withdrawal, :SBP, advertisement:, card_number: '+375223343543') }
+
+      it 'returns the formatted card number' do
+        expect(subject.formatted_card_number).to eq('+375223343543')
+      end
+    end
+
+    context 'when payment system is СБП deposit' do
+      let(:payment) { create(:payment, :transferring, :deposit, :SBP, advertisement:) }
+
+      it 'returns the formatted card number' do
+        expect(subject.formatted_card_number).to eq('1111 1111 1111 1111 ')
+      end
+    end
   end
 
   describe '#countdown_end_time' do

@@ -15,7 +15,7 @@ module Api
 
           render json: response, status: :created
         else
-          render json: { status: 'error', message: 'Ошибка при сохранении запроса' }, status: :unprocessable_entity
+          render json: { status: 'error', message: 'Ошибка при обработке запроса' }, status: :unprocessable_entity
         end
       rescue StandardError => e
         @incoming_request = IncomingRequest.create(initial_params: request.raw_post, error: e.full_message)
@@ -37,7 +37,7 @@ module Api
       end
 
       def from_macrodroid?
-        request.user_agent.match?(/macrodroid/)
+        request.user_agent&.match?(/macrodroid/)
       end
 
       def sanitized_params(body)
