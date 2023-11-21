@@ -1,0 +1,9 @@
+tr:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Yönetici
+        agent: Ajan
+        merchant: Tüccar
+        processer: Şebeke
+        support: Destek
