@@ -1,0 +1,9 @@
+kk:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Әкімші
+        agent: Агент
+        merchant: Саудагер
+        processer: Оператор
+        support: Қолдау

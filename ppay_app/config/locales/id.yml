@@ -1,0 +1,9 @@
+id:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Administrator
+        agent: Agen
+        merchant: Pedagang
+        processer: Operator
+        support: Mendukung
