@@ -30,6 +30,7 @@ set :output, '/var/log/cron.log'
 
 every 1.minute do
   runner 'Payments::CancelExpiredJob.perform_async'
+  runner 'Payments::EnableAdvertisementStatusJob.perform_async'
 end
 
 every 10.minutes do

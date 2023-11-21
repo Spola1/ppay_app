@@ -150,10 +150,6 @@ class Payment < ApplicationRecord
       advertisement&.exceed_daily_usdt_card_limit?
   }
 
-  after_update_commit :enable_advertisements, if: lambda {
-    payment_status.in?(%w[processer_search]) && payment_status_previously_changed?
-  }
-
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
@@ -430,9 +426,5 @@ class Payment < ApplicationRecord
 
   def block_advertisement
     advertisement.update(status: false, block_reason: :exceed_daily_usdt_card_limit)
-  end
-
-  def enable_advertisements
-    Payments::EnableAdvertisementStatusJob.perform_async
   end
 end
