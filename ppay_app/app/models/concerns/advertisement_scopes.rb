@@ -100,7 +100,7 @@ module AdvertisementScopes
         .where(block_reason: :exceed_daily_usdt_card_limit)
         .joins(:processer)
         .left_joins(:payments)
-        .merge(Payment.in_one_day.reorder(''))
+        .merge(Payment.last_day.reorder(''))
         .group('advertisements.id, users.id')
         .having("users.daily_usdt_card_limit IS NOT NULL AND users.daily_usdt_card_limit > 0
         AND SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit")

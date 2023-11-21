@@ -144,6 +144,16 @@ class Payment < ApplicationRecord
 
   after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
 
+  after_update_commit :block_advertisement, if: lambda {
+    payment_status.in?(%w[completed]) && payment_status_previously_changed? &&
+      advertisement&.status &&
+      advertisement&.exceed_daily_usdt_card_limit?
+  }
+
+  after_update_commit :enable_advertisements, if: lambda {
+    payment_status.in?(%w[processer_search]) && payment_status_previously_changed?
+  }
+
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
@@ -182,6 +192,7 @@ class Payment < ApplicationRecord
       END < NOW()"
     )
   }
+  scope :last_day, -> { where(created_at: 1.day.ago..Time.zone.now) }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
@@ -417,21 +428,9 @@ class Payment < ApplicationRecord
                          completed_payments: completed, cancelled_payments: cancelled)
   end
 
-  scope :in_one_day, -> { where(created_at: Time.current - 1.day..Time.current) }
-
-  after_update_commit :block_advertisement, if: lambda {
-    payment_status.in?(%w[completed]) && payment_status_previously_changed? &&
-      advertisement&.status &&
-      advertisement&.exceed_daily_usdt_card_limit?
-  }
-
   def block_advertisement
     advertisement.update(status: false, block_reason: :exceed_daily_usdt_card_limit)
   end
-
-  after_update_commit :enable_advertisements, if: lambda {
-    payment_status.in?(%w[processer_search]) && payment_status_previously_changed?
-  }
 
   def enable_advertisements
     Payments::EnableAdvertisementStatusJob.perform_async
