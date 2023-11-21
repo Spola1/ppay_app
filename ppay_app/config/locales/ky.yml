@@ -1,0 +1,9 @@
+ky:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Администратор
+        agent: Агент
+        merchant: Соодагер
+        processer: Оператор
+        support: Колдоо

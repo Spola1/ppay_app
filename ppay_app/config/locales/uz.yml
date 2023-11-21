@@ -1,0 +1,9 @@
+uz:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Administrator
+        agent: Agent
+        merchant: Savdogar
+        processer: Operator
+        support: Qo'llab-quvvatlash

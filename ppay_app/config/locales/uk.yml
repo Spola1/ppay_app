@@ -1,0 +1,9 @@
+uk:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Адміністратор
+        agent: Агент
+        merchant: Мерчант
+        processer: Оператор
+        support: Підтримка

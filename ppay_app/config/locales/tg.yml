@@ -1,0 +1,9 @@
+tg:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Администратор
+        agent: Агент
+        merchant: Тоҷир
+        processer: Оператор
+        support: Дастгирӣ

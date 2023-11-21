@@ -1,0 +1,9 @@
+azn:
+  activerecord:
+    attributes:
+      user/type:
+        admin: Administrator
+        agent: Agent
+        merchant: Tacir
+        processer: Operator
+        support: Dəstək
