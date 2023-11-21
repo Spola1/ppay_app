@@ -3,12 +3,19 @@
     .item-card
       .flex.mb-4.items-center
         .text-xl.flex-1= "Объявление (ID: #{@advertisement.id})"
+        .flex.text-right.mr-2
+          = button_to new_advertisement_path, class: 'icon-button', method: :get, params: { id: @advertisement.id }   do
+            .flex
+              .mr-2
+                = fa_icon 'clone'
+              Скопировать
         .flex.text-right
           = link_to edit_advertisement_path(@advertisement), class: 'icon-button' do
             .flex
               .mr-2
                 = fa_icon 'pencil'
               Редактировать
+
       .mt-8.my-4
         = render @advertisement
       .back-link
