@@ -9,7 +9,7 @@ class MerchantMethodDecorator < UserDecorator
   }.freeze
 
   def commission_percentage
-    commissions.where(commission_type: %i[agent other]).sum(:commission)
+    commissions.sum { _1.commission_type.in?(%w[agent other]) ? _1.commission : 0 }
   end
 
   def rate
