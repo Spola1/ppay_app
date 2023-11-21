@@ -53,6 +53,9 @@ ru:
         processer: 'Оператор:'
         card_owner_name: 'ФИО владельца карты:'
         simbank_card_number: 'Последние 4 цифры номера счета:'
+        period: 'Выберите из списка, либо укажите даты от и до'
+        created_from: 'Дата от:'
+        created_to: 'Дата до:'
       balance_request_filters:
         status: 'Статус:'
 

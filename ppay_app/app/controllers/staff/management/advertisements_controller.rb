@@ -7,7 +7,7 @@ module Staff
 
       def index
         @pagy, @advertisements = pagy(Advertisement.filter_by(filtering_params)
-                                                   .order(archived_at: :desc, conversion: :asc, status: :desc))
+                                       .order(archived_at: :desc, conversion: :asc, status: :desc))
         @advertisements = @advertisements.decorate
       end
 
@@ -51,8 +51,11 @@ module Staff
       end
 
       def filtering_params
-        params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system,
-                                              :processer, :card_owner_name, :simbank_card_number)
+        params[:advertisement_filters]&.slice(:card_number, :status, :national_currency,
+                                              :direction, :payment_system,
+                                              :processer, :card_owner_name,
+                                              :simbank_card_number, :period,
+                                              :created_from, :created_to)
       end
     end
   end
