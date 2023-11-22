@@ -224,6 +224,18 @@ RSpec.describe Advertisement, type: :model do
                                          ])
           }
         end
+        context 'dates range' do
+          subject(:advertisements) do
+            Advertisement
+              .filter_by_created_from(3.days.ago)
+              .filter_by_created_to(2.days.ago)
+          end
+          it {
+            expect(advertisements).to eq([
+                                           advertisement_2_days_ago
+                                         ])
+          }
+        end
       end
     end
 
