@@ -45,7 +45,7 @@ module IncomingRequests
 
       scope :filter_by_processer, lambda { |processer|
         processer_id = Processer.find_by(nickname: processer)
-        joins(payment: { advertisement: :processer }).where(users: { id: processer_id })
+        where(api_key: processer_id.token)
       }
 
       scope :filter_by_status, lambda { |status|
