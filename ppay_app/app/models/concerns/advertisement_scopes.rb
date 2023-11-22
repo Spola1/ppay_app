@@ -10,8 +10,10 @@ module AdvertisementScopes
     }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_payment_system,    lambda { |payment_system|
-                                   payment_system == 'СБП' ? where.not(sbp_phone_number: '') : where(payment_system:)
-                                 }
+      payment_system == 'СБП' ?
+        where(national_currency: 'RUB').where.not(sbp_phone_number: '') :
+        where(payment_system:)
+    }
     scope :by_direction,         ->(direction) { where(direction:) }
     scope :order_random,         lambda {
       weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
