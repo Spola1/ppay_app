@@ -6,25 +6,29 @@ module Bybit
     sidekiq_options queue: 'low', tags: ['bybit_usertoken']
 
     def perform
-      return if usertoken_live?
-      return unless ENV.fetch('BYBIT_EMAIL', nil)
-
       in_progress_lock do
+        break if usertoken_live?
+        break unless ENV.fetch('BYBIT_EMAIL', nil)
+
         bybit_portal.settings['usertoken'] = bybit_usertoken
-        bybit_portal.save if /\A[[:graph:]]+\Z/ =~ usertoken
+
+        bybit_portal.save if usertoken.present?
       end
     end
 
     def bybit_portal = @bybit_portal ||= ExchangePortal.find_by_name('Bybit P2P')
 
     def usertoken = bybit_portal.settings['usertoken']
-    def usertoken_timestamp = bybit_portal.settings['usertoken']
 
     def otc = OtcOnline.new(usertoken)
 
-    def usertoken_live? = otc.items({ pay_type: '75' }).present?
+    def usertoken_live?
+      return false unless usertoken.present?
 
-    def bybit_usertoken = `cd tmp; ../bin/bybit_usertoken`.strip
+      otc.items({ pay_type: '75' }).present?
+    end
+
+    def bybit_usertoken = `cd tmp; ../bin/bybit_usertoken`.strip.lines.last&.[](/\A[[:graph:]]+\Z/)
 
     def in_progress_lock
       bybit_portal.with_lock do

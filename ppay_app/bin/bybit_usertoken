@@ -30,6 +30,9 @@ def main():
         driver.wait_for_element(".user-profile")
         print(driver.get_cookie('b_t_c_k')['value'])
 
+    except:
+        print('')
+
     finally:
         driver.save_screenshot('030_finally.png')
         driver.close()
