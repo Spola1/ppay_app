@@ -11,8 +11,7 @@ module Processers
 
     def filtered_incoming_requests
       IncomingRequest.filter_by(filtering_params)
-                     .joins(payment: { advertisement: :processer })
-                     .where(users: { id: current_user.id })
+                     .where(api_key: current_user.token)
     end
   end
 end
