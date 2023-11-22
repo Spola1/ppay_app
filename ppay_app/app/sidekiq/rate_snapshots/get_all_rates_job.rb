@@ -5,8 +5,6 @@ module RateSnapshots
     include Sidekiq::Job
     sidekiq_options queue: 'low', tags: ['get_all_rates']
 
-    BINANCE_EXCHANGE_PORTAL_ID = 1
-
     def perform
       PaymentSystem.includes(:national_currency, :exchange_portal).each do |payment_system|
         next if payment_system.payment_system_copy || payment_system.exchange_name.blank?
