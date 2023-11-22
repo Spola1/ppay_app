@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_19_024434) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_20_111000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -272,7 +272,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_19_024434) do
     t.bigint "user_id"
     t.text "error"
     t.string "telegram_phone"
+    t.text "deactivated_advertisements"
+    t.bigint "card_blocked_message_mask_id"
+    t.bigint "card_blocked_number_mask_id"
     t.index ["advertisement_id"], name: "index_incoming_requests_on_advertisement_id"
+    t.index ["card_blocked_message_mask_id"], name: "index_incoming_requests_on_card_blocked_message_mask_id"
+    t.index ["card_blocked_number_mask_id"], name: "index_incoming_requests_on_card_blocked_number_mask_id"
     t.index ["card_mask_id"], name: "index_incoming_requests_on_card_mask_id"
     t.index ["payment_id"], name: "index_incoming_requests_on_payment_id"
     t.index ["sum_mask_id"], name: "index_incoming_requests_on_sum_mask_id"
@@ -287,6 +292,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_19_024434) do
     t.datetime "updated_at", null: false
     t.string "thousands_separator"
     t.string "decimal_separator"
+    t.string "result_type"
   end
 
   create_table "merchant_methods", force: :cascade do |t|
@@ -644,6 +650,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_19_024434) do
   add_foreign_key "commissions", "merchant_methods"
   add_foreign_key "crypto_wallets", "users"
   add_foreign_key "incoming_requests", "advertisements"
+  add_foreign_key "incoming_requests", "masks", column: "card_blocked_message_mask_id"
+  add_foreign_key "incoming_requests", "masks", column: "card_blocked_number_mask_id"
   add_foreign_key "incoming_requests", "masks", column: "card_mask_id"
   add_foreign_key "incoming_requests", "masks", column: "sum_mask_id"
   add_foreign_key "incoming_requests", "payments"
