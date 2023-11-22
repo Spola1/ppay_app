@@ -7,8 +7,8 @@ module Bybit
 
     def perform
       in_progress_lock do
-        break if usertoken_live?
         break unless ENV.fetch('BYBIT_EMAIL', nil)
+        break if usertoken_live?
 
         bybit_portal.settings['usertoken'] = bybit_usertoken
 
