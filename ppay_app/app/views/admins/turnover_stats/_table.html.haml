@@ -12,6 +12,6 @@
       %tr.items-list-tr
         %td.items-list-td= merchant.decorate.display_name
         %td.items-list-td= merchant.balance.currency
-        %td.items-list-td= merchant.balance.amount
+        %td.items-list-td= merchant.balance.amount.round(2)
         %td.items-list-td= merchant.deposits_turnover(filtering_params)&.round(2)
         %td.items-list-td= merchant.withdrawals_turnover(filtering_params)&.round(2)
