@@ -102,8 +102,8 @@ module AdvertisementScopes
         .left_joins(:payments)
         .merge(Payment.last_day.reorder(''))
         .group('advertisements.id, users.id')
-        .having("users.daily_usdt_card_limit IS NOT NULL AND users.daily_usdt_card_limit > 0
-        AND SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit")
+        .having('users.daily_usdt_card_limit IS NOT NULL AND users.daily_usdt_card_limit > 0 ' \
+                'AND SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit')
     }
   end
 end
