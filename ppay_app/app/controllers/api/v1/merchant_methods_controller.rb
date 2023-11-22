@@ -14,9 +14,7 @@ module Api
       def objects
         current_bearer
           .merchant_methods
-          .includes(:commissions, payment_system: %i[latest_buy_rate_snapshot
-                                                     latest_sell_rate_snapshot
-                                                     national_currency])
+          .includes(payment_system: :national_currency)
           .filter_by(filtering_params)
           .decorate
       end

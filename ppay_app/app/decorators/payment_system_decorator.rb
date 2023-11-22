@@ -8,10 +8,10 @@ class PaymentSystemDecorator < ApplicationDecorator
   end
 
   def sell_rate
-    latest_sell_rate_snapshot&.value
+    rate_snapshots.sell.last&.value
   end
 
   def buy_rate
-    latest_buy_rate_snapshot&.value
+    rate_snapshots.buy.last&.value
   end
 end
