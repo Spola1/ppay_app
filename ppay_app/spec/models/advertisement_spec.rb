@@ -185,5 +185,44 @@ RSpec.describe Advertisement, type: :model do
         it { expect(advertisements.to_a).to eq(correct_result) }
       end
     end
+
+    def processer_with_payments(payments_count: 5, block_reason: :exceed_daily_usdt_card_limit)
+      create(:processer, daily_usdt_card_limit: 7) do |processer|
+        create(:advertisement, status: false,
+                               block_reason:,
+                               processer:) do |advertisement|
+          create_list(:payment, payments_count, payment_status: 'completed', advertisement:)
+          create_list(:payment, 3, created_at: 2.days.ago, payment_status: 'completed', advertisement:)
+        end
+      end
+    end
+
+    describe '.for_enable_status' do
+      context 'payments within limit' do
+        subject(:advertisements) { Advertisement.for_enable_status }
+        let!(:processer_with_payments1) { processer_with_payments }
+        it {
+          expect(advertisements).to eq(processer_with_payments1.advertisements)
+        }
+      end
+      context 'payments exceed limit' do
+        subject(:advertisements) { Advertisement.for_enable_status }
+        let!(:processer_with_payments1) do
+          processer_with_payments(payments_count: 8)
+        end
+        it {
+          expect(advertisements).to eq([])
+        }
+      end
+      context 'payments within limit but without block reason' do
+        subject(:advertisements) { Advertisement.for_enable_status }
+        let!(:processer_with_payments1) do
+          processer_with_payments(payments_count: 3, block_reason: nil)
+        end
+        it {
+          expect(advertisements).to eq([])
+        }
+      end
+    end
   end
 end

@@ -144,6 +144,12 @@ class Payment < ApplicationRecord
 
   after_update_commit :create_initial_chat_message, if: :not_paid_cancellation_reason_changed?
 
+  after_update_commit :block_advertisement, if: lambda {
+    payment_status.in?(%w[completed]) && payment_status_previously_changed? &&
+      advertisement&.status &&
+      advertisement&.exceed_daily_usdt_card_limit?
+  }
+
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
   }
@@ -182,6 +188,7 @@ class Payment < ApplicationRecord
       END < NOW()"
     )
   }
+  scope :last_day, -> { where(created_at: 1.day.ago..Time.zone.now) }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }
@@ -415,5 +422,9 @@ class Payment < ApplicationRecord
     cancelled = finished - completed
     advertisement.update(conversion: (completed.to_f / finished * 100).round(2),
                          completed_payments: completed, cancelled_payments: cancelled)
+  end
+
+  def block_advertisement
+    advertisement.update(status: false, block_reason: :exceed_daily_usdt_card_limit)
   end
 end

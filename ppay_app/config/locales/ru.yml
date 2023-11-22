@@ -36,12 +36,15 @@ ru:
         card_owner_name: ФИО владельца карты
         min_summ: Минимальная сумма 
         max_summ: Максимальная сумма 
+        block_reason: Причина блокировки
       type:
         deposit: Депозит
         withdrawal: Вывод
       advertisement/status:
         true: Активно
         false: Неактивно
+      advertisement/block_reason:
+        exceed_daily_usdt_card_limit: Превышен суточный лимит
       balance_request:
         requests_type: Тип
         amount: Сумма

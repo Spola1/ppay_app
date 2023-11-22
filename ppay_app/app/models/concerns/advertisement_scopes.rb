@@ -9,7 +9,9 @@ module AdvertisementScopes
       where('(max_summ >= :amount or max_summ is NULL) AND (min_summ <= :amount or min_summ is NULL)', amount:)
     }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
-    scope :by_payment_system,    ->(payment_system) { payment_system == 'СБП' ? where.not(sbp_phone_number: '') : where(payment_system:) }
+    scope :by_payment_system,    lambda { |payment_system|
+                                   payment_system == 'СБП' ? where.not(sbp_phone_number: '') : where(payment_system:)
+                                 }
     scope :by_direction,         ->(direction) { where(direction:) }
     scope :order_random,         lambda {
       weights_sum = joins(:processer).unscope(:group).sum('users.sort_weight')
@@ -91,6 +93,17 @@ module AdvertisementScopes
       having(Arel.sql('SUM(CASE WHEN ' \
                       "payments.national_currency_amount = #{national_currency_amount} " \
                       "THEN 1 ELSE 0 END) < #{limit}"))
+    }
+
+    scope :for_enable_status, lambda {
+      where(status: false)
+        .where(block_reason: :exceed_daily_usdt_card_limit)
+        .joins(:processer)
+        .left_joins(:payments)
+        .merge(Payment.last_day.reorder(''))
+        .group('advertisements.id, users.id')
+        .having('users.daily_usdt_card_limit IS NOT NULL AND users.daily_usdt_card_limit > 0 ' \
+                'AND SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit')
     }
   end
 end
