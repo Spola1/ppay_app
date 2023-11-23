@@ -10,9 +10,11 @@ module AdvertisementScopes
     }
     scope :by_processer_balance, ->(amount) { joins(processer: :balance).where('balances.amount >= ?', amount) }
     scope :by_payment_system,    lambda { |payment_system|
-      payment_system == 'СБП' ?
-        where(national_currency: 'RUB').where.not(sbp_phone_number: '') :
+      if payment_system == 'СБП'
+        where(national_currency: 'RUB').where.not(sbp_phone_number: '')
+      else
         where(payment_system:)
+      end
     }
     scope :by_direction,         ->(direction) { where(direction:) }
     scope :order_random,         lambda {
@@ -99,13 +101,12 @@ module AdvertisementScopes
 
     scope :for_enable_status, lambda {
       where(status: false)
-        .where(block_reason: :exceed_daily_usdt_card_limit)
-        .joins(:processer)
-        .left_joins(:payments)
-        .merge(Payment.last_day.reorder(''))
-        .group('advertisements.id, users.id')
-        .having('users.daily_usdt_card_limit IS NOT NULL AND users.daily_usdt_card_limit > 0 ' \
-                'AND SUM(payments.cryptocurrency_amount) < users.daily_usdt_card_limit')
+        .where(block_reason: :exceed_daily_usdt_limit)
+        .joins(:payments)
+        .merge(Payment.completed.last_day.except(:order))
+        .group('advertisements.id')
+        .having('daily_usdt_limit IS NULL OR daily_usdt_limit = 0 ' \
+                'OR SUM(payments.cryptocurrency_amount) < daily_usdt_limit')
     }
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_15_092007) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -93,7 +93,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_092007) do
     t.integer "cancelled_payments", default: 0
     t.string "telegram_phone"
     t.boolean "save_incoming_requests_history", default: false
-    t.integer "block_reason"
+    t.decimal "daily_usdt_limit", default: "0.0"
     t.index ["archived_at"], name: "index_advertisements_on_archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
@@ -602,7 +602,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_092007) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
-    t.decimal "daily_usdt_card_limit", default: "0.0"
     t.integer "minutes_to_autocancel", default: 7, null: false
     t.string "time_zone"
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"

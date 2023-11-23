@@ -17,6 +17,7 @@ FactoryBot.define do
     simbank_card_number { '8412' }
     simbank_sender { 'Raiffeisen' }
     direction { 'Deposit' }
+    daily_usdt_limit { 200 }
 
     trait :withdrawal do
       direction { 'Withdrawal' }

@@ -147,7 +147,7 @@ class Payment < ApplicationRecord
   after_update_commit :block_advertisement, if: lambda {
     payment_status.in?(%w[completed]) && payment_status_previously_changed? &&
       advertisement&.status &&
-      advertisement&.exceed_daily_usdt_card_limit?
+      advertisement&.exceed_daily_usdt_limit?
   }
 
   scope :in_hotlist, lambda {
@@ -425,6 +425,6 @@ class Payment < ApplicationRecord
   end
 
   def block_advertisement
-    advertisement.update(status: false, block_reason: :exceed_daily_usdt_card_limit)
+    advertisement.update(status: false, block_reason: :exceed_daily_usdt_limit)
   end
 end

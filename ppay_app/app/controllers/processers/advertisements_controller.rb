@@ -82,7 +82,7 @@ module Processers
                                             :exchange_rate_source, :percent, :min_fix_price, :status, :hidden,
                                             :account_id, :simbank_auto_confirmation, :imei, :phone, :imsi,
                                             :simbank_card_number, :simbank_sender, :sbp_phone_number, :card_owner_name,
-                                            :telegram_phone, :save_incoming_requests_history)
+                                            :telegram_phone, :save_incoming_requests_history, :daily_usdt_limit)
     end
 
     def filtering_params
