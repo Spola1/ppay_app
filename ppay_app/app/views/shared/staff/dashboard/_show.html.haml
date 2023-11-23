@@ -13,13 +13,6 @@
         %table.item-card-table
           %tbody
             = render 'shared/staff/stats/stats_tr',
-              title: 'Количество завершенных платежей',
-              value: @total_finished
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Количество успешных платежей',
-              value: @total_completed
-
-            = render 'shared/staff/stats/stats_tr',
               title: 'Конверсия',
               value: "#{@total_conversion}%",
               value_color: conversion_color(@total_conversion)
@@ -39,50 +32,99 @@
       .item-card.h-full
         .flex.mb-4.items-center
           .text-xl.flex-1= stats.processer.decorate.display_name
-        %table.item-card-table
-          %tbody
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Количество завершенных платежей',
-              value: stats.finished
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Количество успешных платежей',
-              value: stats.completed
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Количество отмененных платежей',
-              value: stats.cancelled
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Сумма успешных платежей',
-              value: stats.completed_sum,
-              currency: '$'
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Конверсия',
-              value: "#{stats.conversion}%",
-              value_color: conversion_color(stats.conversion)
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Среднее время подтверждения',
-              value: "#{stats.average_confirmation.round(2)} сек",
-              value_color: average_confirmation_color(stats.average_confirmation)
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Среднее время разрешения арбитражей по чеку',
-              value: "#{stats.average_arbitration_resolution_time.round(2)} сек"
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Количество открытых арбитражей по чеку',
-              value: stats.arbitration_resolutions_count
-            = render 'shared/staff/stats/stats_tr',
-              title: 'Текущий баланс',
-              value: "#{stats.processer.balance.decorate.amount_formatted}",
-              value_color: balance_color(stats.processer.balance.amount)
-            - stats.active_advertisements.each do |currency, advertisements|
+        .flex.items-start
+          %table.item-card-table
+            %caption.mb-4.text-xl.text-left Процессинг
+            %tbody
               = render 'shared/staff/stats/stats_tr',
-                title: "Текущие активные карты #{currency}",
-                value: active_advertisements_list(advertisements)
-            - stats.active_advertisements_period.each do |currency, advertisements|
+                title: 'Количество завершенных платежей',
+                value: stats.finished_external
               = render 'shared/staff/stats/stats_tr',
-                title: "Активные карты за выбранный период #{currency}",
-                value: active_advertisements_list(advertisements)
-            - stats.processer.advertisements.each do |advertisement|
+                title: 'Количество успешных платежей',
+                value: stats.completed_external
               = render 'shared/staff/stats/stats_tr',
-                title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
-                value: "#{advertisement.conversion}%",
-                value_color: conversion_color(advertisement.conversion)
+                title: 'Количество отмененных платежей',
+                value: stats.cancelled_external
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Сумма успешных платежей',
+                value: stats.completed_sum_external,
+                currency: '$'
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Конверсия',
+                value: "#{stats.conversion_external}%",
+                value_color: conversion_color(stats.conversion_external)
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Среднее время подтверждения',
+                value: "#{stats.average_confirmation_external.round(2)} сек",
+                value_color: average_confirmation_color(stats.average_confirmation_external)
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Среднее время разрешения арбитражей по чеку',
+                value: "#{stats.average_arbitration_resolution_time_external.round(2)} сек"
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Количество открытых арбитражей по чеку',
+                value: stats.arbitration_resolutions_count_external
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Текущий баланс',
+                value: "#{stats.processer.balance.decorate.amount_formatted}",
+                value_color: balance_color(stats.processer.balance.amount)
+              - stats.active_advertisements_external.each do |currency, advertisements|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Текущие активные карты #{currency}",
+                  value: active_advertisements_list(advertisements)
+              - stats.active_advertisements_period_external.each do |currency, advertisements|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Активные карты за выбранный период #{currency}",
+                  value: active_advertisements_list(advertisements)
+              - stats.processer.advertisements.with_external_payments.each do |advertisement|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
+                  value: "#{advertisement.conversion}%",
+                  value_color: conversion_color(advertisement.conversion)
 
+          %table.item-card-table
+            %caption.mb-4.text-xl.text-left Всего
+            %tbody
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Количество завершенных платежей',
+                value: stats.finished
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Количество успешных платежей',
+                value: stats.completed
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Количество отмененных платежей',
+                value: stats.cancelled
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Сумма успешных платежей',
+                value: stats.completed_sum,
+                currency: '$'
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Конверсия',
+                value: "#{stats.conversion}%",
+                value_color: conversion_color(stats.conversion)
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Среднее время подтверждения',
+                value: "#{stats.average_confirmation.round(2)} сек",
+                value_color: average_confirmation_color(stats.average_confirmation)
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Среднее время разрешения арбитражей по чеку',
+                value: "#{stats.average_arbitration_resolution_time.round(2)} сек"
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Количество открытых арбитражей по чеку',
+                value: stats.arbitration_resolutions_count
+              = render 'shared/staff/stats/stats_tr',
+                title: 'Текущий баланс',
+                value: "#{stats.processer.balance.decorate.amount_formatted}",
+                value_color: balance_color(stats.processer.balance.amount)
+              - stats.active_advertisements.each do |currency, advertisements|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Текущие активные карты #{currency}",
+                  value: active_advertisements_list(advertisements)
+              - stats.active_advertisements_period.each do |currency, advertisements|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Активные карты за выбранный период #{currency}",
+                  value: active_advertisements_list(advertisements)
+              - stats.processer.advertisements.with_internal_payments.each do |advertisement|
+                = render 'shared/staff/stats/stats_tr',
+                  title: "Конверсия для объявления #{advertisement.id} (#{advertisement.payment_system})",
+                  value: "#{advertisement.conversion}%",
+                  value_color: conversion_color(advertisement.conversion)
