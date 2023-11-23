@@ -205,6 +205,8 @@ class Payment < ApplicationRecord
     )
   }
   scope :last_day, -> { where(created_at: 1.day.ago..Time.zone.now) }
+  scope :internal, -> { where(other_processing_id: [nil, '']) }
+  scope :external, -> { where.not(other_processing_id: [nil, '']) }
 
   %i[created draft processer_search transferring confirming completed cancelled].each do |status|
     scope status, -> { where(payment_status: status) }

@@ -39,7 +39,7 @@ module Payments
 
         return unless start_time && end_time
 
-        advertisements = context.processer.advertisements
+        advertisements = context.processer.advertisements.with_internal_payments
 
         advertisements.each do |adv|
           adv.conversion = calculate_conversion_for_advertisements(adv, start_time, end_time)
@@ -47,8 +47,8 @@ module Payments
       end
 
       def calculate_conversion_for_advertisements(advertisement, start_time, end_time)
-        total_completed = advertisement.payments.completed.where(created_at: start_time..end_time).count
-        total_finished = advertisement.payments.finished.where(created_at: start_time..end_time).count
+        total_completed = advertisement.payments.internal.completed.where(created_at: start_time..end_time).count
+        total_finished = advertisement.payments.internal.finished.where(created_at: start_time..end_time).count
 
         total_finished.positive? && total_completed.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
       end
@@ -63,7 +63,7 @@ module Payments
       end
 
       def set_payments
-        context.payments = processer.payments.except(:order).filter_by(filtering_params).includes(:merchant)
+        context.payments = processer.payments.internal.except(:order).filter_by(filtering_params).includes(:merchant)
       end
 
       def set_conversion
@@ -90,7 +90,7 @@ module Payments
       end
 
       def set_active_advertisements
-        context.active_advertisements = processer.advertisements.active.group_by(&:national_currency)
+        context.active_advertisements = processer.advertisements.with_internal_payments.active.group_by(&:national_currency)
       end
 
       def set_active_advertisements_period
@@ -117,7 +117,7 @@ module Payments
       end
 
       def fetch_active_advertisements_period(start_time, end_time)
-        context.processer.advertisements.joins(:advertisement_activities)
+        context.processer.advertisements.with_internal_payments.joins(:advertisement_activities)
                .where(
                  'deactivated_at > :start_time AND advertisement_activities.created_at < :end_time',
                  start_time:, end_time:
@@ -129,7 +129,7 @@ module Payments
       def calculate_time_range
         period = context.filtering_params[:period]
         created_from = context.filtering_params[:created_from]
-        created_to = context.filtering_params[:created_to]
+        created_to = context.filtering_params[:created_to].presence || Time.zone.today.to_s
 
         if period.present?
           calculate_time_range_for_period(period)

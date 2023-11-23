@@ -13,15 +13,15 @@ module Staff
     private
 
     def calculate_total_stats
-      total_finished = @stats.sum(&:finished)
-      total_completed = @stats.sum(&:completed)
+      @total_finished = @stats.sum(&:finished)
+      @total_completed = @stats.sum(&:completed)
 
       @total_conversion =
-        total_finished.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
+        @total_finished.positive? ? (@total_completed.to_f / @total_finished * 100).round(2) : 0
 
       @total_average_confirmation =
-        if total_completed.positive?
-          @stats.sum { |stats| stats.average_confirmation * stats.completed } / total_completed
+        if @total_completed.positive?
+          @stats.sum { |stats| stats.average_confirmation * stats.completed } / @total_completed
         else
           0
         end

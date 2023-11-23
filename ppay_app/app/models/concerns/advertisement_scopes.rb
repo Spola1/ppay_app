@@ -108,5 +108,13 @@ module AdvertisementScopes
         .having('daily_usdt_limit IS NULL OR daily_usdt_limit = 0 ' \
                 'OR SUM(payments.cryptocurrency_amount) < daily_usdt_limit')
     }
+
+    scope :with_internal_payments, lambda {
+      distinct.joins(:payments).merge(Payment.internal.except(:order))
+    }
+
+    scope :with_external_payments, lambda {
+      distinct.joins(:payments).merge(Payment.external.except(:order))
+    }
   end
 end

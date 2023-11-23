@@ -13,6 +13,13 @@
         %table.item-card-table
           %tbody
             = render 'shared/staff/stats/stats_tr',
+              title: 'Количество завершенных платежей',
+              value: @total_finished
+            = render 'shared/staff/stats/stats_tr',
+              title: 'Количество успешных платежей',
+              value: @total_completed
+
+            = render 'shared/staff/stats/stats_tr',
               title: 'Конверсия',
               value: "#{@total_conversion}%",
               value_color: conversion_color(@total_conversion)
