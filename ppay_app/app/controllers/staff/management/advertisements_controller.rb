@@ -36,7 +36,7 @@ module Staff
       private
 
       def find_advertisement
-        @advertisement = Advertisement.find(params[:id])
+        @advertisement = Advertisement.find(params[:id]).decorate
       end
 
       def advertisement_params

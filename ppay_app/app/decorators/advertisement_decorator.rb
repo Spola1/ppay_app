@@ -15,4 +15,8 @@ class AdvertisementDecorator < ApplicationDecorator
   def hotlist_payments
     direction == 'Deposit' ? payments.in_deposit_flow_hotlist : payments.in_withdrawal_flow_hotlist
   end
+
+  def block_reason_presentation
+    Advertisement.human_attribute_name("block_reason.#{block_reason}") if block_reason
+  end
 end

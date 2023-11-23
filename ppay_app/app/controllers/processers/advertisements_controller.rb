@@ -68,7 +68,7 @@ module Processers
     private
 
     def find_advertisement
-      @advertisement = current_user.advertisements.find(params[:id])
+      @advertisement = current_user.advertisements.find(params[:id]).decorate
     end
 
     def find_advertisement_for_copy

@@ -72,4 +72,4 @@
         %td.item-card-td= Advertisement.human_attribute_name("status.#{@advertisement.status}")
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("block_reason")
-        %td.item-card-td= Advertisement.human_attribute_name("block_reason.#{@advertisement.block_reason}") if @advertisement.block_reason
+        %td.item-card-td= @advertisement.block_reason_presentation
