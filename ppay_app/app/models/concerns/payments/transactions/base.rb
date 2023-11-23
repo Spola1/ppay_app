@@ -24,15 +24,15 @@ module Payments
       end
 
       def processer_commission
-        processer.processer_commission
+        processer&.processer_commission || 0
       end
 
       def working_group_commission
-        processer.working_group_commission
+        processer&.working_group_commission || 0
       end
 
       def agent_commission
-        merchant_commissions.agent.first.commission
+        merchant_commissions.agent&.first&.commission || 0
       end
 
       def other_commission
