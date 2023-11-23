@@ -12,6 +12,6 @@ class IncomingRequestDecorator < ApplicationDecorator
   def formatted_card_number
     return unless advertisement
 
-    advertisement.simbank_card_number.present? ? advertisement.simbank_card_number : advertisement.card_number[-4..-1]
+    advertisement.card_number[-4..-1]
   end
 end

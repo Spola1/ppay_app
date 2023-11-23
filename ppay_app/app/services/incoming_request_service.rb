@@ -51,7 +51,7 @@ class IncomingRequestService
     @matching_advertisements = @processer.advertisements
                                          .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
                                                 value: search_value)
-                                         .where('(save_incoming_requests_history AND simbank_sender = :sender)',
+                                         .where('(save_incoming_requests_history OR simbank_auto_confirmation AND simbank_sender = :sender)',
                                                 sender: @incoming_request.from)
 
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')

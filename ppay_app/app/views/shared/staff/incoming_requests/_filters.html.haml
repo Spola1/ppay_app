@@ -24,6 +24,8 @@
       required: false
     = f.input :advertisement_id, as: :string, input_html: { value: incoming_request_filters_params(:advertisement_id) },
       required: false
+    = f.input :from, collection: IncomingRequest.pluck(:from).uniq.compact, include_blank: 'Все',
+      selected: incoming_request_filters_params(:from), required: false
 
   = f.submit t('buttons.submit'), class: 'form-submit'
   = link_to t('buttons.reset'), incoming_requests_path, data: { turbo_action: :advance }, class: 'reset-button'

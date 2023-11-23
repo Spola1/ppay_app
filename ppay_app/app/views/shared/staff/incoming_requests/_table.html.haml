@@ -9,6 +9,7 @@
         %th.items-list-th Входящий запрос
         %th.items-list-th Сумма
         %th.items-list-th Номер карты
+        %th.items-list-th Отправитель
 
         %th.items-list-th
 
@@ -22,6 +23,7 @@
           %td.items-list-td= ir.id
           %td.items-list-td= ir&.payment&.national_currency_amount
           %td.items-list-td= ir.decorate.formatted_card_number
+          %td.items-list-td= ir&.from
 
           %td.items-list-td.px-1.w-0
             = link_to ir do

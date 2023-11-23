@@ -40,6 +40,7 @@ ru:
         card_number: 'Номер карты:'
         advertisement_id: 'ID объявления:'
         processer: 'Оператор:'
+        from: 'Отправитель:'
       stats_filters:
         created_from: 'Дата от:'
         created_to: 'Дата до:'
