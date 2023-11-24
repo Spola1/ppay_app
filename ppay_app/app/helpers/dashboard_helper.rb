@@ -5,15 +5,15 @@ module DashboardHelper
   RED_COLOR = 'text-red-500'
 
   def conversion_color(value)
-    value >= 50 ? GREEN_COLOR : RED_COLOR
+    value.to_f >= 50 ? GREEN_COLOR : RED_COLOR
   end
 
   def average_confirmation_color(value)
-    value.blank? || value < 60 ? GREEN_COLOR : RED_COLOR
+    value.to_f < 60 ? GREEN_COLOR : RED_COLOR
   end
 
   def balance_color(value)
-    value > 150 ? GREEN_COLOR : RED_COLOR
+    value.to_f > 150 ? GREEN_COLOR : RED_COLOR
   end
 
   def merchants_collection
