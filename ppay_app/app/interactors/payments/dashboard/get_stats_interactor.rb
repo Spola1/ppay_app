@@ -68,8 +68,8 @@ module Payments
       end
 
       def set_conversion
-        context.finished = payments.internal.finished.count
-        context.completed = payments.internal.completed.count
+        context.finished = payments.without_other_processing.finished.count
+        context.completed = payments.without_other_processing.completed.count
         context.cancelled = finished - completed
         context.conversion =
           finished.positive? && completed.positive? ? (completed.to_f / finished * 100).round(2) : 0
