@@ -7,7 +7,8 @@ module Payments
 
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
                :average_confirmation, :completed_sum, :active_advertisements, :active_advertisements_period,
-               :average_arbitration_resolution_time, :arbitration_resolutions_count, to: :context
+               :average_arbitration_resolution_time, :arbitration_resolutions_count,
+               to: :context
 
       PERIODS = {
         'last_hour' => 1.hour.ago,
@@ -50,7 +51,7 @@ module Payments
         total_completed = advertisement.payments.completed.where(created_at: start_time..end_time).count
         total_finished = advertisement.payments.finished.where(created_at: start_time..end_time).count
 
-        total_finished.positive? && total_completed.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
+        total_finished.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
       end
 
       def set_default_params
@@ -67,8 +68,8 @@ module Payments
       end
 
       def set_conversion
-        context.finished = payments.finished.count
-        context.completed = payments.completed.count
+        context.finished = payments.without_other_processing.finished.count
+        context.completed = payments.without_other_processing.completed.count
         context.cancelled = finished - completed
         context.conversion =
           finished.positive? && completed.positive? ? (completed.to_f / finished * 100).round(2) : 0
@@ -82,7 +83,7 @@ module Payments
           .where("audited_changes @> '{\"payment_status\": [\"transferring\",\"confirming\"]}'")
           .where.not(id: payments.joins(:audits).where("audited_changes @> '{\"arbitration\": [false, true]}'"))
           .distinct
-          .average('payments.status_changed_at - audits.created_at') || 0
+          .average('payments.status_changed_at - audits.created_at')
       end
 
       def set_completed_sum
@@ -129,7 +130,7 @@ module Payments
       def calculate_time_range
         period = context.filtering_params[:period]
         created_from = context.filtering_params[:created_from]
-        created_to = context.filtering_params[:created_to]
+        created_to = context.filtering_params[:created_to].presence || Time.zone.today.to_s
 
         if period.present?
           calculate_time_range_for_period(period)

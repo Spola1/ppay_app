@@ -5,15 +5,15 @@ module DashboardHelper
   RED_COLOR = 'text-red-500'
 
   def conversion_color(value)
-    value >= 50 ? GREEN_COLOR : RED_COLOR
+    value.to_f >= 50 ? GREEN_COLOR : RED_COLOR
   end
 
   def average_confirmation_color(value)
-    value >= 60 ? RED_COLOR : GREEN_COLOR
+    value.to_f < 60 ? GREEN_COLOR : RED_COLOR
   end
 
   def balance_color(value)
-    value > 150 ? GREEN_COLOR : RED_COLOR
+    value.to_f > 150 ? GREEN_COLOR : RED_COLOR
   end
 
   def merchants_collection
@@ -21,8 +21,8 @@ module DashboardHelper
   end
 
   def active_advertisements_list(advertisements)
-    advertisements.group_by(&:payment_system).map do |payment_system, advertisements|
-      "#{payment_system}: #{advertisements.count}"
+    advertisements.group_by(&:payment_system).map do |payment_system, advertisements_by_ps|
+      "#{payment_system}: #{advertisements_by_ps.count}"
     end.join('<br />').html_safe
   end
 

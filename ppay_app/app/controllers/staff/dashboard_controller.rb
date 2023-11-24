@@ -21,7 +21,7 @@ module Staff
 
       @total_average_confirmation =
         if total_completed.positive?
-          @stats.sum { |stats| stats.average_confirmation * stats.completed } / total_completed
+          @stats.sum { |stats| stats.average_confirmation.without_other_processing * stats.completed } / total_completed
         else
           0
         end
