@@ -8,7 +8,8 @@ class AdvertisementDecorator < ApplicationDecorator
   end
 
   def card_info
-    truncated_payment_system = payment_system.length <= 8 ? "#{payment_system}**" : "#{payment_system.delete(' ')[0..7]}**"
+    truncated_payment_system =
+      payment_system.length <= 8 ? "#{payment_system}**" : "#{payment_system.delete(' ')[0..7]}**"
     "#{truncated_payment_system.upcase}#{card_number[-4..]}"
   end
 

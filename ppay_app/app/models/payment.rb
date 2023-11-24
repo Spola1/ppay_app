@@ -7,6 +7,18 @@ class Payment < ApplicationRecord
   include EnumValidatable
   include Payments::Filterable
 
+  LANGUAGE_MAPPING = {
+    'ru' => 'ru-ru',
+    'uk' => 'uk-ua',
+    'uz' => 'uz-uz',
+    'tg' => 'tg-tg',
+    'id' => 'id-id',
+    'kk' => 'kk-kk',
+    'tr' => 'tr-tr',
+    'ky' => 'ky-ky',
+    'azn' => 'azn-azn'
+  }.freeze
+
   audited
 
   default_scope { order(created_at: :desc, id: :desc) }
@@ -113,7 +125,7 @@ class Payment < ApplicationRecord
   after_update_commit :cancel_transactions, if: lambda {
     payment_status.in?(%w[cancelled]) && payment_status_previously_changed?
   }
-  after_update_commit :set_advertisement_conversion, if: lambda {
+  after_update_commit -> { advertisement&.update_conversion }, if: lambda {
     payment_status_previously_changed? && (completed? || cancelled?)
   }
 
@@ -162,14 +174,18 @@ class Payment < ApplicationRecord
     deposits.confirming # .where(autoconfirming: false)
             .or(deposits.transferring)
             .or(deposits.arbitration)
-            .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, status_changed_at DESC")))
+            .reorder(Arel.sql('arbitration ASC, ' \
+                              "CASE WHEN payment_status = 'confirming' THEN 0 ELSE 1 END, " \
+                              'status_changed_at DESC'))
   }
 
   scope :in_withdrawal_flow_hotlist, lambda {
     withdrawals.confirming
                .or(withdrawals.transferring)
                .or(withdrawals.arbitration)
-               .reorder(Arel.sql(("arbitration ASC, CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, status_changed_at DESC")))
+               .reorder(Arel.sql('arbitration ASC, ' \
+                                 "CASE WHEN payment_status = 'confirming' THEN 1 ELSE 0 END, " \
+                                 'status_changed_at DESC'))
   }
 
   scope :arbitration_by_check, lambda {
@@ -207,19 +223,7 @@ class Payment < ApplicationRecord
   end
 
   def language_from_locale
-    language_mapping = {
-      'ru' => 'ru-ru',
-      'uk' => 'uk-ua',
-      'uz' => 'uz-uz',
-      'tg' => 'tg-tg',
-      'id' => 'id-id',
-      'kk' => 'kk-kk',
-      'tr' => 'tr-tr',
-      'ky' => 'ky-ky',
-      'azn' => 'azn-azn'
-    }
-
-    language_mapping[locale] || 'ru-ru'
+    LANGUAGE_MAPPING[locale] || 'ru-ru'
   end
 
   def broadcast_replace_payment_to_processer
@@ -284,18 +288,20 @@ class Payment < ApplicationRecord
     end
   end
 
+  TEXT_WITH_ACTIVE_ARBITRATION_CHAT =
+    "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n" \
+    "\n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n \nПосле загрузки чека у Вас появится\n" \
+    'возможность писать сообщения в чате'
+
+  TEXT_WITHOUT_ACTIVE_ARBITRATION_CHAT =
+    "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n" \
+    "\n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n"
+
   def create_initial_chat_message
-    text_with_active_arbitration_chat = "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n
-            \n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n \nПосле загрузки чека у Вас появится\n
-            возможность писать сообщения в чате"
-
-    text_without_active_arbitration_chat = "Здравствуйте, для подтверждения перевода\n загрузите скриншот чека на котором указаны:\n
-            \n1. Сумма платежа\n2. Дата и время платежа\n3. Карта получателя\n"
-
     if merchant.chat_enabled?
-      Chat.create(payment_id: id, user_id: support_id, text: text_with_active_arbitration_chat, skip_notification: true)
+      Chat.create(payment_id: id, user_id: support_id, text: TEXT_WITH_ACTIVE_ARBITRATION_CHAT, skip_notification: true)
     else
-      Chat.create(payment_id: id, user_id: support_id, text: text_without_active_arbitration_chat,
+      Chat.create(payment_id: id, user_id: support_id, text: TEXT_WITHOUT_ACTIVE_ARBITRATION_CHAT,
                   skip_notification: true)
     end
   end
@@ -379,23 +385,29 @@ class Payment < ApplicationRecord
     )
   end
 
-  def broadcast_arbitrations_by_check_count
-    if processer
-      broadcast_replace_later_to(
-        "processer_#{processer.id}_arbitration_count",
-        partial: 'shared/arbitration_count_turbo_frame',
-        locals: { count: processer.payments.arbitration_by_check.count, user: processer },
-        target: "processer_#{processer.id}_arbitration_count"
-      )
-    end
-    if merchant
-      broadcast_replace_later_to(
-        "merchant_#{merchant.id}_arbitration_count",
-        partial: 'shared/arbitration_count_turbo_frame',
-        locals: { count: merchant.payments.arbitration_by_check.count, user: merchant },
-        target: "merchant_#{merchant.id}_arbitration_count"
-      )
-    end
+  def broadcast_arbitrations_by_check_count_to_processer
+    return unless processer
+
+    broadcast_replace_later_to(
+      "processer_#{processer.id}_arbitration_count",
+      partial: 'shared/arbitration_count_turbo_frame',
+      locals: { count: processer.payments.arbitration_by_check.count, user: processer },
+      target: "processer_#{processer.id}_arbitration_count"
+    )
+  end
+
+  def broadcast_arbitrations_by_check_count_to_merchant
+    return unless merchant
+
+    broadcast_replace_later_to(
+      "merchant_#{merchant.id}_arbitration_count",
+      partial: 'shared/arbitration_count_turbo_frame',
+      locals: { count: merchant.payments.arbitration_by_check.count, user: merchant },
+      target: "merchant_#{merchant.id}_arbitration_count"
+    )
+  end
+
+  def broadcast_arbitrations_by_check_count_to_support
     broadcast_replace_later_to(
       'support_arbitration_count',
       partial: 'shared/support_arbitration_count_turbo_frame',
@@ -404,24 +416,18 @@ class Payment < ApplicationRecord
     )
   end
 
+  def broadcast_arbitrations_by_check_count
+    broadcast_arbitrations_by_check_count_to_processer
+    broadcast_arbitrations_by_check_count_to_merchant
+    broadcast_arbitrations_by_check_count_to_support
+  end
+
   def set_default_unique_amount
     self.unique_amount = merchant.unique_amount
   end
 
   def set_initial_amount
     self.initial_amount = national_currency_amount
-  end
-
-  def set_advertisement_conversion
-    return unless advertisement&.payments.present?
-
-    finished = advertisement.payments.finished.count
-    return unless finished.positive?
-
-    completed = advertisement.payments.completed.count
-    cancelled = finished - completed
-    advertisement.update(conversion: (completed.to_f / finished * 100).round(2),
-                         completed_payments: completed, cancelled_payments: cancelled)
   end
 
   def block_advertisement

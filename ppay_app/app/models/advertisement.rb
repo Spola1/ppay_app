@@ -37,6 +37,17 @@ class Advertisement < ApplicationRecord
         daily_usdt_limit
   end
 
+  def update_conversion
+    return unless payments.present?
+    return unless payments.finished.present?
+
+    update(
+      conversion: payments_conversion_count,
+      completed_payments: payments.completed.count,
+      cancelled_payments: payments.cancelled.count
+    )
+  end
+
   private
 
   def create_activity_on_activate
@@ -69,5 +80,9 @@ class Advertisement < ApplicationRecord
       standalone: true,
       use_path: true
     )
+  end
+
+  def payments_conversion_count
+    (payments.completed.count.to_f / payments.finished.count * 100).round(2)
   end
 end
