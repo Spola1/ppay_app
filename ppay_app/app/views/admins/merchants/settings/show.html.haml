@@ -10,9 +10,9 @@
     = f.input :account_number_required, as: :boolean
     = f.input :chat_enabled, as: :boolean
     = f.input :unique_amount, collection: [['Чек', 'none'], ['Целая уникализация суммы', 'integer'], ['Дробная уникализация суммы', 'decimal']], include_blank: false
-    -# = f.input :any_bank, placeholder: I18n.t('payments.any_bank'), hint: 'Оставить пустым, если не используется'
-    = f.input :any_bank, collection: PaymentSystem.where.not(name: 'СБП').pluck(:name), include_blank: '-выбрать-', input_html: { id: 'advertisement_payment_system' }
-
+    = f.input :any_bank, collection: @merchant.payment_systems.without_sbp,
+      value_method: :name, label_method: :name, include_blank: '-выбрать-',
+      hint: 'Оставить пустым, если не используется'
     = f.input :equal_amount_payments_limit
     = f.input :fee_percentage
     = f.association :agent

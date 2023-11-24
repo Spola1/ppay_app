@@ -10,12 +10,5 @@ class PaymentSystem < ApplicationRecord
   belongs_to :national_currency
   belongs_to :exchange_portal
 
-  def self.all_possible_methods(keywords = nil)
-    includes(:national_currency).all.decorate
-                                .map { { payment_system_id: _1.id, ps_full_name: _1.full_name } }
-                                .product(%w[Deposit Withdrawal].map { { direction: _1 } })
-                                .map { _1.inject(:merge) }
-                                .select { keywords ? (_1.values.join(' ').downcase.split.intersect? keywords.downcase.split) : true }
-                                .map { _1.except(:ps_full_name) }
-  end
+  scope :without_sbp, -> { where.not(name: 'СБП') }
 end

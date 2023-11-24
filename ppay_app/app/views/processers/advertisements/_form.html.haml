@@ -8,7 +8,7 @@
 
   = f.input :max_summ, disabled: !current_user.can_edit_summ
 
-  = f.input :payment_system, collection: PaymentSystem.where.not(name: 'СБП').pluck(:name), include_blank: '-выбрать-', input_html: { id: 'advertisement_payment_system' }
+  = f.input :payment_system, collection: PaymentSystem.without_sbp.pluck(:name), include_blank: '-выбрать-', input_html: { id: 'advertisement_payment_system' }
 
   = f.input :card_number#, input_html: { data: { 'inputmask--card-number-target': 'input' } }
 
