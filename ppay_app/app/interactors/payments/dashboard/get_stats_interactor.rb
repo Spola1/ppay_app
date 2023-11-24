@@ -51,7 +51,7 @@ module Payments
         total_completed = advertisement.payments.completed.where(created_at: start_time..end_time).count
         total_finished = advertisement.payments.finished.where(created_at: start_time..end_time).count
 
-        total_finished.positive? && total_completed.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
+        total_finished.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
       end
 
       def set_default_params

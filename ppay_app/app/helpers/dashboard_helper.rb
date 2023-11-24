@@ -21,8 +21,8 @@ module DashboardHelper
   end
 
   def active_advertisements_list(advertisements)
-    advertisements.group_by(&:payment_system).map do |payment_system, advertisements|
-      "#{payment_system}: #{advertisements.count}"
+    advertisements.group_by(&:payment_system).map do |payment_system, advertisements_by_ps|
+      "#{payment_system}: #{advertisements_by_ps.count}"
     end.join('<br />').html_safe
   end
 
