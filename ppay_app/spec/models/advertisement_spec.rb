@@ -186,11 +186,12 @@ RSpec.describe Advertisement, type: :model do
       end
     end
 
-    def processer_with_payments(payments_count: 5, block_reason: :exceed_daily_usdt_card_limit)
-      create(:processer, daily_usdt_card_limit: 7) do |processer|
+    def processer_with_payments(payments_count: 5, block_reason: :exceed_daily_usdt_limit)
+      create(:processer) do |processer|
         create(:advertisement, status: false,
                                block_reason:,
-                               processer:) do |advertisement|
+                               processer:,
+                               daily_usdt_limit: 7) do |advertisement|
           create_list(:payment, payments_count, payment_status: 'completed', advertisement:)
           create_list(:payment, 3, created_at: 2.days.ago, payment_status: 'completed', advertisement:)
         end

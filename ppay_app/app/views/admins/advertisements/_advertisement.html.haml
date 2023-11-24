@@ -12,7 +12,7 @@
         %td.item-card-td= @advertisement.min_summ
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Максимальная сумма
-        %td.item-card-td= @advertisement.max_summ      
+        %td.item-card-td= @advertisement.max_summ
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Платежная система
         %td.item-card-td= @advertisement.payment_system
@@ -31,7 +31,7 @@
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Автоматизированная проверка платежей
         %td.item-card-td= @advertisement.simbank_auto_confirmation ? 'Активно' : 'Неактивно'
-      %tr.item-card-tr 
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label Сохранение истории пуш/смс уведомлений
         %td.item-card-td= @advertisement.save_incoming_requests_history ? 'Активно' : 'Неактивно'
       %tr.item-card-tr
@@ -51,16 +51,19 @@
         %td.item-card-td= @advertisement.exchange_rate_source
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Кол-во успешных платежей
-        %td.item-card-td= @advertisement.completed_payments  
+        %td.item-card-td= @advertisement.completed_payments
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Кол-во отмененных платежей
-        %td.item-card-td= @advertisement.cancelled_payments 
+        %td.item-card-td= @advertisement.cancelled_payments
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label Конверсия
-        %td.item-card-td= @advertisement.conversion    
+        %td.item-card-td= @advertisement.conversion
+      %tr.item-card-tr
+        %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("daily_usdt_limit")
+        %td.item-card-td= @advertisement.daily_usdt_limit
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("status")
         %td.item-card-td= Advertisement.human_attribute_name("status.#{@advertisement.status}")
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("block_reason")
-        %td.item-card-td= Advertisement.human_attribute_name("block_reason.#{@advertisement.block_reason}")
+        %td.item-card-td= @advertisement.block_reason_presentation

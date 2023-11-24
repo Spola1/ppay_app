@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_22_203431) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -93,6 +93,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_203431) do
     t.string "telegram_phone"
     t.boolean "save_incoming_requests_history", default: false
     t.integer "block_reason"
+    t.decimal "daily_usdt_limit", default: "0.0"
     t.index ["archived_at"], name: "index_advertisements_on_archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
     t.index ["processer_id"], name: "index_advertisements_on_processer_id"
@@ -604,7 +605,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_22_203431) do
     t.boolean "otp_required_for_login"
     t.boolean "otp_payment_confirm"
     t.boolean "can_edit_summ"
-    t.decimal "daily_usdt_card_limit", default: "0.0"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

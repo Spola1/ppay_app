@@ -68,7 +68,7 @@ module Processers
     private
 
     def find_advertisement
-      @advertisement = current_user.advertisements.find(params[:id])
+      @advertisement = current_user.advertisements.find(params[:id]).decorate
     end
 
     def find_advertisement_for_copy
@@ -82,11 +82,12 @@ module Processers
                                             :exchange_rate_source, :percent, :min_fix_price, :status, :hidden,
                                             :account_id, :simbank_auto_confirmation, :imei, :phone, :imsi,
                                             :simbank_card_number, :simbank_sender, :sbp_phone_number, :card_owner_name,
-                                            :telegram_phone, :save_incoming_requests_history)
+                                            :telegram_phone, :save_incoming_requests_history, :daily_usdt_limit)
     end
 
     def filtering_params
-      params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system, :processer)
+      params[:advertisement_filters]&.slice(:card_number, :status, :national_currency, :direction, :payment_system,
+                                            :processer)
     end
   end
 end

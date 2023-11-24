@@ -37,6 +37,7 @@ ru:
         min_summ: Минимальная сумма 
         max_summ: Максимальная сумма 
         block_reason: Причина блокировки
+        daily_usdt_limit: Суточный лимит
       type:
         deposit: Депозит
         withdrawal: Вывод
@@ -44,7 +45,7 @@ ru:
         true: Активно
         false: Неактивно
       advertisement/block_reason:
-        exceed_daily_usdt_card_limit: Превышен суточный лимит
+        exceed_daily_usdt_limit: Превышен суточный лимит
       balance_request:
         requests_type: Тип
         amount: Сумма

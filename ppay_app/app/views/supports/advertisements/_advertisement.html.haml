@@ -56,8 +56,11 @@
         %td.item-card-td.item-card-td-label Конверсия
         %td.item-card-td= @advertisement.conversion  
       %tr.item-card-tr
+        %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("daily_usdt_limit")
+        %td.item-card-td= @advertisement.daily_usdt_limit        
+      %tr.item-card-tr
         %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("status")
         %td.item-card-td= Advertisement.human_attribute_name("status.#{@advertisement.status}")
       %tr.item-card-tr
         %td.item-card-td.item-card-td-label= Advertisement.human_attribute_name("block_reason")
-        %td.item-card-td= Advertisement.human_attribute_name("block_reason.#{@advertisement.block_reason}")
+        %td.item-card-td= @advertisement.block_reason_presentation

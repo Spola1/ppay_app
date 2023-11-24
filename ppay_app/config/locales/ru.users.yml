@@ -28,7 +28,6 @@ ru:
         sort_weight: Приоритет команды при подборе объявления
         can_edit_summ: Возможность редактирования суммы объявления
         autocancel: Автоотмена
-        daily_usdt_card_limit: Суточный лимит для карты в USDT
 
   users:
     sidebar:

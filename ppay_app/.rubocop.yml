@@ -13,9 +13,9 @@ AllCops:
     - 'lib/tasks/*'
 
 Metrics/BlockLength:
+  AllowedMethods: ['included']
   Exclude:
     - 'spec/**/*'
-    - 'app/models/concerns/state_machines/**/*'
 
 Lint/Void:
   Exclude:

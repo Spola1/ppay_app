@@ -19,7 +19,7 @@ class Advertisement < ApplicationRecord
   has_one_attached :payment_link_qr_code
 
   enum payment_system_type: [:card_number], _prefix: true
-  enum block_reason: { exceed_daily_usdt_card_limit: 0 }, _prefix: true
+  enum block_reason: { exceed_daily_usdt_limit: 0 }, _prefix: true
 
   validates_presence_of :direction, :national_currency, :cryptocurrency, :payment_system
   validates :card_number, length: { minimum: 4 }, if: -> { direction == 'Deposit' }
@@ -31,10 +31,21 @@ class Advertisement < ApplicationRecord
   after_commit :create_activity_on_activate, if: :saved_change_to_status?
   after_commit :create_activity_on_deactivate, if: :saved_change_to_status?
 
-  def exceed_daily_usdt_card_limit?
-    processer.daily_usdt_card_limit.positive? &&
+  def exceed_daily_usdt_limit?
+    daily_usdt_limit.positive? &&
       payments.completed.last_day.sum(:cryptocurrency_amount) >=
-        processer.daily_usdt_card_limit
+        daily_usdt_limit
+  end
+
+  def update_conversion
+    return unless payments.present?
+    return unless payments.finished.present?
+
+    update(
+      conversion: payments_conversion_count,
+      completed_payments: payments.completed.count,
+      cancelled_payments: payments.cancelled.count
+    )
   end
 
   private
@@ -69,5 +80,9 @@ class Advertisement < ApplicationRecord
       standalone: true,
       use_path: true
     )
+  end
+
+  def payments_conversion_count
+    (payments.completed.count.to_f / payments.finished.count * 100).round(2)
   end
 end
