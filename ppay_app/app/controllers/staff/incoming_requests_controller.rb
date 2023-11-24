@@ -20,7 +20,7 @@ module Staff
     def filtering_params
       params[:incoming_request_filters]&.slice(:created_from, :created_to, :status, :national_currency,
                                                :national_currency_amount_from, :national_currency_amount_to,
-                                               :uuid, :id, :card_number, :advertisement_id, :processer)
+                                               :uuid, :id, :card_number, :advertisement_id, :processer, :from)
     end
   end
 end

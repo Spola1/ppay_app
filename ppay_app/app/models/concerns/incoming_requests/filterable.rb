@@ -48,6 +48,8 @@ module IncomingRequests
         where(api_key: processer_id.token)
       }
 
+      scope :filter_by_from, ->(from) { where(from:) }
+
       scope :filter_by_status, lambda { |status|
         case status
         when 'success'

@@ -6,12 +6,12 @@ class IncomingRequestDecorator < ApplicationDecorator
   def formatted_uuid
     return unless payment
 
-    "#{payment.uuid[0..4]}...#{payment.uuid[-3..-1]}".upcase
+    "#{payment.uuid[0..4]}...#{payment.uuid[-3..]}".upcase
   end
 
   def formatted_card_number
     return unless advertisement
 
-    advertisement.simbank_card_number.present? ? advertisement.simbank_card_number : advertisement.card_number[-4..-1]
+    advertisement.card_number[-4..]
   end
 end

@@ -26,6 +26,8 @@
       required: false
     = f.input :processer, collection: Processer.pluck(:nickname), include_blank: 'Все',
       selected: incoming_request_filters_params(:processer), required: false
+    = f.input :from, collection: IncomingRequest.pluck(:from).uniq.compact, include_blank: 'Все',
+      selected: incoming_request_filters_params(:from), required: false
 
   = f.submit t('buttons.submit'), class: 'form-submit'
   = link_to t('buttons.reset'), incoming_requests_path, data: { turbo_action: :advance }, class: 'reset-button'
