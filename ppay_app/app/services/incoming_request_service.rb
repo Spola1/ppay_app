@@ -48,11 +48,12 @@ class IncomingRequestService
   def find_matching_advertisement
     return false unless search_field
 
-    @matching_advertisements = @processer.advertisements
-                                         .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
-                                                value: search_value)
-                                         .where('(save_incoming_requests_history OR simbank_auto_confirmation AND simbank_sender = :sender)',
-                                                sender: @incoming_request.from)
+    @matching_advertisements =
+      @processer.advertisements
+                .where('imei = :value OR imsi = :value OR phone = :value OR telegram_phone = :value',
+                       value: search_value)
+                .where('(save_incoming_requests_history OR simbank_auto_confirmation) AND simbank_sender = :sender',
+                       sender: @incoming_request.from)
 
     card_number_masks = Mask.where(sender: @incoming_request.from, regexp_type: 'Номер счёта')
 
@@ -168,11 +169,11 @@ class IncomingRequestService
       text += "#{attr}: #{value}\n"
     end
 
-    if @advertisement.save_incoming_requests_history? && !@advertisement.simbank_auto_confirmation?
-      text += "\nпоступило сообщение от симбанка"
-    else
-      text += "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
-    end
+    text += if @advertisement.save_incoming_requests_history? && !@advertisement.simbank_auto_confirmation?
+              "\nпоступило сообщение от симбанка"
+            else
+              "\nсимбанк подтвердил подтвердил платеж согласно этому сообщению"
+            end
 
     @payment.comments.create!(
       author_nickname: Settings.simbank_nickname,
