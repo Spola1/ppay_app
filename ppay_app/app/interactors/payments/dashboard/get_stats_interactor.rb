@@ -8,7 +8,6 @@ module Payments
       delegate :processer, :filtering_params, :payments, :finished, :completed, :cancelled, :conversion,
                :average_confirmation, :completed_sum, :active_advertisements, :active_advertisements_period,
                :average_arbitration_resolution_time, :arbitration_resolutions_count,
-               :payments_external, :finished_external, :completed_external, :cancelled_external,
                to: :context
 
       PERIODS = {
@@ -32,15 +31,6 @@ module Payments
         set_active_advertisements_period
         set_average_arbitration_resolution_time
         set_advertisement_conversions
-
-        set_payments_external
-        set_conversion_external
-        set_average_confirmation_external
-        set_completed_sum_external
-        set_active_advertisements_external
-        set_active_advertisements_period_external
-        set_average_arbitration_resolution_time_external
-        set_advertisement_conversions_external
       end
 
       private
@@ -57,28 +47,9 @@ module Payments
         end
       end
 
-      def set_advertisement_conversions_external
-        start_time, end_time = calculate_time_range
-
-        return unless start_time && end_time
-
-        advertisements = context.processer.advertisements.with_external_payments
-
-        advertisements.each do |adv|
-          adv.conversion = calculate_conversion_for_advertisements_external(adv, start_time, end_time)
-        end
-      end
-
       def calculate_conversion_for_advertisements(advertisement, start_time, end_time)
         total_completed = advertisement.payments.completed.where(created_at: start_time..end_time).count
         total_finished = advertisement.payments.finished.where(created_at: start_time..end_time).count
-
-        total_finished.positive? && total_completed.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
-      end
-
-      def calculate_conversion_for_advertisements_external(advertisement, start_time, end_time)
-        total_completed = advertisement.payments.external.completed.where(created_at: start_time..end_time).count
-        total_finished = advertisement.payments.external.finished.where(created_at: start_time..end_time).count
 
         total_finished.positive? && total_completed.positive? ? (total_completed.to_f / total_finished * 100).round(2) : 0
       end
@@ -96,29 +67,12 @@ module Payments
         context.payments = processer.payments.except(:order).filter_by(filtering_params).includes(:merchant)
       end
 
-      def set_payments_external
-        context.payments_external = processer.payments.external
-                                             .except(:order).filter_by(filtering_params).includes(:merchant)
-      end
-
       def set_conversion
-        context.finished = payments.finished.count
-        context.completed = payments.completed.count
+        context.finished = payments.internal.finished.count
+        context.completed = payments.internal.completed.count
         context.cancelled = finished - completed
         context.conversion =
           finished.positive? && completed.positive? ? (completed.to_f / finished * 100).round(2) : 0
-      end
-
-      def set_conversion_external
-        context.finished_external = payments.external.finished.count
-        context.completed_external = payments.external.completed.count
-        context.cancelled_external = finished - completed
-        context.conversion_external =
-          if finished_external.positive? && completed_external.positive?
-            (completed_external.to_f / finished_external * 100).round(2)
-          else
-            0
-          end
       end
 
       def set_average_confirmation
@@ -129,37 +83,15 @@ module Payments
           .where("audited_changes @> '{\"payment_status\": [\"transferring\",\"confirming\"]}'")
           .where.not(id: payments.joins(:audits).where("audited_changes @> '{\"arbitration\": [false, true]}'"))
           .distinct
-          .average('payments.status_changed_at - audits.created_at') || 0
-      end
-
-      def set_average_confirmation_external
-        context.average_confirmation_external =
-          payments
-          .external
-          .completed
-          .joins(:audits)
-          .where("audited_changes @> '{\"payment_status\": [\"transferring\",\"confirming\"]}'")
-          .where.not(id: payments.joins(:audits).where("audited_changes @> '{\"arbitration\": [false, true]}'"))
-          .distinct
-          .average('payments.status_changed_at - audits.created_at') || 0
+          .average('payments.status_changed_at - audits.created_at')
       end
 
       def set_completed_sum
         context.completed_sum = payments.completed.sum(:cryptocurrency_amount).to_f
       end
 
-      def set_completed_sum_external
-        context.completed_sum_external = payments.external.completed.sum(:cryptocurrency_amount).to_f
-      end
-
       def set_active_advertisements
-        context.active_advertisements = processer.advertisements.active
-                                                 .with_internal_payments.group_by(&:national_currency)
-      end
-
-      def set_active_advertisements_external
-        context.active_advertisements_external = processer.advertisements
-                                                          .with_external_payments.active.group_by(&:national_currency)
+        context.active_advertisements = processer.advertisements.active.group_by(&:national_currency)
       end
 
       def set_active_advertisements_period
@@ -169,16 +101,6 @@ module Payments
 
         active_advertisements_period = fetch_active_advertisements_period(start_time, end_time)
         context.active_advertisements_period = active_advertisements_period
-      end
-
-      def set_active_advertisements_period_external
-        start_time, end_time = calculate_time_range
-
-        return unless start_time && end_time
-
-        active_advertisements_period_external =
-          fetch_active_advertisements_period_external(start_time, end_time)
-        context.active_advertisements_period_external = active_advertisements_period_external
       end
 
       def calculate_time_range_for_period(period)
@@ -196,17 +118,7 @@ module Payments
       end
 
       def fetch_active_advertisements_period(start_time, end_time)
-        context.processer.advertisements.with_internal_payments.joins(:advertisement_activities)
-               .where(
-                 'deactivated_at > :start_time AND advertisement_activities.created_at < :end_time',
-                 start_time:, end_time:
-               )
-               .distinct
-               .group_by(&:national_currency)
-      end
-
-      def fetch_active_advertisements_period_external(start_time, end_time)
-        context.processer.advertisements.with_external_payments.joins(:advertisement_activities)
+        context.processer.advertisements.joins(:advertisement_activities)
                .where(
                  'deactivated_at > :start_time AND advertisement_activities.created_at < :end_time',
                  start_time:, end_time:
@@ -241,24 +153,6 @@ module Payments
 
         context.average_arbitration_resolution_time = arbitration_resolutions.average('ended_at - created_at') || 0
         context.arbitration_resolutions_count = arbitration_resolutions.count
-      end
-
-      def set_average_arbitration_resolution_time_external
-        start_time, end_time = calculate_time_range
-
-        arbitration_resolutions_external =
-          ArbitrationResolution
-          .completed
-          .where(payment: payments_external,
-                 reason: [ArbitrationResolution.reasons[:check_by_check],
-                          ArbitrationResolution.reasons[:incorrect_amount_check]].flatten)
-          .where('created_at >= ? AND ended_at IS NOT NULL', start_time)
-          .where('ended_at <= ?', end_time)
-
-        context.average_arbitration_resolution_time_external =
-          arbitration_resolutions_external.average('ended_at - created_at') || 0
-        context.arbitration_resolutions_count_external =
-          arbitration_resolutions_external.count
       end
     end
 

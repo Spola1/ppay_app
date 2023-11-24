@@ -9,7 +9,7 @@ module DashboardHelper
   end
 
   def average_confirmation_color(value)
-    value >= 60 ? RED_COLOR : GREEN_COLOR
+    value.blank? || value < 60 ? GREEN_COLOR : RED_COLOR
   end
 
   def balance_color(value)
