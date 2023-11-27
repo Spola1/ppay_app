@@ -77,6 +77,7 @@ RSpec.configure do |config|
   config.include SilenceOutputHelper
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include RSpec::Rails::RequestExampleGroup, type: :feature
+  config.include Warden::Test::Helpers, type: :request
 
   config.include_context 'turn off some jobs'
   config.include_context 'payment means'

@@ -20,7 +20,7 @@
               title: 'Среднее время подтверждения',
               value: "#{@total_average_confirmation.round(2)} сек",
               value_color: average_confirmation_color(@total_average_confirmation)
-            - @stats[1].national_currencies.each do |currency|
+            - @stats[1]&.national_currencies&.each do |currency|
               = render 'shared/staff/stats/stats_tr',
                 title: "Среднее время завершения платежа #{currency}",
                 value: "#{@stats[1].avg_release_time[currency]} мин"
@@ -53,7 +53,7 @@
               value_color: conversion_color(stats.conversion)
             = render 'shared/staff/stats/stats_tr',
               title: 'Среднее время подтверждения',
-              value: "#{stats.average_confirmation&.round(2)} сек",
+              value: "#{stats.average_confirmation.round(2)} сек",
               value_color: average_confirmation_color(stats.average_confirmation)
             = render 'shared/staff/stats/stats_tr',
               title: 'Среднее время разрешения арбитражей по чеку',

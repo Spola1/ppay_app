@@ -68,8 +68,8 @@ module Payments
       end
 
       def set_conversion
-        context.finished = payments.without_other_processing.finished.count
-        context.completed = payments.without_other_processing.completed.count
+        context.finished = payments.finished.count
+        context.completed = payments.completed.count
         context.cancelled = finished - completed
         context.conversion =
           finished.positive? && completed.positive? ? (completed.to_f / finished * 100).round(2) : 0
@@ -78,12 +78,8 @@ module Payments
       def set_average_confirmation
         context.average_confirmation =
           payments
-          .completed
-          .joins(:audits)
-          .where("audited_changes @> '{\"payment_status\": [\"transferring\",\"confirming\"]}'")
-          .where.not(id: payments.joins(:audits).where("audited_changes @> '{\"arbitration\": [false, true]}'"))
-          .distinct
-          .average('payments.status_changed_at - audits.created_at')
+          .for_average_confirmation
+          .average('payments.status_changed_at - audits.created_at') || 0
       end
 
       def set_completed_sum
