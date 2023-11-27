@@ -9,4 +9,6 @@ class PaymentSystem < ApplicationRecord
   belongs_to :payment_system_copy, class_name: 'PaymentSystem', optional: true
   belongs_to :national_currency
   belongs_to :exchange_portal
+
+  scope :without_sbp, -> { where.not(name: 'СБП') }
 end
