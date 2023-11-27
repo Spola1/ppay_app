@@ -31,7 +31,6 @@ module Payments
         set_active_advertisements_period
         set_average_arbitration_resolution_time
         set_advertisement_conversions
-        set_total_average_confirmation
       end
 
       private
@@ -79,14 +78,6 @@ module Payments
       def set_average_confirmation
         context.average_confirmation =
           payments
-          .for_average_confirmation
-          .average('payments.status_changed_at - audits.created_at') || 0
-      end
-
-      def set_total_average_confirmation
-        context.total_average_confirmation =
-          payments
-          .without_other_processing
           .for_average_confirmation
           .average('payments.status_changed_at - audits.created_at') || 0
       end
