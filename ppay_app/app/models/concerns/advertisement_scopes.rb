@@ -40,7 +40,7 @@ module AdvertisementScopes
         .active
         .by_payment_system(
           payment.payment_system.presence ||
-          payment.merchant.payment_systems
+          payment.merchant.payment_systems.without_sbp
             .where(merchant_methods: { direction: payment.type })
             .pluck(:name)
         )
