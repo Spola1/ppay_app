@@ -53,7 +53,7 @@
               value_color: conversion_color(stats.conversion)
             = render 'shared/staff/stats/stats_tr',
               title: 'Среднее время подтверждения',
-              value: "#{stats.average_confirmation&.round(2)} сек",
+              value: "#{stats.average_confirmation.round(2)} сек",
               value_color: average_confirmation_color(stats.average_confirmation)
             = render 'shared/staff/stats/stats_tr',
               title: 'Среднее время разрешения арбитражей по чеку',
