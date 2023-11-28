@@ -4,17 +4,6 @@ module Advertisements
   module Filterable
     extend ActiveSupport::Concern
 
-    PERIOD = {
-      'last_hour' => -> { 1.hour.ago..Time.now },
-      'last_3_hours' => -> { 3.hours.ago..Time.now },
-      'last_6_hours' => -> { 6.hours.ago..Time.now },
-      'last_12_hours' => -> { 12.hours.ago..Time.now },
-      'last_day' => -> { 1.day.ago..Time.now },
-      'last_3_days' => -> { 3.days.ago..Time.now },
-      'yesterday' => -> { 1.day.ago.beginning_of_day..1.day.ago.end_of_day },
-      'before_yesterday' => -> { 2.days.ago.beginning_of_day..2.days.ago.end_of_day }
-    }.freeze
-
     included do
       scope :filter_by_status,              ->(status) { where(status:) }
       scope :filter_by_card_number,         ->(card_number) { where('card_number ilike ?', "%#{card_number}%") }
@@ -28,8 +17,6 @@ module Advertisements
       scope :filter_by_simbank_card_number, lambda { |simbank_card_number|
                                               where('simbank_card_number ilike ?', "%#{simbank_card_number}%")
                                             }
-      scope :filter_by_period,
-            ->(period) { where(created_at: PERIOD[period].call) }
       scope :filter_by_created_from, lambda { |created_from|
         where('advertisements.created_at >= ?', created_from.in_time_zone.beginning_of_day)
       }

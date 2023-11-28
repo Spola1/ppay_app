@@ -4,6 +4,7 @@ class Payment < ApplicationRecord
   include CardNumberSettable
   include DateFilterable
   include Filterable
+  include Filterable::Period
   include EnumValidatable
   include Payments::Filterable
 
