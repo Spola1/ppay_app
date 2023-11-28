@@ -49,6 +49,27 @@ class Advertisement < ApplicationRecord
     )
   end
 
+  scope :time_filters,
+        lambda { |filtering_params|
+          time_filtering_params = filtering_params.extract!(:period, :created_from, :created_to)
+          payments_sql = Payment.unscoped.filter_by(time_filtering_params).to_sql
+          payments_where_clause = payments_sql.sub('SELECT "payments".* FROM "payments" WHERE', '')
+          cancelled_payments_count = "COUNT(case when payments.payment_status = 'cancelled' then 1 else null end)"
+          completed_payments_count = "COUNT(case when payments.payment_status = 'completed' then 1 else null end)"
+          join_clause = "LEFT OUTER JOIN payments ON payments.advertisement_id = advertisements.id \
+                         AND#{payments_where_clause}"
+          select_clause = "advertisements.*, \
+                         case when (#{cancelled_payments_count} + #{completed_payments_count}) > 0 \
+                         then round((100.00*#{completed_payments_count})/(#{cancelled_payments_count} + \
+                         #{completed_payments_count}), 2) else 0 end as conversion, \
+                         #{cancelled_payments_count} as cancelled_payments, \
+                         #{completed_payments_count} as completed_payments"
+          select(select_clause)
+            .filter_by(filtering_params)
+            .joins(join_clause)
+            .group('advertisements.id')
+        }
+
   private
 
   def create_activity_on_activate
