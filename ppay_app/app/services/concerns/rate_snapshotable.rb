@@ -27,8 +27,7 @@ module RateSnapshotable
     @recent_snapshot ||=
       ::RateSnapshot.where(direction: params[:action])
                     .by_payment_system(payment_system)
-                    .order(created_at: :desc)
-                    .first
+                    .last
   end
 
   def too_recent_rate_snapshot?
