@@ -26,17 +26,6 @@ module DashboardHelper
     end.join('<br />').html_safe
   end
 
-  def periods_collection
-    [['Последний час', 'last_hour'],
-     ['Последние 3 часа', 'last_3_hours'],
-     ['Последние 6 часов', 'last_6_hours'],
-     ['Последние 12 часов', 'last_12_hours'],
-     ['Последние 24 часа', 'last_day'],
-     ['Последние 3 дня', 'last_3_days'],
-     %w[Вчера yesterday],
-     %w[Позавчера before_yesterday]]
-  end
-
   def dashboard_filters_partial(user)
     if user.processer? || user.working_group?
       'shared/staff/dashboard/filters'

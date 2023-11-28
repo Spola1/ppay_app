@@ -24,8 +24,7 @@
     = f.input :simbank_card_number, as: :string, input_html: { value: advertisement_filters_params(:simbank_card_number) }
     - if role_namespace.in?(%w[processers])
       %br
-    = f.input :period, collection: Advertisements::Filterable::PERIOD.keys,
-                      label_method: ->(label){ t("period.#{label}") },
+    = f.input :period, collection: period_collection,
                       include_blank: '- Не выбрано -',
                       selected: advertisement_filters_params(:period)
     = f.input :created_from, as: :date,

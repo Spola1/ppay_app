@@ -38,6 +38,10 @@ module ApplicationHelper
     end
   end
 
+  def period_collection
+    Filterable::Period::PERIOD.keys.map { [I18n.t("period.#{_1}"), _1] }
+  end
+
   private
 
   def language_options
