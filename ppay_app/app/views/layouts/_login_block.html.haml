@@ -36,7 +36,7 @@
     %div
       = simple_form_for(current_user, as: :user, url: staff_user_path(current_user)) do |f|
         = f.time_zone_select :time_zone, nil, { default: Time.zone.name },
-          { onchange: 'this.form.submit()', class: 'text-xs' }
+          { onchange: 'this.form.requestSubmit()', class: 'text-xs' }
 
   - else
     = link_to 'Войти', new_user_session_path, :class => 'navbar-link underline'
