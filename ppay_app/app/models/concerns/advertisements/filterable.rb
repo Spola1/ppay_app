@@ -17,6 +17,12 @@ module Advertisements
       scope :filter_by_simbank_card_number, lambda { |simbank_card_number|
                                               where('simbank_card_number ilike ?', "%#{simbank_card_number}%")
                                             }
+      scope :filter_by_created_from, lambda { |created_from|
+        where('advertisements.created_at >= ?', created_from.in_time_zone.beginning_of_day)
+      }
+      scope :filter_by_created_to, lambda { |created_to|
+        where('advertisements.created_at <= ?', created_to.in_time_zone.end_of_day)
+      }
     end
   end
 end

@@ -18,3 +18,13 @@ ru:
     submit: Применить
     reset: Сброс
     export_to_excel: Экспорт в Excel
+
+  period:
+    last_hour: Последний час
+    last_3_hours: Последние 3 часа
+    last_6_hours: Последние 6 часов
+    last_12_hours: Последние 12 часов
+    last_day: Последние 24 часа
+    last_3_days: Последние 3 дня
+    yesterday: Вчера
+    before_yesterday: Позавчера

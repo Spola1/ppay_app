@@ -4,6 +4,7 @@ class Advertisement < ApplicationRecord
   include CardNumberSettable
   include AdvertisementScopes
   include Filterable
+  include Filterable::Period
   include Advertisements::Filterable
   audited
   acts_as_archival readonly_when_archived: true

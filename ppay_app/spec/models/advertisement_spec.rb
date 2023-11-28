@@ -184,6 +184,59 @@ RSpec.describe Advertisement, type: :model do
         let(:correct_result) { [advertisement1, advertisement4] }
         it { expect(advertisements.to_a).to eq(correct_result) }
       end
+
+      describe '.filter_by_period' do
+        let!(:advertisement_1_days_ago) do
+          create(:advertisement, created_at: 1.days.ago)
+        end
+        let!(:advertisement_2_days_ago) do
+          create(:advertisement, created_at: 2.days.ago)
+        end
+        context 'last 3 days' do
+          subject(:advertisements) { Advertisement.filter_by_period('last_3_days') }
+          it {
+            expect(advertisements).to eq([
+                                           advertisement1,
+                                           advertisement2,
+                                           advertisement3,
+                                           advertisement4,
+                                           advertisement_1_days_ago,
+                                           advertisement_2_days_ago
+                                         ])
+          }
+        end
+        context 'yesterday' do
+          subject(:advertisements) { Advertisement.filter_by_period('yesterday') }
+          it {
+            expect(advertisements).to eq([
+                                           advertisement_1_days_ago
+                                         ])
+          }
+        end
+        context 'last hour' do
+          subject(:advertisements) { Advertisement.filter_by_period('last_hour') }
+          it {
+            expect(advertisements).to eq([
+                                           advertisement1,
+                                           advertisement2,
+                                           advertisement3,
+                                           advertisement4
+                                         ])
+          }
+        end
+        context 'dates range' do
+          subject(:advertisements) do
+            Advertisement
+              .filter_by_created_from(3.days.ago)
+              .filter_by_created_to(2.days.ago)
+          end
+          it {
+            expect(advertisements).to eq([
+                                           advertisement_2_days_ago
+                                         ])
+          }
+        end
+      end
     end
 
     def processer_with_payments(payments_count: 5, block_reason: :exceed_daily_usdt_limit)
