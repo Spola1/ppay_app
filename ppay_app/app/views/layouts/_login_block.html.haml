@@ -1,5 +1,10 @@
 .login_block.text-xs.font-light.py-2.px-8.flex.items-center.grow.justify-end
   - if user_signed_in?
+    .pr-4
+      = simple_form_for(current_user, as: :user, url: staff_user_path(current_user)) do |f|
+        = f.time_zone_select :time_zone, nil, { default: Time.zone.name },
+          { onchange: 'this.form.requestSubmit()', class: 'text-xs' }
+
     .flex.flex-col
       %span.whitespace-nowrap.text-right.text-sm
         Баланс:
@@ -33,10 +38,6 @@
     .p-2.text-xl
       = button_to destroy_session_path(current_user), method: :delete, data: { turbo: false } do
         = fa_icon('sign-out')
-    %div
-      = simple_form_for(current_user, as: :user, url: staff_user_path(current_user)) do |f|
-        = f.time_zone_select :time_zone, nil, { default: Time.zone.name },
-          { onchange: 'this.form.requestSubmit()', class: 'text-xs' }
 
   - else
     = link_to 'Войти', new_user_session_path, :class => 'navbar-link underline'
