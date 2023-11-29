@@ -182,6 +182,10 @@
     @apply items-list-td text-gray-900 underline font-medium;
   }
 
+  .items-list-td-red {
+    @apply text-red-500;
+  }
+
   .item-card-td {
     @apply text-sm text-gray-900 font-normal px-2 py-2 whitespace-nowrap;
   }

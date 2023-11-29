@@ -2,6 +2,7 @@
   %thead.items-list-thead
     %tr
       %th.items-list-th ID
+      %th.items-list-th
       %th.items-list-th Email
       %th.items-list-th Создан
       %th.items-list-th Название
@@ -13,6 +14,10 @@
       %tr.items-list-tr
         %td.items-list-td-link
           = link_to processer.id, processer_settings_path(processer), data: { turbo_action: :advance }
+        %td.items-list-td-red
+          = link_to 'отключить все объявления', deactivate_all_advertisements_processer_path(processer),
+            data: { turbo_confirm: "Вы уверены что хотите отключить все объявления у оператора #{processer.display_name}?",
+                    turbo_action: :advance, turbo_method: :post }
         %td.items-list-td-link
           = link_to processer.email, processer_settings_path(processer), data: { turbo_action: :advance }
         %td.items-list-td= processer.formatted_created_at

@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     end
 
     resources :processers, only: %i[index new create update] do
+      post :deactivate_all_advertisements, on: :member
       scope module: :processers do
         resource :settings, only: %i[show update]
       end
