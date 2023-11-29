@@ -46,7 +46,7 @@ module Admins
 
         redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение успешно создано. Доджитесь кода и сохраните его в соответствующее поле.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
