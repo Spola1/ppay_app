@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :role_namespace, :management_namespace?
 
+  around_action :set_time_zone
+
   private
 
   def set_application_locale
@@ -30,5 +32,13 @@ class ApplicationController < ActionController::Base
 
   def not_found
     raise ActionController::RoutingError, 'Not Found'
+  end
+
+  def set_time_zone(&)
+    if current_user
+      Time.use_zone(current_user.time_zone, &)
+    else
+      yield
+    end
   end
 end
