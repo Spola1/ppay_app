@@ -638,4 +638,26 @@ RSpec.describe Payment, type: :model do
       expect(result).to eq([payment3, payment1])
     end
   end
+
+  describe 'after update status to created' do
+    # context 'with normanl merchant' do
+    #   let!(:payment) { create :payment }
+
+    #   it 'ch' do
+    #     payment.update(payment_status: 'created')
+    #     expect(payment.payment_status).to eq('created')
+    #   end
+    # end
+
+    context 'with merchant with hpp_interbank_transfer setting' do
+      let!(:merchant) { create :merchant, hpp_interbank_transfer: true }
+      let!(:payment) { create :payment, merchant: }
+
+      it 'ch' do
+        payment.update(payment_status: 'created')
+        # expect(payment.reload.payment_status).to eq('created1')
+        expect(payment).to allow_transition_to(:processer_search)
+      end
+    end
+  end
 end
