@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -87,12 +87,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
+    t.integer "block_reason"
     t.decimal "conversion", default: "0.0"
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
     t.string "telegram_phone"
     t.boolean "save_incoming_requests_history", default: false
-    t.integer "block_reason"
     t.decimal "daily_usdt_limit", default: "0.0"
     t.index ["archived_at"], name: "index_advertisements_on_archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
@@ -332,6 +332,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
     t.string "api_key"
     t.bigint "user_id"
     t.index ["user_id"], name: "index_mobile_app_requests_on_user_id"
+  end
+
+  create_table "mobile_apps", force: :cascade do |t|
+    t.string "name"
+    t.string "device_name"
+    t.string "imei"
+    t.string "imsi"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_mobile_apps_on_user_id"
   end
 
   create_table "national_currencies", force: :cascade do |t|
@@ -591,6 +602,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
+    t.integer "minutes_to_autocancel", default: 7, null: false
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
@@ -606,6 +618,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
     t.boolean "otp_payment_confirm"
     t.boolean "can_edit_summ"
     t.string "time_zone"
+    t.boolean "hpp_interbank_transfer"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -654,6 +667,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
   add_foreign_key "merchant_processers", "users", column: "merchant_id"
   add_foreign_key "merchant_processers", "users", column: "processer_id"
   add_foreign_key "message_read_statuses", "users"
+  add_foreign_key "mobile_apps", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_logs", "payments"
