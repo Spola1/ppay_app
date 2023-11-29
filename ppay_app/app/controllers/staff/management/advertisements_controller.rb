@@ -6,8 +6,15 @@ module Staff
       before_action :find_advertisement, only: %i[show edit update destroy]
 
       def index
-        @pagy, @advertisements = pagy(Advertisement.filter_by(filtering_params)
-                                       .order(archived_at: :desc, conversion: :asc, status: :desc))
+        @advertisements = if filtering_params.present? &&
+                             (filtering_params[:period].present? ||
+                            filtering_params[:created_from].present? ||
+                            filtering_params[:created_to].present?)
+                            Advertisement.time_filters(filtering_params)
+                          else
+                            Advertisement.filter_by(filtering_params)
+                          end
+        @pagy, @advertisements = pagy(@advertisements.order(archived_at: :desc, conversion: :asc, status: :desc))
         @advertisements = @advertisements.decorate
       end
 
