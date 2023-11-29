@@ -165,8 +165,8 @@ class Payment < ApplicationRecord
 
   after_update_commit lambda {
     if payment_status_previously_changed? && payment_status == 'created' &&
-       merchant.hpp_interbank_transfer && may_inline_search?
-      inline_search!
+       merchant.hpp_interbank_transfer && may_search?
+      search!
     end
   }
 
