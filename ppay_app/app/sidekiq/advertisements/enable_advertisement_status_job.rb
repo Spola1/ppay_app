@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Payments
-  class EnableAdvertisementStatusJob
+module Advertisements
+  class EnableStatusJob
     include Sidekiq::Job
     sidekiq_options queue: 'low', tags: ['enable_advertisement_status']
 
