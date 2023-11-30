@@ -92,6 +92,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.integer "cancelled_payments", default: 0
     t.string "telegram_phone"
     t.boolean "save_incoming_requests_history", default: false
+    t.integer "block_reason"
     t.decimal "daily_usdt_limit", default: "0.0"
     t.index ["archived_at"], name: "index_advertisements_on_archived_at"
     t.index ["deleted_at"], name: "index_advertisements_on_deleted_at"
@@ -482,6 +483,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.boolean "receive_requests_enabled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "minutes_to_autocancel", default: 7, null: false
     t.jsonb "settings", default: {}
   end
 
@@ -589,7 +591,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.boolean "chat_enabled", default: true
     t.decimal "processer_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_commission", precision: 15, scale: 10, default: "1.0"
-    t.integer "minutes_to_autocancel", default: 7, null: false
     t.decimal "processer_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.decimal "working_group_withdrawal_commission", precision: 15, scale: 10, default: "1.0"
     t.boolean "only_whitelisted_processers", default: false, null: false
