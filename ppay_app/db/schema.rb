@@ -87,7 +87,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.datetime "deleted_at"
     t.string "archive_number"
     t.datetime "archived_at"
-    t.integer "block_reason"
     t.decimal "conversion", default: "0.0"
     t.integer "completed_payments", default: 0
     t.integer "cancelled_payments", default: 0
@@ -334,17 +333,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.index ["user_id"], name: "index_mobile_app_requests_on_user_id"
   end
 
-  create_table "mobile_apps", force: :cascade do |t|
-    t.string "name"
-    t.string "device_name"
-    t.string "imei"
-    t.string "imsi"
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_mobile_apps_on_user_id"
-  end
-
   create_table "national_currencies", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -494,7 +482,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.boolean "receive_requests_enabled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "minutes_to_autocancel", default: 7, null: false
     t.jsonb "settings", default: {}
   end
 
@@ -667,7 +654,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
   add_foreign_key "merchant_processers", "users", column: "merchant_id"
   add_foreign_key "merchant_processers", "users", column: "processer_id"
   add_foreign_key "message_read_statuses", "users"
-  add_foreign_key "mobile_apps", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
   add_foreign_key "payment_logs", "payments"
