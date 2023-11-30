@@ -163,12 +163,7 @@ class Payment < ApplicationRecord
       advertisement&.exceed_daily_usdt_limit?
   }
 
-  after_create_commit lambda {
-    if payment_status_previously_changed? && payment_status == 'created' &&
-       merchant.hpp_interbank_transfer && may_search?
-      search!
-    end
-  }
+  after_create_commit -> { search! if created? && merchant.hpp_interbank_transfer }
 
   scope :in_hotlist, lambda {
     deposits.confirming.or(withdrawals.transferring).reorder(created_at: :desc)
