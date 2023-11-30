@@ -639,16 +639,15 @@ RSpec.describe Payment, type: :model do
     end
   end
 
-  describe 'after update status to created' do
+  describe 'after create payment' do
     let!(:payment_system) { create(:payment_system, national_currency:) }
     let!(:rate_snapshot) { create(:rate_snapshot, direction: 'buy', payment_system:) }
 
     context 'with normanl merchant' do
       let!(:merchant) { create :merchant }
-      let!(:payment) { create :payment, :deposit, payment_status: nil, merchant:, rate_snapshot: }
+      let!(:payment) { create :payment, :deposit, merchant:, rate_snapshot: }
 
       it 'not perform processer search job' do
-        payment.update(payment_status: 'created')
         expect(payment.payment_status).to eq('created')
         expect(Sidekiq::Queues['high'].size).to eq(0)
       end
@@ -656,10 +655,9 @@ RSpec.describe Payment, type: :model do
 
     context 'with merchant with hpp_interbank_transfer setting' do
       let!(:merchant) { create :merchant, hpp_interbank_transfer: true }
-      let!(:payment) { create :payment, :deposit, payment_status: nil, merchant:, rate_snapshot: }
+      let!(:payment) { create :payment, :deposit, merchant:, rate_snapshot: }
 
       it 'perfotm processer search job' do
-        payment.update(payment_status: 'created')
         expect(payment.payment_status).to eq('processer_search')
         expect(Sidekiq::Queues['high'].size).to eq(1)
         expect(Sidekiq::Queues['high'][0]['tags']).to eq(['search_processer'])

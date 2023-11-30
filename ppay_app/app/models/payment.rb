@@ -163,7 +163,7 @@ class Payment < ApplicationRecord
       advertisement&.exceed_daily_usdt_limit?
   }
 
-  after_update_commit lambda {
+  after_create_commit lambda {
     if payment_status_previously_changed? && payment_status == 'created' &&
        merchant.hpp_interbank_transfer && may_search?
       search!
