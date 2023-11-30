@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -606,6 +606,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_23_081459) do
     t.boolean "otp_payment_confirm"
     t.boolean "can_edit_summ"
     t.string "time_zone"
+    t.boolean "hpp_interbank_transfer"
     t.index ["agent_id"], name: "index_users_on_agent_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

@@ -28,6 +28,7 @@ ru:
         sort_weight: Приоритет команды при подборе объявления
         can_edit_summ: Возможность редактирования суммы объявления
         autocancel: Автоотмена
+        hpp_interbank_transfer: Межбанковские переводы для HPP
 
   users:
     sidebar:

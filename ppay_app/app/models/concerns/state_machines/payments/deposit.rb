@@ -25,7 +25,7 @@ module StateMachines
             before :bind_estimated_rate_snapshot
             after_commit :search_processer
 
-            transitions from: :draft, to: :processer_search,
+            transitions from: %i[draft created], to: :processer_search,
                         guard: proc { |params| available_processer_search?(params) },
                         after: :set_cryptocurrency_amount
           end
