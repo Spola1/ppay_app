@@ -6,9 +6,12 @@ module Processers
     before_action :find_advertisement_for_copy, only: %i[new]
 
     def index
-      @pagy, @advertisements = pagy(current_user.advertisements
-                                                .filter_by(filtering_params)
-                                                .order(archived_at: :desc, status: :desc, conversion: :asc))
+      @advertisements = if filtering_params&.slice(:period, :created_from, :created_to)&.values&.any?
+                          current_user.advertisements.time_filters(filtering_params)
+                        else
+                          current_user.advertisements.filter_by(filtering_params)
+                        end
+      @pagy, @advertisements = pagy(@advertisements.order(archived_at: :desc, status: :desc, conversion: :asc))
       @advertisements = @advertisements.decorate
     end
 

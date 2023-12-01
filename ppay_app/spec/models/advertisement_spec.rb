@@ -185,55 +185,79 @@ RSpec.describe Advertisement, type: :model do
         it { expect(advertisements.to_a).to eq(correct_result) }
       end
 
-      describe '.filter_by_period' do
-        let!(:advertisement_1_days_ago) do
-          create(:advertisement, created_at: 1.days.ago)
+      def advertisement_with_payments(created_at,
+                                      completed_payments_created_at,
+                                      cancelled_payments_created_at)
+        create(:advertisement, created_at:) do |advertisement|
+          create_list(:payment, 5, payment_status: 'completed',
+                                   created_at: completed_payments_created_at, advertisement:)
+          create_list(:payment, 2, payment_status: 'cancelled', advertisement:)
+          create_list(:payment, 2, payment_status: 'cancelled',
+                                   created_at: cancelled_payments_created_at, advertisement:)
         end
+      end
+
+      describe '.filter_by_period' do
         let!(:advertisement_2_days_ago) do
           create(:advertisement, created_at: 2.days.ago)
         end
         context 'last 3 days' do
-          subject(:advertisements) { Advertisement.filter_by_period('last_3_days') }
-          it {
-            expect(advertisements).to eq([
-                                           advertisement1,
-                                           advertisement2,
-                                           advertisement3,
-                                           advertisement4,
-                                           advertisement_1_days_ago,
-                                           advertisement_2_days_ago
-                                         ])
-          }
+          subject(:advertisements) { Advertisement.time_filters(period: 'last_3_days') }
+          context 'all payments within 3 days' do
+            let!(:advertisement_1_days_ago) { advertisement_with_payments(1.days.ago, 2.days.ago, 1.day.ago) }
+            it {
+              expect(advertisements.find(advertisement_1_days_ago.id).completed_payments).to eq(5)
+              expect(advertisements.find(advertisement_1_days_ago.id).cancelled_payments).to eq(4)
+              expect(advertisements.find(advertisement_1_days_ago.id).conversion.to_s).to eq('55.56')
+            }
+          end
+          context '2 cancelled payments out of 3 days' do
+            let!(:advertisement_1_days_ago) { advertisement_with_payments(1.days.ago, 2.days.ago, 4.days.ago) }
+            it {
+              expect(advertisements.find(advertisement_1_days_ago.id).completed_payments).to eq(5)
+              expect(advertisements.find(advertisement_1_days_ago.id).cancelled_payments).to eq(2)
+              expect(advertisements.find(advertisement_1_days_ago.id).conversion.to_s).to eq('71.43')
+            }
+          end
         end
-        context 'yesterday' do
-          subject(:advertisements) { Advertisement.filter_by_period('yesterday') }
-          it {
-            expect(advertisements).to eq([
-                                           advertisement_1_days_ago
-                                         ])
-          }
-        end
-        context 'last hour' do
-          subject(:advertisements) { Advertisement.filter_by_period('last_hour') }
-          it {
-            expect(advertisements).to eq([
-                                           advertisement1,
-                                           advertisement2,
-                                           advertisement3,
-                                           advertisement4
-                                         ])
-          }
-        end
+
         context 'dates range' do
           subject(:advertisements) do
-            Advertisement
-              .filter_by_created_from(3.days.ago)
-              .filter_by_created_to(2.days.ago)
+            Advertisement.time_filters(
+              created_from: 3.days.ago,
+              created_to: 2.days.ago
+            )
           end
+          context 'not include recent payments' do
+            let!(:advertisement_1_days_ago) { advertisement_with_payments(1.days.ago, 2.days.ago, 2.days.ago) }
+            it {
+              expect(advertisements.find(advertisement_1_days_ago.id).completed_payments).to eq(5)
+              expect(advertisements.find(advertisement_1_days_ago.id).cancelled_payments).to eq(2)
+              expect(advertisements.find(advertisement_1_days_ago.id).conversion.to_s).to eq('71.43')
+            }
+          end
+          context 'no recent and old payments' do
+            let!(:advertisement_1_days_ago) { advertisement_with_payments(1.days.ago, 3.days.ago, 4.days.ago) }
+            it {
+              expect(advertisements.find(advertisement_1_days_ago.id).completed_payments).to eq(5)
+              expect(advertisements.find(advertisement_1_days_ago.id).cancelled_payments).to eq(0)
+              expect(advertisements.find(advertisement_1_days_ago.id).conversion.to_s).to eq('100.0')
+            }
+          end
+        end
+
+        context 'last hour should have all ads, times only for payments' do
+          subject(:advertisements) { Advertisement.time_filters(period: 'last_hour') }
+          let!(:advertisement_1_days_ago) { advertisement_with_payments(1.days.ago, 2.days.ago, 2.days.ago) }
           it {
-            expect(advertisements).to eq([
-                                           advertisement_2_days_ago
-                                         ])
+            expect(advertisements.map(&:id)).to eq([
+                                                     advertisement1.id,
+                                                     advertisement2.id,
+                                                     advertisement3.id,
+                                                     advertisement4.id,
+                                                     advertisement_2_days_ago.id,
+                                                     advertisement_1_days_ago.id
+                                                   ])
           }
         end
       end
