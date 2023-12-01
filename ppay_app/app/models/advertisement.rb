@@ -31,6 +31,7 @@ class Advertisement < ApplicationRecord
   after_commit :set_payment_link_qr_code, if: -> { payment_link_previously_changed? }
   after_commit :create_activity_on_activate, if: :saved_change_to_status?
   after_commit :create_activity_on_deactivate, if: :saved_change_to_status?
+  before_save :remove_block_reason, if: -> { status && block_reason.present? }
 
   def exceed_daily_usdt_limit?
     daily_usdt_limit.positive? &&
@@ -106,5 +107,9 @@ class Advertisement < ApplicationRecord
 
   def payments_conversion_count
     (payments.completed.count.to_f / payments.finished.count * 100).round(2)
+  end
+
+  def remove_block_reason
+    self.block_reason = nil
   end
 end
