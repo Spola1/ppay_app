@@ -3,6 +3,7 @@
 module Admins
   class ProcessersController < Staff::BaseController
     before_action :find_processer, only: %i[deactivate_all_advertisements]
+
     def index
       set_all_processers
     end
@@ -24,7 +25,8 @@ module Admins
     def deactivate_all_advertisements
       @processer.advertisements.where(status: true).update(status: false)
 
-      redirect_to processers_path
+      redirect_back fallback_location: processers_path,
+                    notice: "Объявления оператора #{@processer.display_name} отключены!"
     end
 
     private
