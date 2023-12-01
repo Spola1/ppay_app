@@ -6,7 +6,7 @@ module Processers
     before_action :find_advertisement_for_copy, only: %i[new]
 
     def index
-      @advertisements = if filtering_params&.slice(:period, :created_from, :created_to).present?
+      @advertisements = if filtering_params&.slice(:period, :created_from, :created_to)&.values&.any?
                           current_user.advertisements.time_filters(filtering_params)
                         else
                           current_user.advertisements.filter_by(filtering_params)
