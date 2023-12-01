@@ -6,7 +6,7 @@ module Staff
       before_action :find_advertisement, only: %i[show edit update destroy]
 
       def index
-        @advertisements = if filtering_params&.slice(:period, :created_from, :created_to)&.values&.any?(:present?)
+        @advertisements = if filtering_params&.slice(:period, :created_from, :created_to)&.values&.any?(&:present?)
                             Advertisement.time_filters(filtering_params)
                           else
                             Advertisement.filter_by(filtering_params)
