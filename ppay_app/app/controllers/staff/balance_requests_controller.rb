@@ -26,7 +26,7 @@ module Staff
       @balance_request = current_user.balance_requests.new(balance_request_params)
 
       if @balance_request.save
-        redirect_to @balance_request
+        redirect_to balance_request_path(@balance_request)
       else
         render :new, status: :unprocessable_entity
       end
@@ -38,6 +38,18 @@ module Staff
       redirect_to balance_requests_path if @balance_request.errors.empty?
     end
 
+    def balance_requests_commission
+      return 0 unless Setting.instance.balance_requests_commission
+
+      if current_user.balance.in_national_currency?
+        RateSnapshot.recent_buy_by_national_currency_name(current_user.balance.currency).value * \
+          Setting.instance.balance_requests_commission
+      else
+        Setting.instance.balance_requests_commission
+      end
+    end
+    helper_method :balance_requests_commission
+
     private
 
     def find_balance_request
@@ -45,7 +57,13 @@ module Staff
     end
 
     def balance_request_params
-      params.require(:balance_request).permit(:requests_type, :amount, :crypto_address, :amount_minus_commission)
+      params.require(:balance_request)
+            .permit(:requests_type, :amount, :crypto_address, :amount_minus_commission)
+            .tap do |permitted|
+              next if permitted[:requests_type] == 'deposit'
+
+              permitted[:amount_minus_commission] = [permitted[:amount].to_f - balance_requests_commission, 0].max
+            end
     end
   end
 end

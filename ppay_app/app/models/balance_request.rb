@@ -28,6 +28,7 @@ class BalanceRequest < ApplicationRecord
   validate :agent_or_wg_withdrawing_crypto_address_cannot_present, on: :create
   validates_presence_of :crypto_address, unless: :agent_or_wg_withdrawing?
   validates_numericality_of :amount, greater_than: 0
+  validates_numericality_of :amount_minus_commission, greater_than: 0, allow_nil: true
 
   scope :filter_by_status, ->(status) { where(status:) }
 

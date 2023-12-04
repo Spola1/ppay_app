@@ -28,7 +28,7 @@ export default class extends Controller {
     if (value > this.commission) {
       this.amountMinusCommissionTarget.value = (value - this.commission).toFixed(2)
     } else {
-      this.amountMinusCommissionTarget.value = null
+      this.amountMinusCommissionTarget.value = 0
     }
   }
 
