@@ -42,6 +42,10 @@ Rails.application.routes.draw do
     resources :balances, only: %i[index]
     resources :balance_requests
 
+    namespace :users do
+      get :settings
+    end
+
     root 'turnover_stats#index', as: :superadmins_root
   end
 
@@ -94,6 +98,10 @@ Rails.application.routes.draw do
       resources :deposits, param: :uuid, only: %i[index show]
       resources :withdrawals, param: :uuid, only: %i[index show]
     end
+
+    namespace :users do
+      get :settings
+    end    
 
     root 'payments#index', as: :agents_root
   end
@@ -182,6 +190,10 @@ Rails.application.routes.draw do
       resources :withdrawals, param: :uuid, only: %i[index update show edit]
     end
 
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :supports_root
   end
 
@@ -202,11 +214,19 @@ Rails.application.routes.draw do
       resources :withdrawals, param: :uuid, only: %i[index show]
     end
 
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :working_groups_root
   end
 
   scope module: :ppays, constraints: ->(request) { request.env['warden'].user&.ppay? } do
     resources :balance_requests
+
+    namespace :users do
+      get :settings
+    end
 
     root 'balance_requests#index', as: :ppays_root
   end

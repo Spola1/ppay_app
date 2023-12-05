@@ -28,6 +28,7 @@
                     = f.input :autocancel, as: :boolean
                   .form-actions
                     = f.button :submit, t('buttons.submit'), class: 'form-submit'
+              = render 'shared/time_zone_select'            
 
       .back-link
         = link_to '<- К списку операторов', processers_path

@@ -21,9 +21,9 @@ class PaymentDecorator < ApplicationDecorator
 
   def countdown_end_time
     if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
-      status_changed_at + merchant.ftd_payment_exec_time_in_sec
+      status_changed_at.utc + merchant.ftd_payment_exec_time_in_sec
     else
-      status_changed_at + merchant.regular_payment_exec_time_in_sec
+      status_changed_at.utc + merchant.regular_payment_exec_time_in_sec
     end
   end
   alias expiration_time countdown_end_time
@@ -118,7 +118,8 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_card_number
-    if ['ЕРИП БНБ', 'ЕРИП Альфа', 'ЕРИП Белагро'].include?(payment_system) || (payment_system == 'СБП' && type == 'Withdrawal')
+    if ['ЕРИП БНБ', 'ЕРИП Альфа',
+        'ЕРИП Белагро'].include?(payment_system) || (payment_system == 'СБП' && type == 'Withdrawal')
       card_number
     else
       card_number&.gsub(/(.{4})/, '\1 ')

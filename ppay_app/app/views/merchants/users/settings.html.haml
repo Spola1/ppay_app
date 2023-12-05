@@ -9,6 +9,8 @@
   .form-actions
     = f.button :submit, t('.update'), class: 'form-submit'
 
+= render 'shared/time_zone_select'
+
 %h2.mt-4 Api ключи
 
 - current_user.api_keys.each do |api_key|

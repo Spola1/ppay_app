@@ -29,6 +29,7 @@ ru:
         can_edit_summ: Возможность редактирования суммы объявления
         autocancel: Автоотмена
         hpp_interbank_transfer: Межбанковские переводы для HPP
+        time_zone: Часовой пояс
 
   users:
     sidebar:
