@@ -16,7 +16,7 @@ require 'aasm/rspec'
 
 require 'capybara/rails'
 require 'selenium-webdriver'
-# Webdrivers::Chromedriver.required_version = '114.0.5735.90'
+# Webdrivers::Chromedriver.required_version = '120.0.6099.62'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are

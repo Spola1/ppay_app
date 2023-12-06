@@ -20,5 +20,13 @@ FactoryBot.define do
     trait :admin do
       type { 'Admin' }
     end
+
+    trait :super_admin do
+      type { 'SuperAdmin' }
+    end
+
+    trait :agent do
+      type { 'Agent' }
+    end
   end
 end
