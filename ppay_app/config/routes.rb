@@ -86,6 +86,10 @@ Rails.application.routes.draw do
     resources :payment_systems, only: :index
     post :payment_systems, to: '/admins/payment_systems#update'
 
+    namespace :users do
+      get :settings
+    end
+
     root 'payments#index', as: :admins_root
   end
 

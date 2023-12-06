@@ -14,8 +14,6 @@ navbar:
       path: balances_path
     - name: Запросы баланса
       path: balance_requests_path
-    - name: Настройки
-      path: users_settings_path      
   admin:
     - name: Все платежи
       path: payments_path
@@ -60,8 +58,6 @@ navbar:
       path: arbitrations_path
     - name: Замороженные средства
       path: transactions_path
-    - name: Настройки
-      path: users_settings_path      
   processer:
     - name: Все платежи
       path: payments_path
@@ -81,8 +77,6 @@ navbar:
       path: dashboard_path
     - name: Реестр платежей
       path: incoming_requests_path
-    - name: Настройки
-      path: users_settings_path         
   support:
     - name: Все платежи
       path: payments_path
@@ -102,8 +96,6 @@ navbar:
       path: dashboard_path
     - name: Реестр платежей
       path: incoming_requests_path
-    - name: Настройки
-      path: users_settings_path      
   agent:
     - name: Все платежи
       path: payments_path
@@ -111,8 +103,6 @@ navbar:
       path: balance_requests_path
     - name: Оборот
       path: turnover_stats_path
-    - name: Настройки
-      path: users_settings_path      
   working_group:
     - name: Все платежи
       path: payments_path
@@ -120,10 +110,6 @@ navbar:
       path: balance_requests_path
     - name: Статистика
       path: dashboard_path
-    - name: Настройки
-      path: users_settings_path      
   ppay:
     - name: Запросы баланса
       path: balance_requests_path
-    - name: Настройки
-      path: users_settings_path
