@@ -20,11 +20,11 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_end_time
-    if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
-      status_changed_at.utc + merchant.ftd_payment_exec_time_in_sec
-    else
-      status_changed_at.utc + merchant.regular_payment_exec_time_in_sec
-    end
+    status_changed_at.utc + if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
+                              merchant.ftd_payment_exec_time_in_sec
+                            else
+                              merchant.regular_payment_exec_time_in_sec
+                            end
   end
   alias expiration_time countdown_end_time
 

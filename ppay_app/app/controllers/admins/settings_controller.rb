@@ -22,7 +22,7 @@ module Admins
 
     def settings_params
       params.require(:setting).permit(:receive_requests_enabled,
-      :commissions_version, :otp_payment_confirm_amount, :time_zone)
+                                      :commissions_version, :otp_payment_confirm_amount)
     end
   end
 end
