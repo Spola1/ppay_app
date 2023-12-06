@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-xfeature 'Processer can change deposit amount', type: :feature, js: true do
+feature 'Processer can change deposit amount', :sidekiq_inline, :silence_output, js: true do
   let!(:rate_snapshot) { create :rate_snapshot }
   let!(:ppay) { create :user, :ppay }
   let!(:merchant) { create :merchant, :with_mixed_balance_freeze_type, initial_balance: merchant_initial_balance }
@@ -15,8 +15,6 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
   let(:added_national_currency_amount) { 4000 }
 
   before do
-    Sidekiq::Testing.inline!
-
     using_session 'Merchant' do
       sign_in merchant
       visit root_path
@@ -53,12 +51,12 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
 
         click_on 'Подтвердить'
 
-        attach_file 'deposit_image', 'spec/fixtures/test_files/sample.jpeg'
+        attach_file 'spec/fixtures/test_files/sample.jpeg', make_visible: true
         click_on 'Оплата завершена'
       end
 
       using_session 'Processer' do
-        click_on 'ДЕПОЗИТ'
+        first(:link_or_button, 'ДЕПОЗИТ').click
       end
     end
   end
@@ -90,7 +88,7 @@ xfeature 'Processer can change deposit amount', type: :feature, js: true do
   scenario 'processer changes the confirming deposit amount' do
     perform_enqueued_jobs do
       using_session 'Processer' do
-        deposit = Deposit.first
+        Deposit.first
 
         fill_in 'national_currency_amount', with: added_national_currency_amount
         accept_confirm { click_on 'Изменить сумму' }
