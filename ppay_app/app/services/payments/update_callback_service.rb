@@ -12,9 +12,17 @@ module Payments
 
     def call
       Net::HTTP.post(uri, request, headers)
+      save_payment_callback
     end
 
     private
+
+    def save_payment_callback
+      payment.payment_callbacks.create(
+        sent_at: Time.now,
+        response_body: request
+      )
+    end
 
     def uri
       URI(payment.callback_url)

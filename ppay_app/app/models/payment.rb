@@ -92,6 +92,7 @@ class Payment < ApplicationRecord
   has_many :visits
   has_many :payment_logs
   has_many :incoming_requests
+  has_many :payment_callbacks
 
   before_create :set_default_unique_amount
   before_create :set_initial_amount

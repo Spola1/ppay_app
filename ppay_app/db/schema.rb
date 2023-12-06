@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -356,6 +356,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_29_114129) do
     t.bigint "payment_id", null: false
     t.index ["not_found_payment_id", "payment_id"], name: "index_nfp_payments_on_nfp_id_and_p_id"
     t.index ["payment_id", "not_found_payment_id"], name: "index_nfp_payments_on_p_id_and_nfp_id"
+  end
+
+  create_table "payment_callbacks", force: :cascade do |t|
+    t.bigint "payment_id"
+    t.datetime "sent_at"
+    t.datetime "received_at"
+    t.string "status"
+    t.text "response_body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payment_id"], name: "index_payment_callbacks_on_payment_id"
   end
 
   create_table "payment_logs", force: :cascade do |t|
