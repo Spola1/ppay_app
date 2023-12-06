@@ -2,27 +2,16 @@
 
 require 'rails_helper'
 
-feature 'Merchant can create new balance request', type: :feature do
+feature 'Balance requests', js: true do
   let!(:merchant) { create(:merchant) }
 
   before do
-    visit '/users/sign_in'
-    fill_in 'Email', with: merchant.email
-    fill_in 'Пароль', with: merchant.password
-    click_on 'Вход'
+    sign_in merchant
     visit '/balance_requests'
   end
 
-  scenario 'merchant logs in, opens a balance requests page and try to
-    create new balance request with empty amount and crypto address' do
-    expect(page).to have_link('+ Создать запрос')
-
+  scenario 'merchant tries to create with empty amount and crypto address' do
     click_on '+ Создать запрос'
-
-    expect(page).to have_content('Тип')
-    expect(page).to have_content('Сумма')
-    expect(page).to have_content('Криптоадрес USDT TRC20')
-    expect(page).to have_button('Сохранить')
 
     select('Снятие', from: 'balance_request_requests_type')
 
@@ -30,13 +19,11 @@ feature 'Merchant can create new balance request', type: :feature do
 
     expect(page).to have_content('не является числом')
     expect(page).to have_content('не может быть пустым')
+
     expect(merchant.balance_requests.size).to eq(0)
   end
 
-  scenario 'merchant logs in, opens a balance requests page and try to
-    create new balance request with empty crypto address and amount equal to 0' do
-    expect(page).to have_link('+ Создать запрос')
-
+  scenario 'merchant tries to create with empty crypto address and amount equal to 0' do
     click_on '+ Создать запрос'
 
     select('Снятие', from: 'balance_request_requests_type')
@@ -50,23 +37,39 @@ feature 'Merchant can create new balance request', type: :feature do
     expect(merchant.balance_requests.size).to eq(0)
   end
 
-  scenario 'merchant logs in, opens a balance requests page and try to
-    create new balance request with valid attributes' do
-    expect(page).to have_link('+ Создать запрос')
+  scenario 'merchant tries to create with valid attributes' do
+    click_on '+ Создать запрос'
 
+    select('Снятие', from: 'balance_request_requests_type')
+
+    fill_in 'balance_request_amount_minus_commission', with: 97
+    fill_in 'balance_request_crypto_address', with: merchant.crypto_wallet.address
+
+    click_on 'Сохранить'
+
+    expect(page).to have_content('Тип withdraw')
+    expect(page).to have_content("Запрос баланса (ID: #{merchant.reload.balance_requests.last.id})")
+    expect(page).to have_content('Сумма 100.0 USDT')
+    expect(page).to have_content('Вы получите 97.0 USDT')
+
+    expect(merchant.balance.amount.to_i).to eq(900)
+  end
+
+  scenario 'merchant can not hack commissions', js: false do
     click_on '+ Создать запрос'
 
     select('Снятие', from: 'balance_request_requests_type')
 
     fill_in 'balance_request_amount', with: 100
+    fill_in 'balance_request_amount_minus_commission', with: 100
     fill_in 'balance_request_crypto_address', with: merchant.crypto_wallet.address
 
     click_on 'Сохранить'
 
-    expect(page).to have_content("Запрос баланса (ID: #{merchant.balance_requests.last.id})")
     expect(page).to have_content('Тип withdraw')
-
-    merchant.reload
+    expect(page).to have_content("Запрос баланса (ID: #{merchant.reload.balance_requests.last.id})")
+    expect(page).to have_content('Сумма 100.0 USDT')
+    expect(page).to have_content('Вы получите 97.0 USDT')
 
     expect(merchant.balance.amount.to_i).to eq(900)
   end
