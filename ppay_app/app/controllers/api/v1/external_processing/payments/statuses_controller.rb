@@ -8,20 +8,10 @@ module Api
           def update
             raise ActionController::BadRequest unless payment.external?
 
-            save_payment_callback
-
             render_object_errors(payment) unless payment.public_send("#{allowed_event}!", payment_params)
           end
 
           private
-
-          def save_payment_callback
-            payment.payment_callbacks.create(
-              received_at: Time.now,
-              status: response.status,
-              response_body: response.body
-            )
-          end
 
           def payment_params
             params.require(:status).permit(:account_number) if params[:status].present?

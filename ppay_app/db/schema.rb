@@ -362,8 +362,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
     t.bigint "payment_id"
     t.datetime "sent_at"
     t.datetime "received_at"
-    t.string "status"
+    t.string "response_status"
     t.text "response_body"
+    t.text "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["payment_id"], name: "index_payment_callbacks_on_payment_id"

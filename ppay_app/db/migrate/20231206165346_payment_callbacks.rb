@@ -4,8 +4,9 @@ class PaymentCallbacks < ActiveRecord::Migration[7.0]
       t.references :payment, foreign_key: true
       t.datetime :sent_at
       t.datetime :received_at
-      t.string :status
+      t.string :response_status
       t.text :response_body
+      t.text :response
 
       t.timestamps
     end
