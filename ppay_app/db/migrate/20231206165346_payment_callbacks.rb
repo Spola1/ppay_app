@@ -6,7 +6,7 @@ class PaymentCallbacks < ActiveRecord::Migration[7.0]
       t.datetime :received_at
       t.string :response_status
       t.text :response_body
-      t.text :response
+      t.text :request
 
       t.timestamps
     end

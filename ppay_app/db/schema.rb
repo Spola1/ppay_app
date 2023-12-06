@@ -364,7 +364,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
     t.datetime "received_at"
     t.string "response_status"
     t.text "response_body"
-    t.text "response"
+    t.text "request"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["payment_id"], name: "index_payment_callbacks_on_payment_id"
@@ -669,6 +669,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
   add_foreign_key "message_read_statuses", "users"
   add_foreign_key "not_found_payments", "advertisements"
   add_foreign_key "not_found_payments", "incoming_requests"
+  add_foreign_key "payment_callbacks", "payments"
   add_foreign_key "payment_logs", "payments"
   add_foreign_key "payment_receipts", "payments"
   add_foreign_key "payment_receipts", "users"

@@ -23,7 +23,7 @@ module Payments
         sent_at: Time.now,
         response_status: response.code,
         response_body: response.body,
-        response:
+        request:
       )
     end
 
