@@ -11,10 +11,24 @@ module Payments
     end
 
     def call
-      Net::HTTP.post(uri, request, headers)
+      save_payment_callback_before_send
+      response = Net::HTTP.post(uri, request, headers)
+      update_payment_callback_after_response(response)
     end
 
     private
+
+    def save_payment_callback_before_send
+      @payment_callback = payment.payment_callbacks.create(request:)
+    end
+
+    def update_payment_callback_after_response(response)
+      @payment_callback.update(
+        response_at: Time.now,
+        response_status: response.code,
+        response_body: response.body
+      )
+    end
 
     def uri
       URI(payment.callback_url)

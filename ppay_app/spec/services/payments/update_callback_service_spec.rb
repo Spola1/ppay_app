@@ -48,7 +48,8 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
           }
         )
 
-      subject
+      expect { subject }.to change { payment.payment_callbacks.count }.from(0).to(1)
+      expect(payment.payment_callbacks.first.response_status).to eq('200')
     end
   end
 end
