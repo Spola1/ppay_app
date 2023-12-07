@@ -1,0 +1,5 @@
+.my-2
+  = simple_form_for(current_user, as: :user, url: staff_user_path(current_user)) do |f|
+    %div= User.human_attribute_name(:time_zone)
+    = f.time_zone_select :time_zone, nil, { default: Time.zone.name },
+      { onchange: 'this.form.requestSubmit()' }

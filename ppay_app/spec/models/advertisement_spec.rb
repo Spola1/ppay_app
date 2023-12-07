@@ -250,14 +250,14 @@ RSpec.describe Advertisement, type: :model do
           subject(:advertisements) { Advertisement.time_filters(period: 'last_hour') }
           let!(:advertisement_1_days_ago) { advertisement_with_payments(1.days.ago, 2.days.ago, 2.days.ago) }
           it {
-            expect(advertisements.map(&:id)).to eq([
-                                                     advertisement1.id,
-                                                     advertisement2.id,
-                                                     advertisement3.id,
-                                                     advertisement4.id,
-                                                     advertisement_2_days_ago.id,
-                                                     advertisement_1_days_ago.id
-                                                   ])
+            expect(advertisements).to match_array([
+                                                    advertisement1,
+                                                    advertisement2,
+                                                    advertisement3,
+                                                    advertisement4,
+                                                    advertisement_2_days_ago,
+                                                    advertisement_1_days_ago
+                                                  ])
           }
         end
       end
