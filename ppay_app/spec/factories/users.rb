@@ -28,5 +28,10 @@ FactoryBot.define do
     trait :agent do
       type { 'Agent' }
     end
+
+    factory :ppay,        traits: %i[ppay]
+    factory :admin,       traits: %i[admin]
+    factory :super_admin, traits: %i[super_admin]
+    factory :agent,       traits: %i[agent]
   end
 end
