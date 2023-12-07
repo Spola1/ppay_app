@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'net/http'
-
 module Binance
   class OpenSession
     attr_reader :advs_params
@@ -27,13 +25,11 @@ module Binance
       #      "tradeType": "SELL",
       #      "transAmount":  "5000"
       #  }
-      form_data_hash = create_form_date_hash
+      form_data_hash = create_form_data_hash
 
       check_merchant(form_data_hash, advs_params)
 
-      res = send_request(form_data_hash)
-
-      parse_response(res)
+      make_request(form_data_hash)
     end
 
     def otc_advs_array
@@ -65,7 +61,7 @@ module Binance
       advs_array
     end
 
-    def create_form_date_hash
+    def create_form_data_hash
       {
         asset: advs_params[:asset],
         fiat: advs_params[:fiat],
@@ -88,26 +84,22 @@ module Binance
       end
     end
 
-    def send_request(form_data_hash)
-      uri = URI('https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search')
-
-      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-        req = Net::HTTP::Post.new(uri)
-        req.body = form_data_hash.to_json
-        req.set_content_type('application/json')
-        puts req.body
-
-        http.request(req)
+    def build_conn
+      Faraday.new do |builder|
+        builder.adapter :async_http, timeout: 60
+        builder.request :json
+        builder.response :json
       end
     end
 
-    def parse_response(res)
-      case res
-      when Net::HTTPSuccess, Net::HTTPRedirection
-        JSON.parse(res.body)
-      else
-        res.value
+    def make_request(form_data_hash)
+      puts "binance make_request #{form_data_hash}"
+
+      url = 'https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search'
+      res = build_conn.post(url) do |req|
+        req.body = form_data_hash
       end
+      res.body
     end
   end
 end

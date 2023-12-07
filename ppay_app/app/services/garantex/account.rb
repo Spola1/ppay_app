@@ -6,7 +6,7 @@ require 'securerandom'
 
 module Garantex
   class Account
-    include ::Garantex::GarantexRequest
+    HOST = 'garantex.org'
 
     def initialize(private_key = nil, uid = nil)
       @private_key = private_key || ENV.fetch('GARANTEX_PRIVATE_KEY', nil)
@@ -17,29 +17,19 @@ module Garantex
     attr_accessor :token
 
     def generate_new_token
-      host = 'garantex.org'
-      secret_key = OpenSSL::PKey.read(Base64.urlsafe_decode64(@private_key))
-      payload = {
-        exp: 1.hours.from_now.to_i, # JWT Request TTL in seconds since epoch
-        jti: SecureRandom.hex(12).upcase
-      }
+      token_conn = Faraday.new do |builder|
+        builder.adapter :async_http, timeout: 60
+        builder.request :json
+        builder.response :json
+      end
 
-      jwt_token = JWT.encode(payload, secret_key, 'RS256')
-
-      uri = URI.parse("https://dauth.#{host}/api/v1/sessions/generate_jwt")
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
-      request.body = { kid: @uid, jwt_token: }.to_json
-      response = http.start { |h| h.request(request) }
-      data = JSON.parse response.body
-      @token = data['token']
+      response = token_conn.post("https://dauth.#{HOST}/api/v1/sessions/generate_jwt",
+                                 { kid: @uid, jwt_token: })
+      @token = response.body['token']
     end
 
     def get_otc_member_profile(nickname)
-      link = 'otc/profiles'
-      form_data_hash = { nickname: }
-      GarantexRequest.send_get(@token, link, form_data_hash)
+      make_request('otc/profiles', { nickname: })
 
       # {
       #   'nickname' => 'BTC_Sanya',
@@ -73,9 +63,7 @@ module Garantex
     end
 
     def get_exchange_bids_and_asks(market)
-      link = 'depth'
-      form_data_hash = { market: }
-      GarantexRequest.send_get(@token, link, form_data_hash)
+      make_request('depth', { market: })
 
       # {
       #   'timestamp' => 1659332301,
@@ -109,9 +97,7 @@ module Garantex
     end
 
     def get_otc_bids_and_asks(currency, direction, payment_method, amount = nil)
-      link = 'otc/ads'
-      form_data_hash = { currency:, direction:, payment_method:, amount: }.compact
-      GarantexRequest.send_get(@token, link, form_data_hash)
+      make_request('otc/ads', { currency:, direction:, payment_method:, amount: }.compact)
 
       # {
       #   'id' => 32_240,
@@ -134,6 +120,37 @@ module Garantex
       # покупатель: Yalla (2133)
       # цена: -0.07% (вы доплачиваете)
       # сумма: 120 000.00 - 1 149 859.90 RUB
+    end
+
+    private
+
+    def jwt_token
+      @jwt_token ||= begin
+        secret_key = OpenSSL::PKey.read(Base64.urlsafe_decode64(@private_key))
+        payload = {
+          exp: 24.hours.from_now.to_i, # JWT Request TTL in seconds since epoch
+          jti: SecureRandom.hex(12).upcase
+        }
+
+        JWT.encode(payload, secret_key, 'RS256')
+      end
+    end
+
+    def conn
+      @conn ||= Faraday.new do |builder|
+        builder.adapter :async_http, timeout: 60
+        builder.request :json
+        builder.request :authorization, 'Bearer', -> { token }
+        builder.response :json
+      end
+    end
+
+    def make_request(link, form_data_hash)
+      puts "garantex make_request: #{link} #{form_data_hash}"
+
+      url = "https://#{HOST}/api/v2/#{link}"
+
+      conn.get(url, form_data_hash).body
     end
   end
 end
