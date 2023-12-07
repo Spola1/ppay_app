@@ -6,7 +6,7 @@ require 'securerandom'
 
 module Garantex
   class Account
-    HOST = 'garantex.org'.freeze
+    HOST = 'garantex.org'
 
     def initialize(private_key = nil, uid = nil)
       @private_key = private_key || ENV.fetch('GARANTEX_PRIVATE_KEY', nil)
@@ -17,22 +17,15 @@ module Garantex
     attr_accessor :token
 
     def generate_new_token
-      secret_key = OpenSSL::PKey.read(Base64.urlsafe_decode64(@private_key))
-      payload = {
-        exp: 1.hours.from_now.to_i, # JWT Request TTL in seconds since epoch
-        jti: SecureRandom.hex(12).upcase
-      }
+      token_conn = Faraday.new do |builder|
+        builder.adapter :async_http, timeout: 60
+        builder.request :json
+        builder.response :json
+      end
 
-      jwt_token = JWT.encode(payload, secret_key, 'RS256')
-
-      uri = URI.parse("https://dauth.#{HOST}/api/v1/sessions/generate_jwt")
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
-      request.body = { kid: @uid, jwt_token: }.to_json
-      response = http.start { |h| h.request(request) }
-      data = JSON.parse response.body
-      @token = data['token']
+      response = token_conn.post("https://dauth.#{HOST}/api/v1/sessions/generate_jwt",
+                                 { kid: @uid, jwt_token: })
+      @token = response.body['token']
     end
 
     def get_otc_member_profile(nickname)
@@ -130,6 +123,18 @@ module Garantex
     end
 
     private
+
+    def jwt_token
+      @jwt_token ||= begin
+        secret_key = OpenSSL::PKey.read(Base64.urlsafe_decode64(@private_key))
+        payload = {
+          exp: 24.hours.from_now.to_i, # JWT Request TTL in seconds since epoch
+          jti: SecureRandom.hex(12).upcase
+        }
+
+        JWT.encode(payload, secret_key, 'RS256')
+      end
+    end
 
     def conn
       @conn ||= Faraday.new do |builder|
