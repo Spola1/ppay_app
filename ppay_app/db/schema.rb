@@ -360,8 +360,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
 
   create_table "payment_callbacks", force: :cascade do |t|
     t.bigint "payment_id"
-    t.datetime "sent_at"
-    t.datetime "received_at"
+    t.datetime "response_at"
     t.string "response_status"
     t.text "response_body"
     t.text "request"
