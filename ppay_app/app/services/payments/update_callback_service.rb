@@ -19,14 +19,11 @@ module Payments
     private
 
     def save_payment_callback_before_send
-      payment.payment_callbacks.create(
-        request:
-      )
+      @payment_callback = payment.payment_callbacks.create(request:)
     end
 
     def update_payment_callback_after_response(response)
-      payment_callback = payment.payment_callbacks.last
-      payment_callback.update(
+      @payment_callback.update(
         response_at: Time.now,
         response_status: response.code,
         response_body: response.body
