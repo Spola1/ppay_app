@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'selenium-webdriver'
+
 Capybara.server = :puma, { Silent: true }
 
 Capybara.register_driver :chrome_headless do |app|

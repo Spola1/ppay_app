@@ -20,11 +20,12 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_end_time
-    status_changed_at.utc + if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
-                              merchant.ftd_payment_exec_time_in_sec
-                            else
-                              merchant.regular_payment_exec_time_in_sec
-                            end
+    status_changed_at.utc +
+      if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
+        merchant.ftd_payment_exec_time_in_sec
+      else
+        merchant.regular_payment_exec_time_in_sec
+      end
   end
   alias expiration_time countdown_end_time
 
@@ -110,7 +111,8 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def card_number
-    if (type == 'Deposit' && processing_type == 'external' && national_currency == 'AZN') || type == 'Withdrawal'
+    if (type == 'Deposit' && processing_type == 'external' && national_currency == 'AZN') ||
+       type == 'Withdrawal'
       super
     else
       advertisement&.card_number
@@ -118,8 +120,8 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def formatted_card_number
-    if ['ЕРИП БНБ', 'ЕРИП Альфа',
-        'ЕРИП Белагро'].include?(payment_system) || (payment_system == 'СБП' && type == 'Withdrawal')
+    if ['ЕРИП БНБ', 'ЕРИП Альфа', 'ЕРИП Белагро'].include?(payment_system) ||
+       (payment_system == 'СБП' && type == 'Withdrawal')
       card_number
     else
       card_number&.gsub(/(.{4})/, '\1 ')

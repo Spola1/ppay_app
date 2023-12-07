@@ -82,8 +82,6 @@ navbar:
       path: payments_path
     - name: Объявления
       path: advertisements_path
-    # - name: Курсы бирж
-    #   path: rate_snapshots_path
     - name: Запросы баланса
       path: balance_requests_path
     - name: Телеграм Бот
