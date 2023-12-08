@@ -15,10 +15,13 @@ describe 'Payments' do
 
       parameter name: :uuid, in: :path, type: :string
 
+      let!(:sbp) { create :payment_system, name: 'СБП', payment_system_copy: PaymentSystem.first }
       let(:payment) do
         create :payment, :deposit, :confirming, :with_transactions,
-               merchant:, cancellation_reason:, external_order_id:, advertisement:
+               merchant:, cancellation_reason:, external_order_id:, advertisement:,
+               payment_system: payment_system_name
       end
+      let(:payment_system_name) { payment_system.name }
       let(:advertisement) { create :advertisement }
       let(:uuid) { payment.uuid }
       let(:cancellation_reason) { :fraud_attempt }
@@ -30,6 +33,15 @@ describe 'Payments' do
         run_test! do |_response|
           expect(response_body['data']['attributes']['cancellation_reason']).to eq(cancellation_reason.to_s)
           expect(response_body['data']['attributes']['external_order_id']).to eq(external_order_id)
+        end
+
+        context 'with sbp payment_system' do
+          let(:payment_system_name) { sbp.name }
+
+          run_test! do |_response|
+            expect(response_body[:data][:attributes]).to include(payment_system: payment_system_name)
+            expect(response_body[:data][:attributes]).to include(sbp_bank: advertisement.payment_system)
+          end
         end
       end
 

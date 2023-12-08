@@ -76,6 +76,8 @@ FactoryBot.define do
 
     trait :with_transactions do
       after(:create) do |payment, _evaluator|
+        payment.merchant.fill_in_commissions
+
         %i[main processer_commission working_group_commission agent_commission ppay_commission]
           .map { create :transaction, transactionable: payment, transaction_type: _1 }
       end
@@ -83,6 +85,8 @@ FactoryBot.define do
 
     trait :with_completed_transactions do
       after(:create) do |payment, _evaluator|
+        payment.merchant.fill_in_commissions
+
         %i[main processer_commission working_group_commission agent_commission ppay_commission]
           .map { create :transaction, transactionable: payment, transaction_type: _1, status: :completed }
       end
@@ -90,6 +94,8 @@ FactoryBot.define do
 
     trait :with_cancelled_transactions do
       after(:create) do |payment, _evaluator|
+        payment.merchant.fill_in_commissions
+
         %i[main processer_commission working_group_commission agent_commission ppay_commission]
           .map { create :transaction, transactionable: payment, transaction_type: _1, status: :cancelled }
       end

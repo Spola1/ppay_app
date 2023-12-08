@@ -13,7 +13,6 @@ module Api
           attribute :external_order_id, if: proc { |record| record.external_order_id.present? }
           attribute :cancellation_reason, if: proc { |record| record.cancellation_reason.present? }
           attribute :payment_status
-          attribute :sbp_bank
           attribute :national_currency_amount
           attribute :initial_amount
           attribute :national_currency
@@ -23,6 +22,7 @@ module Api
           attribute :arbitration_reason
           attribute :rate, -> { _1.rate_snapshot&.value }
           attribute :commission_percentage, -> { _1.total_commission }
+          attribute :sbp_bank
         end
       end
     end

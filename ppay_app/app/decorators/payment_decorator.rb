@@ -172,6 +172,10 @@ class PaymentDecorator < ApplicationDecorator
     end
   end
 
+  def sbp_bank
+    advertisement&.payment_system
+  end
+
   private
 
   def formatted_date(date)

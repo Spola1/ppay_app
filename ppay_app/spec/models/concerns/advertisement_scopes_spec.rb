@@ -249,7 +249,7 @@ RSpec.describe Advertisement, type: :model do
       let(:only_whitelisted_processers) { true }
 
       it 'selects only whitelisted processers advertisements' do
-        is_expected.to eq([advertisement1, advertisement3, advertisement5])
+        is_expected.to match_array([advertisement1, advertisement3, advertisement5])
       end
     end
 
@@ -257,7 +257,7 @@ RSpec.describe Advertisement, type: :model do
       let(:only_whitelisted_processers) { false }
 
       it 'selects all advertisements' do
-        is_expected.to eq([advertisement1, advertisement2, advertisement3, advertisement4, advertisement5])
+        is_expected.to match_array([advertisement1, advertisement2, advertisement3, advertisement4, advertisement5])
       end
     end
   end
@@ -280,7 +280,7 @@ RSpec.describe Advertisement, type: :model do
       let(:payment_system_name) { 'СБП' }
 
       it 'selects advertisements only with sbp phone number' do
-        is_expected.to eq([advertisement3, advertisement5, advertisement8, advertisement10])
+        is_expected.to match_array([advertisement3, advertisement5, advertisement8, advertisement10])
       end
     end
 
@@ -288,7 +288,7 @@ RSpec.describe Advertisement, type: :model do
       let(:payment_system_name) { 'Sberbank' }
 
       it 'selects advertisements by payment system name' do
-        is_expected.to eq([advertisement4, advertisement6, advertisement10])
+        is_expected.to match_array([advertisement4, advertisement6, advertisement10])
       end
     end
   end

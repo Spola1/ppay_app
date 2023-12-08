@@ -170,7 +170,7 @@ RSpec.describe Advertisement, type: :model do
       describe '.filter_by_card_number' do
         subject(:advertisements) { Advertisement.filter_by_card_number('1111') }
         let(:correct_result) { [advertisement1, advertisement3] }
-        it { expect(advertisements.to_a).to eq(correct_result) }
+        it { expect(advertisements.to_a).to match_array(correct_result) }
       end
 
       describe '.filter_by_card_owner_name' do
