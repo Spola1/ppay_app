@@ -20,7 +20,7 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_end_time
-    status_changed_at.utc +
+    status_changed_at +
       if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
         merchant.ftd_payment_exec_time_in_sec
       else
@@ -193,6 +193,6 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_difference
-    countdown_end_time - Time.now
+    countdown_end_time - Time.zone.now
   end
 end

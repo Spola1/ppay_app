@@ -10,6 +10,10 @@ module Api
 
       attr_reader :current_http_token, :current_api_key, :current_bearer
 
+      included do
+        around_action :set_time_zone, if: :current_bearer
+      end
+
       # Use this to raise an error and automatically respond with a 401 HTTP status
       # code when API key authentication fails
       def authenticate_with_api_key!
@@ -30,6 +34,10 @@ module Api
         @current_api_key = ApiKey.find_by token: http_token
 
         current_api_key&.bearer
+      end
+
+      def set_time_zone(&)
+        Time.use_zone(current_bearer.time_zone, &)
       end
     end
   end
