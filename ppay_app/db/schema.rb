@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_08_002430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -452,6 +452,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_165346) do
     t.integer "advertisement_not_found_reason"
     t.decimal "adjusted_rate"
     t.string "other_processing_id"
+    t.string "sbp_bank"
     t.index "((uuid)::text) gin_trgm_ops", name: "idx_payments_uuid_trgm", using: :gin
     t.index ["advertisement_id", "created_at"], name: "index_payments_on_advertisement_id_and_created_at"
     t.index ["advertisement_id"], name: "index_payments_on_advertisement_id"

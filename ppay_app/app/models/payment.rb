@@ -105,6 +105,8 @@ class Payment < ApplicationRecord
                                              (completed? || (cancelled? && !time_expired?))
                                          }
   before_save :update_status_changed_at, if: :payment_status_changed?
+  before_save :set_sbp_bank_name, if: -> { payment_system == 'СБП' && advertisement_id_changed? && advertisement }
+
 
   validates_presence_of :card_number, if: -> { external? && type == 'Withdrawal' }
   validates_presence_of :national_currency, :national_currency_amount, :callback_url
@@ -445,5 +447,9 @@ class Payment < ApplicationRecord
 
   def block_advertisement
     advertisement.update(status: false, block_reason: :exceed_daily_usdt_limit)
+  end
+
+  def set_sbp_bank_name
+    self.sbp_bank = advertisement.payment_system
   end
 end

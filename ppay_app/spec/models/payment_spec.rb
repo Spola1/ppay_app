@@ -90,6 +90,31 @@ RSpec.describe Payment, type: :model do
         it { expect(payment.transactions.map(&:status)).to all(eq 'completed') }
       end
     end
+
+    describe 'set_sbp_bank_name' do
+      let!(:payment) { create(:payment, :confirming, payment_system:, advertisement: adv) }
+
+      context 'when payment_system СБП' do
+        let(:adv) { create :advertisement }
+        let(:payment_system) { 'СБП' }
+
+        it { expect(payment.sbp_bank).to eq(adv.payment_system) }
+      end
+
+      context 'when payment_system not СБП' do
+        let(:adv) { create :advertisement }
+        let(:payment_system) { 'Sberbank' }
+
+        it { expect(payment.sbp_bank).to eq(nil) }
+      end
+
+      context 'when no advertisement' do
+        let(:adv) { nil }
+        let(:payment_system) { 'СБП' }
+
+        it { expect(payment.sbp_bank).to eq(nil) }
+      end
+    end
   end
 
   describe ':bind event' do
