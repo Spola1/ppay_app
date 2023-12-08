@@ -19,7 +19,7 @@ class PaymentDecorator < ApplicationDecorator
     "#{hours}:#{minutes}:#{seconds}"
   end
 
-  def countdown_end_time
+  def expiration_time
     status_changed_at +
       if merchant.differ_ftd_and_other_payments? && initial_amount == merchant.ftd_payment_default_summ
         merchant.ftd_payment_exec_time_in_sec
@@ -27,7 +27,8 @@ class PaymentDecorator < ApplicationDecorator
         merchant.regular_payment_exec_time_in_sec
       end
   end
-  alias expiration_time countdown_end_time
+
+  def countdown_end_time = expiration_time.iso8601
 
   def human_payment_status
     return unless payment_status
@@ -193,6 +194,6 @@ class PaymentDecorator < ApplicationDecorator
   end
 
   def countdown_difference
-    countdown_end_time - Time.zone.now
+    expiration_time - Time.zone.now
   end
 end

@@ -13,7 +13,7 @@ feature 'Time zone settings:', js: true do
       end
 
       scenario 'selects own time zone' do
-        expect(user.reload.time_zone).to be_nil
+        expect(user.reload.time_zone).to eq('Moscow')
 
         find_link(href: users_settings_path).click
 

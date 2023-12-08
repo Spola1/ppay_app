@@ -6,7 +6,7 @@ export default class extends Controller {
 
   connect() {
     $(this.countdownTargets).each(function() {
-      $(this).countdown($(this).data('endTime'), function(event) {
+      $(this).countdown(Date.parse($(this).data('endTime')), function(event) {
         $(this).text(
           event.strftime('%H:%M:%S')
         )

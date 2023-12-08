@@ -85,7 +85,7 @@ RSpec.describe PaymentDecorator do
         context 'when cryptocurrency_amount equals ftd_payment_default_summ' do
           it 'returns the correct countdown end time' do
             expected_countdown_end_time = payment.status_changed_at + payment.merchant.ftd_payment_exec_time_in_sec
-            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time.iso8601)
           end
         end
 
@@ -96,7 +96,7 @@ RSpec.describe PaymentDecorator do
 
           it 'returns the correct countdown end time' do
             expected_countdown_end_time = payment.status_changed_at + payment.merchant.regular_payment_exec_time_in_sec
-            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time.iso8601)
           end
         end
 
@@ -107,7 +107,7 @@ RSpec.describe PaymentDecorator do
 
           it 'returns the correct countdown end time' do
             expected_countdown_end_time = payment.status_changed_at + payment.merchant.regular_payment_exec_time_in_sec
-            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time)
+            expect(payment.decorate.countdown_end_time).to eq(expected_countdown_end_time.iso8601)
           end
         end
       end
