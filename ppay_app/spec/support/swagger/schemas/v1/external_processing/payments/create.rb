@@ -80,6 +80,7 @@ module Swagger
                         national_currency_commission_amount: { type: :number, example: 100.0 },
                         card_owner_name: { type: :string, example: 'John Doe' },
                         sbp_phone_number: { type: :string, example: '+1234567890' },
+                        sbp_bank: { type: :string, example: 'Sberbank' },
                         rate: { type: :string, example: '94.12' },
                         commission_percentage: { type: :string, example: '4.0' }
                       } }
@@ -102,6 +103,7 @@ module Swagger
                         initial_amount: { type: :string },
                         cryptocurrency_commission_amount: { type: :number, example: 10.0 },
                         national_currency_commission_amount: { type: :number, example: 100.0 },
+                        sbp_bank: { type: :string, example: 'Sberbank' },
                         rate: { type: :string, example: '94.12' },
                         commission_percentage: { type: :string, example: '4.0' }
                       } }

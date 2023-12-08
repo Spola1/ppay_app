@@ -41,6 +41,7 @@ RSpec.describe Payments::UpdateCallbackService, type: :service do
                 national_currency_commission_amount: nil,
                 arbitration: false,
                 arbitration_reason: arbitration_reason.to_s,
+                sbp_bank: advertisement.payment_system,
                 rate: '100.29',
                 commission_percentage: '4.0'
               }

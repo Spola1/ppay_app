@@ -14,7 +14,7 @@ module Api
           attribute :cancellation_reason, if: proc { |record| record.cancellation_reason.present? }
           attributes :created_at, :national_currency, :national_currency_amount, :initial_amount,
                      :cryptocurrency, :payment_system, :payment_status, :cryptocurrency_commission_amount,
-                     :national_currency_commission_amount, :arbitration, :arbitration_reason
+                     :national_currency_commission_amount, :arbitration, :arbitration_reason, :sbp_bank
           attribute :rate, -> { _1.rate_snapshot&.value }
           attribute :commission_percentage, -> { _1.total_commission }
         end

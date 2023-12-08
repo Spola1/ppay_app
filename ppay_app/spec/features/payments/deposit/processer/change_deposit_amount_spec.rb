@@ -76,6 +76,8 @@ feature 'Processer can change deposit amount', :sidekiq_inline, :silence_output,
 
       using_session 'Processer' do
         fill_in 'national_currency_amount', with: added_national_currency_amount
+        expect(page).to have_field('national_currency_amount', with: added_national_currency_amount)
+
         accept_confirm { click_on 'Изменить сумму' }
 
         processer.balance.withdraw(970)

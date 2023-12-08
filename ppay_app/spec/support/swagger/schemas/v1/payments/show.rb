@@ -37,6 +37,7 @@ module Swagger
                     national_currency_commission_amount: { type: :number, nullable: true, example: 99.99 },
                     arbitration: { type: :boolean },
                     arbitration_reason: { type: :string, nullable: true, example: 'check_by_check' },
+                    sbp_bank: { type: :string, example: 'Sberbank' },
                     rate: { type: :string, nullable: true, example: '94.12' },
                     commission_percentage: { type: :string, example: '4.0' }
                   } }

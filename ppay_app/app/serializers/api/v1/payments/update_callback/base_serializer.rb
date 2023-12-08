@@ -22,6 +22,7 @@ module Api
           attribute :arbitration_reason
           attribute :rate, -> { _1.rate_snapshot&.value }
           attribute :commission_percentage, -> { _1.total_commission }
+          attribute :sbp_bank
         end
       end
     end

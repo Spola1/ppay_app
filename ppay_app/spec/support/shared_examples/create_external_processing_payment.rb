@@ -30,6 +30,18 @@ shared_examples 'create_external_processing_payment' do |type:|
       end
     end
 
+    context 'with sbp payment_system' do
+      let!(:sbp) { create :payment_system, name: payment_system_name, payment_system_copy: PaymentSystem.first }
+      let(:payment_system_name) { 'СБП' }
+
+      before { merchant.fill_in_commissions(payment_system_name) }
+
+      run_test! do |_response|
+        expect(response_body[:data][:attributes]).to include(payment_system: payment_system_name)
+        expect(response_body[:data][:attributes]).to include(sbp_bank: adv.payment_system)
+      end
+    end
+
     it 'creates a payment for the merchant' do |example|
       expect { submit_request(example.metadata) }.to change {
         merchant.reload.public_send(payment_type.to_s.underscore.pluralize).count
