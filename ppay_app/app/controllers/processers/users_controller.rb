@@ -5,7 +5,7 @@ module Processers
     def settings; end
 
     def check_telegram_connection_status
-      @telegram_connection = current_user.telegram_connections.last
+      @telegram_connections = current_user.telegram_connections.order(created_at: :asc)
     end
 
     private

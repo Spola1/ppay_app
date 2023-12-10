@@ -17,3 +17,8 @@
 
   .form-actions
     = f.button :submit, 'Сохранить', class: 'form-submit'
+
+- if !@telegram_application.new_record?
+  .form-actions.mt-2
+    = button_to 'Перезапустить', restart_telegram_application_path(@telegram_application), method: :post, class: 'form-submit'
+

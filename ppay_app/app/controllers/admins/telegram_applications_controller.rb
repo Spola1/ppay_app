@@ -3,7 +3,7 @@
 module Admins
   class TelegramApplicationsController < ApplicationController
     before_action :set_processers, only: %i[new create edit]
-    before_action :find_telegram_application, only: %i[edit show destroy update]
+    before_action :find_telegram_application, only: %i[edit show destroy update restart]
 
     def show; end
 
@@ -11,6 +11,7 @@ module Admins
 
     def destroy
       if @telegram_application.destroy
+        send_data_to_microservice(@telegram_application)
         redirect_to telegram_applications_path, notice: 'Приложение успешно удалено'
       else
         redirect_to telegram_applications_path, alert: 'Ошибка удаления приложения'
@@ -23,7 +24,7 @@ module Admins
       if @telegram_application.save
         send_data_to_microservice(@telegram_application)
 
-        redirect_to telegram_applications_path, notice: 'Приложение успешно обновлено.'
+        redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение успешно обновлено.'
       else
         render :edit
       end
@@ -43,10 +44,16 @@ module Admins
       if @telegram_application.save
         send_data_to_microservice(@telegram_application)
 
-        redirect_to telegram_applications_path, notice: 'Приложение успешно создано.'
+        redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение успешно создано. Доджитесь кода и сохраните его в соответствующее поле.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
+    end
+
+    def restart
+      send_data_to_microservice(@telegram_application)
+
+      redirect_to edit_telegram_application_path(@telegram_application), notice: 'Приложение перезапущено. Доджитесь нового кода и сохраните его в соответствующее поле.'
     end
 
     private
@@ -66,6 +73,8 @@ module Admins
 
       send_request_to_microservice(data_to_send, 'create_telegram_application') if action_name == 'create'
       send_request_to_microservice(data_to_send, 'update_telegram_application') if action_name == 'update'
+      send_request_to_microservice(data_to_send, 'restart_telegram_application') if action_name == 'restart'
+      send_request_to_microservice(data_to_send, 'destroy_telegram_application') if action_name == 'destroy'
     end
 
     def send_request_to_microservice(data_to_send, endpoint)
