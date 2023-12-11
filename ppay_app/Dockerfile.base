@@ -12,7 +12,7 @@ ENV BUNDLE_PATH="${BUNDLE_PATH}" \
     USER="deploy"
 
 RUN bash -c "set -o pipefail && apt-get update \
-  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev cron python3 python3-pip \
+  && apt-get install -y --no-install-recommends build-essential curl git libpq-dev cron python3 python3-pip emacs-nox less \
   && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
   && apt-get clean \
   && groupadd -g \"${GID}\" deploy \

@@ -34,7 +34,7 @@ end
 
 every 10.minutes do
   runner 'RateSnapshots::GetAllRatesJob.perform_async'
-  runner 'Bybit::UsertokenJob.perform_async'
+  runner 'Bybit::CookiesJob.perform_async'
 end
 
 every 5.minutes do
