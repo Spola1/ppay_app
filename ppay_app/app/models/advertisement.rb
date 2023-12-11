@@ -34,7 +34,7 @@ class Advertisement < ApplicationRecord
   before_save :remove_block_reason, if: -> { status && block_reason.present? }
 
   def exceed_daily_usdt_limit?
-    daily_usdt_limit.positive? &&
+    daily_usdt_limit&.positive? &&
       payments.completed.last_day.sum(:cryptocurrency_amount) >=
         daily_usdt_limit
   end

@@ -11,7 +11,7 @@ class Balance < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   def check_amounts(amount, national_currency_amount)
-    raise(ArgumentError, 'Amount must be positive') unless amount.positive?
+    raise(ArgumentError, 'Amount must be positive') unless amount&.positive?
     if in_national_currency && !national_currency_amount&.positive?
       raise(ArgumentError, 'National currency amount must be positive')
     end
