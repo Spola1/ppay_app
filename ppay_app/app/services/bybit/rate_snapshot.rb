@@ -37,7 +37,7 @@ module Bybit
     end
 
     def exchange_portal = @payment_system.exchange_portal
-    def otc = @otc ||= Bybit::OtcOnline.new(exchange_portal.settings.fetch('usertoken', ''))
+    def otc = @otc ||= Bybit::OtcOnline.new(exchange_portal.settings.fetch('cookies', ''))
 
     def pay_type
       @params in { payment_method: }

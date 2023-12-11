@@ -191,6 +191,7 @@ GEM
       rotp (~> 6.0)
     diff-lcs (1.5.0)
     digest (3.1.0)
+    domain_name (0.6.20231109)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -248,6 +249,9 @@ GEM
     faraday (2.7.6)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
+    faraday-cookie_jar (0.0.7)
+      faraday (>= 0.8.0)
+      http-cookie (~> 1.0.0)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
@@ -271,6 +275,8 @@ GEM
     health_check (3.1.0)
       railties (>= 5.0)
     htmlentities (4.3.4)
+    http-cookie (1.0.5)
+      domain_name (~> 0.5)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -572,6 +578,7 @@ DEPENDENCIES
   dotenv-rails
   draper
   factory_bot_rails
+  faraday-cookie_jar
   ffaker
   filepond-rails
   font-awesome-rails

@@ -3,6 +3,7 @@
 from seleniumbase import Driver
 import pyotp
 import os
+import json
 
 def main():
     email = os.environ.get('BYBIT_EMAIL')
@@ -28,7 +29,7 @@ def main():
             driver.find_element("[title=code]").send_keys(pyotp.TOTP(totp_secret).now())
 
         driver.wait_for_element(".user-profile")
-        print(driver.get_cookie('b_t_c_k')['value'])
+        print(json.dumps(driver.get_cookies()))
 
     except:
         print('')

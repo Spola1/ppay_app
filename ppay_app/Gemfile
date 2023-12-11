@@ -143,3 +143,4 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'httparty'
 gem 'trace_location'
 gem 'async-http-faraday'
+gem 'faraday-cookie_jar'
